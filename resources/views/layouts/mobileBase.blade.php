@@ -20,11 +20,8 @@
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
 
-    <!-- JQuery (update mthe main and remove redunduncy)-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     @yield('css')
-    
 
     <!-- Global site tag (gtag.js) - Google Analytics-->
     <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-118965717-3"></script>
@@ -47,24 +44,16 @@
 
 
 <body class="c-app">
-    <div class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-lg-show" id="sidebar">
+    @include('partials.mobileHeader')
+    <div class="c-body">
 
-        @include('partials.nav-builder')
+        <main class="c-main">
 
-        @include('partials.header')
+            @yield('content')
 
-        <div class="c-body">
+        </main>
 
-            <main class="c-main">
-
-                @yield('content')
-
-            </main>
-
-        </div>
     </div>
-
-
 
     <!-- CoreUI and necessary plugins-->
     <script src="{{ asset('js/coreui.bundle.min.js') }}"></script>

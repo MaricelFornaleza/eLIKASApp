@@ -73,49 +73,49 @@ if (!function_exists('renderDropdown')) {
         <li class="c-sidebar-nav-item">
             <a class="c-sidebar-nav-link" href="/map">
                 <svg class="c-sidebar-nav-icon">
-                    <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-home"></use>
+                    <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-map"></use>
                 </svg>Map
             </a>
         </li>
         <li class="c-sidebar-nav-item">
             <a class="c-sidebar-nav-link" href="/evacuation-centers">
                 <svg class="c-sidebar-nav-icon">
-                    <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-home"></use>
+                    <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-house"></use>
                 </svg>Evacuation Centers
             </a>
         </li>
         <li class="c-sidebar-nav-item">
             <a class="c-sidebar-nav-link" href="#">
                 <svg class="c-sidebar-nav-icon">
-                    <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-home"></use>
+                    <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-people"></use>
                 </svg>Field Officers
             </a>
         </li>
         <li class="c-sidebar-nav-item">
             <a class="c-sidebar-nav-link" href="#">
                 <svg class="c-sidebar-nav-icon">
-                    <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-home"></use>
+                    <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-notes"></use>
                 </svg>Requests
             </a>
         </li>
         <li class="c-sidebar-nav-item">
             <a class="c-sidebar-nav-link" href="#">
                 <svg class="c-sidebar-nav-icon">
-                    <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-home"></use>
+                    <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-people"></use>
                 </svg>Residents
             </a>
         </li>
         <li class="c-sidebar-nav-item">
             <a class="c-sidebar-nav-link" href="#">
                 <svg class="c-sidebar-nav-icon">
-                    <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-home"></use>
+                    <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-file"></use>
                 </svg>Inventory
             </a>
         </li>
         <li class="c-sidebar-nav-item">
             <a class="c-sidebar-nav-link" href="#">
                 <svg class="c-sidebar-nav-icon">
-                    <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-home"></use>
+                    <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-chat-bubble"></use>
                 </svg>Chat
             </a>
         </li>

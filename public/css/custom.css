@@ -1,57 +1,64 @@
 body {
-    background-color: #F4F7FC !important;
-    font-family: "Poppins" !important;
+  background-color: #f4f7fc !important;
+  font-family: 'Poppins' !important;
 }
-.btn-primary{
-    background-color: #023047 !important;
-    width: 100%;
+.btn-primary {
+  background-color: #023047 !important;
+  width: 100%;
 }
 .c-app {
-    --primary:#023047 !important;
-    --secondary: #FB8500 !important;
-    color: #3c4b64;
-    --color: #3c4b64;
+  --primary: #023047 !important;
+  --secondary: #fb8500 !important;
+  color: #3c4b64;
+  --color: #3c4b64;
 }
-.c-sidebar-brand, .c-sidebar-nav-item:hover, .c-sidebar-minimizer{
-    background-color: #022639 !important;
+.c-header-brand {
+  min-height: 20px !important;
+}
+.c-header-nav-icon {
+  color: white !important;
+}
+
+.c-sidebar-brand,
+.c-sidebar-nav-item:hover,
+.c-sidebar-minimizer {
+  background-color: #022639 !important;
 }
 .c-sidebar-minimized .sidebar-date {
-    display: none;
-  }
+  display: none;
+}
 .c-sidebar-nav {
-    background-color: #023047 !important;
+  background-color: #023047 !important;
 }
 
-.center{
-    display: flex !important; 
-    justify-content: center !important;
-    align-items: center !important;
+.center {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
 }
 .form-control {
-    border: none !important;
-    color: rgba(2, 48, 71, 0.5) !important;
-    background-color: #F4F7FC !important;
-    border-color: #fff !important;
+  border: none !important;
+  color: rgba(2, 48, 71, 0.5) !important;
+  background-color: #f4f7fc !important;
+  border-color: #fff !important;
 }
 .form-control:focus {
-    color: #768192;
-    background-color: #fff;
-    border-color: #219EBC !important;
-    outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(31, 191, 219, 0.25) !important;
+  color: #768192;
+  background-color: #fff;
+  border-color: #219ebc !important;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(31, 191, 219, 0.25) !important;
 }
-.sidebar-date{
-    text-align: center;
-    background-color: #023047 !important;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+.mobile-header {
+  background-color: #023047 !important;
 }
-.title{
-    font-weight: 800 !important;
-    color: #023047 !important;
+.sidebar-date {
+  text-align: center;
+  background-color: #023047 !important;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
-
-
-
-
-
+.title {
+  font-weight: 800 !important;
+  color: #023047 !important;
+}
