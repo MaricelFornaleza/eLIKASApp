@@ -11,6 +11,7 @@
 |
 */
 
+use App\Http\Controllers\FieldOfficerController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -31,3 +32,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/delete',   'EvacuationCenterController@delete')->name('evacuation-center.delete');
     });
 });
+
+
+
+Route::resource('/field_officers', 'FieldOfficerController');

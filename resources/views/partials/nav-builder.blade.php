@@ -85,7 +85,7 @@ if (!function_exists('renderDropdown')) {
             </a>
         </li>
         <li class="c-sidebar-nav-item">
-            <a class="c-sidebar-nav-link" href="#">
+            <a class="c-sidebar-nav-link" href="/field_officers">
                 <svg class="c-sidebar-nav-icon">
                     <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-people"></use>
                 </svg>Field Officers

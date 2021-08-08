@@ -28,7 +28,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'number', 'photo'
+        'name', 'photo', 'email', 'branch', 'barangay', 'designation', 'password',
     ];
 
     /**
@@ -52,4 +52,9 @@ class User extends Authenticatable
     protected $dates = [
         'deleted_at'
     ];
+
+    function user_contacts()
+    {
+        return $this->hasMany('App\Models\Contact');
+    }
 }
