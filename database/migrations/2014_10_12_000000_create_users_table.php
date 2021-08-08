@@ -16,14 +16,26 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->string('photo')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('photo')->nullable();
-            $table->bigInteger('number')->unique()->nullable();
+            $table->string('branch')->nullable();
+            $table->string('barangay')->nullable();
+            $table->string('designation')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
+        });
+        Schema::create('contacts', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id');
+            $table->bigInteger('contact_no')->unique();
+            $table->timestamps();
+
+
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
@@ -34,6 +46,7 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('contacts');
         Schema::dropIfExists('users');
     }
 }

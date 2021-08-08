@@ -2,10 +2,21 @@ body {
   background-color: #f4f7fc !important;
   font-family: 'Poppins' !important;
 }
+.btn-borderless {
+  border: none !important;
+  padding: none !important;
+  margin: none !important;
+  color: #3c4b64 !important;
+  background-color: transparent !important;
+}
+.btn-borderless:focus {
+  outline: none !important;
+}
 .btn-primary {
   background-color: #023047 !important;
   width: 100%;
 }
+
 .c-app {
   --primary: #023047 !important;
   --secondary: #fb8500 !important;
@@ -36,6 +47,9 @@ body {
   justify-content: center !important;
   align-items: center !important;
 }
+.export-btn {
+  color: #65c295;
+}
 .form-control {
   border: none !important;
   color: rgba(2, 48, 71, 0.5) !important;
@@ -49,8 +63,18 @@ body {
   outline: 0;
   box-shadow: 0 0 0 0.2rem rgba(31, 191, 219, 0.25) !important;
 }
+.image-icon {
+  max-height: 50px !important;
+  height: 50px !important;
+  font-size: 50px !important;
+}
 .mobile-header {
   background-color: #023047 !important;
+}
+.secondary-button {
+  background-color: #219ebc !important;
+  color: white !important;
+  border: none !important;
 }
 .sidebar-date {
   text-align: center;
