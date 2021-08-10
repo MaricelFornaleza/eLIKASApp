@@ -7,9 +7,7 @@
     "Disaster Response",
     "Emergency Resource",
     "Emergency Resource Management System"
-   
   ],
-  
   "scripts": {
     "build": "npm-run-all build-clean build-copy build-vendors",
     "build-clean": "rimraf dist",

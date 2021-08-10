@@ -12,6 +12,7 @@
 */
 
 use App\Http\Controllers\FieldOfficerController;
+use App\Http\Controllers\SupplyController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -26,3 +27,4 @@ Route::group(['middleware' => ['auth']], function () {
 
 
 Route::resource('/field_officers', 'FieldOfficerController');
+Route::resource('supplies', 'SupplyController');

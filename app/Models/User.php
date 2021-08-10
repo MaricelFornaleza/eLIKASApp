@@ -57,4 +57,9 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Contact');
     }
+
+    function user_inventory()
+    {
+        return $this->hasOne('App\Models\Inventory');
+    }
 }
