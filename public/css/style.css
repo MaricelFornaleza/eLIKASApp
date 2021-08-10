@@ -9,6 +9,7 @@
  */
 
 :root {
+<<<<<<< HEAD
     --primary: #023047;
     --secondary: rgb(206, 210, 216);
     --success: #2eb85c;
@@ -43,6 +44,38 @@
     color: #3c4b64;
     background-color: #ebedef;
     --color: #3c4b64;
+=======
+  --primary: #321fdb;
+  --secondary: #ced2d8;
+  --success: #2eb85c;
+  --info: #39f;
+  --warning: #f9b115;
+  --danger: #e55353;
+  --light: #ebedef;
+  --dark: #636f83;
+  --breakpoint-xs: 0;
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+  --breakpoint-xxl: 1400px;
+  --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.c-app {
+  --primary: #321fdb;
+  --secondary: #ced2d8;
+  --success: #2eb85c;
+  --info: #39f;
+  --warning: #f9b115;
+  --danger: #e55353;
+  --light: #ebedef;
+  --dark: #636f83;
+  color: #3c4b64;
+  background-color: #ebedef;
+  --color: #3c4b64;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 *,
@@ -188,6 +221,7 @@ sup {
 }
 
 a {
+<<<<<<< HEAD
     text-decoration: none;
     background-color: transparent;
     color: #023047;
@@ -198,6 +232,18 @@ a {
         text-decoration: underline;
         color: #023047;
     }
+=======
+  text-decoration: none;
+  background-color: transparent;
+  color: #321fdb;
+}
+
+@media (hover: hover), (-ms-high-contrast: none) {
+  a:hover {
+    text-decoration: underline;
+    color: #321fdb;
+  }
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 a:not([href]) {
@@ -1066,8 +1112,13 @@ a.badge:focus {
 }
 
 .badge-primary {
+<<<<<<< HEAD
     color: #fff;
     background-color: #023047;
+=======
+  color: #fff;
+  background-color: #321fdb;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 a.badge-primary:hover,
@@ -1521,9 +1572,15 @@ fieldset:disabled a.btn {
 }
 
 .btn-primary {
+<<<<<<< HEAD
     color: #fff;
     background-color: #023047;
     border-color: #023047;
+=======
+  color: #fff;
+  background-color: #321fdb;
+  border-color: #321fdb;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 @media (hover: hover), (-ms-high-contrast: none) {
@@ -1544,9 +1601,15 @@ fieldset:disabled a.btn {
 
 .btn-primary.disabled,
 .btn-primary:disabled {
+<<<<<<< HEAD
     color: #fff;
     background-color: #023047;
     border-color: #023047;
+=======
+  color: #fff;
+  background-color: #321fdb;
+  border-color: #321fdb;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 .btn-primary:not(:disabled):not(.disabled):active,
@@ -1937,6 +2000,7 @@ fieldset:disabled a.btn {
 }
 
 .btn-outline-primary {
+<<<<<<< HEAD
     color: #023047;
     border-color: #023047;
 }
@@ -1947,6 +2011,18 @@ fieldset:disabled a.btn {
         background-color: #023047;
         border-color: #023047;
     }
+=======
+  color: #321fdb;
+  border-color: #321fdb;
+}
+
+@media (hover: hover), (-ms-high-contrast: none) {
+  .btn-outline-primary:hover {
+    color: #fff;
+    background-color: #321fdb;
+    border-color: #321fdb;
+  }
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 .btn-outline-primary:focus,
@@ -1956,15 +2032,26 @@ fieldset:disabled a.btn {
 
 .btn-outline-primary.disabled,
 .btn-outline-primary:disabled {
+<<<<<<< HEAD
     color: #023047;
     background-color: transparent;
+=======
+  color: #321fdb;
+  background-color: transparent;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 .btn-outline-primary:not(:disabled):not(.disabled):active,
 .btn-outline-primary:not(:disabled):not(.disabled).active {
+<<<<<<< HEAD
     color: #fff;
     background-color: #023047;
     border-color: #023047;
+=======
+  color: #fff;
+  background-color: #321fdb;
+  border-color: #321fdb;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 .btn-outline-primary:not(:disabled):not(.disabled):active:focus,
@@ -1973,9 +2060,15 @@ fieldset:disabled a.btn {
 }
 
 .show > .btn-outline-primary.dropdown-toggle {
+<<<<<<< HEAD
     color: #fff;
     background-color: #023047;
     border-color: #023047;
+=======
+  color: #fff;
+  background-color: #321fdb;
+  border-color: #321fdb;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 .show > .btn-outline-primary.dropdown-toggle:focus {
@@ -2305,9 +2398,15 @@ fieldset:disabled a.btn {
 }
 
 .btn-link {
+<<<<<<< HEAD
     font-weight: 400;
     color: #023047;
     text-decoration: none;
+=======
+  font-weight: 400;
+  color: #321fdb;
+  text-decoration: none;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 @media (hover: hover), (-ms-high-contrast: none) {
@@ -2386,6 +2485,7 @@ input[type="button"].btn-block {
 }
 
 .btn-ghost-primary {
+<<<<<<< HEAD
     color: #023047;
     background-color: transparent;
     background-image: none;
@@ -2396,6 +2496,18 @@ input[type="button"].btn-block {
     color: #fff;
     background-color: #023047;
     border-color: #023047;
+=======
+  color: #321fdb;
+  background-color: transparent;
+  background-image: none;
+  border-color: transparent;
+}
+
+.btn-ghost-primary:hover {
+  color: #fff;
+  background-color: #321fdb;
+  border-color: #321fdb;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 .btn-ghost-primary:focus,
@@ -2405,16 +2517,28 @@ input[type="button"].btn-block {
 
 .btn-ghost-primary.disabled,
 .btn-ghost-primary:disabled {
+<<<<<<< HEAD
     color: #023047;
     background-color: transparent;
     border-color: transparent;
+=======
+  color: #321fdb;
+  background-color: transparent;
+  border-color: transparent;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 .btn-ghost-primary:not(:disabled):not(.disabled):active,
 .btn-ghost-primary:not(:disabled):not(.disabled).active {
+<<<<<<< HEAD
     color: #fff;
     background-color: #023047;
     border-color: #023047;
+=======
+  color: #fff;
+  background-color: #321fdb;
+  border-color: #321fdb;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 .btn-ghost-primary:not(:disabled):not(.disabled):active:focus,
@@ -2423,9 +2547,15 @@ input[type="button"].btn-block {
 }
 
 .show > .btn-ghost-primary.dropdown-toggle {
+<<<<<<< HEAD
     color: #fff;
     background-color: #023047;
     border-color: #023047;
+=======
+  color: #fff;
+  background-color: #321fdb;
+  border-color: #321fdb;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 .show > .btn-ghost-primary.dropdown-toggle:focus {
@@ -3666,6 +3796,7 @@ html:not([dir="rtl"]) .c-callout {
 }
 
 html:not([dir="rtl"]) .c-callout-primary {
+<<<<<<< HEAD
     border-left-color: #023047;
 }
 
@@ -3675,6 +3806,17 @@ html:not([dir="rtl"]) .c-callout-primary {
 
 .c-callout-primary h4 {
     color: #023047;
+=======
+  border-left-color: #321fdb;
+}
+
+*[dir="rtl"] .c-callout-primary {
+  border-right-color: #321fdb;
+}
+
+.c-callout-primary h4 {
+  color: #321fdb;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 html:not([dir="rtl"]) .c-callout-secondary {
@@ -4092,7 +4234,11 @@ html:not([dir="rtl"]) .card-header-actions {
 }
 
 .card-accent-primary {
+<<<<<<< HEAD
     border-top: 2px solid #023047 !important;
+=======
+  border-top: 2px solid #321fdb !important;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 .card-accent-secondary {
@@ -4473,9 +4619,15 @@ html:not([dir="rtl"]) .custom-control-input {
 }
 
 .custom-control-input:checked ~ .custom-control-label::before {
+<<<<<<< HEAD
     color: #fff;
     border-color: #023047;
     background-color: #023047;
+=======
+  color: #fff;
+  border-color: #321fdb;
+  background-color: #321fdb;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 .custom-control-input:focus ~ .custom-control-label::before {
@@ -4555,11 +4707,17 @@ html:not([dir="rtl"]) .custom-control-label::after {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26l2.974 2.99L8 2.193z'/%3e%3c/svg%3e");
 }
 
+<<<<<<< HEAD
 .custom-checkbox
     .custom-control-input:indeterminate
     ~ .custom-control-label::before {
     border-color: #023047;
     background-color: #023047;
+=======
+.custom-checkbox .custom-control-input:indeterminate ~ .custom-control-label::before {
+  border-color: #321fdb;
+  background-color: #321fdb;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 .custom-checkbox
@@ -4858,6 +5016,7 @@ html:not([dir="rtl"]) .custom-file-label::after {
 }
 
 .custom-range::-webkit-slider-thumb {
+<<<<<<< HEAD
     width: 1rem;
     height: 1rem;
     margin-top: -0.25rem;
@@ -4870,6 +5029,18 @@ html:not([dir="rtl"]) .custom-file-label::after {
         border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     -webkit-appearance: none;
     appearance: none;
+=======
+  width: 1rem;
+  height: 1rem;
+  margin-top: -0.25rem;
+  background-color: #321fdb;
+  border: 0;
+  border-radius: 1rem;
+  -webkit-transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  -webkit-appearance: none;
+          appearance: none;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -4894,6 +5065,7 @@ html:not([dir="rtl"]) .custom-file-label::after {
 }
 
 .custom-range::-moz-range-thumb {
+<<<<<<< HEAD
     width: 1rem;
     height: 1rem;
     background-color: #023047;
@@ -4905,6 +5077,17 @@ html:not([dir="rtl"]) .custom-file-label::after {
         border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     -moz-appearance: none;
     appearance: none;
+=======
+  width: 1rem;
+  height: 1rem;
+  background-color: #321fdb;
+  border: 0;
+  border-radius: 1rem;
+  -moz-transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  -moz-appearance: none;
+       appearance: none;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -4929,6 +5112,7 @@ html:not([dir="rtl"]) .custom-file-label::after {
 }
 
 .custom-range::-ms-thumb {
+<<<<<<< HEAD
     width: 1rem;
     height: 1rem;
     margin-top: 0;
@@ -4942,6 +5126,19 @@ html:not([dir="rtl"]) .custom-file-label::after {
     transition: background-color 0.15s ease-in-out,
         border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     appearance: none;
+=======
+  width: 1rem;
+  height: 1rem;
+  margin-top: 0;
+  margin-right: 0.2rem;
+  margin-left: 0.2rem;
+  background-color: #321fdb;
+  border: 0;
+  border-radius: 1rem;
+  -ms-transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  appearance: none;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -5420,9 +5617,15 @@ html:not([dir="rtl"]) .dropleft .dropdown-toggle:empty::after {
 
 .dropdown-item.active,
 .dropdown-item:active {
+<<<<<<< HEAD
     text-decoration: none;
     color: #fff;
     background-color: #023047;
+=======
+  text-decoration: none;
+  color: #fff;
+  background-color: #321fdb;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 .dropdown-item.disabled,
@@ -8902,10 +9105,17 @@ html:not([dir="rtl"]) .list-group {
 }
 
 .list-group-item.active {
+<<<<<<< HEAD
     z-index: 2;
     color: #fff;
     background-color: #023047;
     border-color: #023047;
+=======
+  z-index: 2;
+  color: #fff;
+  background-color: #321fdb;
+  border-color: #321fdb;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 .list-group-item + .list-group-item {
@@ -9283,7 +9493,11 @@ html:not([dir="rtl"])
 }
 
 .list-group-accent .list-group-item-accent-primary {
+<<<<<<< HEAD
     border-left: 4px solid #023047;
+=======
+  border-left: 4px solid #321fdb;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 .list-group-accent .list-group-item-accent-secondary {
@@ -9576,12 +9790,21 @@ html:not([dir="rtl"]) .modal-header .close {
 }
 
 .modal-primary .modal-content {
+<<<<<<< HEAD
     border-color: #023047;
 }
 
 .modal-primary .modal-header {
     color: #fff;
     background-color: #023047;
+=======
+  border-color: #321fdb;
+}
+
+.modal-primary .modal-header {
+  color: #fff;
+  background-color: #321fdb;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 .modal-secondary .modal-content {
@@ -9814,8 +10037,13 @@ html:not([dir="rtl"]) .nav-tabs-boxed.nav-tabs-boxed-right .nav-item {
 
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
+<<<<<<< HEAD
     color: #fff;
     background-color: #023047;
+=======
+  color: #fff;
+  background-color: #321fdb;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 .nav-underline {
@@ -9839,8 +10067,13 @@ html:not([dir="rtl"]) .nav-tabs-boxed.nav-tabs-boxed-right .nav-item {
 
 .nav-underline-primary .nav-link.active,
 .nav-underline-primary .show > .nav-link {
+<<<<<<< HEAD
     color: #023047;
     border-color: #023047;
+=======
+  color: #321fdb;
+  border-color: #321fdb;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 .nav-underline-secondary .nav-link.active,
@@ -10491,6 +10724,7 @@ html:not([dir="rtl"]) .pagination {
 }
 
 .page-link {
+<<<<<<< HEAD
     position: relative;
     display: block;
     padding: 0.5rem 0.75rem;
@@ -10499,6 +10733,16 @@ html:not([dir="rtl"]) .pagination {
     color: #023047;
     background-color: #fff;
     border-color: #d8dbe0;
+=======
+  position: relative;
+  display: block;
+  padding: 0.5rem 0.75rem;
+  line-height: 1.25;
+  border: 1px solid;
+  color: #321fdb;
+  background-color: #fff;
+  border-color: #d8dbe0;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 html:not([dir="rtl"]) .page-link {
@@ -10546,10 +10790,17 @@ html:not([dir="rtl"]) .page-item:last-child .page-link {
 }
 
 .page-item.active .page-link {
+<<<<<<< HEAD
     z-index: 3;
     color: #fff;
     background-color: #023047;
     border-color: #023047;
+=======
+  z-index: 3;
+  color: #fff;
+  background-color: #321fdb;
+  border-color: #321fdb;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 .page-item.disabled .page-link {
@@ -10814,6 +11065,7 @@ html:not([dir="rtl"]) .pagination-sm .page-item:last-child .page-link {
 }
 
 .progress-bar {
+<<<<<<< HEAD
     display: -ms-flexbox;
     display: flex;
     -ms-flex-direction: column;
@@ -10826,6 +11078,20 @@ html:not([dir="rtl"]) .pagination-sm .page-item:last-child .page-link {
     transition: width 0.6s ease;
     color: #fff;
     background-color: #023047;
+=======
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column;
+  -ms-flex-pack: center;
+      justify-content: center;
+  overflow: hidden;
+  text-align: center;
+  white-space: nowrap;
+  transition: width 0.6s ease;
+  color: #fff;
+  background-color: #321fdb;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -12989,11 +13255,19 @@ html:not([dir="rtl"]) .c-sidebar.c-sidebar-show.c-sidebar-right {
 }
 
 @media (hover: hover), (-ms-high-contrast: none) {
+<<<<<<< HEAD
     .c-sidebar .c-sidebar-nav-link:hover,
     .c-sidebar .c-sidebar-nav-dropdown-toggle:hover {
         color: #fff;
         background: #022639;
     }
+=======
+  .c-sidebar .c-sidebar-nav-link:hover,
+  .c-sidebar .c-sidebar-nav-dropdown-toggle:hover {
+    color: #fff;
+    background: #321fdb;
+  }
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 
     .c-sidebar .c-sidebar-nav-link:hover .c-sidebar-nav-icon,
     .c-sidebar .c-sidebar-nav-dropdown-toggle:hover .c-sidebar-nav-icon {
@@ -13118,10 +13392,15 @@ html:not([dir="rtl"]) .c-sidebar.c-sidebar-show.c-sidebar-right {
 }
 
 .c-sidebar.c-sidebar-minimized .c-sidebar-nav-item:hover > .c-sidebar-nav-link,
+<<<<<<< HEAD
 .c-sidebar.c-sidebar-minimized
     .c-sidebar-nav-item:hover
     > .c-sidebar-nav-dropdown-toggle {
     background: #022639;
+=======
+.c-sidebar.c-sidebar-minimized .c-sidebar-nav-item:hover > .c-sidebar-nav-dropdown-toggle {
+  background: #321fdb;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 .c-sidebar.c-sidebar-minimized
@@ -13135,6 +13414,7 @@ html:not([dir="rtl"]) .c-sidebar.c-sidebar-show.c-sidebar-right {
     color: #fff;
 }
 
+<<<<<<< HEAD
 .c-sidebar.c-sidebar-minimized
     .c-sidebar-nav-item:hover
     > .c-sidebar-nav-link.c-disabled,
@@ -13142,6 +13422,11 @@ html:not([dir="rtl"]) .c-sidebar.c-sidebar-show.c-sidebar-right {
     .c-sidebar-nav-item:hover
     > .c-disabled.c-sidebar-nav-dropdown-toggle {
     background: #022639;
+=======
+.c-sidebar.c-sidebar-minimized .c-sidebar-nav-item:hover > .c-sidebar-nav-link.c-disabled,
+.c-sidebar.c-sidebar-minimized .c-sidebar-nav-item:hover > .c-disabled.c-sidebar-nav-dropdown-toggle {
+  background: #3c4b64;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 .c-sidebar.c-sidebar-minimized
@@ -13163,7 +13448,11 @@ html:not([dir="rtl"]) .c-sidebar.c-sidebar-show.c-sidebar-right {
 }
 
 .c-sidebar.c-sidebar-minimized .c-sidebar-nav > .c-sidebar-nav-dropdown:hover {
+<<<<<<< HEAD
     background: #022639;
+=======
+  background: #321fdb;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 .c-sidebar.c-sidebar-light {
@@ -13192,8 +13481,13 @@ html:not([dir="rtl"]) .c-sidebar.c-sidebar-light.c-sidebar-right {
 }
 
 .c-sidebar.c-sidebar-light .c-sidebar-brand {
+<<<<<<< HEAD
     color: #fff;
     background: #023047;
+=======
+  color: #fff;
+  background: #321fdb;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 .c-sidebar.c-sidebar-light .c-sidebar-header {
@@ -13254,10 +13548,15 @@ html:not([dir="rtl"]) .c-sidebar.c-sidebar-light.c-sidebar-right {
 }
 
 .c-sidebar.c-sidebar-light .c-sidebar-nav-link.c-active .c-sidebar-nav-icon,
+<<<<<<< HEAD
 .c-sidebar.c-sidebar-light
     .c-active.c-sidebar-nav-dropdown-toggle
     .c-sidebar-nav-icon {
     color: #023047;
+=======
+.c-sidebar.c-sidebar-light .c-active.c-sidebar-nav-dropdown-toggle .c-sidebar-nav-icon {
+  color: #321fdb;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 .c-sidebar.c-sidebar-light .c-sidebar-nav-link:focus,
@@ -13266,6 +13565,7 @@ html:not([dir="rtl"]) .c-sidebar.c-sidebar-light.c-sidebar-right {
 }
 
 @media (hover: hover), (-ms-high-contrast: none) {
+<<<<<<< HEAD
     .c-sidebar.c-sidebar-light .c-sidebar-nav-link:hover,
     .c-sidebar.c-sidebar-light .c-sidebar-nav-dropdown-toggle:hover {
         color: #fff;
@@ -13284,6 +13584,23 @@ html:not([dir="rtl"]) .c-sidebar.c-sidebar-light.c-sidebar-right {
     .c-sidebar.c-sidebar-light :hover.c-sidebar-nav-dropdown-toggle::after {
         background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 11 14'%3E%3Cpath fill='%23fff' d='M9.148 2.352l-4.148 4.148 4.148 4.148q0.148 0.148 0.148 0.352t-0.148 0.352l-1.297 1.297q-0.148 0.148-0.352 0.148t-0.352-0.148l-5.797-5.797q-0.148-0.148-0.148-0.352t0.148-0.352l5.797-5.797q0.148-0.148 0.352-0.148t0.352 0.148l1.297 1.297q0.148 0.148 0.148 0.352t-0.148 0.352z'/%3E%3C/svg%3E");
     }
+=======
+  .c-sidebar.c-sidebar-light .c-sidebar-nav-link:hover,
+  .c-sidebar.c-sidebar-light .c-sidebar-nav-dropdown-toggle:hover {
+    color: #fff;
+    background: #321fdb;
+  }
+
+  .c-sidebar.c-sidebar-light .c-sidebar-nav-link:hover .c-sidebar-nav-icon,
+  .c-sidebar.c-sidebar-light .c-sidebar-nav-dropdown-toggle:hover .c-sidebar-nav-icon {
+    color: #fff;
+  }
+
+  .c-sidebar.c-sidebar-light .c-sidebar-nav-link:hover.c-sidebar-nav-dropdown-toggle::after,
+  .c-sidebar.c-sidebar-light :hover.c-sidebar-nav-dropdown-toggle::after {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 11 14'%3E%3Cpath fill='%23fff' d='M9.148 2.352l-4.148 4.148 4.148 4.148q0.148 0.148 0.148 0.352t-0.148 0.352l-1.297 1.297q-0.148 0.148-0.352 0.148t-0.352-0.148l-5.797-5.797q-0.148-0.148-0.148-0.352t0.148-0.352l5.797-5.797q0.148-0.148 0.352-0.148t0.352 0.148l1.297 1.297q0.148 0.148 0.148 0.352t-0.148 0.352z'/%3E%3C/svg%3E");
+  }
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 .c-sidebar.c-sidebar-light .c-sidebar-nav-link.c-disabled,
@@ -13406,6 +13723,7 @@ html:not([dir="rtl"]) .c-sidebar.c-sidebar-light.c-sidebar-right {
     background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 11 14'%3E%3Cpath fill='%23768192' d='M9.148 2.352l-4.148 4.148 4.148 4.148q0.148 0.148 0.148 0.352t-0.148 0.352l-1.297 1.297q-0.148 0.148-0.352 0.148t-0.352-0.148l-5.797-5.797q-0.148-0.148-0.148-0.352t0.148-0.352l5.797-5.797q0.148-0.148 0.352-0.148t0.352 0.148l1.297 1.297q0.148 0.148 0.148 0.352t-0.148 0.352z'/%3E%3C/svg%3E");
 }
 
+<<<<<<< HEAD
 .c-sidebar.c-sidebar-light.c-sidebar-minimized
     .c-sidebar-nav-item:hover
     > .c-sidebar-nav-link,
@@ -13413,6 +13731,11 @@ html:not([dir="rtl"]) .c-sidebar.c-sidebar-light.c-sidebar-right {
     .c-sidebar-nav-item:hover
     > .c-sidebar-nav-dropdown-toggle {
     background: #022639;
+=======
+.c-sidebar.c-sidebar-light.c-sidebar-minimized .c-sidebar-nav-item:hover > .c-sidebar-nav-link,
+.c-sidebar.c-sidebar-light.c-sidebar-minimized .c-sidebar-nav-item:hover > .c-sidebar-nav-dropdown-toggle {
+  background: #321fdb;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 .c-sidebar.c-sidebar-light.c-sidebar-minimized
@@ -13453,15 +13776,24 @@ html:not([dir="rtl"]) .c-sidebar.c-sidebar-light.c-sidebar-right {
     background: #fff;
 }
 
+<<<<<<< HEAD
 .c-sidebar.c-sidebar-light.c-sidebar-minimized
     .c-sidebar-nav
     > .c-sidebar-nav-dropdown:hover {
     background: #023047;
+=======
+.c-sidebar.c-sidebar-light.c-sidebar-minimized .c-sidebar-nav > .c-sidebar-nav-dropdown:hover {
+  background: #321fdb;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 .c-sidebar .c-sidebar-nav-link.c-sidebar-nav-link-primary,
 .c-sidebar .c-sidebar-nav-link-primary.c-sidebar-nav-dropdown-toggle {
+<<<<<<< HEAD
     background: #023047;
+=======
+  background: #321fdb;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 .c-sidebar .c-sidebar-nav-link.c-sidebar-nav-link-primary .c-sidebar-nav-icon,
@@ -14144,8 +14476,13 @@ html:not([dir="rtl"]) .c-switch-label .c-switch-slider::after {
 }
 
 .c-switch-primary .c-switch-input:checked + .c-switch-slider {
+<<<<<<< HEAD
     background-color: #023047;
     border-color: #2819ae;
+=======
+  background-color: #321fdb;
+  border-color: #2819ae;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 .c-switch-primary .c-switch-input:checked + .c-switch-slider::before {
@@ -14153,6 +14490,7 @@ html:not([dir="rtl"]) .c-switch-label .c-switch-slider::after {
 }
 
 .c-switch-3d-primary .c-switch-input:checked + .c-switch-slider {
+<<<<<<< HEAD
     background-color: #023047;
 }
 
@@ -14181,6 +14519,36 @@ html:not([dir="rtl"]) .c-switch-label .c-switch-slider::after {
 
 .c-switch-opposite-primary .c-switch-input:checked + .c-switch-slider::after {
     color: #023047;
+=======
+  background-color: #321fdb;
+}
+
+.c-switch-outline-primary .c-switch-input:checked + .c-switch-slider {
+  background-color: #fff;
+  border-color: #321fdb;
+}
+
+.c-switch-outline-primary .c-switch-input:checked + .c-switch-slider::before {
+  border-color: #321fdb;
+}
+
+.c-switch-outline-primary .c-switch-input:checked + .c-switch-slider::after {
+  color: #321fdb;
+}
+
+.c-switch-opposite-primary .c-switch-input:checked + .c-switch-slider {
+  background-color: #fff;
+  border-color: #321fdb;
+}
+
+.c-switch-opposite-primary .c-switch-input:checked + .c-switch-slider::before {
+  background-color: #321fdb;
+  border-color: #321fdb;
+}
+
+.c-switch-opposite-primary .c-switch-input:checked + .c-switch-slider::after {
+  color: #321fdb;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 .c-switch-secondary .c-switch-input:checked + .c-switch-slider {
@@ -15052,9 +15420,15 @@ html:not([dir="rtl"]) .c-switch-label .c-switch-slider::after {
 }
 
 .toast-primary {
+<<<<<<< HEAD
     color: #fff;
     background-color: #023047;
     border-color: #2819ae;
+=======
+  color: #fff;
+  background-color: #321fdb;
+  border-color: #2819ae;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 .toast-primary .toast-header {
@@ -15662,7 +16036,11 @@ html:not([dir="rtl"]) .list-inline {
 }
 
 .bg-primary {
+<<<<<<< HEAD
     background-color: #023047 !important;
+=======
+  background-color: #321fdb !important;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 a.bg-primary:hover,
@@ -15750,9 +16128,15 @@ button.bg-dark:focus {
 }
 
 .bg-gradient-primary {
+<<<<<<< HEAD
     background: #1f1498 !important;
     background: linear-gradient(45deg, #023047 0%, #1f1498 100%) !important;
     border-color: #1f1498 !important;
+=======
+  background: #1f1498 !important;
+  background: linear-gradient(45deg, #321fdb 0%, #1f1498 100%) !important;
+  border-color: #1f1498 !important;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 .bg-gradient-secondary {
@@ -16147,8 +16531,13 @@ button.bg-gray-900:focus {
 }
 
 .border-primary {
+<<<<<<< HEAD
     border: 1px solid !important;
     border-color: #023047 !important;
+=======
+  border: 1px solid !important;
+  border-color: #321fdb !important;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 .border-secondary {
@@ -22512,7 +22901,11 @@ html:not([dir="rtl"]) .mfe-auto {
 }
 
 .text-primary {
+<<<<<<< HEAD
     color: #023047 !important;
+=======
+  color: #321fdb !important;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 a.text-primary:hover,
@@ -22703,6 +23096,7 @@ body {
 }
 
 .ie-custom-properties {
+<<<<<<< HEAD
     primary: #023047;
     secondary: #ced2d8;
     success: #2eb85c;
@@ -22717,6 +23111,22 @@ body {
     breakpoint-lg: 992px;
     breakpoint-xl: 1200px;
     breakpoint-xxl: 1400px;
+=======
+  primary: #321fdb;
+  secondary: #ced2d8;
+  success: #2eb85c;
+  info: #39f;
+  warning: #f9b115;
+  danger: #e55353;
+  light: #ebedef;
+  dark: #636f83;
+  breakpoint-xs: 0;
+  breakpoint-sm: 576px;
+  breakpoint-md: 768px;
+  breakpoint-lg: 992px;
+  breakpoint-xl: 1200px;
+  breakpoint-xxl: 1400px;
+>>>>>>> c173c2c (Migrations and Supply Inventory)
 }
 
 @media print {
