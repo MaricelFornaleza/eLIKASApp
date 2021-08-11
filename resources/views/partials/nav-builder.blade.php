@@ -78,7 +78,7 @@ if (!function_exists('renderDropdown')) {
             </a>
         </li>
         <li class="c-sidebar-nav-item">
-            <a class="c-sidebar-nav-link" href="#">
+            <a class="c-sidebar-nav-link" href="/evacuation-centers">
                 <svg class="c-sidebar-nav-icon">
                     <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-home"></use>
                 </svg>Evacuation Centers

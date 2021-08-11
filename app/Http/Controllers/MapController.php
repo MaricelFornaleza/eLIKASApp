@@ -14,8 +14,4 @@ class MapController extends Controller
             //return redirect()->route('map');
         } 
     }
-
-    public function getEvacuationCenters() {
-
-    }
 }
