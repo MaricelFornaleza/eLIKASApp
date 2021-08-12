@@ -1,4 +1,4 @@
-@extends('layouts.webBase')
+@extends('layouts.mobileBase')
 
 @section('css')
 
@@ -13,11 +13,11 @@
             <div class="col-lg-8 ">
                 <div class="card">
                     <div class="card-header">
-                        Edit Field Officer
+                        Edit Profile
 
                     </div>
                     <div class="card-body ">
-                        <form method="POST" action="/field_officers/{{$user->id}}" enctype="multipart/form-data">
+                        <form method="POST" action="/profile/{{$user->id}}" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <div class="row">
@@ -91,7 +91,7 @@
                                         <svg class="c-icon mr-2 image-icon " height="50px">
                                             <use xlink:href="{{ url('/icons/sprites/free.svg#cil-image1') }}"></use>
                                         </svg>
-                                        <input class="form-control" type="file" name="photo">
+                                        <input class="form-control" type="file" name="photo" value="{{$user->photo}}">
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">

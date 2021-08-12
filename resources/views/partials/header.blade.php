@@ -21,21 +21,25 @@
 </div>
 </a>
 <div class="dropdown-menu dropdown-menu-right pt-0">
-    <div class="dropdown-header bg-light py-2"><strong>Account</strong></div><a class="dropdown-item" href="#">
-
-        <svg class="c-icon mr-2">
-            <use xlink:href="{{ url('/icons/sprites/free.svg#cil-user') }}"></use>
-        </svg> Profile</a><a class="dropdown-item" href="#">
-        <svg class="c-icon mr-2">
-            <use xlink:href="{{ url('/icons/sprites/free.svg#cil-settings') }}"></use>
-        </svg> Settings</a><a class="dropdown-item" href="#">
-
-
-        <svg class="c-icon mr-2">
-            <use xlink:href="{{ url('/icons/sprites/free.svg#cil-account-logout') }}"></use>
-        </svg>
-        <form action="{{ url('/logout') }}" method="POST"> @csrf <button type="submit" class="btn btn-ghost-dark btn-block">Logout</button></form>
-    </a>
+    <div class="dropdown-header bg-light py-2"><strong>Account</strong></div>
+    
+        <a class="dropdown-item" href="/profile">
+            <svg class="c-icon mr-2">
+                <use xlink:href="{{ url('/icons/sprites/free.svg#cil-user') }}"></use>
+            </svg> Profile
+        </a>
+        <a class="dropdown-item" href="">
+            <svg class="c-icon mr-2">
+                <use xlink:href="{{ url('/icons/sprites/free.svg#cil-settings') }}"></use>
+            </svg> Settings
+        </a>
+        
+        <a class="dropdown-item" href="#">
+            <svg class="c-icon mr-2">
+                <use xlink:href="{{ url('/icons/sprites/free.svg#cil-account-logout') }}"></use>
+            </svg>
+            <form action="{{ url('/logout') }}" method="POST"> @csrf <button type="submit" class="btn btn-ghost-dark btn-block">Logout</button></form>
+        </a>
 </div>
 </li>
 </ul>

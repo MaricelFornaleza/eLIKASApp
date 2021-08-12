@@ -3,25 +3,31 @@
 
         <ul class="c-header-nav mr-auto ml-4">
 
-            <li class="c-header-nav-item dropdown"><a class="c-header-nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    <div class="c-mobile-brand"><img class="c-header-brand" src="{{ url('/assets/brand/Logo-icon-white.svg') }}" height="30px" alt="eLIKAS Logo">
+            <li class="c-header-nav-item dropdown"><a class="c-header-nav-link" data-toggle="dropdown" href="#"
+                    role="button" aria-haspopup="true" aria-expanded="false">
+                    <div class="c-mobile-brand"><img class="c-header-brand"
+                            src="{{ url('/assets/brand/Logo-icon-white.svg') }}" height="30px" alt="eLIKAS Logo">
                     </div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-left pt-0">
-                    <div class="dropdown-header bg-light py-2"><strong>Account</strong></div><a class="dropdown-item" href="#">
-
+                    <div class="dropdown-header bg-light py-2"><strong>Account</strong></div>
+                    <a class="dropdown-item" href="/profile">
                         <svg class="c-icon mr-2">
                             <use xlink:href="{{ url('/icons/sprites/free.svg#cil-user') }}"></use>
-                        </svg> Profile</a><a class="dropdown-item" href="#">
+                        </svg> Profile
+                    </a>
+                    <a class="dropdown-item" href="#">
                         <svg class="c-icon mr-2">
                             <use xlink:href="{{ url('/icons/sprites/free.svg#cil-settings') }}"></use>
-                        </svg> Settings</a><a class="dropdown-item" href="#">
+                        </svg> Settings</a>
+                    <a class="dropdown-item" href="#">
 
 
                         <svg class="c-icon mr-2">
                             <use xlink:href="{{ url('/icons/sprites/free.svg#cil-account-logout') }}"></use>
                         </svg>
-                        <form action="{{ url('/logout') }}" method="POST"> @csrf <button type="submit" class="btn btn-ghost-dark btn-block">Logout</button></form>
+                        <form action="{{ url('/logout') }}" method="POST"> @csrf <button type="submit"
+                                class="btn btn-ghost-dark btn-block">Logout</button></form>
                     </a>
                 </div>
             </li>
@@ -40,7 +46,8 @@
         ?>
         <ul class="c-header-nav ml-auto mr-4">
 
-            <li class="c-header-nav-item "><a class="c-header-nav-link" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+            <li class="c-header-nav-item "><a class="c-header-nav-link" href="#" role="button" aria-haspopup="true"
+                    aria-expanded="false">
 
                     <svg class="c-header-nav-icon c-icon mr-2">
                         <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-chat-bubble"></use>

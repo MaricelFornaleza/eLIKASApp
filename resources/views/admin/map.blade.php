@@ -74,7 +74,7 @@
 @endsection
 
 @section('javascript')
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 {{-- <script src="{{ asset('js/map-js/evacuation-centers/markers-evacuationCenters.js') }}"></script>
 <script src="{{ asset('js/map-js/couriers/markers-Couriers.js') }}"></script> --}}
 

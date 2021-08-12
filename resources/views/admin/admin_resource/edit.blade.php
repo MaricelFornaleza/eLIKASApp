@@ -13,11 +13,11 @@
             <div class="col-lg-8 ">
                 <div class="card">
                     <div class="card-header">
-                        Edit Field Officer
+                        Edit Profile
 
                     </div>
                     <div class="card-body ">
-                        <form method="POST" action="/field_officers/{{$user->id}}" enctype="multipart/form-data">
+                        <form method="POST" action="/profile/{{$user->id}}" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <div class="row">
@@ -51,38 +51,18 @@
                                         @endforeach
                                     </div>
                                 </div>
-                                <div class="form-group col-sm-6">
-                                    <label for="officer_type">Officer Type</label>
-                                    <select name="officer_type" class="form-control" id="officer_type"
-                                        onChange="update()">
-                                        <option value="barangay_captain">Barangay Captain</option>
-                                        <option value="camp_manager">Camp Manager</option>
-                                        <option value="courier">Courier</option>
-
-                                    </select>
-
-                                </div>
                             </div>
                             <!-- /.row-->
-                            <div class="row" id='barangay'>
+                            <div class="row" id='branch'>
                                 <div class="col-sm-12">
                                     <div class="form-group">
-                                        <label for="barangay">Barangay</label>
-                                        <input class="form-control" value="{{ $user->barangay }}"
-                                            autocomplete="barangay" id="barangay" name="barangay" type="text">
+                                        <label for="branch">Branch</label>
+                                        <input class="form-control" value="{{ $user->branch }}" autocomplete="branch"
+                                            id="branch" name="branch" type="text">
                                     </div>
                                 </div>
                             </div>
-                            <!-- /.row-->
-                            <div class="row" id='designation' style="display: none;">
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <label for="designation">Designation</label>
-                                        <input class="form-control" value="{{ $user->designation }}"
-                                            autocomplete="designation" id="designation" name="designation" type="text">
-                                    </div>
-                                </div>
-                            </div>
+
                             <!-- /.row-->
                             <div class="form-group">
                                 <label for="photo">Upload your Profile Picture</label>

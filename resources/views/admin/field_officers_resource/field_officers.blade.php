@@ -25,6 +25,21 @@
             </div>
         </div>
         <div class="row">
+            @if(count($errors) > 0)
+            <div class="alert alert-danger">
+                <h6>
+                    Upload Validation error
+                </h6>
+                <ul>
+                    @foreach($errors as $error)
+                    <li>{{$error}}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+
+        </div>
+        <div class="row">
             <div class="col-12">
                 @if(Session::has('message'))
                 <div class="alert alert-success">{{ Session::get('message') }}</div>
@@ -38,7 +53,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="row">
-                            <div class=" ml-auto ">
+                            <div class=" mr-auto ">
                                 <a href="{{ url('/field_officers/create') }}">
                                     <button class="btn btn-secondary secondary-button">
                                         Add Field Officer
@@ -46,17 +61,24 @@
                                 </a>
 
                             </div>
-                            <div class="ml-4 mr-4">
-                                <button class="btn btn-outline-primary">
-                                    Upload Excel File
-                                </button>
-                            </div>
+                            <form action="post" enctype="multipart/form-data" action="#">
+                                @csrf
+                                <div class="ml-4 mr-4">
+
+                                    <input type="file" name="select_file">
+
+                                    <input type="submit" name="upload" class="btn btn-outline-primary" value="Upload">
+                                    </input>
+                                </div>
+                            </form>
+
                         </div>
 
                     </div>
                     <div class="card-body ">
                         <div style="overflow-x:auto !important;" class="table-responsive">
-                            <table id="fieldOfficers" class="table table-borderless table-hover table-light table-striped ">
+                            <table id="fieldOfficers"
+                                class="table table-borderless table-hover table-light table-striped ">
                                 <thead>
                                     <tr>
                                         <th>PHOTO</th>
@@ -76,7 +98,9 @@
                                     @foreach($field_officers as $field_officer)
 
                                     <tr>
-                                        <td>{{ $field_officer -> photo }}</td>
+                                        <td><img class="image rounded-circle"
+                                                src="{{asset('/public/images/'.$field_officer -> photo)}}"
+                                                alt="profile_image" style="width: 60px;height: 60px;"></td>
                                         <td>{{ $field_officer -> name }}</td>
                                         <td>{{ $field_officer -> type}}</td>
                                         <td>{{ $field_officer -> email }}</td>
@@ -89,8 +113,11 @@
                                         <td>
                                             <div class="row">
                                                 <div class="col-6 ">
-                                                    <a href="/field_officers/{{$field_officer->id}}/edit"><svg class="c-icon ">
-                                                            <use xlink:href="{{ url('/icons/sprites/free.svg#cil-pencil') }}"></use>
+                                                    <a href="/field_officers/{{$field_officer->id}}/edit"><svg
+                                                            class="c-icon ">
+                                                            <use
+                                                                xlink:href="{{ url('/icons/sprites/free.svg#cil-pencil') }}">
+                                                            </use>
                                                         </svg>
                                                     </a>
 
@@ -100,9 +127,13 @@
                                                     <form action="/field_officers/{{$field_officer->id}}" method="post">
                                                         @csrf
                                                         @method("DELETE")
-                                                        <button type="submit" value="Delete" name="submit" class=" btn-borderless" onclick="return confirm('Are you sure to delete?')">
+                                                        <button type="submit" value="Delete" name="submit"
+                                                            class=" btn-borderless"
+                                                            onclick="return confirm('Are you sure to delete?')">
                                                             <svg class="c-icon ">
-                                                                <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-delete"></use>
+                                                                <use
+                                                                    xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-delete">
+                                                                </use>
                                                             </svg>
                                                         </button>
 
@@ -135,10 +166,10 @@
 @section('javascript')
 <script src="//cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
 <script>
-    $(document).ready(function() {
-        $('#fieldOfficers').DataTable({
-            fixedColumns: true,
-        });
+$(document).ready(function() {
+    $('#fieldOfficers').DataTable({
+        fixedColumns: true,
     });
+});
 </script>
 @endsection
