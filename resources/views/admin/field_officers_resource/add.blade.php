@@ -23,7 +23,13 @@
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <label for="name">Name</label>
-                                        <input class="form-control @error('name') is-invalid @enderror" required id="name" name="name" type="text" placeholder="Enter your name">
+                                        <input class="form-control @error('name') is-invalid @enderror" required
+                                            id="name" name="name" type="text" placeholder="Enter your name">
+                                        @error('name')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -32,7 +38,13 @@
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <label for="email">Email Address</label>
-                                        <input class="form-control @error('email') is-invalid @enderror" required id="email" name="email" type="email" placeholder="yourname@gmail.com">
+                                        <input class="form-control @error('email') is-invalid @enderror" required
+                                            id="email" name="email" type="email" placeholder="yourname@gmail.com">
+                                        @error('email')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -41,12 +53,20 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="contact_no">Contact Number</label>
-                                        <input class="form-control @error('contact_no') is-invalid @enderror" required id="contact_no" name="contact_no" type="number" placeholder="e.g. 09xxxxxxxxx">
+                                        <input class="form-control @error('contact_no') is-invalid @enderror" required
+                                            id="contact_no" name="contact_no" type="number"
+                                            placeholder="e.g. 09xxxxxxxxx">
+                                        @error('contact_no')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label for="officer_type">Officer Type</label>
-                                    <select name="officer_type" class="form-control" id="officer_type" onChange="update()">
+                                    <select name="officer_type" class="form-control" id="officer_type"
+                                        onChange="update()">
                                         <option value="barangay_captain">Barangay Captain</option>
                                         <option value="camp_manager">Camp Manager</option>
                                         <option value="courier">Courier</option>
@@ -60,7 +80,8 @@
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <label for="barangay">Barangay</label>
-                                        <input class="form-control" id="barangay" name="barangay" type="text" placeholder="Enter your Barangay">
+                                        <input class="form-control" id="barangay" name="barangay" type="text"
+                                            placeholder="Enter your Barangay">
                                     </div>
                                 </div>
                             </div>
@@ -69,7 +90,8 @@
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <label for="designation">Designation</label>
-                                        <input class="form-control" id="designation" name="designation" type="text" placeholder="Enter your Designation">
+                                        <input class="form-control" id="designation" name="designation" type="text"
+                                            placeholder="Enter your Designation">
                                     </div>
                                 </div>
                             </div>
@@ -85,14 +107,20 @@
 
                                 </div>
 
-                                <input class="form-control" type="file" name="photo" required>
+                                <input class="form-control" type="file" name="photo">
+                                @error('photo')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
                             </div>
                             <div class="row mt-5 center">
                                 <div class="col-4 ">
                                     <button class="btn btn-primary px-4 " type="submit">{{ __('Add') }}</button>
                                 </div>
                                 <div class="col-4 ">
-                                    <button class="btn btn-primary px-4 " type="submit">{{ __('Cancel') }}</button>
+                                    <button class="btn btn-outline-primary px-4 "
+                                        type="cancel">{{ __('Cancel') }}</button>
                                 </div>
                             </div>
                         </form>
@@ -110,15 +138,15 @@
 
 @section('javascript')
 <script type="text/javascript">
-    function update() {
-        var select = document.getElementById('officer_type');
-        if (select.value == 'barangay_captain') {
-            document.getElementById('barangay').style.display = "block";
-            document.getElementById('designation').style.display = "none";
-        } else {
-            document.getElementById('barangay').style.display = "none";
-            document.getElementById('designation').style.display = "block";
-        }
+function update() {
+    var select = document.getElementById('officer_type');
+    if (select.value == 'barangay_captain') {
+        document.getElementById('barangay').style.display = "block";
+        document.getElementById('designation').style.display = "none";
+    } else {
+        document.getElementById('barangay').style.display = "none";
+        document.getElementById('designation').style.display = "block";
     }
+}
 </script>
 @endsection

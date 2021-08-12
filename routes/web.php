@@ -11,10 +11,16 @@
 |
 */
 
-use App\Http\Controllers\FieldOfficerController;
+use App\Models\User;
+
 
 Route::get('/', function () {
-    return view('auth.login');
+    $count = User::count();
+    if ($count == 0) {
+        return view('auth.register');
+    } else {
+        return view('auth.login');
+    }
 });
 Auth::routes();
 
@@ -23,6 +29,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/home', 'HomeController@index')->name('home');
 });
 
-
-
 Route::resource('/field_officers', 'FieldOfficerController');
+Route::resource('/profile', 'ProfileController');
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/chat', 'ChatController@index')->name('chat');
+    Route::get('/chat/{id}', 'ChatController@getMessage');
+});

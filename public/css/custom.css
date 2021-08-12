@@ -1,88 +1,112 @@
 body {
-  background-color: #f4f7fc !important;
-  font-family: 'Poppins' !important;
+    background-color: #f4f7fc !important;
+    font-family: "Poppins" !important;
 }
 .btn-borderless {
-  border: none !important;
-  padding: none !important;
-  margin: none !important;
-  color: #3c4b64 !important;
-  background-color: transparent !important;
+    border: none !important;
+    padding: none !important;
+    margin: none !important;
+    color: #3c4b64 !important;
+    background-color: transparent !important;
 }
 .btn-borderless:focus {
-  outline: none !important;
+    outline: none !important;
 }
 .btn-primary {
-  background-color: #023047 !important;
-  width: 100%;
+    background-color: #023047 !important;
+    width: 100%;
+}
+.btn-register {
+    background-color: #fb8500 !important;
+    width: 100%;
+    border: none !important;
+    color: white !important;
+}
+.btn-border {
+    background-color: transparent !important;
+    border: 1px solid var(--primary);
 }
 
 .c-app {
-  --primary: #023047 !important;
-  --secondary: #fb8500 !important;
-  color: #3c4b64;
-  --color: #3c4b64;
+    --primary: #023047 !important;
+    --secondary: #fb8500 !important;
+    color: #3c4b64;
+    --color: #3c4b64;
 }
 .c-header-brand {
-  min-height: 20px !important;
+    min-height: 20px !important;
 }
 .c-header-nav-icon {
-  color: white !important;
+    color: white !important;
 }
 
 .c-sidebar-brand,
 .c-sidebar-nav-item:hover,
 .c-sidebar-minimizer {
-  background-color: #022639 !important;
+    background-color: #022639 !important;
 }
 .c-sidebar-minimized .sidebar-date {
-  display: none;
+    display: none;
 }
 .c-sidebar-nav {
-  background-color: #023047 !important;
+    background-color: #023047 !important;
 }
 
 .center {
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
 }
 .export-btn {
-  color: #65c295;
+    color: #65c295;
 }
 .form-control {
-  border: none !important;
-  color: rgba(2, 48, 71, 0.5) !important;
-  background-color: #f4f7fc !important;
-  border-color: #fff !important;
+    border: none !important;
+    color: rgba(2, 48, 71, 0.5) !important;
+    background-color: #f4f7fc !important;
+    border-color: #fff !important;
 }
 .form-control:focus {
-  color: #768192;
-  background-color: #fff;
-  border-color: #219ebc !important;
-  outline: 0;
-  box-shadow: 0 0 0 0.2rem rgba(31, 191, 219, 0.25) !important;
+    color: #768192;
+    background-color: #fff;
+    border-color: #219ebc !important;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(31, 191, 219, 0.25) !important;
+}
+.image {
+    width: 150px;
+    height: 150px;
+}
+@media (max-width: 575.98px) {
+    .image {
+        width: 75px;
+        height: 75px;
+    }
 }
 .image-icon {
-  max-height: 50px !important;
-  height: 50px !important;
-  font-size: 50px !important;
+    max-height: 50px !important;
+    height: 50px !important;
+    font-size: 50px !important;
 }
 .mobile-header {
-  background-color: #023047 !important;
+    background-color: #023047 !important;
+}
+.register {
+    font-weight: 800 !important;
+    color: #fb8500 !important;
 }
 .secondary-button {
-  background-color: #219ebc !important;
-  color: white !important;
-  border: none !important;
+    background-color: #219ebc !important;
+    color: white !important;
+    border: none !important;
 }
 .sidebar-date {
-  text-align: center;
-  background-color: #023047 !important;
-  padding-top: 2rem;
-  padding-bottom: 2rem;
+    text-align: center;
+    background-color: #023047 !important;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 }
 .title {
-  font-weight: 800 !important;
-  color: #023047 !important;
+    font-weight: 800 !important;
+    color: #023047 !important;
 }

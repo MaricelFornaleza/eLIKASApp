@@ -1,0 +1,104 @@
+ul {
+    margin: 0;
+    padding: 0;
+}
+li {
+    list-style: none;
+}
+
+.user-wrapper,
+.message-wrapper {
+    border: 1px solid white;
+    overflow-y: auto;
+}
+.user-wrapper {
+    background-color: white;
+    height: 80vh;
+}
+.user {
+    cursor: pointer;
+    padding: 5px 0;
+    position: relative;
+}
+.user:hover {
+    background-color: #f4f7fc;
+}
+.user:last-child {
+    margin-bottom: 0;
+}
+.pending {
+    position: absolute;
+    left: 10px;
+    top: 9px;
+    background-color: #fb8500;
+    margin: 0;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    line-height: 15px;
+    text-align: center;
+    color: white;
+    font-size: 12px;
+}
+.media-left {
+    margin: 0 10px;
+}
+.media-left img {
+    width: 55px;
+    height: 55px;
+    border-radius: 55px;
+}
+.media-body p {
+    margin: 6px 0;
+}
+.message-wrapper {
+    padding: 10px;
+    border: none !important;
+    height: 75vh;
+}
+.messages .message {
+    margin-bottom: 15px;
+}
+.messages .message:last-child {
+    margin-bottom: 0;
+}
+.received,
+.sent {
+    max-width: 45%;
+    padding: 3px 10px;
+    border-radius: 10px;
+}
+.received {
+    background-color: white;
+    float: left;
+}
+.sent {
+    background-color: #023047;
+    color: white;
+    float: right;
+    text-align: right;
+}
+.message p {
+    margin: 5px 0;
+}
+.date {
+    color: slategrey;
+    font-size: 10px;
+}
+.active {
+    background-color: #f4f7fc;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 15px 0 0 0;
+    display: inline-block;
+    border-radius: 4px;
+    box-sizing: border-box;
+    outline: none;
+    border: 1px solid #ccc;
+}
+input[type="text"]:focus {
+    border: 1px solid #023047;
+}

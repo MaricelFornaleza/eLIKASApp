@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Contact;
-use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
-use Excel;
 
-class FieldOfficerController extends Controller
+class ProfileController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,16 +17,21 @@ class FieldOfficerController extends Controller
      */
     public function index()
     {
-        $field_officers = User::whereRoleIs(['camp_manager', 'barangay_captain', 'courier'])
-            ->join('role_user', 'role_user.user_id', '=', 'users.id')
+        $id = Auth::id();
+        $user = User::join('role_user', 'role_user.user_id', '=', 'users.id')
             ->join('roles', function ($join) {
                 $join->on('role_user.role_id', '=', 'roles.id');
             })
             ->select('users.*', 'roles.display_name as type')
-            ->get();
-        return view('admin.field_officers_resource.field_officers')->with('field_officers', $field_officers);
-        // return dd($field_officers);
+            ->where('users.id', '=', $id)
+            ->first();
 
+        if (Auth::user()->hasRole('admin')) {
+            return view('admin.admin_resource.profile')->with("user", $user);
+        } else {
+            return view('common.profile.profile')->with("user", $user);
+        }
+        // dd($user);
     }
 
     /**
@@ -37,7 +41,7 @@ class FieldOfficerController extends Controller
      */
     public function create()
     {
-        return view('admin.field_officers_resource.add');
+        //
     }
 
     /**
@@ -48,28 +52,7 @@ class FieldOfficerController extends Controller
      */
     public function store(Request $request)
     {
-
-        if ($request->hasFile('photo')) {
-            $filename = $request->photo->getClientOriginalName();
-            $request->photo->storeAs('images', $filename, 'public');
-        } else {
-            $filename = "Avatar-default.png";
-        }
-        $user =  User::create([
-            'name' => $request['name'],
-            'photo' => $filename,
-            'email' => $request['email'],
-            'barangay' => $request['barangay'],
-            'designation' => $request['designation'],
-        ]);
-        $user->attachRole($request['officer_type']);
-        $contact = Contact::create([
-            'user_id' => $user->id,
-            'contact_no' => $request['contact_no']
-        ]);
-
-        Session::flash('message', 'Field Officer added successfully!');
-        return redirect('field_officers');
+        //
     }
 
     /**
@@ -92,7 +75,11 @@ class FieldOfficerController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
-        return view('admin.field_officers_resource.edit')->with("user", $user);
+        if (Auth::user()->hasRole('admin')) {
+            return view('admin.admin_resource.edit')->with("user", $user);
+        } else {
+            return view('common.profile.edit')->with("user", $user);
+        }
     }
 
     /**
@@ -111,16 +98,18 @@ class FieldOfficerController extends Controller
         } else {
             $filename = $user->photo;
         }
+
         $user->name = $request->name;
         $user->email = $request->email;
         $user->user_contacts()->contact_no = $request->contact_no;
+        $user->branch = $request->branch;
         $user->barangay = $request->barangay;
         $user->designation = $request->designation;
         $user->photo = $filename;
-        $user->password = $request->password;
+        $user->password = Hash::make($request['password']);
         $user->save();
-        Session::flash('message', 'Field Officer updated successfully!');
-        return redirect('field_officers');
+        Session::flash('message', 'Profile updated successfully!');
+        return redirect('profile');
     }
 
     /**
@@ -131,10 +120,6 @@ class FieldOfficerController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::find($id);
-        $user->user_contacts()->delete();
-        $user->delete();
-        Session::flash('message', 'Field Officer deleted successfully!');
-        return redirect('/field_officers');
+        //
     }
 }
