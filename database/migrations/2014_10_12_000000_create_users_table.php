@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('photo')->default('Avatar-default.png');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password')->default('password');
+            $table->string('password');
             $table->string('branch')->nullable();
             $table->string('barangay')->nullable();
             $table->string('designation')->nullable();

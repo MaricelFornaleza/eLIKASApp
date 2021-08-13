@@ -61,6 +61,7 @@ class FieldOfficerController extends Controller
             'email' => $request['email'],
             'barangay' => $request['barangay'],
             'designation' => $request['designation'],
+            'password' => Hash::make('password'),
         ]);
         $user->attachRole($request['officer_type']);
         $contact = Contact::create([
@@ -117,7 +118,7 @@ class FieldOfficerController extends Controller
         $user->barangay = $request->barangay;
         $user->designation = $request->designation;
         $user->photo = $filename;
-        $user->password = $request->password;
+        $user->password = Hash::make($request->password);
         $user->save();
         Session::flash('message', 'Field Officer updated successfully!');
         return redirect('field_officers');

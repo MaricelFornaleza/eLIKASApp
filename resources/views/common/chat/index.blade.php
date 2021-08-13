@@ -12,6 +12,7 @@
 
     </ul>
 </div>
+
 <div class="input-text">
     <input type="text" name="message" class="submit">
 </div>

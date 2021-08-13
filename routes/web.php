@@ -44,4 +44,5 @@ Route::resource('/profile', 'ProfileController');
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/chat', 'ChatController@index')->name('chat');
     Route::get('/chat/{id}', 'ChatController@getMessage');
+    Route::post('chat', 'ChatController@sendMessage');
 });
