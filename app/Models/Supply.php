@@ -11,6 +11,10 @@ class Supply extends Model
     protected $table = 'supplies';
 
     // protected $fillable = [
-    //     'user_id', 'supply_type', 'quantity', 'source'
+    //     'inventory_id', 'supply_type', 'quantity', 'source'
     // ];
+
+    public function supply(){
+        return $this->belongsTo('App\Models\Inventory','inventory_id');
+    }
 }

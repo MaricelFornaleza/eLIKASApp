@@ -8,6 +8,8 @@ use Faker\Factory as Faker;
 use Illuminate\Support\Str;
 use App\Models\User;
 use App\Models\Contact;
+use App\Models\Inventory;
+use App\Models\Supply;
 use Illuminate\Support\Facades\DB;
 
 class UsersSeeder extends Seeder
@@ -32,7 +34,7 @@ class UsersSeeder extends Seeder
                 'email' => 'admin@admin.com',
                 'email_verified_at' => now(),
                 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-                'branch' => $faker->address,
+                'branch' => 'San Felipe',
                 'remember_token' => Str::random(10),
 
             ]
@@ -102,6 +104,28 @@ class UsersSeeder extends Seeder
                     'user_id' => '4',
                     'contact_no' => '09333333333',
                 ],
+            ]
+
+        );
+
+        $inventory = Inventory::insert(
+            [
+                [
+                    'user_id' => '1',
+                    'name' => 'San Felipe Inventory',
+                ]
+            ]
+
+        );
+
+        $supply = Supply::insert(
+            [
+                [
+                    'inventory_id' => '1',
+                    'supply_type' => 'Water',
+                    'quantity' => '10',
+                    'source' => 'Donation'
+                ]
             ]
 
         );

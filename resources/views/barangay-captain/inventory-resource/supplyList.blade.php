@@ -24,7 +24,7 @@
                           </tr>
                         </thead>
                         <tbody>
-                          @foreach($supplies as $supply)
+                          @foreach($inventory_supplies as $supply)
                             <tr>
                               <td>{{ $supply->created_at }}</td>
                               <td>{{ $supply->supply_type }}</td>
@@ -45,7 +45,7 @@
                           @endforeach
                         </tbody>
                       </table>
-                      {{ $supplies->links() }}
+               
                     </div>
                 </div>
               </div>

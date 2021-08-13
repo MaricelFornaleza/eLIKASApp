@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Inventory;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class InventoryController extends Controller
@@ -14,7 +17,12 @@ class InventoryController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+
+        $user_inventory = User::find($user->id)->user_inventory;
+        $inventory_supplies = Inventory::paginate(15)->find($user_inventory->id)->inventory_supplies;
+        //dd($inventory_supplies);
+  return view('barangay-captain.inventory-resource.supplyList', ['inventory_supplies' => $inventory_supplies]);
     }
 
     /**

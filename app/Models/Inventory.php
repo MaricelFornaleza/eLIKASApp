@@ -17,4 +17,9 @@ class Inventory extends Model
     public function inventory(){
         return $this->belongsTo('App\Models\User','user_id');
     }
+
+    function inventory_supplies()
+    {
+        return $this->hasMany('App\Models\Supply');
+    }
 }

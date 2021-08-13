@@ -66,7 +66,7 @@
                           
  
                             <button class="btn  btn-warning" type="submit">{{ __('Save') }}</button>
-                            <a href="{{ route('supplies.index') }}" class="btn btn-outline-secondary">{{ __('Back') }}</a> 
+                            <a href="{{ route('inventory.index') }}" class="btn btn-outline-secondary">{{ __('Back') }}</a> 
                         </form>
                     </div>
                 </div>
