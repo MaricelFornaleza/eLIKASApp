@@ -1,4 +1,4 @@
-@extends('layouts.webBase')
+@extends('layouts.mobileBase')
 
 @section('css')
 <link href="{{ asset('css/chat.css') }}" rel="stylesheet">
@@ -89,7 +89,6 @@ $(document).ready(function() {
     $('.user').click(function() {
         $('.user').removeClass('active');
         $(this).addClass('active');
-        $(this).find('.pending').remove()
         recipient = $(this).attr('id');
         $.ajax({
             type: "get",
@@ -115,7 +114,6 @@ $(document).ready(function() {
                 data: datastr,
                 cache: false,
                 success: function(data) {
-
 
                 },
                 error: function(jqXHR, status, err) {

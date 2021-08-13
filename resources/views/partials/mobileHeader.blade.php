@@ -46,7 +46,7 @@
         ?>
         <ul class="c-header-nav ml-auto mr-4">
 
-            <li class="c-header-nav-item "><a class="c-header-nav-link" href="#" role="button" aria-haspopup="true"
+            <li class="c-header-nav-item "><a class="c-header-nav-link" href="/chat" role="button" aria-haspopup="true"
                     aria-expanded="false">
 
                     <svg class="c-header-nav-icon c-icon mr-2">

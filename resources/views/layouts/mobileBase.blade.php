@@ -6,6 +6,8 @@
     <base href="./">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <meta name="description" content="eLIKAS: An Emergency Resource Management System">
     <meta name="author" content="Maricel Fornaleza, Renier Jay Managaoang, Severino Sarate III">
@@ -18,6 +20,11 @@
     <!-- Main styles for this application-->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <!-- Pusher -->
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 
 
     @yield('css')
@@ -57,7 +64,9 @@
     <!-- CoreUI and necessary plugins-->
     <script src="{{ asset('js/coreui.bundle.min.js') }}"></script>
     <script src="{{ asset('js/coreui-utils.js') }}"></script>
-    @stack('javascript')
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+
+    @yield('javascript')
 
 
 
