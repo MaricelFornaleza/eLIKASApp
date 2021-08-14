@@ -42,10 +42,10 @@ class SupplyController extends Controller
         //
         $user = Auth::user();
 
-        $user_inventory_id = User::find($user->id)->user_inventory->id;
+        $user_inventory = User::find($user->id)->user_inventory;
 
         $supply = new Supply();
-        $supply->inventory_id     = $user_inventory_id;
+        $supply->inventory_id     = $user_inventory->id;
         $supply->supply_type   = $request->input('supply_type');
         $supply->quantity = $request->input('quantity');
         $supply->source = $request->input('source');
@@ -88,9 +88,9 @@ class SupplyController extends Controller
     {
         $user = Auth::user();
 
-        $user_inventory_id = User::find($user->id)->user_inventory->id;
+        $user_inventory = User::find($user->id)->user_inventory;
         
-        $supply->inventory_id     = $user_inventory_id;
+        $supply->inventory_id     = $user_inventory->id;
         $supply->supply_type   = $request->input('supply_type');
         $supply->quantity = $request->input('quantity');
         $supply->source = $request->input('source');
