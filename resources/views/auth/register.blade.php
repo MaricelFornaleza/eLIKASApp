@@ -2,6 +2,7 @@
 
 @section('content')
 
+@if(Route::has('count'))
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-4">
@@ -88,6 +89,10 @@
         </div>
     </div>
 </div>
+@else
+@include('errors.registration_error')
+
+@endif
 
 @endsection
 

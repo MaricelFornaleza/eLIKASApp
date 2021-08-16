@@ -22,6 +22,11 @@ Route::get('/', function () {
         return view('auth.login');
     }
 });
+Route::auth('/register', function () {
+    $count = User::count();
+    return view('auth.register')->with('count', $count);
+});
+
 Auth::routes();
 
 
