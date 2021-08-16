@@ -13,6 +13,9 @@
 
 use App\Models\User;
 
+use App\Http\Controllers\FieldOfficerController;
+use App\Http\Controllers\SupplyController;
+use App\Http\Controllers\InventoryController;
 
 Route::get('/', function () {
     $count = User::count();
@@ -36,3 +39,5 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/chat/{id}', 'ChatController@getMessage');
     Route::post('chat', 'ChatController@sendMessage');
 });
+Route::resource('supplies', 'SupplyController');
+Route::resource('inventory', 'InventoryController');

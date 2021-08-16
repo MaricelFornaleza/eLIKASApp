@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contact;
+use App\Models\Inventory;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -48,7 +49,6 @@ class FieldOfficerController extends Controller
      */
     public function store(Request $request)
     {
-
         if ($request->hasFile('photo')) {
             $filename = $request->photo->getClientOriginalName();
             $request->photo->storeAs('images', $filename, 'public');
@@ -68,6 +68,15 @@ class FieldOfficerController extends Controller
             'user_id' => $user->id,
             'contact_no' => $request['contact_no']
         ]);
+
+        if ($user->hasRole('barangay_captain')) {
+            $inventory = Inventory::create([
+                'user_id' => $user->id,
+                'name' => $user->barangay . ' Inventory'
+            ]);
+        }
+        // $bc = User::find($user->id)->user_inventory->name;
+        // dd($bc);
 
         Session::flash('message', 'Field Officer added successfully!');
         return redirect('field_officers');
