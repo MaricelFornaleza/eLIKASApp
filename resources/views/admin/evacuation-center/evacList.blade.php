@@ -4,11 +4,18 @@
         <div class="container-fluid">
           <div class="animated fadeIn">
             <div class="row">
+              <div class="col-12">
+                  @if(Session::has('message'))
+                  <div class="alert alert-success">{{ Session::get('message') }}</div>
+                  @endif
+              </div>
+          </div>
+            <div class="row">
               <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                 <div class="card">
                     <div class="card-body">
                         <div class="row justify-content-end"> 
-                        <a href="{{ route('evac.create') }}" class="btn btn-info m-2">{{ __('Add Evacuation Center') }}</a>
+                        <a href="{{ route('evacuation-center.create') }}" class="btn btn-info m-2">{{ __('Add Evacuation Center') }}</a>
                         </div>
                         <br>
                         <table class="table table-responsive table-striped ">
@@ -17,7 +24,7 @@
                             <th>NAME</th>
                             <th>ADDRESS</th>
                             <th>CHARACTERISTICS</th>
-                            <th>MANAGER</th>
+                            <th>CAMP MANAGER</th>
                             <th>TOTAL CAPACITY</th>
                             <th>EVACUEES</th>
                             <th>MALE</th>
@@ -39,7 +46,11 @@
                               <td>{{ $evacuation_center->name }}</td>
                               <td>{{ $evacuation_center->address }}</td>
                               <td>{{ $evacuation_center->characteristics }}</td>
-                              <td></td>
+                              @if($evacuation_center->camp_manager_name == "")
+                                <td class="text-danger"><strong>{{ __('None') }}</strong></td>
+                              @else
+                                <td>{{ $evacuation_center->camp_manager_name }}</td>
+                              @endif
                               <td>{{ $evacuation_center->capacity }}</td>
                               <td></td>
                               <td></td>
@@ -51,14 +62,10 @@
                               <td></td>
                               <td></td>
                               <td>
-                                <a  href="{{ evac.edit }}" class="btn btn-light"> <i class="cil-pencil"></i></a>
+                                <a  href="{{ route('evacuation-center.edit', ['id' => $evacuation_center->id] ) }}" class="btn btn-light"> <i class="cil-pencil"></i></a>
                               </td>
                               <td>
-                                <form action="{{ evac.delete }}" method="POST">
-                                    @method('DELETE')
-                                    @csrf
-                                    <button class="btn btn-light" ><i class="cil-trash"></i></button>
-                                </form>
+                                <a  href="{{ route('evacuation-center.delete', ['id' => $evacuation_center->id] ) }}" class="btn btn-danger"> <i class="cil-trash"></i></a>
                               </td>
                             </tr>
                           @endforeach

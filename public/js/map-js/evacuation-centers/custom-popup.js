@@ -1,9 +1,9 @@
-var evacIcon = L.icon({
-    iconUrl: 'assets/img/pins/orange-pin.png',
-    iconSize: [61, 52],
-    iconAnchor: [9, 48],
-    popupAnchor: [170, -20]
-});
+// var evacIcon = L.icon({
+//     iconUrl: 'assets/img/pins/orange-pin.png',
+//     iconSize: [61, 52],
+//     iconAnchor: [9, 48],
+//     popupAnchor: [170, -20]
+// });
 
 var evacPopup = 
   '<div class="my-2">' +

@@ -6,4 +6,11 @@ var mymap = L.map('mapid', {
 
 Use_OpenStreetMap(mymap);
 
-routeControl(mymap, markers_truck[0].lat,markers_truck[0].lng, markers_evac[1].lat,markers_evac[1].lng);
+// routeControl(mymap, markers_truck[0].lat,markers_truck[0].lng, markers_evac[1].lat,markers_evac[1].lng);
+
+
+
+
+
+
+

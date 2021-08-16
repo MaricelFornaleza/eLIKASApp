@@ -69,5 +69,31 @@ function secondsToHm(d) {
   return ((h > 0 ? h + " h " + (m < 10 ? "0" : "") : "") + m + " min " + (s > 0 ? s + " s" : "")); // eslint-disable-line
 }
 
+function addMarker(mymap, clickMarker){
+  mymap.on('click', function (e){
+    //clickMarker = new L.marker(e.latlng).addTo(mymap);
+    var icon = L.icon({
+      iconUrl: '/././assets/img/pins/orange-pin.png',
+      iconSize: [61, 52],
+      iconAnchor: [15, 48],
+      popupAnchor: [170, -20]
+    });
 
+    clickMarker.setLatLng(e.latlng).setIcon(icon).addTo(mymap);
+
+    document.getElementById("latitude").value = e.latlng.lat;
+    document.getElementById("longitude").value = e.latlng.lng;
+    console.log(e.latlng.lat, e.latlng.lng);
+    //return e.latlng;
+  });
+}
+
+function evacIcon(){
+  return icon = L.icon({
+    iconUrl: '/././assets/img/pins/orange-pin.png',
+    iconSize: [61, 52],
+    iconAnchor: [9, 48],
+    popupAnchor: [170, -20]
+  });
+}
 

@@ -15,8 +15,8 @@ class CreateEvacuationCentersTable extends Migration
     {
         Schema::create('evacuation_centers', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
-            $table->string('name');
+            $table->unsignedBigInteger('camp_manager_id')->nullable();
+            $table->string('name')->unique();
             $table->string('address');
             $table->float('latitude');
             $table->float('longitude');
@@ -24,19 +24,17 @@ class CreateEvacuationCentersTable extends Migration
             $table->string('characteristics');
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')
-                ->onUpdate('cascade')->onDelete('cascade');
         });
 
         Schema::create('stock_levels', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('evacuation_center_id');
-            $table->integer('food_packs');
-            $table->integer('water');
-            $table->integer('hygiene_kit');
-            $table->integer('medicine');
-            $table->integer('clothes');
-            $table->integer('emergency_shelter_assistance');
+            $table->integer('food_packs')->default(0);
+            $table->integer('water')->default(0);
+            $table->integer('hygiene_kit')->default(0);
+            $table->integer('medicine')->default(0);
+            $table->integer('clothes')->default(0);
+            $table->integer('emergency_shelter_assistance')->default(0);
             $table->timestamps();
 
             $table->foreign('evacuation_center_id')->references('id')->on('evacuation_centers')
@@ -51,7 +49,7 @@ class CreateEvacuationCentersTable extends Migration
      */
     public function down()
     {
+        Schema::drop('stock_levels');
         Schema::dropIfExists('evacuation_centers');
-        Schema::dropIfExists('stock_levels');
     }
 }

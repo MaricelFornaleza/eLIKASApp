@@ -22,4 +22,8 @@ class EvacuationCenter extends Model
         return $this->belongsTo('App\Models\User', 'users_id')->withTrashed();
     }
 
+    public function stock_level()
+    {
+        return $this->hasOne('App\Models\StockLevel');
+    }
 }

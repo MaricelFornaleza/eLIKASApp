@@ -28,19 +28,19 @@
                     <div class="card-header ">
                     <i class="fa fa-align-justify"></i> <h4 class="my-auto">{{ __('Add an Evacuation Center') }}</h4></div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('evacuation-center.store') }}">
+                        <form method="POST" action="{{ route('evacuation-center.update', ['id' => $evacuation_center->id]) }}">
                             @csrf
                            
                             <div class="form-group row">
                                 <div class="col-sm-12 col-md-6">
                                     <div class="form-group row px-3">
                                         <label class="lead">Name of the Evacuation Center <code>*</code></label>
-                                        <input class="form-control" type="text" placeholder="{{ __('Enter evacuation center name') }}" name="name" required autofocus>
+                                        <input class="form-control" type="text" placeholder="{{ __('Enter evacuation center name') }}" name="name" value="{{ $evacuation_center->name }}" required autofocus>
                                     </div>
 
                                     <div class="form-group row px-3">
                                         <label class="lead">Address <code>*</code></label>
-                                        <input class="form-control" type="text" placeholder="{{ __('Enter evacuation center address') }}" name="address" required autofocus>
+                                        <input class="form-control" type="text" placeholder="{{ __('Enter evacuation center address') }}" name="address" value="{{ $evacuation_center->address }}" required autofocus>
                                     </div>
 
                                     <div class="row">
@@ -50,34 +50,35 @@
                                                 <!-- <input class="form-control" type="text" placeholder="{{ __('Enter name') }}" name="camp_manager" required autofocus> -->
                                                 <select name="camp_manager_id" id='camp_manager_id' class="h-100 form-control">
                                                     <option value=''>Select User</option>
-                                                    @foreach($camp_managers as $camp_manager) 
-                                                        <option value='{{ $camp_manager->id }}'>{{ $camp_manager->name }}</option>
+                                                    @foreach($camp_managers as $camp_manager)
+                                                        @if($camp_manager->id == $evacuation_center->camp_manager_id)
+                                                            <option value='{{ $camp_manager->id }}' selected>{{ $camp_manager->name }}</option>
+                                                        @else
+                                                            <option value='{{ $camp_manager->id }}'>{{ $camp_manager->name }}</option>
+                                                        @endif
                                                     @endforeach
                                                 </select>
-                                                <!-- <input type='button' value='Seleted option' id='but_read'>
-                                                <br/>
-                                                <div id='result'></div> -->
                                             </div>
                                         </div>
 
                                         <div class="col-sm-12 col-md-6 col-lg-8 col-xl-6">
                                             <div class="form-group row px-3">
                                                 <label class="lead">Evacuation Center Capacity <code>*</code></label>
-                                                <input class="form-control" type="number" placeholder="{{ __('Enter Capacity') }}" value=0 name="capacity" required autofocus>
+                                                <input class="form-control" type="number" placeholder="{{ __('Enter Capacity') }}" name="capacity" value="{{ $evacuation_center->capacity }}" required autofocus>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="form-group row px-3">
                                         <label class="lead" for="characteristics">Other Characteristics</label>
-                                        <textarea class="form-control" id="characteristics" name="characteristics" rows="6" placeholder="Enter evacuation center characteristics" required autofocus></textarea>
+                                        <textarea class="form-control" id="characteristics" name="characteristics" rows="6" placeholder="{{ __('Enter evacuation center characteristics') }}" required autofocus>{{ $evacuation_center->characteristics }}</textarea>
                                     </div>
                                 </div>
 
                                 <div class="col-sm-12 col-md-6">
                                     <div class="w-100 " id="mapid"></div>
-                                    <input type="hidden" name="latitude" id="latitude" required/>
-                                    <input type="hidden" name="longitude" id="longitude" required/>
+                                    <input type="hidden" name="latitude" id="latitude" value="{{ $evacuation_center->latitude }}" required/>
+                                    <input type="hidden" name="longitude" id="longitude" value="{{ $evacuation_center->longitude }}" required/>
                                 </div>
                             </div>
  
@@ -96,20 +97,21 @@
 @section('javascript')
 <script src="{{ asset('js/map-js/maps-functions.js') }}"></script>
 <script src="{{ asset('js/map-js/leaflet-maps-simplified.js') }}"></script>
-<script src="{{ asset('js/map-js/evacuation-centers/add-marker-on-click.js') }}"></script>
+{{-- <script src="{{ asset('js/map-js/evacuation-centers/add-marker-on-click.js') }}"></script> --}}
 
 <script>
     $(document).ready(function(){
         // Initialize select2
         $("#camp_manager_id").select2();
-
-        // Read selected option
-        // $('#but_read').click(function(){
-        //     var username = $('#camp_manager_id option:selected').text();
-        //     var userid = $('#camp_manager_id').val();
-
-        //     $('#result').html("id : " + userid + ", name : " + username);
-        // });
     });
+
+    var lat = $('#latitude').val();
+    var lng = $('#longitude').val();
+    //console.log(lat, lng);
+    var clickMarker = new L.marker([lat,lng], {icon: evacIcon()}).addTo(mymap);
+    //L.marker([lat,lng]).addTo(mymap);
+    addMarker(mymap, clickMarker);
+    //console.log(lat, lng);
+   
 </script>
 @endsection
