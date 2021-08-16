@@ -16,7 +16,7 @@ class ChatController extends Controller
         if (Auth::user()->hasRole('admin')) {
             // $users = User::where('id', '!=', Auth::id())->get();
             $users =  DB::select(
-                "select users.id, users.name, users.photo, users.email,
+                "SELECT users.id, users.name, users.photo, users.email,
                 count(is_read) as unread
                 FROM users
                 LEFT JOIN chats
@@ -24,7 +24,8 @@ class ChatController extends Controller
                     AND is_read = 0
                     AND chats.recipient = " . Auth::id() .
                     " WHERE users.id != " . Auth::id() .
-                    " GROUP BY users.id, users.name, users.photo, users.email"
+                    " GROUP BY users.id, users.name, users.photo, users.email
+                    ORDER BY users.name ASC"
             );
 
             return view('common.chat.chat_admin')->with('users', $users);
@@ -38,7 +39,8 @@ class ChatController extends Controller
                     AND is_read = 0
                     AND chats.recipient = " . Auth::id() .
                     " WHERE users.id != " . Auth::id() .
-                    " GROUP BY users.id, users.name, users.photo, users.email "
+                    " GROUP BY users.id, users.name, users.photo, users.email
+                    order by users.name ASC"
             );
 
             return view('common.chat.chat_field_officer')->with('users', $users);
@@ -47,14 +49,17 @@ class ChatController extends Controller
     public function getMessage($user_id)
     {
         $my_id = Auth::id();
+
+
         Chat::where(['sender' => $user_id, 'recipient' => $my_id])->update(['is_read' => 1]);
         $messages = Chat::where(function ($query) use ($user_id, $my_id) {
             $query->where('sender', $my_id)->where('recipient', $user_id);
         })->orWhere(function ($query) use ($user_id, $my_id) {
             $query->where('sender', $user_id)->where('recipient', $my_id);
-        })->get();
+        })->orderBy('created_at', 'ASC')->get();
 
 
+        // dd($messages);
         return view('common.chat.index', ['messages' => $messages]);
     }
 
