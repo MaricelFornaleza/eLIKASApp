@@ -16,12 +16,12 @@
             </div>
             <div class="col-lg-3 ml-auto">
 
-                <button class="btn btn-block export-btn">
+                <a href="{{ url('/export_excel_supplies') }}" class="btn btn-block export-btn">
                     <svg class="c-icon mr-2">
                         <use xlink:href="{{ url('/icons/sprites/free.svg#cil-file') }}"></use>
                     </svg>
                     Export to Excel
-                </button>
+                </a>
             </div>
         </div>
         <div class="row">
