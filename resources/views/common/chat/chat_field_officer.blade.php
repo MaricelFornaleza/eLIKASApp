@@ -1,54 +1,18 @@
 @extends('layouts.mobileBase')
-
 @section('css')
 <link href="{{ asset('css/chat.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
-
-<div class="container-fluid">
-    <div class="fade-in">
-        <div class="row">
-            <div class="col-md-8" id="messages">
-
-            </div>
-            <div class="col-md-4">
-                <div class="user-wrapper">
-                    <ul class="users">
-                        @foreach($users as $user)
-                        <li class="user" id="{{ $user->id }}">
-                            @if($user->unread)
-                            <span class="pending">{{$user->unread}}</span>
-                            @endif
-                            <div class="media">
-                                <div class="media-left">
-                                    <img src="public/images/{{$user->photo}}" alt="user-avatar" class="media-object">
-                                </div>
-                                <div class="media-body">
-                                    <p class="name">{{$user->name}}</p>
-                                    <p class="email"> {{$user->email}}</p>
-
-                                </div>
-                            </div>
-                        </li>
-                        @endforeach
-                    </ul>
-
-                </div>
-            </div>
-
-        </div>
-
-
-    </div>
-</div>
-
+@include('common.chat.body')
 @endsection
 
 @section('javascript')
 <script>
 var recipient = "";
 var my_id = "{{ Auth::id() }}";
+var senderName = "";
+var avatarSrc = "";
 $(document).ready(function() {
     $.ajaxSetup({
         headers: {
@@ -70,7 +34,7 @@ $(document).ready(function() {
         if (my_id == data.sender) {
             $('#' + data.recipient).click();
         } else if (my_id == data.recipient) {
-            if (recipient == data.recipient) {
+            if (recipient == data.sender) {
                 // if recipient is selected, reload the selected user
                 $('#' + data.sender).click();
             } else {
@@ -89,13 +53,22 @@ $(document).ready(function() {
     $('.user').click(function() {
         $('.user').removeClass('active');
         $(this).addClass('active');
+        $(this).find('.pending').remove();
+
+        var senderName = $(this).find('.name').text();
+        var avatarSrc = $(this).find('#sender-avatar').attr('src');
+
+        $('#selected-message').show();
+        $('#avatar').attr('src', avatarSrc);
+        $('.senderName').html(senderName);
+
         recipient = $(this).attr('id');
         $.ajax({
             type: "get",
             url: "chat/" + recipient,
             data: "",
             cache: false,
-            success: function(data) {
+            success: function(data, user) {
                 $('#messages').html(data);
                 scrollToBottom();
             }
@@ -114,6 +87,7 @@ $(document).ready(function() {
                 data: datastr,
                 cache: false,
                 success: function(data) {
+                    // $('#messages').html(data);
 
                 },
                 error: function(jqXHR, status, err) {
@@ -134,4 +108,5 @@ function scrollToBottom() {
     }, 50);
 }
 </script>
+
 @endsection

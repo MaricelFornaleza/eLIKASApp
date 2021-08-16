@@ -5,7 +5,6 @@ ul {
 li {
     list-style: none;
 }
-
 .user-wrapper,
 .message-wrapper {
     border: 1px solid white;
@@ -40,6 +39,14 @@ li {
     color: white;
     font-size: 12px;
 }
+.media {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: start;
+    align-items: center;
+    vertical-align: middle;
+    height: 50px;
+}
 .media-left {
     margin: 0 10px;
 }
@@ -47,6 +54,11 @@ li {
     width: 55px;
     height: 55px;
     border-radius: 55px;
+}
+.message-wrapper-header .media-left img {
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
 }
 .media-body p {
     margin: 6px 0;
@@ -90,15 +102,43 @@ li {
 }
 
 input[type="text"] {
-    width: 100%;
+    width: 95%;
     padding: 12px 20px;
-    margin: 15px 0 0 0;
+    margin-top: 15px;
+
     display: inline-block;
     border-radius: 4px;
     box-sizing: border-box;
     outline: none;
     border: 1px solid #ccc;
+    align-self: center;
 }
 input[type="text"]:focus {
     border: 1px solid #023047;
+}
+
+.c-main {
+    padding-top: 0% !important;
+}
+.container-fluid {
+    padding-left: 0% !important;
+    padding-right: 0% !important;
+}
+.row {
+    margin-left: 0% !important;
+    margin-right: 0% !important;
+}
+.message-wrapper-header {
+    height: 50px;
+    background-color: white;
+    border-bottom: 1px solid rgb(211, 211, 211);
+    position: sticky;
+}
+.chat-header {
+    height: 50px;
+    background-color: #023047;
+}
+
+.wrapper {
+    padding: 0% !important;
 }

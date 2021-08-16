@@ -13,6 +13,6 @@
     </ul>
 </div>
 
-<div class="input-text">
-    <input type="text" name="message" class="submit">
+<div class="input-text center">
+    <input type="text" name="message" class="submit" autofocus>
 </div>
