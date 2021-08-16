@@ -14,6 +14,7 @@
 use App\Http\Controllers\FieldOfficerController;
 use App\Http\Controllers\SupplyController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\ImportExcelController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -30,3 +31,5 @@ Route::group(['middleware' => ['auth']], function () {
 Route::resource('/field_officers', 'FieldOfficerController');
 Route::resource('supplies', 'SupplyController');
 Route::resource('inventory', 'InventoryController');
+
+Route::post('/import_excel_supplies', 'ImportExcelController@import');
