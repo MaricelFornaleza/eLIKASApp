@@ -7,9 +7,11 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\InventoryController;
 
-class SupplyController extends Controller
+class SupplyController extends Controller 
 {
+    
     /**
      * Display a listing of the resource.
      *
@@ -42,10 +44,10 @@ class SupplyController extends Controller
         //
         $user = Auth::user();
 
-        $user_inventory = User::find($user->id)->user_inventory;
+        $user_inventory_id = User::find($user->id)->user_inventory->id;
 
         $supply = new Supply();
-        $supply->inventory_id     = $user_inventory->id;
+        $supply->inventory_id     = $user_inventory_id;
         $supply->supply_type   = $request->input('supply_type');
         $supply->quantity = $request->input('quantity');
         $supply->source = $request->input('source');
@@ -86,11 +88,7 @@ class SupplyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = Auth::user();
-
-        $user_inventory = User::find($user->id)->user_inventory;
-        
-        $supply->inventory_id     = $user_inventory->id;
+        $supply = Supply::find($id);
         $supply->supply_type   = $request->input('supply_type');
         $supply->quantity = $request->input('quantity');
         $supply->source = $request->input('source');

@@ -20,8 +20,10 @@
                         <form method="POST" action="{{ route('supplies.update', $supply->id) }}">
                             @csrf
                             @method('PUT')
+                            
+                            <!-- /.row-->
                             <div class="row">
-                                <div class="col-sm-12">
+                                <div class="col-sm-6">
                                     <div class="form-group">
                                       <label class="lead">Supply Type</label>
                                       <select class="form-control" aria-label=".form-select-lg example" name="supply_type"  required autofocus>
@@ -54,32 +56,28 @@
                                       </select>
                                     </div>
                                 </div>
+                                <div class="form-group col-sm-6">
+                                  <label class="lead">Quantity</a></label>
+                                  <input class="form-control" type="number" placeholder="{{ __('Enter Quantity') }}" name="quantity" value="{{ $supply->quantity }}" required autofocus>
+                                </div>
                             </div>
-                     
                             <!-- /.row-->
                             <div class="row">
-                                <div class="col-sm-6">
+                                <div class="col-sm-12">
                                     <div class="form-group">
                                       <label class="lead">Source</label>
                                       <input class="form-control" type="text" placeholder="{{ __('Enter Source') }}" name="source" value="{{ $supply->source }}" required autofocus>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                      <label class="lead">Quantity</a></label>
-                                      <input class="form-control" type="number" placeholder="{{ __('Enter Quantity') }}" name="quantity" value="{{ $supply->quantity }}" required autofocus>
-                                    </div>
+                                  </div>
                                 </div>
                             </div>
                             
-                            </div>
                             <div class="row mt-5 center">
                                 <div class="col-4 ">
                                     <button class="btn btn-primary px-4 " type="submit">{{ __('Update') }}</button>
                                 </div>
                                 <div class="col-4 ">
-                                    <button href="{{ route('inventory.index') }}" class="btn btn-outline-primary px-4 "
-                                        type="cancel">{{ __('Cancel') }}</button>
+                                    <a href="{{ route('inventory.index') }}" class="btn btn-outline-primary px-4 "
+                                        >{{ __('Cancel') }}</a>
                                 </div>
                             </div>
                         </form>
@@ -96,4 +94,6 @@
 @endsection
 
 @section('javascript')
+
 @endsection
+
