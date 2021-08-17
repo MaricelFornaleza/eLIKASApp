@@ -15,7 +15,8 @@ use App\Models\User;
 
 use App\Http\Controllers\FieldOfficerController;
 use App\Http\Controllers\SupplyController;
-
+use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\ImportExcelController;
 
 Route::get('/', function () {
     $count = User::count();
@@ -60,3 +61,4 @@ Route::resource('supplies', 'SupplyController');
 
 Route::resource('inventory', 'InventoryController');
 
+Route::post('/import_excel_supplies', 'ImportExcelController@import');
