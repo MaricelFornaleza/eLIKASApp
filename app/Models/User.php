@@ -57,13 +57,11 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Contact');
     }
-<<<<<<< HEAD
-}
-=======
 
     function user_inventory()
     {
         return $this->hasOne('App\Models\Inventory');
     }
+
 }
->>>>>>> c173c2c (Migrations and Supply Inventory)
+
