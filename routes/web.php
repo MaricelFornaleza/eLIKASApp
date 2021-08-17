@@ -11,13 +11,11 @@
 |
 */
 
-<<<<<<< HEAD
 use App\Models\User;
 
-=======
 use App\Http\Controllers\FieldOfficerController;
 use App\Http\Controllers\SupplyController;
->>>>>>> c173c2c (Migrations and Supply Inventory)
+
 
 Route::get('/', function () {
     $count = User::count();
@@ -45,13 +43,15 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 Route::resource('/field_officers', 'FieldOfficerController');
-<<<<<<< HEAD
+
 Route::resource('/profile', 'ProfileController');
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/chat', 'ChatController@index')->name('chat');
     Route::get('/chat/{id}', 'ChatController@getMessage');
     Route::post('chat', 'ChatController@sendMessage');
 });
-=======
+
 Route::resource('supplies', 'SupplyController');
->>>>>>> c173c2c (Migrations and Supply Inventory)
+
+Route::resource('inventory', 'InventoryController');
+

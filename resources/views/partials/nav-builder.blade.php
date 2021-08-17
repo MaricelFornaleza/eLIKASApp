@@ -108,7 +108,7 @@ if (!function_exists('renderDropdown')) {
             </a>
         </li>
         <li class="c-sidebar-nav-item">
-            <a class="c-sidebar-nav-link" href="{{ route('supplies.index') }}">
+            <a class="c-sidebar-nav-link" href="{{ route('inventory.index') }}">
                 <svg class="c-sidebar-nav-icon">
                     <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-file"></use>
                 </svg>Inventory

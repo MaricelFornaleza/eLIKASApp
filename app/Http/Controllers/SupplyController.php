@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Supply;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,8 +17,8 @@ class SupplyController extends Controller
      */
     public function index()
     {
-        $supplies = Supply::paginate(5);
-        return view('barangay-captain.supply-resource.supplyList', ['supplies' => $supplies]);
+        // $supplies = Supply::paginate(5);
+        // return view('barangay-captain.supply-resource.supplyList', ['supplies' => $supplies]);
     }
 
     /**
@@ -41,14 +42,16 @@ class SupplyController extends Controller
         //
         $user = Auth::user();
 
+        $user_inventory_id = User::find($user->id)->user_inventory->id;
+
         $supply = new Supply();
-        $supply->user_id     = $user->id;
+        $supply->inventory_id     = $user_inventory_id;
         $supply->supply_type   = $request->input('supply_type');
         $supply->quantity = $request->input('quantity');
         $supply->source = $request->input('source');
         $supply->save();
         $request->session()->flash('message', 'Successfully created supply');
-         return redirect()->route('supplies.index');
+         return redirect()->route('inventory.index');
     }
 
     /**
@@ -84,15 +87,16 @@ class SupplyController extends Controller
     public function update(Request $request, $id)
     {
         $user = Auth::user();
+
+        $user_inventory_id = User::find($user->id)->user_inventory->id;
         
-        $supply = Supply::find($id);
-        $supply->user_id     = $user->id;
+        $supply->inventory_id     = $user_inventory_id;
         $supply->supply_type   = $request->input('supply_type');
         $supply->quantity = $request->input('quantity');
         $supply->source = $request->input('source');
         $supply->save();
         $request->session()->flash('message', 'Successfully created supply');
-         return redirect()->route('supplies.index');
+         return redirect()->route('inventory.index');
     }
 
     /**
@@ -107,6 +111,6 @@ class SupplyController extends Controller
         if($supply){
             $supply->delete();
         }
-        return redirect()->route('supplies.index');
+        return redirect()->route('inventory.index');
     }
 }

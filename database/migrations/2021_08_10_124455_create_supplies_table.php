@@ -15,13 +15,13 @@ class CreateSuppliesTable extends Migration
     {
         Schema::create('supplies', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('inventory_id');
             $table->string('supply_type');
             $table->integer('quantity');
             $table->string('source');
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')
+            $table->foreign('inventory_id')->references('id')->on('inventories')
                 ->onUpdate('cascade')->onDelete('cascade');
         });
     }
