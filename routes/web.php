@@ -16,6 +16,8 @@ use App\Models\User;
 use App\Http\Controllers\FieldOfficerController;
 use App\Http\Controllers\SupplyController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\ImportExcelController;
+use App\Http\Controllers\ExportExcelController;
 
 Route::get('/', function () {
     $count = User::count();
@@ -46,3 +48,6 @@ Route::group(['middleware' => ['auth']], function () {
 });
 Route::resource('supplies', 'SupplyController');
 Route::resource('inventory', 'InventoryController');
+
+Route::post('/import_excel_supplies', 'ImportExcelController@import');
+Route::get('/export_excel_supplies', 'ExportExcelController@export');
