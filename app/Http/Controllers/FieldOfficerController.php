@@ -49,11 +49,7 @@ class FieldOfficerController extends Controller
      */
     public function store(Request $request)
     {
-<<<<<<< HEAD
 
-=======
-       
->>>>>>> c173c2c (Migrations and Supply Inventory)
         if ($request->hasFile('photo')) {
             $filename = $request->photo->getClientOriginalName();
             $request->photo->storeAs('images', $filename, 'public');
@@ -74,10 +70,10 @@ class FieldOfficerController extends Controller
             'contact_no' => $request['contact_no']
         ]);
 
-        if($user->hasRole('barangay_captain')){
+        if ($user->hasRole('barangay_captain')) {
             $inventory = Inventory::create([
                 'user_id' => $user->id,
-                'name' => $user->barangay.' Inventory'
+                'name' => $user->barangay . ' Inventory'
             ]);
         }
         // $bc = User::find($user->id)->user_inventory->name;

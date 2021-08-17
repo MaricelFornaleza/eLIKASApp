@@ -58,8 +58,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('chat', 'ChatController@sendMessage');
 });
 
+Route::resource('/field_officers', 'FieldOfficerController');
+Route::resource('/profile', 'ProfileController');
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/chat', 'ChatController@index')->name('chat');
+    Route::get('/chat/{id}', 'ChatController@getMessage');
+    Route::post('chat', 'ChatController@sendMessage');
+});
 Route::resource('supplies', 'SupplyController');
-
 Route::resource('inventory', 'InventoryController');
 
 Route::post('/import_excel_supplies', 'ImportExcelController@import');

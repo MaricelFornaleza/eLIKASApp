@@ -18,9 +18,6 @@
     <!-- Main styles for this application-->
     <link href="{{ asset('css/primary-style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
-
-    <!-- JQuery (update mthe main and remove redunduncy)-->
-    
     <!-- Google Fonts Poppins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
