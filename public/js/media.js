@@ -263,7 +263,11 @@ self.showCard('file-info-card');
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+<<<<<<< Updated upstream
 module.exports = __webpack_require__(/*! C:\laragon\www\eLIKAS-app\resources\js\coreui\media.js */"./resources/js/coreui/media.js");
+=======
+module.exports = __webpack_require__(/*! C:\Users\sevsa\Documents\eLIKASlatest\resources\js\coreui\media.js */"./resources/js/coreui/media.js");
+>>>>>>> Stashed changes
 
 
 /***/ })
