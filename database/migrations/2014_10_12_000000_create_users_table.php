@@ -20,20 +20,52 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('branch')->nullable();
-            $table->string('barangay')->nullable();
-            $table->string('designation')->nullable();
+            $table->string('officer_type');
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
+        });
+        Schema::create('admins', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id');
+            $table->string('branch');
+            $table->string('display_name')->default('Administrator');
+            $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onUpdate('cascade')->onDelete('cascade');
+        });
+        Schema::create('camp_managers', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id');
+            $table->string('designation');
+            $table->string('display_name')->default('Camp Manager');
+            $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onUpdate('cascade')->onDelete('cascade');
+        });
+        Schema::create('barangay_captains', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id');
+            $table->string('barangay');
+            $table->string('display_name')->default('Barangay Officer');
+            $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onUpdate('cascade')->onDelete('cascade');
+        });
+        Schema::create('couriers', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id');
+            $table->string('designation');
+            $table->string('display_name')->default('Courier');
+            $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onUpdate('cascade')->onDelete('cascade');
         });
         Schema::create('contacts', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->bigInteger('contact_no')->unique();
             $table->timestamps();
-
-
             $table->foreign('user_id')->references('id')->on('users')
                 ->onUpdate('cascade')->onDelete('cascade');
         });

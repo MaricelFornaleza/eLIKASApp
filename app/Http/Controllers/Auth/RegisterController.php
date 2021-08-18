@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
 use App\Models\Contact;
 use App\Models\User;
 use App\Models\Inventory;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
@@ -73,24 +73,22 @@ class RegisterController extends Controller
         $user =  User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'photo' => "Avatar-default.png",
-            'branch' => $data['branch'],
+            'officer_type' => 'admin',
             'password' => Hash::make($data['password']),
-
         ]);
-
-        $user->attachRole('admin');
+        Admin::create([
+            'user_id' => $user->id,
+            'branch' =>  $data['branch'],
+        ]);
         Contact::create([
             'user_id' => $user->id,
-            'contact_no' => '09772779609',
+            'contact_no' => $data['contact_no'],
+        ]);
+        Inventory::create([
+            'user_id' => $user->id,
+            'name' => $user->branch . ' Inventory'
         ]);
 
-        if ($user->hasRole('admin')) {
-            $inventory = Inventory::create([
-                'user_id' => $user->id,
-                'name' => $user->branch . ' Inventory'
-            ]);
-        }
         return $user;
     }
 }
