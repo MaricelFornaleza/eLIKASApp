@@ -3,7 +3,7 @@
 /database/database.sqlite
 /public/hot
 /public/storage
-/public/js
+# /public/js
 # /public/css
 /public/img
 /public/flags
@@ -14,7 +14,7 @@
 /public/svg
 /public/icons
 /public/vendors
-/public/public
+# /public/public
 /storage/*.key
 /vendor
 .env

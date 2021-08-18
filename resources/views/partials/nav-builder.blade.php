@@ -73,14 +73,14 @@ if (!function_exists('renderDropdown')) {
             </a>
         </li>
         <li class="c-sidebar-nav-item">
-            <a class="c-sidebar-nav-link" href="#">
+            <a class="c-sidebar-nav-link" href="/map">
                 <svg class="c-sidebar-nav-icon">
                     <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-map"></use>
                 </svg>Map
             </a>
         </li>
         <li class="c-sidebar-nav-item">
-            <a class="c-sidebar-nav-link" href="#">
+            <a class="c-sidebar-nav-link" href="/evacuation-centers">
                 <svg class="c-sidebar-nav-icon">
                     <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-house"></use>
                 </svg>Evacuation Centers
@@ -108,7 +108,7 @@ if (!function_exists('renderDropdown')) {
             </a>
         </li>
         <li class="c-sidebar-nav-item">
-            <a class="c-sidebar-nav-link" href="#">
+            <a class="c-sidebar-nav-link" href="{{ route('inventory.index') }}">
                 <svg class="c-sidebar-nav-icon">
                     <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-file"></use>
                 </svg>Inventory

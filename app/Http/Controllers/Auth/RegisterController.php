@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use App\Models\User;
+use App\Models\Inventory;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -83,6 +84,13 @@ class RegisterController extends Controller
             'user_id' => $user->id,
             'contact_no' => '09772779609',
         ]);
+
+        if ($user->hasRole('admin')) {
+            $inventory = Inventory::create([
+                'user_id' => $user->id,
+                'name' => $user->branch . ' Inventory'
+            ]);
+        }
         return $user;
     }
 }
