@@ -124,9 +124,9 @@
                             <div class="form-group">
                                 <label for="photo">Upload your Profile Picture</label>
                                 <div class="row">
-                                    <div class="col-sm-6 rounded-circle">
-                                        <img id="preview-image-before-upload" src="" alt="preview image"
-                                            style="max-height: 200px; ">
+                                    <div class="col-sm-6 ">
+                                        <img id="preview-image-before-upload" src="/public/images/Upload Image.png"
+                                            alt="preview image" style="max-height: 100px; " class="rounded-circle mb-2">
                                         <input class=" form-control @error('photo') is-invalid @enderror " type="file"
                                             name="photo" value="{{ old('photo') }}" id="photo">
                                         @error('photo')

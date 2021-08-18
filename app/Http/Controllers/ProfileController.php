@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
+use App\Models\Contact;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,15 +20,17 @@ class ProfileController extends Controller
     public function index()
     {
         $id = Auth::id();
-        $user = User::join('role_user', 'role_user.user_id', '=', 'users.id')
-            ->join('roles', function ($join) {
-                $join->on('role_user.role_id', '=', 'roles.id');
-            })
-            ->select('users.*', 'roles.display_name as type')
-            ->where('users.id', '=', $id)
+        $user = User::where('users.id', '=', $id)
+            ->leftJoin('admins', 'admins.user_id', '=', 'users.id')
+            ->select(
+                'users.*',
+                'admins.*',
+                'users.id as user_id',
+            )
             ->first();
 
-        if (Auth::user()->hasRole('admin')) {
+        $role = Auth::user()->officer_type;
+        if ($role == "Administrator") {
             return view('admin.admin_resource.profile')->with("user", $user);
         } else {
             return view('common.profile.profile')->with("user", $user);
@@ -75,8 +79,11 @@ class ProfileController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
-        if (Auth::user()->hasRole('admin')) {
-            return view('admin.admin_resource.edit')->with("user", $user);
+        $role = Auth::user()->officer_type;
+        $contacts = Contact::where('user_id', $user->id)->get();
+        $admin = Admin::where('user_id', $user->id)->first();
+        if ($role == "Administrator") {
+            return view('admin.admin_resource.edit')->with(compact('user', 'contacts', 'admin'));
         } else {
             return view('common.profile.edit')->with("user", $user);
         }
@@ -91,6 +98,14 @@ class ProfileController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255', 'alpha_spaces'],
+            'email' => ['required', 'string', 'email', 'max:255',],
+            'photo' => ['image', 'mimes:jpg,png,jpeg'],
+            'contact_no[]' => ['numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
+            'branch' => ['required'],
+            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
+        ]);
         $user = User::find($id);
         if ($request->hasFile('photo')) {
             $filename = $request->photo->getClientOriginalName();
@@ -98,16 +113,39 @@ class ProfileController extends Controller
         } else {
             $filename = $user->photo;
         }
+        if ($request['password'] == null) {
+            $password = $user->password;
+        } else {
+            $password = $request['password'];
+        }
 
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->user_contacts()->contact_no = $request->contact_no;
-        $user->branch = $request->branch;
-        $user->barangay = $request->barangay;
-        $user->designation = $request->designation;
         $user->photo = $filename;
-        $user->password = Hash::make($request['password']);
+        $user->password = Hash::make($password);
         $user->save();
+
+        //create contact
+        //the user can have 1 or more contact numbers
+        $contact_id = Contact::where('user_id', $user->id)->get();
+        foreach ($request->contact_no as $index => $contact_no) {
+            if ($request->contact_no[$index] != null) {
+                if (!empty($contact_id[$index])) {
+                    Contact::where('id', $contact_id[$index]->id)
+                        ->update([
+                            'contact_no' => $request->contact_no[$index],
+                        ]);
+                } else {
+                    Contact::create([
+                        'user_id' => $user->id,
+                        'contact_no' => $request->contact_no[$index],
+                    ]);
+                }
+            }
+        }
+        Admin::where('user_id', $user->id)->update([
+            'branch' => $validated['branch'],
+        ]);
         Session::flash('message', 'Profile updated successfully!');
         return redirect('profile');
     }

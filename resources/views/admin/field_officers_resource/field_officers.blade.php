@@ -124,11 +124,6 @@
                                             {{ $field_officer -> camp_designation }}
                                             {{ $field_officer -> c_designation }}
                                             @endif
-
-
-
-
-
                                         </td>
                                         <td>
                                             <div class="row">

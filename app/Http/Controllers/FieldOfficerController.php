@@ -170,8 +170,11 @@ class FieldOfficerController extends Controller
     {
         $user = User::find($id);
         $contacts = Contact::where('user_id', $user->id)->get();
-        return view('admin.field_officers_resource.edit')->with(compact(["user", 'contacts']));
-        // dd($contacts);
+        $barangay_captain = BarangayCaptain::where('user_id', $user->id)->first();
+        $camp_designation = CampManager::where('user_id', $user->id)->first();
+        $courier_designation = Courier::where('user_id', $user->id)->first();
+        return view('admin.field_officers_resource.edit')->with(compact(["user", 'contacts', 'barangay_captain', 'courier_designation', 'camp_designation']));
+        // dd($barangay_captain->barangay);
     }
 
     /**
@@ -198,7 +201,7 @@ class FieldOfficerController extends Controller
                 'contact_no[]' => ['numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
                 'barangay' => ['required'],
                 'designation' => ['nullable'],
-                'password' => ['string', 'min:8', 'confirmed'],
+                'password' => ['nullable', 'string', 'min:8', 'confirmed'],
             ]);
         } else {
             $validated = $request->validate([
@@ -209,7 +212,7 @@ class FieldOfficerController extends Controller
                 'contact_no[]' => ['numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
                 'barangay' => ['nullable'],
                 'designation' => ['required'],
-                'password' => ['string', 'min:8', 'confirmed'],
+                'password' => ['nullable', 'string', 'min:8', 'confirmed'],
 
             ]);
         }
@@ -236,10 +239,17 @@ class FieldOfficerController extends Controller
         $contact_id = Contact::where('user_id', $user->id)->get();
         foreach ($request->contact_no as $index => $contact_no) {
             if ($request->contact_no[$index] != null) {
-                Contact::where('id', $contact_id[$index]->id)
-                    ->update([
+                if (!empty($contact_id[$index])) {
+                    Contact::where('id', $contact_id[$index]->id)
+                        ->update([
+                            'contact_no' => $request->contact_no[$index],
+                        ]);
+                } else {
+                    Contact::create([
+                        'user_id' => $user->id,
                         'contact_no' => $request->contact_no[$index],
                     ]);
+                }
             }
         }
 
