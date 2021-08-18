@@ -85,19 +85,29 @@
                             </div>
                             <!-- /.row-->
                             <div class="form-group">
-                                <label for="photo">Upload your Profile Picture</label>
+
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <svg class="c-icon mr-2 image-icon " height="50px">
-                                            <use xlink:href="{{ url('/icons/sprites/free.svg#cil-image1') }}"></use>
-                                        </svg>
+                                        <label for="photo">Upload your Profile Picture</label>
+                                        <div class="center">
+                                            <svg class=" mr-2 image-icon ">
+                                                <use xlink:href="{{ url('/icons/sprites/free.svg#cil-image1') }}"></use>
+                                            </svg>
+
+                                        </div>
+
                                         <input class="form-control" type="file" name="photo">
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="password">Password</label>
-                                            <input class="form-control" value="{{ $user->password }}" required
-                                                autocomplete="password" id="password" name="password" type="text">
+                                            <label for="password">New Password</label>
+                                            <input class="form-control" required autocomplete="password" id="password"
+                                                name="password" type="text">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="password">Confirm Password</label>
+                                            <input class="form-control" required autocomplete="password" id="password"
+                                                name="password" type="text">
                                         </div>
                                     </div>
 
@@ -110,8 +120,8 @@
                                     <button class="btn btn-primary px-4 " type="submit">{{ __('Update') }}</button>
                                 </div>
                                 <div class="col-4 ">
-                                    <button class="btn btn-outline-primary px-4 "
-                                        type="cancel">{{ __('Cancel') }}</button>
+                                    <a href="{{url()->previous()}}"
+                                        class="btn btn-outline-primary px-4 ">{{ __('Cancel') }}</a>
                                 </div>
                             </div>
                         </form>

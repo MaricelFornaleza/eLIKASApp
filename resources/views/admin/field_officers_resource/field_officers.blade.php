@@ -1,7 +1,10 @@
 @extends('layouts.webBase')
 
 @section('css')
-<link rel="stylesheet" href="//cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
+<!-- <link rel="stylesheet" href="//cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css"> -->
+
 @endsection
 
 @section('content')
@@ -53,7 +56,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="row">
-                            <div class=" mr-auto ">
+                            <div class=" ml-auto ">
                                 <a href="{{ url('/field_officers/create') }}">
                                     <button class="btn btn-secondary secondary-button">
                                         Add Field Officer
@@ -61,24 +64,24 @@
                                 </a>
 
                             </div>
-                            <form action="post" enctype="multipart/form-data" action="#">
-                                @csrf
-                                <div class="ml-4 mr-4">
+                            <div class=" ml-3 mr-4">
+                                <a href="{{ url('/field_officers/create') }}">
+                                    <button class="btn btn-outline-primary ">
+                                        Upload Excel File
+                                    </button>
+                                </a>
 
-                                    <input type="file" name="select_file">
+                            </div>
 
-                                    <input type="submit" name="upload" class="btn btn-outline-primary" value="Upload">
-                                    </input>
-                                </div>
-                            </form>
 
                         </div>
 
                     </div>
                     <div class="card-body ">
-                        <div style="overflow-x:auto !important;" class="table-responsive">
+                        <div>
                             <table id="fieldOfficers"
-                                class="table table-borderless table-hover table-light table-striped ">
+                                class="table table-borderless table-hover table-light table-striped "
+                                style="width: 130%;">
                                 <thead>
                                     <tr>
                                         <th>PHOTO</th>
@@ -105,11 +108,19 @@
                                         <td>{{ $field_officer -> type}}</td>
                                         <td>{{ $field_officer -> email }}</td>
                                         <td>@foreach($field_officer->user_contacts as $contact)
-                                            {{$contact -> contact_no}}
+                                            0{{$contact -> contact_no}}
                                             @endforeach
                                         </td>
-                                        <td>{{ $field_officer -> barangay}}</td>
-                                        <td>{{ $field_officer -> designation}} </td>
+                                        <td>@empty($field_officer -> barangay)
+                                            NA
+                                            @endempty
+                                            {{ $field_officer -> barangay}}
+                                        </td>
+                                        <td>@empty($field_officer -> designation)
+                                            NA
+                                            @endempty
+                                            {{ $field_officer -> designation}}
+                                        </td>
                                         <td>
                                             <div class="row">
                                                 <div class="col-6 ">
@@ -164,11 +175,14 @@
 @endsection
 
 @section('javascript')
-<script src="//cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
 <script>
 $(document).ready(function() {
     $('#fieldOfficers').DataTable({
-        fixedColumns: true,
+        "scrollX": true,
     });
 });
 </script>

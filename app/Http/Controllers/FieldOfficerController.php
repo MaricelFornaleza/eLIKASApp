@@ -48,6 +48,31 @@ class FieldOfficerController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request['officer_type'] == 'barangay_captain') {
+            $validated = $request->validate([
+                'name' => ['required', 'string', 'max:255', 'alpha_spaces'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'photo' => ['image', 'mimes:jpg,png,jpeg'],
+                'barangay' => ['required'],
+                'officer_type' => ['required'],
+                'contact_no' => ['required', 'numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
+                'barangay' => ['required'],
+                'designation' => ['nullable'],
+            ]);
+        } else {
+            $validated = $request->validate([
+                'name' => ['required', 'string', 'max:255', 'alpha_spaces'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'photo' => ['image', 'mimes:jpg,png,jpeg'],
+                'barangay' => ['required'],
+                'officer_type' => ['required'],
+                'contact_no' => ['required', 'numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
+                'barangay' => ['nullable'],
+                'designation' => ['required'],
+            ]);
+        }
+
+
 
         if ($request->hasFile('photo')) {
             $filename = $request->photo->getClientOriginalName();
@@ -56,17 +81,17 @@ class FieldOfficerController extends Controller
             $filename = "Avatar-default.png";
         }
         $user =  User::create([
-            'name' => $request['name'],
+            'name' => $validated['name'],
             'photo' => $filename,
-            'email' => $request['email'],
-            'barangay' => $request['barangay'],
-            'designation' => $request['designation'],
+            'email' => $validated['email'],
+            'barangay' => $validated['barangay'],
+            'designation' => $validated['designation'],
             'password' => Hash::make('password'),
         ]);
-        $user->attachRole($request['officer_type']);
+        $user->attachRole($validated['officer_type']);
         $contact = Contact::create([
             'user_id' => $user->id,
-            'contact_no' => $request['contact_no']
+            'contact_no' => $validated['contact_no']
         ]);
 
         Session::flash('message', 'Field Officer added successfully!');

@@ -84,9 +84,13 @@ body {
     }
 }
 .image-icon {
-    max-height: 50px !important;
-    height: 50px !important;
-    font-size: 50px !important;
+    max-height: 100px !important;
+    height: 100px !important;
+    font-size: 100px !important;
+    display: inline-block;
+    color: inherit;
+    align-self: flex-start;
+    fill: currentColor;
 }
 .mobile-header {
     background-color: #023047 !important;
@@ -109,4 +113,8 @@ body {
 .title {
     font-weight: 800 !important;
     color: #023047 !important;
+}
+
+div.dataTables_wrapper div.dataTables_length select {
+    width: 50px !important;
 }
