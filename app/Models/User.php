@@ -14,7 +14,7 @@ use Laratrust\Traits\LaratrustUserTrait;
 
 class User extends Authenticatable
 {
-    use LaratrustUserTrait;
+
     use Notifiable;
     use SoftDeletes;
 
@@ -55,11 +55,27 @@ class User extends Authenticatable
 
     function user_contacts()
     {
-        return $this->hasMany('App\Models\Contact');
+        return $this->hasMany('App\Models\Contact', 'user_id', 'user_id');
     }
 
     function user_inventory()
     {
         return $this->hasOne('App\Models\Inventory');
+    }
+    function admin()
+    {
+        return $this->hasOne('App\Models\Admin');
+    }
+    function camp_manager()
+    {
+        return $this->hasOne('App\Models\CampManager');
+    }
+    function barangay_captain()
+    {
+        return $this->hasOne('App\Models\BarangayCaptain');
+    }
+    function courier()
+    {
+        return $this->hasOne('App\Models\Couriers');
     }
 }

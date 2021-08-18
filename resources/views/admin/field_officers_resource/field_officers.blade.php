@@ -89,7 +89,7 @@
                                         <th>OFFICER TYPE</th>
                                         <th>EMAIL ADDRESS</th>
                                         <th>CONTACT NUMBER</th>
-                                        <th>ASSIGNED AREA</th>
+                                        <th>BARANGAY</th>
                                         <th>DESIGNATION</th>
                                         <th>ACTION</th>
 
@@ -103,28 +103,37 @@
                                     <tr>
                                         <td><img class="image rounded-circle"
                                                 src="{{asset('/public/images/'.$field_officer -> photo)}}"
-                                                alt="profile_image" style="width: 60px;height: 60px;"></td>
+                                                alt="profile_image" style="width: 40px;height: 40px;"></td>
                                         <td>{{ $field_officer -> name }}</td>
-                                        <td>{{ $field_officer -> type}}</td>
+                                        <td>{{ $field_officer -> officer_type}}</td>
                                         <td>{{ $field_officer -> email }}</td>
-                                        <td>@foreach($field_officer->user_contacts as $contact)
-                                            0{{$contact -> contact_no}}
+                                        <td>@foreach($field_officer -> user_contacts as $contact)
+                                            <h6> 0{{$contact -> contact_no}}</h6>
                                             @endforeach
                                         </td>
-                                        <td>@empty($field_officer -> barangay)
+                                        <td>@empty($field_officer -> barangay )
                                             NA
                                             @endempty
                                             {{ $field_officer -> barangay}}
                                         </td>
-                                        <td>@empty($field_officer -> designation)
+                                        <td>
+                                            @if($field_officer -> camp_designation ==null && $field_officer ->
+                                            c_designation == null)
                                             NA
-                                            @endempty
-                                            {{ $field_officer -> designation}}
+                                            @else
+                                            {{ $field_officer -> camp_designation }}
+                                            {{ $field_officer -> c_designation }}
+                                            @endif
+
+
+
+
+
                                         </td>
                                         <td>
                                             <div class="row">
                                                 <div class="col-6 ">
-                                                    <a href="/field_officers/{{$field_officer->id}}/edit"><svg
+                                                    <a href="/field_officers/{{$field_officer->user_id}}/edit"><svg
                                                             class="c-icon ">
                                                             <use
                                                                 xlink:href="{{ url('/icons/sprites/free.svg#cil-pencil') }}">
@@ -135,7 +144,8 @@
                                                 </div>
 
                                                 <div class="col-6 ">
-                                                    <form action="/field_officers/{{$field_officer->id}}" method="post">
+                                                    <form action="/field_officers/{{$field_officer->user_id}}"
+                                                        method="post">
                                                         @csrf
                                                         @method("DELETE")
                                                         <button type="submit" value="Delete" name="submit"

@@ -10,13 +10,13 @@ class HomeController extends Controller
     public function index()
     {
         $role = Auth::user()->officer_type;
-        if ($role == 'admin') {
+        if ($role == 'Administrator') {
             return view('admin.home');
-        } elseif ($role == 'camp_manager') {
+        } elseif ($role == 'Camp Manager') {
             return view('barangay-captain.home');
-        } elseif ($role == 'barangay_captain') {
+        } elseif ($role == 'Barangay Captain') {
             return view('camp-manager.home');
-        } elseif ($role == 'courier') {
+        } elseif ($role == 'Courier') {
             return view('courier.home');
         }
     }

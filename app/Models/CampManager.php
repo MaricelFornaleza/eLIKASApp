@@ -5,15 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Admin extends Model
+class CampManager extends Model
 {
     use HasFactory;
     protected $fillable = [
         'user_id',
-        'branch',
+        'designation',
         'display_name'
     ];
-    public function admin()
+    public function camp_manager()
     {
         return $this->belongsTo('App\Models\User');
     }

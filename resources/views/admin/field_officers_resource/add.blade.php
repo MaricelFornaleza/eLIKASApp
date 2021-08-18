@@ -54,11 +54,11 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="contact_no[1]">Contact Number</label>
-                                        <input class="form-control @error('contact_no[1]') is-invalid @enderror"
-                                            required id="contact_no[1]" name="contact_no[1]" type="number"
-                                            placeholder="e.g. 09xxxxxxxxx" value="{{ old('contact_no[1]') }}">
-                                        @error('contact_no[1]')
+                                        <label for="contact_no[]">Contact Number</label>
+                                        <input class="form-control @error('contact_no[]') is-invalid @enderror" required
+                                            id="contact_no[]" name="contact_no[]" type="number"
+                                            placeholder="e.g. 09xxxxxxxxx">
+                                        @error('contact_no[]')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -67,11 +67,11 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="contact_no[2]">Contact Number (Optional)</label>
-                                        <input class="form-control @error('contact_no[2]') is-invalid @enderror"
-                                            required id="contact_no[2]" name="contact_no[2]" type="number"
-                                            placeholder="e.g. 09xxxxxxxxx" value="{{ old('contact_no[2]') }}">
-                                        @error('contact_no[2]')
+                                        <label for="contact_no[]">Contact Number (Optional)</label>
+                                        <input class="form-control @error('contact_no[]') is-invalid @enderror"
+                                            id="contact_no[]" name="contact_no[]" type="number"
+                                            placeholder="e.g. 09xxxxxxxxx">
+                                        @error('contact_no[]')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -80,19 +80,19 @@
                                 </div>
                             </div>
                             <!-- /.row-->
-                            <div class="row" id='barangay'>
+                            <div class="row">
                                 <div class="form-group col-sm-6">
                                     <label for="officer_type">Officer Type</label>
                                     <select name="officer_type" class="form-control" id="officer_type"
                                         onChange="update()">
-                                        <option value="barangay_captain">Barangay Captain</option>
-                                        <option value="camp_manager">Camp Manager</option>
-                                        <option value="courier">Courier</option>
+                                        <option value="Barangay Captain">Barangay Captain</option>
+                                        <option value="Camp Manager">Camp Manager</option>
+                                        <option value="Courier">Courier</option>
 
                                     </select>
 
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-6" id='barangay'>
                                     <div class="form-group">
                                         <label for="barangay">Barangay</label>
                                         <input class="form-control @error('barangay') is-invalid @enderror"
@@ -105,10 +105,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                            </div>
-                            <!-- /.row-->
-                            <div class="row" id='designation' style="display: none;">
-                                <div class="col-sm-12">
+                                <div class="col-sm-6" id='designation' style="display: none;">
                                     <div class="form-group">
                                         <label for="designation">Designation</label>
                                         <input class="form-control @error('designation') is-invalid @enderror"
@@ -122,6 +119,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <!-- /.row-->
                             <div class="form-group">
                                 <label for="photo">Upload your Profile Picture</label>
@@ -169,7 +167,7 @@
 <script type="text/javascript">
 function update() {
     var select = document.getElementById('officer_type');
-    if (select.value == 'barangay_captain') {
+    if (select.value == 'Barangay Captain') {
         document.getElementById('barangay').style.display = "block";
         document.getElementById('designation').style.display = "none";
     } else {

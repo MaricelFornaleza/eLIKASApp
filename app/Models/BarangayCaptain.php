@@ -5,15 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Admin extends Model
+class BarangayCaptain extends Model
 {
     use HasFactory;
     protected $fillable = [
         'user_id',
-        'branch',
+        'barangay',
         'display_name'
     ];
-    public function admin()
+    public function barangay_captain()
     {
         return $this->belongsTo('App\Models\User');
     }

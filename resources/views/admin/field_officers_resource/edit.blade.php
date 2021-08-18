@@ -24,8 +24,14 @@
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <label for="name">Name</label>
-                                        <input class="form-control " value="{{ $user->name }}" required
-                                            autocomplete="name" id="name" name="name" type="text">
+                                        <input class="form-control @error('name') is-invalid @enderror "
+                                            value="{{ $user->name }}" required autocomplete="name" id="name" name="name"
+                                            type="text">
+                                        @error('name')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -34,52 +40,104 @@
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <label for="email">Email Address</label>
-                                        <input class="form-control" value="{{ $user->email }}" required
-                                            autocomplete="email" id="email" name="email" type="email">
+                                        <input class="form-control @error('email') is-invalid @enderror"
+                                            value="{{ $user->email }}" required autocomplete="email" id="email"
+                                            name="email" type="email">
+                                        @error('email')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
                             <!-- /.row-->
                             <div class="row">
+
+                                @if($contacts->count() == 1)
+                                @foreach($contacts as $contact)
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="contact_no">Contact Number</label>
-                                        @foreach($user->user_contacts as $contact)
-                                        <input class="form-control" value="{{ $contact->contact_no }}" required
-                                            autocomplete="contact_no" id="contact_no" name="contact_no" type="number">
-
-                                        @endforeach
+                                        <label for="contact_no[]">Contact Number</label>
+                                        <input class="form-control @error('contact_no[]') is-invalid @enderror" required
+                                            id="contact_no[]" name="contact_no[]" type="number"
+                                            value="0{{$contact->contact_no}}" placeholder="e.g. 09xxxxxxxxx">
+                                        @error('contact_no[]')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
                                     </div>
                                 </div>
+                                @endforeach
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="contact_no[]">Contact Number (Optional)</label>
+                                        <input class="form-control @error('contact_no[]') is-invalid @enderror" required
+                                            id="contact_no[]" name="contact_no[]" type="number" value=""
+                                            placeholder="e.g. 09xxxxxxxxx">
+                                        @error('contact_no[]')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                @else
+                                @foreach($contacts as $contact)
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="contact_no[]">Contact Number</label>
+                                        <input class="form-control @error('contact_no[]') is-invalid @enderror" required
+                                            id="" name="contact_no[]" type="number" value="0{{$contact->contact_no}}"
+                                            placeholder="e.g. 09xxxxxxxxx">
+                                        @error('contact_no[]')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                @endforeach
+
+                                @endif
+
+
+                            </div>
+                            <!-- /.row-->
+                            <div class="row">
                                 <div class="form-group col-sm-6">
                                     <label for="officer_type">Officer Type</label>
                                     <select name="officer_type" class="form-control" id="officer_type"
                                         onChange="update()">
-                                        <option value="barangay_captain">Barangay Captain</option>
-                                        <option value="camp_manager">Camp Manager</option>
-                                        <option value="courier">Courier</option>
-
+                                        <option value="{{$user->officer_type}}">{{$user->officer_type}}</option>
                                     </select>
 
                                 </div>
-                            </div>
-                            <!-- /.row-->
-                            <div class="row" id='barangay'>
-                                <div class="col-sm-12">
+                                <div class="col-sm-6" id='barangay'>
                                     <div class="form-group">
                                         <label for="barangay">Barangay</label>
-                                        <input class="form-control" value="{{ $user->barangay }}"
-                                            autocomplete="barangay" id="barangay" name="barangay" type="text">
+                                        <input class="form-control @error('barangay') is-invalid @enderror"
+                                            id="barangay" name="barangay" type="text" placeholder="Enter your Barangay"
+                                            value="{{ $user->barangay_captain->barangay }}">
+                                        @error('barangay')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
                                     </div>
                                 </div>
-                            </div>
-                            <!-- /.row-->
-                            <div class="row" id='designation' style="display: none;">
-                                <div class="col-sm-12">
+                                <div class="col-sm-6" id='designation' style="display: none;">
                                     <div class="form-group">
                                         <label for="designation">Designation</label>
-                                        <input class="form-control" value="{{ $user->designation }}"
-                                            autocomplete="designation" id="designation" name="designation" type="text">
+                                        <input class="form-control @error('designation') is-invalid @enderror"
+                                            id="designation" name="designation" type="text"
+                                            placeholder="Enter your Designation" value="{{ old('designation') }}">
+                                        @error('designation')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -101,13 +159,18 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="password">New Password</label>
-                                            <input class="form-control" required autocomplete="password" id="password"
-                                                name="password" type="text">
+                                            <input class="form-control" autocomplete="password" id="password"
+                                                name="password" type="password">
+                                            @error('password')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
                                         </div>
                                         <div class="form-group">
                                             <label for="password">Confirm Password</label>
-                                            <input class="form-control" required autocomplete="password" id="password"
-                                                name="password" type="text">
+                                            <input class="form-control" autocomplete="password" id="password-confirm"
+                                                name="password_confirmation" type="password">
                                         </div>
                                     </div>
 

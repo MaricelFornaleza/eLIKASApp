@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BarangayCaptain;
+use App\Models\CampManager;
 use App\Models\Contact;
+use App\Models\Courier;
 use App\Models\Inventory;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
-use Excel;
+use Illuminate\Support\Str;
 
 class FieldOfficerController extends Controller
 {
@@ -19,13 +22,22 @@ class FieldOfficerController extends Controller
      */
     public function index()
     {
-        $field_officers = User::whereRoleIs(['camp_manager', 'barangay_captain', 'courier'])
-            ->join('role_user', 'role_user.user_id', '=', 'users.id')
-            ->join('roles', function ($join) {
-                $join->on('role_user.role_id', '=', 'roles.id');
-            })
-            ->select('users.*', 'roles.display_name as type')
+        $field_officers = User::where('officer_type', '!=', 'Administrator')
+            ->leftJoin('camp_managers', 'camp_managers.user_id', '=', 'users.id')
+            ->leftJoin('barangay_captains', 'barangay_captains.user_id', '=', 'users.id')
+            ->leftJoin('couriers', 'couriers.user_id', '=', 'users.id')
+            ->select(
+                'users.*',
+                'camp_managers.*',
+                'barangay_captains.*',
+                'couriers.*',
+                'users.id as user_id',
+                'camp_managers.designation as camp_designation',
+                'barangay_captains.barangay as barangay',
+                'couriers.designation as c_designation '
+            )
             ->get();
+        // dd($field_officers);
         return view('admin.field_officers_resource.field_officers')->with('field_officers', $field_officers);
         // return dd($field_officers);
 
@@ -49,14 +61,19 @@ class FieldOfficerController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request['officer_type'] == 'barangay_captain') {
+        //A generated temporary password for field officers
+        $temp_pass = Str::random(8);
+
+        //this validation checks the officer type first
+        //if barangay captain, the barangay field must be required
+        //else, it can be nullable
+        if ($request['officer_type'] == 'Barangay Captain') {
             $validated = $request->validate([
                 'name' => ['required', 'string', 'max:255', 'alpha_spaces'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'photo' => ['image', 'mimes:jpg,png,jpeg'],
-                'barangay' => ['required'],
                 'officer_type' => ['required'],
-                'contact_no' => ['required', 'numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
+                'contact_no[]' => ['numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
                 'barangay' => ['required'],
                 'designation' => ['nullable'],
             ]);
@@ -65,44 +82,68 @@ class FieldOfficerController extends Controller
                 'name' => ['required', 'string', 'max:255', 'alpha_spaces'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'photo' => ['image', 'mimes:jpg,png,jpeg'],
-                'barangay' => ['required'],
                 'officer_type' => ['required'],
-                'contact_no' => ['required', 'numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
+                'contact_no[]' => ['numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
                 'barangay' => ['nullable'],
                 'designation' => ['required'],
             ]);
         }
 
-
-
+        // checkes if the forwarded request has a photo
+        //if it has, get the original filename and save in the public/public/images folder
+        //else, set the filename with the default avatar 
         if ($request->hasFile('photo')) {
             $filename = $request->photo->getClientOriginalName();
             $request->photo->storeAs('images', $filename, 'public');
         } else {
             $filename = "Avatar-default.png";
         }
+        //create a user 
         $user =  User::create([
             'name' => $validated['name'],
             'photo' => $filename,
             'email' => $validated['email'],
-            'barangay' => $validated['barangay'],
-            'designation' => $validated['designation'],
-            'password' => Hash::make('password'),
-        ]);
-        $user->attachRole($validated['officer_type']);
-        $contact = Contact::create([
-            'user_id' => $user->id,
-            'contact_no' => $validated['contact_no']
+            'officer_type' => $validated['officer_type'],
+            'password' => Hash::make($temp_pass),
         ]);
 
-        if ($user->hasRole('barangay_captain')) {
-            $inventory = Inventory::create([
+        // checks if the user is a barangay captain
+        //if true, barangay captain will be created an barangay will be recorded
+        //additionally, inventory of the barangay will be created
+        if ($user->officer_type == "Barangay Captain") {
+            BarangayCaptain::create([
                 'user_id' => $user->id,
-                'name' => $user->barangay . ' Inventory'
+                'barangay' => $validated['barangay'],
+            ]);
+            Inventory::create([
+                'user_id' => $user->id,
+                'name' => $validated['barangay'] . ' Inventory'
+            ]);
+        } else if ($user->officer_type == "Camp Manager") {
+            CampManager::create([
+                'user_id' => $user->id,
+                'designation' => $validated['designation'],
+            ]);
+        } else if ($user->officer_type == "Courier") {
+            Courier::create([
+                'user_id' => $user->id,
+                'designation' => $validated['designation'],
             ]);
         }
-        // $bc = User::find($user->id)->user_inventory->name;
-        // dd($bc);
+
+        //create contact
+        //the user can have 1 or more contact numbers
+        foreach ($request->contact_no as $index => $contact_no) {
+            if ($request->contact_no[$index] != null) {
+                Contact::create([
+                    'user_id' => $user->id,
+                    'contact_no' => $request->contact_no[$index],
+                ]);
+            }
+        }
+
+
+
 
         Session::flash('message', 'Field Officer added successfully!');
         return redirect('field_officers');
@@ -128,7 +169,9 @@ class FieldOfficerController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
-        return view('admin.field_officers_resource.edit')->with("user", $user);
+        $contacts = Contact::where('user_id', $user->id)->get();
+        return view('admin.field_officers_resource.edit')->with(compact(["user", 'contacts']));
+        // dd($contacts);
     }
 
     /**
@@ -140,21 +183,83 @@ class FieldOfficerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::find($id);
+        //find the user first 
+        $user = User::findOrFail($id);
+
+        //this validation checks the officer type first
+        //if barangay captain, the barangay field must be required
+        //else, it can be nullable
+        if ($request['officer_type'] == 'Barangay Captain') {
+            $validated = $request->validate([
+                'name' => ['required', 'string', 'max:255', 'alpha_spaces'],
+                'email' => ['required', 'string', 'email', 'max:255'],
+                'photo' => ['image', 'mimes:jpg,png,jpeg'],
+                'officer_type' => ['required'],
+                'contact_no[]' => ['numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
+                'barangay' => ['required'],
+                'designation' => ['nullable'],
+                'password' => ['string', 'min:8', 'confirmed'],
+            ]);
+        } else {
+            $validated = $request->validate([
+                'name' => ['required', 'string', 'max:255', 'alpha_spaces'],
+                'email' => ['required', 'string', 'email', 'max:255'],
+                'photo' => ['image', 'mimes:jpg,png,jpeg'],
+                'officer_type' => ['required'],
+                'contact_no[]' => ['numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
+                'barangay' => ['nullable'],
+                'designation' => ['required'],
+                'password' => ['string', 'min:8', 'confirmed'],
+
+            ]);
+        }
         if ($request->hasFile('photo')) {
             $filename = $request->photo->getClientOriginalName();
             $request->photo->storeAs('images', $filename, 'public');
         } else {
             $filename = $user->photo;
         }
+        if ($request['password'] == null) {
+            $password = $user->password;
+        } else {
+            $password = $request['password'];
+        }
+        //update user
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->user_contacts()->contact_no = $request->contact_no;
-        $user->barangay = $request->barangay;
-        $user->designation = $request->designation;
         $user->photo = $filename;
-        $user->password = Hash::make($request->password);
+        $user->password = Hash::make($password);
         $user->save();
+
+        //create contact
+        //the user can have 1 or more contact numbers
+        $contact_id = Contact::where('user_id', $user->id)->get();
+        foreach ($request->contact_no as $index => $contact_no) {
+            if ($request->contact_no[$index] != null) {
+                Contact::where('id', $contact_id[$index]->id)
+                    ->update([
+                        'contact_no' => $request->contact_no[$index],
+                    ]);
+            }
+        }
+
+        if ($user->officer_type == "Barangay Captain") {
+            BarangayCaptain::where('user_id', $user->id)->update([
+                'barangay' => $validated['barangay'],
+            ]);
+            Inventory::where('user_id', $user->id)->update([
+                'name' => $validated['barangay'] . ' Inventory'
+            ]);
+        } else if ($user->officer_type == "Camp Manager") {
+            CampManager::where('user_id', $user->id)->update([
+                'designation' => $validated['designation'],
+            ]);
+        } else if ($user->officer_type == "Courier") {
+            Courier::where('user_id', $user->id)->update([
+                'designation' => $validated['designation'],
+            ]);
+        }
+
         Session::flash('message', 'Field Officer updated successfully!');
         return redirect('field_officers');
     }
