@@ -13,8 +13,9 @@ class ChatController extends Controller
 {
     function index()
     {
-        if (Auth::user()->hasRole('admin')) {
-            // $users = User::where('id', '!=', Auth::id())->get();
+        $role = Auth::user()->officer_type;
+        if ($role == "Administrator") {
+
             $users =  DB::select(
                 "SELECT users.id, users.name, users.photo, users.email,
                 count(is_read) as unread

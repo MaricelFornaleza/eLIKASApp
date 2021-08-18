@@ -1,13 +1,17 @@
 @extends('layouts.webBase')
 
 @section('css')
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
-<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="crossorigin=""></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
 
-<!-- Select2 CSS --> 
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" /> 
+<!-- Select2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 
-<!-- Select2 JS --> 
+<!-- Select2 JS -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
 <style>
@@ -20,38 +24,46 @@
 
 @section('content')
 
-        <div class="container-fluid">
-          <div class="animated fadeIn">
-            <div class="row justify-content-center">
-              <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+<div class="container-fluid">
+    <div class="animated fadeIn">
+        <div class="row justify-content-center">
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                 <div class="card">
                     <div class="card-header ">
-                    <i class="fa fa-align-justify"></i> <h4 class="my-auto">{{ __('Add an Evacuation Center') }}</h4></div>
+                        {{ __('Add an Evacuation Center') }}
+                    </div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('evacuation-center.store') }}">
                             @csrf
-                           
+
                             <div class="form-group row">
                                 <div class="col-sm-12 col-md-6">
                                     <div class="form-group row px-3">
-                                        <label class="lead">Name of the Evacuation Center <code>*</code></label>
-                                        <input class="form-control" type="text" placeholder="{{ __('Enter evacuation center name') }}" name="name" required autofocus>
+                                        <label for="name">Name of the Evacuation Center <code>*</code></label>
+                                        <input class="form-control" type="text"
+                                            placeholder="{{ __('Enter evacuation center name') }}" name="name" required
+                                            autofocus>
                                     </div>
 
                                     <div class="form-group row px-3">
-                                        <label class="lead">Address <code>*</code></label>
-                                        <input class="form-control" type="text" placeholder="{{ __('Enter evacuation center address') }}" name="address" required autofocus>
+                                        <label>Address <code>*</code></label>
+                                        <input class="form-control" type="text"
+                                            placeholder="{{ __('Enter evacuation center address') }}" name="address"
+                                            required autofocus>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-sm-12 col-md-12 col-lg-8 col-xl-6">
                                             <div class="form-group row px-3">
-                                                <label class="lead" for="camp_manager_id">Camp Manager</label>
+                                                <label for="camp_manager_id">Camp Manager</label>
                                                 <!-- <input class="form-control" type="text" placeholder="{{ __('Enter name') }}" name="camp_manager" required autofocus> -->
-                                                <select name="camp_manager_id" id='camp_manager_id' class="h-100 form-control">
+                                                <select name="camp_manager_id" id='camp_manager_id'
+                                                    class="h-100 form-control">
                                                     <option value=''>Select User</option>
-                                                    @foreach($camp_managers as $camp_manager) 
-                                                        <option value='{{ $camp_manager->id }}'>{{ $camp_manager->name }}</option>
+                                                    @foreach($camp_managers as $camp_manager)
+                                                    <option value='{{ $camp_manager->id }}'>
+                                                        {{ $camp_manager->name }}
+                                                    </option>
                                                     @endforeach
                                                 </select>
                                                 <!-- <input type='button' value='Seleted option' id='but_read'>
@@ -62,34 +74,64 @@
 
                                         <div class="col-sm-12 col-md-6 col-lg-8 col-xl-6">
                                             <div class="form-group row px-3">
-                                                <label class="lead">Evacuation Center Capacity <code>*</code></label>
-                                                <input class="form-control" type="number" placeholder="{{ __('Enter Capacity') }}" value=0 name="capacity" required autofocus>
+                                                <label>Capacity
+                                                    <code>*</code></label>
+                                                <input class="form-control" type="number"
+                                                    placeholder="{{ __('Enter Capacity') }}" value=0 name="capacity"
+                                                    required autofocus>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="form-group row px-3">
-                                        <label class="lead" for="characteristics">Other Characteristics</label>
-                                        <textarea class="form-control" id="characteristics" name="characteristics" rows="6" placeholder="Enter evacuation center characteristics" required autofocus></textarea>
+                                        <label for="characteristics">Other Characteristics</label>
+                                        <textarea class="form-control" id="characteristics" name="characteristics"
+                                            rows="6" placeholder="Enter evacuation center characteristics" required
+                                            autofocus></textarea>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <label for="latitude">Latitude</label>
+                                            <input type="number" name="latitude" id="latitude" class="form-control"
+                                                required />
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="longitude">Longitude</label>
+                                            <input type="number" name="longitude" id="longitude" class="form-control"
+                                                required />
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="col-sm-12 col-md-6">
                                     <div class="w-100 " id="mapid"></div>
-                                    <input type="hidden" name="latitude" id="latitude" required/>
-                                    <input type="hidden" name="longitude" id="longitude" required/>
+                                    <!-- <div class="row">
+                                        <div class="col-6">
+                                            <label for="latitude">Latitude</label>
+                                            <input type="number" name="latitude" id="latitude" class="form-control"
+                                                required />
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="longitude">Longitude</label>
+                                            <input type="number" name="longitude" id="longitude" class="form-control"
+                                                required />
+                                        </div>
+                                    </div> -->
+
+
                                 </div>
                             </div>
- 
+
                             <button class="btn  btn-warning" type="submit">{{ __('Submit') }}</button>
-                            <a href="{{ route('evacuation-center.create') }}" class="btn btn-outline-secondary">{{ __('Reset') }}</a> 
+                            <a href="{{ route('evacuation-center.create') }}"
+                                class="btn btn-outline-secondary">{{ __('Reset') }}</a>
                         </form>
                     </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
+    </div>
+</div>
 
 @endsection
 
@@ -100,17 +142,17 @@
 <script src="{{ asset('js/map-js/evacuation-centers/add-marker-on-click.js') }}"></script>
 
 <script>
-    $(document).ready(function(){
-        // Initialize select2
-        $("#camp_manager_id").select2();
+$(document).ready(function() {
+    // Initialize select2
+    $("#camp_manager_id").select2();
 
-        // Read selected option
-        // $('#but_read').click(function(){
-        //     var username = $('#camp_manager_id option:selected').text();
-        //     var userid = $('#camp_manager_id').val();
+    // Read selected option
+    // $('#but_read').click(function(){
+    //     var username = $('#camp_manager_id option:selected').text();
+    //     var userid = $('#camp_manager_id').val();
 
-        //     $('#result').html("id : " + userid + ", name : " + username);
-        // });
-    });
+    //     $('#result').html("id : " + userid + ", name : " + username);
+    // });
+});
 </script>
 @endsection

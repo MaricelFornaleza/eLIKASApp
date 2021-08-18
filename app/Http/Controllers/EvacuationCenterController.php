@@ -25,8 +25,8 @@ class EvacuationCenterController extends Controller
             ->select('evacuation_centers.*', 'users.name as camp_manager_name')
             ->orderByRaw('evacuation_centers.id ASC')
             ->paginate(20);
-        
-        return view('admin.evacuation-center.evacList', ['evacuation_centers' => $evacuation_centers ]);
+
+        return view('admin.evacuation-center.evacList', ['evacuation_centers' => $evacuation_centers]);
 
 
         // SELECT evacuation_centers.id, users.name as camp_manager_name, evacuation_centers.name,
@@ -55,14 +55,11 @@ class EvacuationCenterController extends Controller
      */
     public function create()
     {
-        $camp_managers = User::whereRoleIs(['camp_manager'])
-            ->join('role_user', 'role_user.user_id', '=', 'users.id')
-            ->join('roles', function ($join) {
-                $join->on('role_user.role_id', '=', 'roles.id');
-            })
-            ->select('users.*', 'roles.display_name as type')
+        $camp_managers = User::where('officer_type', 'Camp Manager')
+            ->join('camp_managers', 'camp_managers.user_id', '=', 'users.id')
+            ->select('users.*', 'camp_managers.designation')
             ->get();
-        return view('admin.evacuation-center.create', [ 'camp_managers' => $camp_managers ]);
+        return view('admin.evacuation-center.create', ['camp_managers' => $camp_managers]);
         //return dd($camp_managers);
     }
 
@@ -125,7 +122,7 @@ class EvacuationCenterController extends Controller
      */
     public function edit(Request $request)
     {
-        $evacuation_center= EvacuationCenter::find($request->input('id'));
+        $evacuation_center = EvacuationCenter::find($request->input('id'));
         //$evacuation_centers= EvacuationCenter::where('id', '=', $request->input('id'))->first();
         $camp_managers = User::whereRoleIs(['camp_manager'])
             ->join('role_user', 'role_user.user_id', '=', 'users.id')
@@ -134,8 +131,8 @@ class EvacuationCenterController extends Controller
             })
             ->select('users.*', 'roles.display_name as type')
             ->get();
-        
-        return view('admin.evacuation-center.edit', [ 'evacuation_center' => $evacuation_center, 'camp_managers' => $camp_managers ]);
+
+        return view('admin.evacuation-center.edit', ['evacuation_center' => $evacuation_center, 'camp_managers' => $camp_managers]);
         // return view('admin.evacuation-center.edit',[
         //     'evacuation_centers'  => EvacuationCenter::where('id', '=', $request->input('id'))->first()
         // ]);
@@ -160,7 +157,7 @@ class EvacuationCenterController extends Controller
             'latitude'         => 'required',
             'longitude'        => 'required'
         ]);
-        $evacuation_center= EvacuationCenter::where('id', '=', $request->input('id'))->first();
+        $evacuation_center = EvacuationCenter::where('id', '=', $request->input('id'))->first();
         $evacuation_center->name = $request->input('name');
         $evacuation_center->address = $request->input('address');
         $evacuation_center->camp_manager_id = $request->input('camp_manager_id');
@@ -181,7 +178,7 @@ class EvacuationCenterController extends Controller
      */
     public function delete(Request $request)
     {
-        $evacuation_center= EvacuationCenter::find($request->input('id'));
+        $evacuation_center = EvacuationCenter::find($request->input('id'));
         $evacuation_center->stock_level()->delete();
         $evacuation_center->delete();
         $request->session()->flash('message', 'Successfully deleted ' . $evacuation_center->name . ' evacuation center');
