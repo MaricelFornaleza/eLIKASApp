@@ -112,7 +112,32 @@ function scrollToBottom() {
         scrollTop: $('.message-wrapper').get(0).scrollHeight
     }, 50);
 }
+$('.user').click(function() {
+    $('.user').removeClass('active');
+    $(this).addClass('active');
+    $(this).find('.pending').remove();
 
+    var senderName = $(this).find('.name').text();
+    var avatarSrc = $(this).find('#sender-avatar')
+        .attr('src');
+
+    $('#selected-message').show();
+    $('#avatar').attr('src', avatarSrc);
+    $('.senderName').html(senderName);
+
+    recipient = $(this).attr('id');
+    $.ajax({
+        type: "get",
+        url: "chat/" + recipient,
+        data: "",
+        cache: false,
+        success: function(data, user) {
+            $('#messages').html(data);
+            scrollToBottom();
+        }
+
+    });
+});
 $(document).ready(function() {
     $('#search-text').keyup(function() {
         var text = $(this).val();

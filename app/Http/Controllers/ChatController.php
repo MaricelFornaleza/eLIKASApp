@@ -37,15 +37,17 @@ class ChatController extends Controller
             ->get();
 
         $role = Auth::user()->officer_type;
+        $photo = Auth::user()->photo;
         if ($role == "Administrator") {
-            return view('common.chat.chat_admin')->with('users', $users);
+            return view('common.chat.chat_admin', ['users' => $users]);
         } else {
-            return view('common.chat.chat_field_officer')->with('users', $users);
+            return view('common.chat.chat_field_officer',  ['users' => $users]);
         }
     }
     public function getMessage($user_id)
     {
         $my_id = Auth::id();
+        $photo = Auth::user()->photo;
         Chat::where(['sender' => $user_id, 'recipient' => $my_id])->update(['is_read' => 1]);
         $messages = Chat::where(function ($query) use ($user_id, $my_id) {
             $query->where('sender', $my_id)->where('recipient', $user_id);
