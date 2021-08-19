@@ -17,9 +17,9 @@ class EvacuationCenter extends Model
     /**
      * Get the Camp_Manager that manages the Evacuation Center.
      */
-    public function user()
+    public function camp_manager()
     {
-        return $this->belongsTo('App\Models\User', 'users_id')->withTrashed();
+        return $this->belongsTo('App\Models\CampManager', 'camp_manager_id')->withTrashed();
     }
 
     public function stock_level()

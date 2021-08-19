@@ -38,7 +38,8 @@ Auth::routes();
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/home', 'HomeController@index')->name('home');
-    Route::get('/map/get_evac', 'MapController@get_evac')->name('map.evacuation-centers');
+    Route::get('/map/get_couriers', 'MapController@get_couriers');
+    Route::get('/map/get_evac', 'MapController@get_evac');
     Route::resource('/map', 'MapController');
     Route::prefix('evacuation-centers')->group(function () {
         Route::get('/',         'EvacuationCenterController@index')->name('evacuation-center.index');

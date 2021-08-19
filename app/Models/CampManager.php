@@ -17,4 +17,9 @@ class CampManager extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
+
+    public function request()
+    {
+        return $this->hasMany('App\Models\Request');
+    }
 }

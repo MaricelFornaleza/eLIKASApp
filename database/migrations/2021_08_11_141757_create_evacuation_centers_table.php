@@ -21,9 +21,11 @@ class CreateEvacuationCentersTable extends Migration
             $table->float('latitude');
             $table->float('longitude');
             $table->integer('capacity');
-            $table->string('characteristics');
+            $table->text('characteristics');
             $table->timestamps();
 
+            $table->foreign('camp_manager_id')->references('id')->on('camp_managers')
+                ->onUpdate('cascade')->onDelete('cascade');
         });
 
         Schema::create('stock_levels', function (Blueprint $table) {

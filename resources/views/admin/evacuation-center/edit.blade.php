@@ -6,7 +6,7 @@
 
 <!-- Select2 CSS --> 
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" /> 
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <!-- Select2 JS --> 
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
@@ -26,7 +26,8 @@
               <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                 <div class="card">
                     <div class="card-header ">
-                    <i class="fa fa-align-justify"></i> <h4 class="my-auto">{{ __('Add an Evacuation Center') }}</h4></div>
+                        {{ __('Add an Evacuation Center') }}
+                    </div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('evacuation-center.update', ['id' => $evacuation_center->id]) }}">
                             @csrf
@@ -34,19 +35,19 @@
                             <div class="form-group row">
                                 <div class="col-sm-12 col-md-6">
                                     <div class="form-group row px-3">
-                                        <label class="lead">Name of the Evacuation Center <code>*</code></label>
+                                        <label for="name">Name of the Evacuation Center <code>*</code></label>
                                         <input class="form-control" type="text" placeholder="{{ __('Enter evacuation center name') }}" name="name" value="{{ $evacuation_center->name }}" required autofocus>
                                     </div>
 
                                     <div class="form-group row px-3">
-                                        <label class="lead">Address <code>*</code></label>
+                                        <label>Address <code>*</code></label>
                                         <input class="form-control" type="text" placeholder="{{ __('Enter evacuation center address') }}" name="address" value="{{ $evacuation_center->address }}" required autofocus>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-sm-12 col-md-12 col-lg-8 col-xl-6">
                                             <div class="form-group row px-3">
-                                                <label class="lead" for="camp_manager_id">Camp Manager</label>
+                                                <label for="camp_manager_id">Camp Manager</label>
                                                 <!-- <input class="form-control" type="text" placeholder="{{ __('Enter name') }}" name="camp_manager" required autofocus> -->
                                                 <select name="camp_manager_id" id='camp_manager_id' class="h-100 form-control">
                                                     <option value=''>Select User</option>
@@ -63,27 +64,38 @@
 
                                         <div class="col-sm-12 col-md-6 col-lg-8 col-xl-6">
                                             <div class="form-group row px-3">
-                                                <label class="lead">Evacuation Center Capacity <code>*</code></label>
+                                                <label>Capacity <code>*</code></label>
                                                 <input class="form-control" type="number" placeholder="{{ __('Enter Capacity') }}" name="capacity" value="{{ $evacuation_center->capacity }}" required autofocus>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="form-group row px-3">
-                                        <label class="lead" for="characteristics">Other Characteristics</label>
+                                        <label for="characteristics">Other Characteristics</label>
                                         <textarea class="form-control" id="characteristics" name="characteristics" rows="6" placeholder="{{ __('Enter evacuation center characteristics') }}" required autofocus>{{ $evacuation_center->characteristics }}</textarea>
                                     </div>
-                                </div>
 
+                                    <div class="form-group row">
+                                        <div class="col-6">
+                                            <label for="latitude">Latitude</label>
+                                            <input name="latitude" id="latitude" class="form-control" pattern="[+-]?([0-9]*[.])?[0-9]+"
+                                                value="{{ $evacuation_center->latitude }}" required />
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="longitude">Longitude</label>
+                                            <input name="longitude" id="longitude" class="form-control" pattern="[+-]?([0-9]*[.])?[0-9]+"
+                                                value="{{ $evacuation_center->longitude }}" required />
+                                        </div>
+                                    </div>
+                                </div>
+                                
                                 <div class="col-sm-12 col-md-6">
                                     <div class="w-100 " id="mapid"></div>
-                                    <input type="hidden" name="latitude" id="latitude" value="{{ $evacuation_center->latitude }}" required/>
-                                    <input type="hidden" name="longitude" id="longitude" value="{{ $evacuation_center->longitude }}" required/>
                                 </div>
                             </div>
  
                             <button class="btn  btn-warning" type="submit">{{ __('Submit') }}</button>
-                            <a href="{{ route('evacuation-center.create') }}" class="btn btn-outline-secondary">{{ __('Reset') }}</a> 
+                            <a href="{{ route('evacuation-center.index') }}" class="btn btn-outline-secondary">{{ __('Cancel') }}</a> 
                         </form>
                     </div>
                 </div>
@@ -95,7 +107,6 @@
 @endsection
 
 @section('javascript')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="{{ asset('js/map-js/maps-functions.js') }}"></script>
 <script src="{{ asset('js/map-js/leaflet-maps-simplified.js') }}"></script>
 {{-- <script src="{{ asset('js/map-js/evacuation-centers/add-marker-on-click.js') }}"></script> --}}
@@ -112,7 +123,8 @@
     var clickMarker = new L.marker([lat,lng], {icon: evacIcon()}).addTo(mymap);
     //L.marker([lat,lng]).addTo(mymap);
     addMarker(mymap, clickMarker);
-    //console.log(lat, lng);
+    document.getElementById('latitude').oninput = function() { get_lat() };
+    document.getElementById('longitude').oninput = function() { get_lng() };
    
 </script>
 @endsection

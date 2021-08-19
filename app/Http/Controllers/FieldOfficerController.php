@@ -6,6 +6,7 @@ use App\Models\BarangayCaptain;
 use App\Models\CampManager;
 use App\Models\Contact;
 use App\Models\Courier;
+use App\Models\Location;
 use App\Models\Inventory;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -125,9 +126,14 @@ class FieldOfficerController extends Controller
                 'designation' => $validated['designation'],
             ]);
         } else if ($user->officer_type == "Courier") {
-            Courier::create([
+            $courier = Courier::create([
                 'user_id' => $user->id,
                 'designation' => $validated['designation'],
+            ]);
+            //put here location weak entity
+            //dd($courier->id);
+            Location::create([
+                'courier_id' => $courier->id
             ]);
         }
 
@@ -273,6 +279,10 @@ class FieldOfficerController extends Controller
     public function destroy($id)
     {
         $user = User::find($id);
+        // if ($user->officer_type == "Courier") {
+        //     $user->courier()->delete();
+        //     $user->courier()->location()->delete();
+        // } 
         $user->user_contacts()->delete();
         $user->delete();
         Session::flash('message', 'Field Officer deleted successfully!');
