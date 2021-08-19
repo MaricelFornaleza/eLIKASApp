@@ -66,6 +66,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/chat/{id}', 'ChatController@getMessage');
     Route::post('chat', 'ChatController@sendMessage');
     Route::get('search', 'ChatController@search');
+    Route::get('/chat/all-users', 'ChatController@getAllUsers');
 });
 Route::resource('supplies', 'SupplyController');
 Route::resource('inventory', 'InventoryController');

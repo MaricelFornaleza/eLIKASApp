@@ -141,9 +141,13 @@ input[type="text"]:focus {
 }
 .chat-header {
     height: 50px;
-    background-color: #023047;
+    background-color: #022639;
 }
 
 .wrapper {
     padding: 0% !important;
+}
+
+.active-tab {
+    background-color: #07354d;
 }

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Pusher\Pusher;
 
+
 class ChatController extends Controller
 {
     function index()
@@ -37,7 +38,7 @@ class ChatController extends Controller
             ->get();
 
         $role = Auth::user()->officer_type;
-        $photo = Auth::user()->photo;
+
         if ($role == "Administrator") {
             return view('common.chat.chat_admin', ['users' => $users]);
         } else {

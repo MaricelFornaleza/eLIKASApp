@@ -10,8 +10,11 @@ use App\Models\Inventory;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
+use App\Mail\TestMail;
+
 
 class FieldOfficerController extends Controller
 {
@@ -38,6 +41,7 @@ class FieldOfficerController extends Controller
             )
             ->get();
         // dd($field_officers);
+
         return view('admin.field_officers_resource.field_officers')->with('field_officers', $field_officers);
     }
 
@@ -139,6 +143,12 @@ class FieldOfficerController extends Controller
                 ]);
             }
         }
+
+        $details = [
+            'title' => "eLIKAS Account Details",
+            'body' => $temp_pass,
+        ];
+        // Mail::to("elikasph@gmail.com")->send($details);
         Session::flash('message', 'Field Officer added successfully!');
         return redirect('field_officers');
     }

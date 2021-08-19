@@ -17,8 +17,13 @@
                 </div>
             </div>
             <div class="col-md-4 wrapper">
-                <div class="chat-header">
-                    chat header
+
+                <div class="chat-header row">
+                    <div class="col-12 all-messages tab active-tab" id="all-messages">
+
+                    </div>
+
+
                 </div>
                 <div class="user-wrapper">
                     <ul class="users">
