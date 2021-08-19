@@ -18,6 +18,8 @@ li {
     cursor: pointer;
     padding: 5px 0;
     position: relative;
+    margin-bottom: 5px;
+    margin-top: 5px;
 }
 .user:hover {
     background-color: #f4f7fc;
@@ -66,7 +68,7 @@ li {
 .message-wrapper {
     padding: 10px;
     border: none !important;
-    height: 75vh;
+    height: 72vh;
 }
 .messages .message {
     margin-bottom: 15px;
@@ -105,18 +107,21 @@ input[type="text"] {
     width: 95%;
     padding: 12px 20px;
     margin-top: 15px;
-
+    background-color: white !important;
     display: inline-block;
     border-radius: 4px;
     box-sizing: border-box;
     outline: none;
-    border: 1px solid #ccc;
+    border: 1px solid #d8dbe0 !important;
     align-self: center;
 }
 input[type="text"]:focus {
-    border: 1px solid #023047;
+    border: 1px solid #023047 !important;
 }
-
+.input-group-append {
+    margin-top: 15px;
+    height: 35px;
+}
 .c-main {
     padding-top: 0% !important;
 }

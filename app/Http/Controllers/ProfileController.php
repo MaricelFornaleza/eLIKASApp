@@ -28,7 +28,6 @@ class ProfileController extends Controller
                 'users.id as user_id',
             )
             ->first();
-
         $role = Auth::user()->officer_type;
         if ($role == "Administrator") {
             return view('admin.admin_resource.profile')->with("user", $user);
@@ -113,19 +112,15 @@ class ProfileController extends Controller
         } else {
             $filename = $user->photo;
         }
-        if ($request['password'] == null) {
-            $password = $user->password;
-        } else {
-            $password = $request['password'];
-        }
-
         $user->name = $request->name;
         $user->email = $request->email;
         $user->photo = $filename;
-        $user->password = Hash::make($password);
+        if ($request['password'] != null) {
+            $user->password = Hash::make($request['password']);
+        }
         $user->save();
 
-        //create contact
+        //update contact
         //the user can have 1 or more contact numbers
         $contact_id = Contact::where('user_id', $user->id)->get();
         foreach ($request->contact_no as $index => $contact_no) {

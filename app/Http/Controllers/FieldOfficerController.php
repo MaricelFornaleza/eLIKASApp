@@ -39,8 +39,6 @@ class FieldOfficerController extends Controller
             ->get();
         // dd($field_officers);
         return view('admin.field_officers_resource.field_officers')->with('field_officers', $field_officers);
-        // return dd($field_officers);
-
     }
 
     /**
@@ -107,7 +105,7 @@ class FieldOfficerController extends Controller
             'password' => Hash::make($temp_pass),
         ]);
 
-        // checks if the user is a barangay captain
+        //checks if the user is a barangay captain
         //if true, barangay captain will be created an barangay will be recorded
         //additionally, inventory of the barangay will be created
         if ($user->officer_type == "Barangay Captain") {
@@ -141,10 +139,6 @@ class FieldOfficerController extends Controller
                 ]);
             }
         }
-
-
-
-
         Session::flash('message', 'Field Officer added successfully!');
         return redirect('field_officers');
     }
@@ -213,7 +207,6 @@ class FieldOfficerController extends Controller
                 'barangay' => ['nullable'],
                 'designation' => ['required'],
                 'password' => ['nullable', 'string', 'min:8', 'confirmed'],
-
             ]);
         }
         if ($request->hasFile('photo')) {
@@ -225,16 +218,16 @@ class FieldOfficerController extends Controller
         if ($request['password'] == null) {
             $password = $user->password;
         } else {
-            $password = $request['password'];
+            $password = Hash::make($request['password']);
         }
         //update user
         $user->name = $request->name;
         $user->email = $request->email;
         $user->photo = $filename;
-        $user->password = Hash::make($password);
+        $user->password = $password;
         $user->save();
 
-        //create contact
+        //update contact
         //the user can have 1 or more contact numbers
         $contact_id = Contact::where('user_id', $user->id)->get();
         foreach ($request->contact_no as $index => $contact_no) {
@@ -252,7 +245,6 @@ class FieldOfficerController extends Controller
                 }
             }
         }
-
         if ($user->officer_type == "Barangay Captain") {
             BarangayCaptain::where('user_id', $user->id)->update([
                 'barangay' => $validated['barangay'],

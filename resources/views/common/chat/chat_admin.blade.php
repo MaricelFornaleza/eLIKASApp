@@ -52,31 +52,7 @@ $(document).ready(function() {
 
     });
 
-    $('.user').click(function() {
-        $('.user').removeClass('active');
-        $(this).addClass('active');
-        $(this).find('.pending').remove();
 
-        var senderName = $(this).find('.name').text();
-        var avatarSrc = $(this).find('#sender-avatar').attr('src');
-
-        $('#selected-message').show();
-        $('#avatar').attr('src', avatarSrc);
-        $('.senderName').html(senderName);
-
-        recipient = $(this).attr('id');
-        $.ajax({
-            type: "get",
-            url: "chat/" + recipient,
-            data: "",
-            cache: false,
-            success: function(data, user) {
-                $('#messages').html(data);
-                scrollToBottom();
-            }
-
-        });
-    });
     $(document).on('keyup', '.input-text input', function(e) {
         var message = $(this).val();
         //check of enter key is pressed and message is not empty and recipient is selected
@@ -109,6 +85,81 @@ function scrollToBottom() {
         scrollTop: $('.message-wrapper').get(0).scrollHeight
     }, 50);
 }
+
+
+$(document).ready(function() {
+    $('#search-text').keyup(function() {
+        var text = $(this).val();
+        if (text.length >= 2) {
+            $.ajax({
+                url: "search",
+                data: {
+                    text: text
+                },
+                dataType: 'json',
+                beforeSend: function() {
+                    $('#result').html(
+                        '<li class="list-group-item">Loading...</li>')
+                },
+                success: function(res) {
+                    console.log(res);
+                    var _html = '';
+                    $.each(res, function(index, data) {
+                        _html += '<li class="user" id="' + data.id +
+                            '">' +
+                            '@if(' +
+                            data.unread + ' != 0)'
+                        ' <span class="pending">' + data.unread +
+                            '</span>' +
+                            '@endif' +
+                            '<div class="media">' +
+                            '<div class="media-left">' +
+                            ' <img src="public/images/' + data.photo +
+                            '" alt="user-avatar" class="media-object" id="sender-avatar">' +
+                            '</div>' +
+                            '<div class="media-body">' +
+                            '<p class="name">' + data.name + '</p>' +
+                            '<p class="email">' + data.email + '</p>' +
+                            '</div>' +
+                            '</div>' +
+                            '</li>';
+                    });
+                    $('#result').html(_html);
+                    $('.user').click(function() {
+                        $('.user').removeClass('active');
+                        $(this).addClass('active');
+                        $(this).find('.pending').remove();
+
+                        var senderName = $(this).find('.name').text();
+                        var avatarSrc = $(this).find('#sender-avatar')
+                            .attr('src');
+
+                        $('#selected-message').show();
+                        $('#avatar').attr('src', avatarSrc);
+                        $('.senderName').html(senderName);
+
+                        recipient = $(this).attr('id');
+                        $.ajax({
+                            type: "get",
+                            url: "chat/" + recipient,
+                            data: "",
+                            cache: false,
+                            success: function(data, user) {
+                                $('#messages').html(data);
+                                scrollToBottom();
+                            }
+
+                        });
+                    });
+                }
+            })
+        } else {
+            $('#result').html('');
+            return false;
+        }
+    });
+
+});
 </script>
 
 @endsection
