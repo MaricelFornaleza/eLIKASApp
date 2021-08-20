@@ -20,7 +20,7 @@ function Use_Mapbox(mapname) {
 }
 
 function routeControl(mapname, source_lat, source_lng, dest_lat, dest_lng) {
-  routeControl = L.Routing.control({
+  var control = L.Routing.control({
     waypoints: [
       L.latLng(source_lat,source_lng),
       L.latLng(dest_lat, dest_lng)
@@ -31,11 +31,13 @@ function routeControl(mapname, source_lat, source_lng, dest_lat, dest_lng) {
     createMarker: function() { return null; }
   }).addTo(mapname);
 
-  routeControl.hide();
+  control.hide();
+
+  //return control;
 }
 
 function routeControl_Mapbox(mapname, source_lat, source_lng, dest_lat, dest_lng) {
-  routeControl = L.Routing.control({
+  var control = L.Routing.control({
     waypoints: [
       L.latLng(source_lat,source_lng),
       L.latLng(dest_lat, dest_lng)
@@ -47,11 +49,13 @@ function routeControl_Mapbox(mapname, source_lat, source_lng, dest_lat, dest_lng
     createMarker: function() { return null; }
   }).addTo(mapname);
 
-  routeControl.hide();
+  control.hide();
+
+  //return control;
 }
 
-function getDuration() {
-  routeControl.on('routesfound', function (e) {
+function getDuration(control) {
+  control.on('routesfound', function (e) {
     var routes = e.routes;
     var summary = routes[0].summary;
     // alert distance and time in km and minutes
@@ -95,5 +99,32 @@ function evacIcon(){
     iconAnchor: [9, 48],
     popupAnchor: [170, -20]
   });
+}
+
+function truckIcon(){
+  return icon = L.icon({
+    iconUrl: 'assets/img/pins/mdi_truck-fast.png',
+    iconSize: [32, 27],
+    iconAnchor: [9, 21],
+    popupAnchor: [0, -14]
+  });
+}
+
+function get_lat() {
+  lat = $('#latitude').val();
+  lng = $('#longitude').val();
+  if(lat && lng) {
+    console.log(lat,lng);
+    clickMarker.setLatLng([lat,lng]).setIcon(evacIcon()).addTo(mymap);
+  }
+}
+
+function get_lng() {
+  lat = $('#latitude').val();
+  lng = $('#longitude').val();
+  if(lat && lng) {
+    console.log(lat,lng);
+    clickMarker.setLatLng([lat,lng]).setIcon(evacIcon()).addTo(mymap);
+  }
 }
 

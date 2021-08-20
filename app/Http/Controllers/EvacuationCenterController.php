@@ -124,14 +124,10 @@ class EvacuationCenterController extends Controller
     {
         $evacuation_center = EvacuationCenter::find($request->input('id'));
         //$evacuation_centers= EvacuationCenter::where('id', '=', $request->input('id'))->first();
-        $camp_managers = User::whereRoleIs(['camp_manager'])
-            ->join('role_user', 'role_user.user_id', '=', 'users.id')
-            ->join('roles', function ($join) {
-                $join->on('role_user.role_id', '=', 'roles.id');
-            })
-            ->select('users.*', 'roles.display_name as type')
+        $camp_managers = User::where('officer_type', 'Camp Manager')
+            ->join('camp_managers', 'camp_managers.user_id', '=', 'users.id')
+            ->select('users.*', 'camp_managers.designation')
             ->get();
-
         return view('admin.evacuation-center.edit', ['evacuation_center' => $evacuation_center, 'camp_managers' => $camp_managers]);
         // return view('admin.evacuation-center.edit',[
         //     'evacuation_centers'  => EvacuationCenter::where('id', '=', $request->input('id'))->first()

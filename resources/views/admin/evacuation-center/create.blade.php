@@ -10,7 +10,7 @@
 
 <!-- Select2 CSS -->
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <!-- Select2 JS -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
@@ -89,15 +89,16 @@
                                             rows="6" placeholder="Enter evacuation center characteristics" required
                                             autofocus></textarea>
                                     </div>
-                                    <div class="row">
+                                    
+                                    <div class="form-group row">
                                         <div class="col-6">
                                             <label for="latitude">Latitude</label>
-                                            <input type="number" name="latitude" id="latitude" class="form-control"
+                                            <input name="latitude" id="latitude" class="form-control" pattern="[+-]?([0-9]*[.])?[0-9]+"
                                                 required />
                                         </div>
                                         <div class="col-6">
                                             <label for="longitude">Longitude</label>
-                                            <input type="number" name="longitude" id="longitude" class="form-control"
+                                            <input name="longitude" id="longitude" class="form-control" pattern="[+-]?([0-9]*[.])?[0-9]+"
                                                 required />
                                         </div>
                                     </div>
@@ -105,26 +106,12 @@
 
                                 <div class="col-sm-12 col-md-6">
                                     <div class="w-100 " id="mapid"></div>
-                                    <!-- <div class="row">
-                                        <div class="col-6">
-                                            <label for="latitude">Latitude</label>
-                                            <input type="number" name="latitude" id="latitude" class="form-control"
-                                                required />
-                                        </div>
-                                        <div class="col-6">
-                                            <label for="longitude">Longitude</label>
-                                            <input type="number" name="longitude" id="longitude" class="form-control"
-                                                required />
-                                        </div>
-                                    </div> -->
-
-
                                 </div>
                             </div>
 
                             <button class="btn  btn-warning" type="submit">{{ __('Submit') }}</button>
-                            <a href="{{ route('evacuation-center.create') }}"
-                                class="btn btn-outline-secondary">{{ __('Reset') }}</a>
+                            <a href="{{ route('evacuation-center.index') }}"
+                                class="btn btn-outline-secondary">{{ __('Cancel') }}</a>
                         </form>
                     </div>
                 </div>
@@ -136,23 +123,29 @@
 @endsection
 
 @section('javascript')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="{{ asset('js/map-js/maps-functions.js') }}"></script>
 <script src="{{ asset('js/map-js/leaflet-maps-simplified.js') }}"></script>
-<script src="{{ asset('js/map-js/evacuation-centers/add-marker-on-click.js') }}"></script>
+{{-- <script src="{{ asset('js/map-js/evacuation-centers/add-marker-on-click.js') }}"></script> --}}
 
 <script>
+var clickMarker = new L.marker();
+addMarker(mymap, clickMarker);
+document.getElementById('latitude').oninput = function() { get_lat() };
+document.getElementById('longitude').oninput = function() { get_lng() };
+
 $(document).ready(function() {
     // Initialize select2
     $("#camp_manager_id").select2();
-
     // Read selected option
-    // $('#but_read').click(function(){
-    //     var username = $('#camp_manager_id option:selected').text();
-    //     var userid = $('#camp_manager_id').val();
-
-    //     $('#result').html("id : " + userid + ", name : " + username);
+    // $('#read_coordinates').click(function(){
+    //     //var username = $('#camp_manager_id option:selected').text();
+    //     //var userid = $('#camp_manager_id').val();
+    //     //$('#result').html("id : " + userid + ", name : " + username);
+    //     var lat = $('#latitude').val();
+    //     var lng = $('#longitude').val();
+    //     clickMarker.setLatLng(lat,lng).setIcon(evacIcon()).addTo(mymap);
     // });
 });
+    
 </script>
 @endsection

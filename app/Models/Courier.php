@@ -17,4 +17,14 @@ class Courier extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
+
+    public function location()
+    {
+        return $this->hasOne('App\Models\Location');
+    }
+
+    public function request()
+    {
+        return $this->hasMany('App\Models\Request');
+    }
 }

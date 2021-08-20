@@ -54,7 +54,7 @@
                     <div class="card-body">
                         <div>
                             <table id="evacuation_center"
-                                class="table table-borderless table-hover table-responsive table-light table-striped"
+                                class="table table-borderless table-responsive table-hover table-light table-striped"
                                 >
                                 <thead>
                                     <tr>

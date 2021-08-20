@@ -96,6 +96,14 @@ var evacOptions = {
     'className' : 'custom-popup'
 }
 
+var truckOptions = {
+    'maxWidth': '400',
+    'minWidth': '100',
+    'autoClose': false,
+    'closeOnClick': false,  
+    'className' : 'custom-popup'
+}
+
 $(document).ready(function(){
   $.ajax({ 
     method: "GET", 
@@ -193,16 +201,25 @@ $(document).ready(function(){
           ,evacOptions)
           .addTo(mymap);
       }
-
-        // for (var i = 0; i < markers_evac.length; ++i) {
-        //   L.marker([markers_evac[i].lat, markers_evac[i].lng], {icon: evacIcon})
-        //       .bindPopup('<div class="font-weight-bold">' + markers_evac[i].name + '</div>' + evacPopup, evacOptions)
-        //       .addTo(mymap);
-        // }
     }); 
-    //string += '</table>'; 
-    //$("#records").html(string); 
-  });  
+  }); 
+
+  $.ajax({ 
+    method: "GET", 
+    url: "/map/get_couriers",
+  }).done(function( data ) { 
+    //console.log(data);
+    var result = data;
+    var length = 0;
+    $.each( result, function( key, value ) {
+      for (var i = 0; i < value.length; ++i) {
+        //console.log(i);
+        L.marker([value[i].latitude, value[i].longitude], {icon: truckIcon()})
+        .bindPopup(truckOptions)
+        .addTo(mymap);
+      }
+    }); 
+  }); 
 });
 </script>
 @endsection

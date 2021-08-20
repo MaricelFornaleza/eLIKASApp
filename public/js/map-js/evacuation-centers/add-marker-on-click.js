@@ -7,6 +7,8 @@
 
 var clickMarker = new L.marker();
 addMarker(mymap, clickMarker);
+
+
 // $("#latitude").val(latitude);
 // $("#longitude").val(longitude);
 //document.getElementById("latitude").value = coordinates.lat;

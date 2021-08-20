@@ -99,7 +99,6 @@
                                 </thead>
                                 <tbody>
                                     @foreach($field_officers as $field_officer)
-
                                     <tr>
                                         <td><img class="image rounded-circle"
                                                 src="{{asset('/public/images/'.$field_officer -> photo)}}"
@@ -164,8 +163,7 @@
 
                                         </td>
                                     </tr>
-                                    @endforeach
-
+                                    @endforeach              
                                 </tbody>
                             </table>
                         </div>

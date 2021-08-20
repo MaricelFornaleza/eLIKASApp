@@ -76,6 +76,6 @@ class User extends Authenticatable
     }
     function courier()
     {
-        return $this->hasOne('App\Models\Couriers');
+        return $this->hasOne('App\Models\Courier');
     }
 }

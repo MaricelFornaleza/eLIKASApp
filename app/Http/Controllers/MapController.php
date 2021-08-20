@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\EvacuationCenter;
 use App\Models\StockLevel;
+use App\Models\Courier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -39,14 +40,26 @@ class MapController extends Controller
         //     ON evacuation_centers.id = stock_levels.evacuation_center_id
         //     ORDER BY evacuation_centers.id ASC
 
-        $evacuation_centers =  DB::table('evacuation_centers')
+        $evacuation_centers = DB::table('evacuation_centers')
             ->join('stock_levels', 'evacuation_centers.id', '=', 'stock_levels.evacuation_center_id')
             ->select('evacuation_centers.*', 'stock_levels.food_packs', 'stock_levels.water', 'stock_levels.hygiene_kit', 'stock_levels.medicine',
                 'stock_levels.clothes', 'stock_levels.emergency_shelter_assistance')
             ->orderByRaw('evacuation_centers.id ASC')
             ->get();
             
-        return ['evacuation_centers' => $evacuation_centers ];
+        return [ 'evacuation_centers' => $evacuation_centers ];
+    }
+
+    public function get_couriers()
+    {
+        //$couriers = Courier::all();
+        $couriers =  DB::table('couriers')
+            ->join('locations', 'couriers.id', '=', 'locations.courier_id')
+            ->select('couriers.*', 'locations.latitude', 'locations.longitude', 'locations.updated_at')
+            ->orderByRaw('couriers.id ASC')
+            ->get();
+        
+        return [ 'couriers' => $couriers ];
     }
 
     /**
