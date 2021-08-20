@@ -13,8 +13,8 @@
     <title>eLIKAS</title>
     <link rel="icon" sizes="57x57" href="assets/favicon/Logo-icon-blue.svg">
     <!-- Icons-->
-    <link href="{{ asset('css/free.min.css') }}" rel="stylesheet"> <!-- icons -->
-    <link href="{{ asset('css/flag-icon.min.css') }}" rel="stylesheet"> <!-- icons -->
+    <!-- <link href="{{ asset('css/free.min.css') }}" rel="stylesheet"> icons
+    <link href="{{ asset('css/flag-icon.min.css') }}" rel="stylesheet"> icons -->
     <!-- Main styles for this application-->
     <link href="{{ asset('css/primary-style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
@@ -24,31 +24,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 
     @yield('css')
-    
 
-    
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <!-- Pusher -->
     <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
-    <!-- Global site tag (gtag.js) - Google Analytics-->
-    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-118965717-3"></script>
-    <script>
-    window.dataLayer = window.dataLayer || [];
-
-    function gtag() {
-        dataLayer.push(arguments);
-    }
-    gtag('js', new Date());
-    // Shared ID
-    gtag('config', 'UA-118965717-3');
-    // Bootstrap ID
-    gtag('config', 'UA-118965717-5');
-    </script>
 
     <link href="{{ asset('css/coreui-chartjs.css') }}" rel="stylesheet">
 </head>
-
-
 
 <body class="c-app">
     <div class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-lg-show" id="sidebar">

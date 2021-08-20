@@ -12,7 +12,24 @@
 
     </ul>
 </div>
-
+<!-- 
 <div class="input-text center">
     <input type="text" name="message" class="submit" autofocus>
+    <div class="input-group-append"><span class="input-group-text">
+            <svg class="c-icon">
+                <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-envelope-open"></use>
+            </svg></span></div>
+</div> -->
+<div class="form-group row">
+    <div class="col-md-12 ">
+        <div class="input-group input-text center">
+            <input class="form-control " type="text" name="message" class="submit" autofocus>
+            <div class="input-group-append "><span class="input-group-text">
+                    <svg class="c-icon">
+                        <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-paper-plane"></use>
+                    </svg></span>
+            </div>
+
+        </div>
+    </div>
 </div>

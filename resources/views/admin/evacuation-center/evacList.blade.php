@@ -41,7 +41,6 @@
                                         Add Evacuation Center
                                     </button>
                                 </a>
-
                             </div>
                             <div class=" ml-3 mr-4">
                                 <a href="#">
@@ -49,15 +48,10 @@
                                         Upload Excel File
                                     </button>
                                 </a>
-
                             </div>
-
-
                         </div>
-
                     </div>
                     <div class="card-body">
-
                         <div>
                             <table id="evacuation_center"
                                 class="table table-borderless table-hover table-responsive table-light table-striped"

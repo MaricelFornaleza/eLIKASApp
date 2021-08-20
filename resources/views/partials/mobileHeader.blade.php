@@ -20,13 +20,14 @@
                         <svg class="c-icon mr-2">
                             <use xlink:href="{{ url('/icons/sprites/free.svg#cil-settings') }}"></use>
                         </svg> Settings</a>
-                    <a class="dropdown-item" href="#">
+                    <a class="dropdown-item" href="{{ url('/logout') }}"
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
 
 
                         <svg class="c-icon mr-2">
                             <use xlink:href="{{ url('/icons/sprites/free.svg#cil-account-logout') }}"></use>
                         </svg>
-                        <form action="{{ url('/logout') }}" method="POST"> @csrf <button type="submit"
+                        <form id="logout-form" action="{{ url('/logout') }}" method="POST"> @csrf <button type="submit"
                                 class="btn btn-ghost-dark btn-block">Logout</button></form>
                     </a>
                 </div>

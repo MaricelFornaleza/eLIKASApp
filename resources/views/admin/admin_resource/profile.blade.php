@@ -24,9 +24,7 @@
                                     </button>
                                 </a>
                             </div>
-
                         </div>
-
                     </div>
                     <div class="card-body ">
                         <div class="row ">
@@ -42,17 +40,10 @@
                                     @foreach($user->user_contacts as $contact)
                                     <h6>0{{$contact -> contact_no}}</h6>
                                     @endforeach
-
                                 </h6>
                                 <h6>{{ $user ->branch}}</h6>
-
-
-
                             </div>
-
                         </div>
-
-
                     </div>
                 </div>
             </div>

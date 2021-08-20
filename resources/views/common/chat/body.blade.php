@@ -11,41 +11,53 @@
                         <div class="media-body">
                             <p class="senderName "></p>
                         </div>
+                    </div>
+                </div>
+                <div class="col-md-12 wrapper " id="messages">
+                </div>
+            </div>
+            <div class="col-md-4 wrapper">
+
+                <div class="chat-header row">
+                    <div class="col-12 all-messages tab active-tab" id="all-messages">
 
                     </div>
 
 
                 </div>
-                <div class="col-md-12 wrapper " id="messages">
-
-                </div>
-
-            </div>
-
-            <div class="col-md-4 wrapper">
-                <div class="chat-header">
-                    chat header
-                </div>
                 <div class="user-wrapper">
                     <ul class="users">
-                        @foreach($users as $user)
-                        <li class="user" id="{{ $user->id }}">
-                            @if($user->unread)
-                            <span class="pending">{{$user->unread}}</span>
-                            @endif
-                            <div class="media">
-                                <div class="media-left">
-                                    <img src="public/images/{{$user->photo}}" alt="user-avatar" class="media-object"
-                                        id="sender-avatar">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <!-- <span class="input-group-addon">Search</span> -->
+                                    <input type="text" name="search-text" id="search-text" placeholder="Search"
+                                        class="form-control ">
                                 </div>
-                                <div class="media-body">
-                                    <p class="name">{{$user->name}}</p>
-                                    <p class="email"> {{$user->email}}</p>
+                                <div id="result" class="list-group list-group-flush">
+                                    @foreach($users as $user)
+                                    <li class="user" id="{{ $user->id }}">
+                                        @if($user->unread)
+                                        <span class="pending">{{$user->unread}}</span>
+                                        @endif
+                                        <div class="media">
+                                            <div class="media-left">
+                                                <img src="public/images/{{$user->photo}}" alt="user-avatar"
+                                                    class="media-object" id="sender-avatar">
+                                            </div>
+                                            <div class="media-body">
+                                                <p class="name">{{$user->name}}</p>
+                                                <p class="email"> {{$user->email}}</p>
 
+                                            </div>
+                                        </div>
+                                    </li>
+                                    @endforeach
                                 </div>
                             </div>
-                        </li>
-                        @endforeach
+                        </div>
+
+
                     </ul>
 
                 </div>
