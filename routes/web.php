@@ -18,6 +18,7 @@ use App\Http\Controllers\SupplyController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ImportExcelController;
 use App\Http\Controllers\ExportExcelController;
+use App\Http\Controllers\ReliefRecipientController;
 
 Route::get('/', function () {
     $count = User::count();
@@ -71,3 +72,5 @@ Route::resource('inventory', 'InventoryController');
 
 Route::post('/import_excel_supplies', 'ImportExcelController@import');
 Route::get('/export_excel_supplies', 'ExportExcelController@export');
+
+Route::resource('relief-recipient', 'ReliefRecipientController');

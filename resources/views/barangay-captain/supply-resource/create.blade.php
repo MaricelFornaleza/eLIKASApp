@@ -23,7 +23,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                       <label class="lead">Supply Type</label>
-                                      <select class="form-control" aria-label=".form-select-lg example" name="supply_type" required autofocus>
+                                      <select class="form-control @error('supplly_type') is-invalid @enderror" aria-label=".form-select-lg example" name="supply_type" required autofocus>
                                         <option value="" selected disabled>Select</option>
                                         <option value="Food Pack">Food Pack</option>
                                         <option value="Water">Water</option>
@@ -31,13 +31,23 @@
                                         <option value="Clothes">Clothes</option>
                                         <option value="ESA">ESA</option>
                                       </select>
+                                        @error('supplly_type')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
                                     </div>
                                 </div>
                            
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                       <label class="lead">Quantity</label>
-                                      <input class="form-control" type="number" placeholder="{{ __('Enter Quantity') }}" value=0 name="quantity" required autofocus>
+                                      <input class="form-control @error('quantity') is-invalid @enderror" type="number" placeholder="{{ __('Enter Quantity') }}" value=0 name="quantity" required autofocus>
+                                        @error('quantity')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -47,7 +57,12 @@
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                       <label class="lead">Source</label>
-                                      <input class="form-control" type="text" placeholder="{{ __('Enter Source') }}" name="source" required autofocus>
+                                      <input class="form-control @error('source') is-invalid @enderror" type="text" placeholder="{{ __('Enter Source') }}" name="source" required autofocus>
+                                        @error('source')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>

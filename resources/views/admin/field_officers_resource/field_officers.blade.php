@@ -80,8 +80,8 @@
                     <div class="card-body ">
                         <div>
                             <table id="fieldOfficers"
-                                class="table table-borderless table-hover table-light table-striped "
-                                style="width: 130%;">
+                                class="table table-borderless table-responsive table-hover table-light table-striped "
+                                >
                                 <thead>
                                     <tr>
                                         <th>PHOTO</th>
