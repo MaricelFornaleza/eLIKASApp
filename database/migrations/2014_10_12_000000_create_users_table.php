@@ -60,7 +60,8 @@ class CreateUsersTable extends Migration
         Schema::create('contacts', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
-            $table->bigInteger('contact_no')->unique();
+            $table->bigInteger('contact_no1')->unique();
+            $table->bigInteger('contact_no2')->unique()->nullable();
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')
                 ->onUpdate('cascade')->onDelete('cascade');

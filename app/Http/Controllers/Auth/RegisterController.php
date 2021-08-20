@@ -56,7 +56,8 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255', 'alpha_spaces'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'branch' => ['required', 'string', 'max:255'],
-            'contact_no' => ['required', 'numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
+            'contact_no1' => ['required', 'numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
+            
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
@@ -82,7 +83,8 @@ class RegisterController extends Controller
         ]);
         Contact::create([
             'user_id' => $user->id,
-            'contact_no' => $data['contact_no'],
+            'contact_no1' => $data['contact_no1'],
+            'contact_no2' => null,
         ]);
         Inventory::create([
             'user_id' => $user->id,

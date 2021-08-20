@@ -80,7 +80,7 @@
                     <div class="card-body ">
                         <div>
                             <table id="fieldOfficers"
-                                class="table table-borderless table-responsive table-hover table-light table-striped "
+                                class="table table-borderless table-hover table-light table-striped " style="width: 130%;"
                                 >
                                 <thead>
                                     <tr>
@@ -108,7 +108,10 @@
                                         <td>{{ $field_officer -> officer_type}}</td>
                                         <td>{{ $field_officer -> email }}</td>
                                         <td>@foreach($field_officer -> user_contacts as $contact)
-                                            <h6> 0{{$contact -> contact_no}}</h6>
+                                            <h6> 0{{$contact -> contact_no1}}</h6>
+                                            @if(!empty($contact -> contact_no2))
+                                            <h6> 0{{$contact -> contact_no2}}</h6>
+                                            @endif
                                             @endforeach
                                         </td>
                                         <td>@empty($field_officer -> barangay )
@@ -117,12 +120,12 @@
                                             {{ $field_officer -> barangay}}
                                         </td>
                                         <td>
-                                            @if($field_officer -> camp_designation ==null && $field_officer ->
-                                            c_designation == null)
+                                            @if($field_officer -> camp_designation == null && $field_officer ->
+                                            designation == null)
                                             NA
                                             @else
                                             {{ $field_officer -> camp_designation }}
-                                            {{ $field_officer -> c_designation }}
+                                            {{ $field_officer -> designation }}
                                             @endif
                                         </td>
                                         <td>
