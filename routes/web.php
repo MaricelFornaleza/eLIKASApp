@@ -48,7 +48,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/store',   'EvacuationCenterController@store')->name('evacuation-center.store');
         Route::get('/edit',     'EvacuationCenterController@edit')->name('evacuation-center.edit');
         Route::post('/update',  'EvacuationCenterController@update')->name('evacuation-center.update');
-        Route::get('/delete',   'EvacuationCenterController@delete')->name('evacuation-center.delete');
+        Route::delete('/delete',   'EvacuationCenterController@delete')->name('evacuation-center.delete');
     });
 });
 
