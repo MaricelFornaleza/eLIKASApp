@@ -90,20 +90,33 @@ class ChatController extends Controller
     public function search(Request $request)
     {
         $text = $request->text;
-        if ($request->has('text')) {
+        if (strlen($text) > 0) {
             $result =  User::leftJoin('chats', function ($join) {
                 $join->on('users.id', '=', 'chats.sender')
                     ->where('chats.is_read', '=', '0')
                     ->where('chats.recipient', '=', Auth::id());
             })
                 ->where('users.id', '!=', Auth::id())
-                ->where('users.name', 'ILIKE', "%{$text}%")
-                ->orWhere('users.email', 'ILIKE', "%{$text}%")
-                ->orWhere('users.officer_type', 'ILIKE', "%{$text}%")
+                ->where(function ($q) use ($text) {
+                    $q->where('users.name', 'ILIKE', "%{$text}%")
+                        ->orWhere('users.email', 'ILIKE', "%{$text}%")
+                        ->orWhere('users.officer_type', 'ILIKE', "%{$text}%");
+                })
                 ->select('users.id', 'users.name', 'users.photo', 'users.email', DB::raw("COUNT(chats.is_read) as unread"))
                 ->groupBy('users.id', 'users.name', 'users.photo', 'users.email')
                 ->get();
             // return response()->json($result);
+            return Response($result);
+        } else {
+            $result = User::leftJoin('chats', function ($join) {
+                $join->on('users.id', '=', 'chats.sender')
+                    ->where('chats.is_read', '=', '0')
+                    ->where('chats.recipient', '=', Auth::id());
+            })
+                ->where('users.id', '!=', Auth::id())
+                ->select('users.id', 'users.name', 'users.photo', 'users.email', DB::raw("COUNT(chats.is_read) as unread"))
+                ->groupBy('users.id', 'users.name', 'users.photo', 'users.email')
+                ->get();
             return Response($result);
         }
     }

@@ -25,7 +25,7 @@ $(document).ready(function() {
     // Enable pusher logging - don't include this in production
     Pusher.logToConsole = true;
 
-    var pusher = new Pusher('22e025aaf82f335f344d', {
+    var pusher = new Pusher('ab82b7896a919c5e39dd', {
         cluster: 'ap1'
     });
 

@@ -19,12 +19,12 @@
             </div>
             <div class="col-lg-3 ml-auto">
 
-                <button class="btn btn-block export-btn">
+                <a href="{{ url('/export/field_officers') }}" class="btn btn-block export-btn">
                     <svg class="c-icon mr-2">
                         <use xlink:href="{{ url('/icons/sprites/free.svg#cil-file') }}"></use>
                     </svg>
                     Export to Excel
-                </button>
+                </a>
             </div>
         </div>
         <div class="row">
@@ -65,7 +65,7 @@
 
                             </div>
                             <div class=" ml-3 mr-4">
-                                <a href="{{ url('/field_officers/create') }}">
+                                <a href="{{ url('/import/field_officers') }}">
                                     <button class="btn btn-outline-primary ">
                                         Upload Excel File
                                     </button>
@@ -80,8 +80,8 @@
                     <div class="card-body ">
                         <div>
                             <table id="fieldOfficers"
-                                class="table table-borderless table-hover table-light table-striped " style="width: 130%;"
-                                >
+                                class="table table-borderless table-hover table-light table-striped "
+                                style="width: 130%;">
                                 <thead>
                                     <tr>
                                         <th>PHOTO</th>
@@ -137,7 +137,6 @@
                                                             </use>
                                                         </svg>
                                                     </a>
-
                                                 </div>
 
                                                 <div class="col-6 ">
@@ -163,7 +162,7 @@
 
                                         </td>
                                     </tr>
-                                    @endforeach              
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
