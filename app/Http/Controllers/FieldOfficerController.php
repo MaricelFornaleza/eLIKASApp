@@ -38,7 +38,7 @@ class FieldOfficerController extends Controller
                 'users.id as user_id',
                 'camp_managers.designation as camp_designation',
                 'barangay_captains.barangay as barangay',
-                
+
             )
             ->get();
         // dd($field_officers);
@@ -75,8 +75,8 @@ class FieldOfficerController extends Controller
                 'name' => ['required', 'string', 'max:255', 'alpha_spaces'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'photo' => ['image', 'mimes:jpg,png,jpeg'],
-                'contact_no1' => ['required','numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
-                'contact_no2' => ['nullable','numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
+                'contact_no1' => ['required', 'numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
+                'contact_no2' => ['nullable', 'numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
                 'officer_type' => ['required'],
                 'barangay' => ['required'],
                 'designation' => ['nullable'],
@@ -86,15 +86,15 @@ class FieldOfficerController extends Controller
                 'name' => ['required', 'string', 'max:255', 'alpha_spaces'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'photo' => ['image', 'mimes:jpg,png,jpeg'],
-                'contact_no1' => ['required','numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
-                'contact_no2' => ['nullable','numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
+                'contact_no1' => ['required', 'numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
+                'contact_no2' => ['nullable', 'numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
                 'officer_type' => ['required'],
                 'barangay' => ['nullable'],
                 'designation' => ['required'],
             ]);
         }
 
-     
+
         // checkes if the forwarded request has a photo
         //if it has, get the original filename and save in the public/public/images folder
         //else, set the filename with the default avatar 
@@ -110,8 +110,8 @@ class FieldOfficerController extends Controller
             'photo' => $filename,
             'email' => $validated['email'],
             'officer_type' => $validated['officer_type'],
-            'password' => $temp_pass,
-            // 'password' => Hash::make($temp_pass),
+            // 'password' => $temp_pass,
+            'password' => Hash::make($temp_pass),
         ]);
 
         //checks if the user is a barangay captain
@@ -159,11 +159,23 @@ class FieldOfficerController extends Controller
             'contact_no2' => $request->contact_no2,
         ]);
 
-        $details = [
-            'title' => "eLIKAS Account Details",
-            'body' => $temp_pass,
+
+        //send an email to the newly registered field officer
+        //this will contain the temporary password of the user
+        $to_name = $user->name;
+        $to_email = $user->email;
+        $data = [
+            'name' => $user->name,
+            'body' => $temp_pass
         ];
-        // Mail::to("elikasph@gmail.com")->send($details);
+        Mail::send('emails.mail', $data, function ($message) use ($to_name, $to_email) {
+            $message->to($to_email, $to_name)
+                ->subject('eLIKAS Account Details');
+            $message->from('elikasph@gmail.com', 'eLIKAS Philippines');
+        });
+
+
+
         Session::flash('message', 'Field Officer added successfully!');
         return redirect('field_officers');
     }
@@ -217,8 +229,8 @@ class FieldOfficerController extends Controller
                 'email' => ['required', 'string', 'email', 'max:255'],
                 'photo' => ['image', 'mimes:jpg,png,jpeg'],
                 'officer_type' => ['required'],
-                'contact_no1' => ['required','numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
-                'contact_no2' => ['nullable','numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
+                'contact_no1' => ['required', 'numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
+                'contact_no2' => ['nullable', 'numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
                 'barangay' => ['required'],
                 'designation' => ['nullable'],
                 'password' => ['nullable', 'string', 'min:8', 'confirmed'],
@@ -229,8 +241,8 @@ class FieldOfficerController extends Controller
                 'email' => ['required', 'string', 'email', 'max:255'],
                 'photo' => ['image', 'mimes:jpg,png,jpeg'],
                 'officer_type' => ['required'],
-                'contact_no1' => ['required','numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
-                'contact_no2' => ['nullable','numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
+                'contact_no1' => ['required', 'numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
+                'contact_no2' => ['nullable', 'numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
                 'barangay' => ['nullable'],
                 'designation' => ['required'],
                 'password' => ['nullable', 'string', 'min:8', 'confirmed'],
