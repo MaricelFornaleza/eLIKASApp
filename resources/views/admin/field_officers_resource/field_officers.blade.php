@@ -19,12 +19,12 @@
             </div>
             <div class="col-lg-3 ml-auto">
 
-                <button class="btn btn-block export-btn">
+                <a href="{{ url('/export/field_officers') }}" class="btn btn-block export-btn">
                     <svg class="c-icon mr-2">
                         <use xlink:href="{{ url('/icons/sprites/free.svg#cil-file') }}"></use>
                     </svg>
                     Export to Excel
-                </button>
+                </a>
             </div>
         </div>
         <div class="row">
@@ -65,7 +65,7 @@
 
                             </div>
                             <div class=" ml-3 mr-4">
-                                <a href="{{ url('/field_officers/create') }}">
+                                <a href="{{ url('/import/field_officers') }}">
                                     <button class="btn btn-outline-primary ">
                                         Upload Excel File
                                     </button>
@@ -107,7 +107,10 @@
                                         <td>{{ $field_officer -> officer_type}}</td>
                                         <td>{{ $field_officer -> email }}</td>
                                         <td>@foreach($field_officer -> user_contacts as $contact)
-                                            <h6> 0{{$contact -> contact_no}}</h6>
+                                            <h6> 0{{$contact -> contact_no1}}</h6>
+                                            @if(!empty($contact -> contact_no2))
+                                            <h6> 0{{$contact -> contact_no2}}</h6>
+                                            @endif
                                             @endforeach
                                         </td>
                                         <td>@empty($field_officer -> barangay )
@@ -116,18 +119,13 @@
                                             {{ $field_officer -> barangay}}
                                         </td>
                                         <td>
-                                            @if($field_officer -> camp_designation ==null && $field_officer ->
-                                            c_designation == null)
+                                            @if($field_officer -> camp_designation == null && $field_officer ->
+                                            designation == null)
                                             NA
                                             @else
                                             {{ $field_officer -> camp_designation }}
-                                            {{ $field_officer -> c_designation }}
+                                            {{ $field_officer -> designation }}
                                             @endif
-
-
-
-
-
                                         </td>
                                         <td>
                                             <div class="row">
@@ -139,7 +137,6 @@
                                                             </use>
                                                         </svg>
                                                     </a>
-
                                                 </div>
 
                                                 <div class="col-6 ">
@@ -165,7 +162,7 @@
 
                                         </td>
                                     </tr>
-                                    @endforeach              
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

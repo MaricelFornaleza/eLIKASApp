@@ -53,30 +53,27 @@
                             </div>
                             <!-- /.row-->
                             <div class="row">
-
-                                @if($contacts->count() == 1)
-                                @foreach($contacts as $contact)
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="contact_no[]">Contact Number</label>
-                                        <input class="form-control @error('contact_no[]') is-invalid @enderror" required
-                                            id="contact_no[]" name="contact_no[]" type="number"
-                                            value="0{{$contact->contact_no}}" placeholder="e.g. 09xxxxxxxxx">
-                                        @error('contact_no[]')
+                                        <label for="contact_no1">Contact Number</label>
+                                        <input class="form-control @error('contact_no1') is-invalid @enderror" required
+                                            id="contact_no1" name="contact_no1" type="number"
+                                            value="0{{$contacts->contact_no1}}" placeholder="e.g. 09xxxxxxxxx">
+                                        @error('contact_no1')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
                                     </div>
                                 </div>
-                                @endforeach
+                                @if($contacts -> contact_no2 != null)
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="contact_no[]">Contact Number (Optional)</label>
-                                        <input class="form-control @error('contact_no[]') is-invalid @enderror" required
-                                            id="contact_no[]" name="contact_no[]" type="number" value=""
-                                            placeholder="e.g. 09xxxxxxxxx">
-                                        @error('contact_no[]')
+                                        <label for="contact_no2">Contact Number</label>
+                                        <input class="form-control @error('contact_no2') is-invalid @enderror" required
+                                            id="contact_no2" name="contact_no2" type="number"
+                                            value="0{{$contacts->contact_no2}}" placeholder="e.g. 09xxxxxxxxx">
+                                        @error('contact_no2')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -84,25 +81,20 @@
                                     </div>
                                 </div>
                                 @else
-                                @foreach($contacts as $contact)
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="contact_no[]">Contact Number</label>
-                                        <input class="form-control @error('contact_no[]') is-invalid @enderror" required
-                                            id="" name="contact_no[]" type="number" value="0{{$contact->contact_no}}"
-                                            placeholder="e.g. 09xxxxxxxxx">
-                                        @error('contact_no[]')
+                                        <label for="contact_no2">Contact Number</label>
+                                        <input class="form-control @error('contact_no2') is-invalid @enderror" required
+                                            id="contact_no2" name="contact_no2" type="number"
+                                            value="{{ old('contact_no2') }}" placeholder="e.g. 09xxxxxxxxx">
+                                        @error('contact_no2')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
                                     </div>
                                 </div>
-                                @endforeach
-
                                 @endif
-
-
                             </div>
                             <!-- /.row-->
                             <div class="row">
@@ -114,12 +106,13 @@
                                     </select>
 
                                 </div>
+                                @if($user->officer_type == "Barangay Captain")
                                 <div class="col-sm-6" id='barangay'>
-                                    <div class="form-group">
+                                    <div class=" form-group">
                                         <label for="barangay">Barangay</label>
                                         <input class="form-control @error('barangay') is-invalid @enderror"
                                             id="barangay" name="barangay" type="text" placeholder="Enter your Barangay"
-                                            value="{{ $user->barangay_captain->barangay }}">
+                                            value="{{ $barangay_captain->barangay }}">
                                         @error('barangay')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -127,12 +120,15 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-sm-6" id='designation' style="display: none;">
+                                @elseif($user->officer_type == "Camp Manager")
+
+                                <div class="col-sm-6" id='designation'>
                                     <div class="form-group">
                                         <label for="designation">Designation</label>
                                         <input class="form-control @error('designation') is-invalid @enderror"
                                             id="designation" name="designation" type="text"
-                                            placeholder="Enter your Designation" value="{{ old('designation') }}">
+                                            placeholder="Enter your Designation"
+                                            value="{{ $camp_designation->designation }}">
                                         @error('designation')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -140,6 +136,24 @@
                                         @enderror
                                     </div>
                                 </div>
+                                @elseif($user->officer_type == "Courier")
+                                <div class="col-sm-6" id='designation'>
+                                    <div class="form-group">
+                                        <label for="designation">Designation</label>
+                                        <input class="form-control @error('designation') is-invalid @enderror"
+                                            id="designation" name="designation" type="text"
+                                            placeholder="Enter your Designation"
+                                            value="{{ $courier_designation->designation }}">
+                                        @error('designation')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                @endif
+
                             </div>
                             <!-- /.row-->
                             <div class="form-group">
@@ -147,14 +161,24 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <label for="photo">Upload your Profile Picture</label>
-                                        <div class="center">
-                                            <svg class=" mr-2 image-icon ">
-                                                <use xlink:href="{{ url('/icons/sprites/free.svg#cil-image1') }}"></use>
-                                            </svg>
+                                        <div class="row">
+                                            <div class="col-sm-12 ">
+                                                <img id="preview-image-before-upload"
+                                                    src="/public/images/{{$user->photo}}" alt="preview image"
+                                                    style="max-height: 75px;" class="rounded-circle mb-2">
+                                                <input class=" form-control @error('photo') is-invalid @enderror "
+                                                    type="file" name="photo" value="{{ old('photo') }}" id="photo">
+                                                @error('photo')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
+
 
                                         </div>
 
-                                        <input class="form-control" type="file" name="photo">
+
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
@@ -204,13 +228,24 @@
 <script type="text/javascript">
 function update() {
     var select = document.getElementById('officer_type');
-    if (select.value == 'barangay_captain') {
+    if (select.value == 'Barangay Captain') {
         document.getElementById('barangay').style.display = "block";
         document.getElementById('designation').style.display = "none";
+
     } else {
         document.getElementById('barangay').style.display = "none";
         document.getElementById('designation').style.display = "block";
     }
 }
+
+$(document).ready(function(e) {
+    $('#photo').change(function() {
+        let reader = new FileReader();
+        reader.onload = (e) => {
+            $('#preview-image-before-upload').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(this.files[0]);
+    });
+});
 </script>
 @endsection

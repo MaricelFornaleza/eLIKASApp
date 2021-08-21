@@ -29,48 +29,22 @@
 
     @yield('css')
 
-    <!-- Global site tag (gtag.js) - Google Analytics-->
-    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-118965717-3"></script>
-    <script>
-    window.dataLayer = window.dataLayer || [];
-
-    function gtag() {
-        dataLayer.push(arguments);
-    }
-    gtag('js', new Date());
-    // Shared ID
-    gtag('config', 'UA-118965717-3');
-    // Bootstrap ID
-    gtag('config', 'UA-118965717-5');
-    </script>
-
     <link href="{{ asset('css/coreui-chartjs.css') }}" rel="stylesheet">
 </head>
-
-
 
 <body class="c-app">
     @include('partials.mobileHeader')
     <div class="c-body">
-
         <main class="c-main">
-
             @yield('content')
-
         </main>
-
     </div>
-
     <!-- CoreUI and necessary plugins-->
     <script src="{{ asset('js/coreui.bundle.min.js') }}"></script>
     <script src="{{ asset('js/coreui-utils.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
 
     @yield('javascript')
-
-
-
-
 </body>
 
 </html>

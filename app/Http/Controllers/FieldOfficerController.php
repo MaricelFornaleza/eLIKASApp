@@ -11,8 +11,11 @@ use App\Models\Inventory;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
+use App\Mail\TestMail;
+
 
 class FieldOfficerController extends Controller
 {
@@ -35,13 +38,12 @@ class FieldOfficerController extends Controller
                 'users.id as user_id',
                 'camp_managers.designation as camp_designation',
                 'barangay_captains.barangay as barangay',
-                'couriers.designation as c_designation '
+
             )
             ->get();
         // dd($field_officers);
-        return view('admin.field_officers_resource.field_officers')->with('field_officers', $field_officers);
-        // return dd($field_officers);
 
+        return view('admin.field_officers_resource.field_officers')->with('field_officers', $field_officers);
     }
 
     /**
@@ -73,8 +75,9 @@ class FieldOfficerController extends Controller
                 'name' => ['required', 'string', 'max:255', 'alpha_spaces'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'photo' => ['image', 'mimes:jpg,png,jpeg'],
+                'contact_no1' => ['required', 'numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
+                'contact_no2' => ['nullable', 'numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
                 'officer_type' => ['required'],
-                'contact_no[]' => ['numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
                 'barangay' => ['required'],
                 'designation' => ['nullable'],
             ]);
@@ -83,12 +86,14 @@ class FieldOfficerController extends Controller
                 'name' => ['required', 'string', 'max:255', 'alpha_spaces'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'photo' => ['image', 'mimes:jpg,png,jpeg'],
+                'contact_no1' => ['required', 'numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
+                'contact_no2' => ['nullable', 'numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
                 'officer_type' => ['required'],
-                'contact_no[]' => ['numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
                 'barangay' => ['nullable'],
                 'designation' => ['required'],
             ]);
         }
+
 
         // checkes if the forwarded request has a photo
         //if it has, get the original filename and save in the public/public/images folder
@@ -105,10 +110,11 @@ class FieldOfficerController extends Controller
             'photo' => $filename,
             'email' => $validated['email'],
             'officer_type' => $validated['officer_type'],
+            // 'password' => $temp_pass,
             'password' => Hash::make($temp_pass),
         ]);
 
-        // checks if the user is a barangay captain
+        //checks if the user is a barangay captain
         //if true, barangay captain will be created an barangay will be recorded
         //additionally, inventory of the barangay will be created
         if ($user->officer_type == "Barangay Captain") {
@@ -139,15 +145,34 @@ class FieldOfficerController extends Controller
 
         //create contact
         //the user can have 1 or more contact numbers
-        foreach ($request->contact_no as $index => $contact_no) {
-            if ($request->contact_no[$index] != null) {
-                Contact::create([
-                    'user_id' => $user->id,
-                    'contact_no' => $request->contact_no[$index],
-                ]);
-            }
-        }
+        // foreach ($request->contact_no as $index => $contact_no) {
+        //     if ($request->contact_no[$index] != null) {
+        //         Contact::create([
+        //             'user_id' => $user->id,
+        //             'contact_no' => $request->contact_no[$index],
+        //         ]);
+        //     }
+        // }
+        Contact::create([
+            'user_id' => $user->id,
+            'contact_no1' => $request->contact_no1,
+            'contact_no2' => $request->contact_no2,
+        ]);
 
+
+        //send an email to the newly registered field officer
+        //this will contain the temporary password of the user
+        $to_name = $user->name;
+        $to_email = $user->email;
+        $data = [
+            'name' => $user->name,
+            'body' => $temp_pass
+        ];
+        Mail::send('emails.mail', $data, function ($message) use ($to_name, $to_email) {
+            $message->to($to_email, $to_name)
+                ->subject('eLIKAS Account Details');
+            $message->from('elikasph@gmail.com', 'eLIKAS Philippines');
+        });
 
 
 
@@ -175,8 +200,11 @@ class FieldOfficerController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
-        $contacts = Contact::where('user_id', $user->id)->get();
-        return view('admin.field_officers_resource.edit')->with(compact(["user", 'contacts']));
+        $contacts = Contact::where('user_id', $user->id)->first();
+        $barangay_captain = BarangayCaptain::where('user_id', $user->id)->first();
+        $camp_designation = CampManager::where('user_id', $user->id)->first();
+        $courier_designation = Courier::where('user_id', $user->id)->first();
+        return view('admin.field_officers_resource.edit')->with(compact(["user", 'contacts', 'barangay_captain', 'courier_designation', 'camp_designation']));
         // dd($contacts);
     }
 
@@ -201,10 +229,11 @@ class FieldOfficerController extends Controller
                 'email' => ['required', 'string', 'email', 'max:255'],
                 'photo' => ['image', 'mimes:jpg,png,jpeg'],
                 'officer_type' => ['required'],
-                'contact_no[]' => ['numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
+                'contact_no1' => ['required', 'numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
+                'contact_no2' => ['nullable', 'numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
                 'barangay' => ['required'],
                 'designation' => ['nullable'],
-                'password' => ['string', 'min:8', 'confirmed'],
+                'password' => ['nullable', 'string', 'min:8', 'confirmed'],
             ]);
         } else {
             $validated = $request->validate([
@@ -212,11 +241,11 @@ class FieldOfficerController extends Controller
                 'email' => ['required', 'string', 'email', 'max:255'],
                 'photo' => ['image', 'mimes:jpg,png,jpeg'],
                 'officer_type' => ['required'],
-                'contact_no[]' => ['numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
+                'contact_no1' => ['required', 'numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
+                'contact_no2' => ['nullable', 'numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
                 'barangay' => ['nullable'],
                 'designation' => ['required'],
-                'password' => ['string', 'min:8', 'confirmed'],
-
+                'password' => ['nullable', 'string', 'min:8', 'confirmed'],
             ]);
         }
         if ($request->hasFile('photo')) {
@@ -228,27 +257,39 @@ class FieldOfficerController extends Controller
         if ($request['password'] == null) {
             $password = $user->password;
         } else {
-            $password = $request['password'];
+            $password = Hash::make($request['password']);
         }
         //update user
         $user->name = $request->name;
         $user->email = $request->email;
         $user->photo = $filename;
-        $user->password = Hash::make($password);
+        $user->password = $password;
         $user->save();
 
-        //create contact
+        //update contact
         //the user can have 1 or more contact numbers
-        $contact_id = Contact::where('user_id', $user->id)->get();
-        foreach ($request->contact_no as $index => $contact_no) {
-            if ($request->contact_no[$index] != null) {
-                Contact::where('id', $contact_id[$index]->id)
-                    ->update([
-                        'contact_no' => $request->contact_no[$index],
-                    ]);
-            }
-        }
+        // $contact_id = Contact::where('user_id', $user->id)->get();
+        // foreach ($request->contact_no as $index => $contact_no) {
+        //     if ($request->contact_no[$index] != null) {
+        //         if (!empty($contact_id[$index])) {
+        //             Contact::where('id', $contact_id[$index]->id)
+        //                 ->update([
+        //                     'contact_no' => $request->contact_no[$index],
+        //                 ]);
+        //         } else {
+        //             Contact::create([
+        //                 'user_id' => $user->id,
+        //                 'contact_no' => $request->contact_no[$index],
+        //             ]);
+        //         }
+        //     }
+        // }
 
+        Contact::where('user_id', $user->id)
+            ->update([
+                'contact_no1' => $request->contact_no1,
+                'contact_no2' => $request->contact_no2,
+            ]);
         if ($user->officer_type == "Barangay Captain") {
             BarangayCaptain::where('user_id', $user->id)->update([
                 'barangay' => $validated['barangay'],

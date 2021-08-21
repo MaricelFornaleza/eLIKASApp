@@ -41,7 +41,6 @@
                                         Add Evacuation Center
                                     </button>
                                 </a>
-
                             </div>
                             <div class=" ml-3 mr-4">
                                 <a href="#">
@@ -49,18 +48,13 @@
                                         Upload Excel File
                                     </button>
                                 </a>
-
                             </div>
-
-
                         </div>
-
                     </div>
                     <div class="card-body">
-
                         <div>
-                            <table id="evacuation_center"
-                                class="table table-borderless table-responsive table-hover table-light table-striped"
+                            <table id="evacuationCenter"
+                            class="table table-borderless table-hover table-light table-striped " 
                                 >
                                 <thead>
                                     <tr>
@@ -78,9 +72,9 @@
                                         <th>CHILDREN</th>
                                         <th>PREGNANT</th>
                                         <th>SOLO PARENT</th>
-                                        <th></th>
+                                        
                                         <th>ACTIONS</th>
-                                        <th></th>
+                                        
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -104,13 +98,49 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td>
+                                        <!-- <td>
                                             <a href="{{ route('evacuation-center.edit', ['id' => $evacuation_center->id] ) }}"
                                                 class="btn btn-light"> <i class="cil-pencil"></i></a>
-                                        </td>
-                                        <td>
+                                        
                                             <a href="{{ route('evacuation-center.delete', ['id' => $evacuation_center->id] ) }}"
                                                 class="btn btn-danger"> <i class="cil-trash"></i></a>
+                                        </td> -->
+                                        
+                                        <td>
+                                            <div class="row">
+                                                <div class="col-6 ">
+                                                    <a href="{{ route('evacuation-center.edit', ['id' => $evacuation_center->id] ) }}">
+                                                        <svg
+                                                            class="c-icon ">
+                                                            <use
+                                                                xlink:href="{{ url('/icons/sprites/free.svg#cil-pencil') }}">
+                                                            </use>
+                                                        </svg>
+                                                    </a>
+
+                                                </div>
+
+                                                <div class="col-6 ">
+                                                    <form action="{{ route('evacuation-center.delete', ['id' => $evacuation_center->id] ) }}"
+                                                        method="post">
+                                                        @csrf
+                                                        @method("DELETE")
+                                                        <button type="submit" value="Delete" name="submit"
+                                                            class=" btn-borderless"
+                                                            onclick="return confirm('Are you sure to delete?')">
+                                                            <svg class="c-icon ">
+                                                                <use
+                                                                    xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-delete">
+                                                                </use>
+                                                            </svg>
+                                                        </button>
+
+
+                                                    </form>
+                                                </div>
+                                                </form>
+                                            </div>
+
                                         </td>
                                     </tr>
                                     @endforeach
@@ -135,7 +165,7 @@
 <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
 <script>
 $(document).ready(function() {
-    $('#evacuation_center').DataTable({
+    $('#evacuationCenter').DataTable({
         "scrollX": true,
     });
 });

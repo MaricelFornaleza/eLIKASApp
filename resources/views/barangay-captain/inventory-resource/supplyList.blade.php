@@ -1,7 +1,7 @@
 @extends('layouts.webBase')
 
 @section('css')
-<link rel="stylesheet" href="//cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
 @endsection
 
 @section('content')
@@ -75,16 +75,16 @@
 
                     </div>
                     <div class="card-body ">
-                        <div style="overflow-x:auto !important;" class="table-responsive">
+                        <div>
                             <table id="suppliesTable"
-                                class="table table-borderless table-hover table-light table-striped ">
+                                class="table table-borderless table-hover table-light table-striped " style="width: 100%;">
                                 <thead>
                                     <tr>
-                                    <th>DATE</th>
-                                    <th>SUPPLY_TYPE</th>
-                                    <th>QUANTITY</th>
-                                    <th>SOURCE</th>
-                                    <th>ACTION</th>
+                                        <th>DATE</th>
+                                        <th>SUPPLY_TYPE</th>
+                                        <th>QUANTITY</th>
+                                        <th>SOURCE</th>
+                                        <th>ACTION</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -149,11 +149,13 @@
 @endsection
 
 @section('javascript')
-<script src="//cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
 <script>
 $(document).ready(function() {
     $('#suppliesTable').DataTable({
-        fixedColumns: true,
+        "scrollX": true,
     });
 });
 </script>

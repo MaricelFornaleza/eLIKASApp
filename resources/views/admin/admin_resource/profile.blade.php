@@ -18,15 +18,13 @@
                                 <h4>Profile</h4>
                             </div>
                             <div class="ml-4 mr-4">
-                                <a href="/profile/{{$user->id}}/edit">
+                                <a href="/profile/{{$user->user_id}}/edit">
                                     <button class="btn btn-primary">
                                         Edit Profile
                                     </button>
                                 </a>
                             </div>
-
                         </div>
-
                     </div>
                     <div class="card-body ">
                         <div class="row ">
@@ -36,27 +34,16 @@
                             </div>
                             <div class="col-8 ">
                                 <h3 class="title"> {{$user -> name}}</h3>
-                                <h6>{{ $user ->type}}</h6>
-                                <h6>{{ $user ->email}}</h6>
-                                <h6>@if($user->user_contacts->count() > 1)
+                                <h6>{{ $user->officer_type}}</h6>
+                                <h6>{{ $user->email}}</h6>
+                                <h6>
                                     @foreach($user->user_contacts as $contact)
-                                    {{$contact -> contact_no}} /
+                                    <h6>0{{$contact -> contact_no}}</h6>
                                     @endforeach
-                                    @else
-                                    @foreach($user->user_contacts as $contact)
-                                    {{$contact -> contact_no}}
-                                    @endforeach
-                                    @endif
                                 </h6>
                                 <h6>{{ $user ->branch}}</h6>
-
-
-
                             </div>
-
                         </div>
-
-
                     </div>
                 </div>
             </div>
