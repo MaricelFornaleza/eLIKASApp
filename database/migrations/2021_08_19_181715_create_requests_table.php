@@ -31,9 +31,9 @@ class CreateRequestsTable extends Migration
 
             // $table->foreign('disaster_response_id')->references('id')->on('disaster_responses')
             //     ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('camp_manager_id')->references('id')->on('camp_managers')
+            $table->foreign('camp_manager_id')->references('id')->on('users')
                 ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('courier_id')->references('id')->on('couriers')
+            $table->foreign('courier_id')->references('id')->on('users')
                 ->onUpdate('cascade')->onDelete('cascade');
         });
     }

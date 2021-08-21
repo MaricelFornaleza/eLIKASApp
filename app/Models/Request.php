@@ -30,10 +30,10 @@ class Request extends Model
     // }
     public function camp_manager()
     {
-        return $this->belongsTo('App\Models\CampManager');
+        return $this->belongsTo('App\Models\User','user_id');
     }
     public function courier()
     {
-        return $this->belongsTo('App\Models\Courier');
+        return $this->belongsTo('App\Models\User','user_id');
     }
 }

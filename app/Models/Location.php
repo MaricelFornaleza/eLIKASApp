@@ -15,6 +15,6 @@ class Location extends Model
 
     public function courier()
     {
-        return $this->belongsTo('App\Models\Courier','courier_id');
+        return $this->belongsTo('App\Models\User','user_id');
     }
 }

@@ -55,13 +55,37 @@ class EvacuationCenterController extends Controller
      */
     public function create()
     {
-        $camp_managers = User::where('officer_type', 'Camp Manager')
+        // $camp_managers = User::where('officer_type', 'Camp Manager')
+        //     ->join('camp_managers', 'camp_managers.user_id', '=', 'users.id')
+        //     ->select('users.*')
+        //     ->get();
+        $camp_managers = DB::table('users')
             ->join('camp_managers', 'camp_managers.user_id', '=', 'users.id')
-            ->select('users.*', 'camp_managers.designation')
+            ->leftJoin('evacuation_centers', 'evacuation_centers.camp_manager_id', '=', 'users.id')
+            ->whereNull('evacuation_centers.camp_manager_id')
+            ->select('users.id', 'users.name')
+            ->orderByRaw('users.name ASC')
             ->get();
         return view('admin.evacuation-center.create', ['camp_managers' => $camp_managers]);
-        //return dd($camp_managers);
-    }
+        //return $camp_managers;
+
+        // SELECT users.id, users.name
+        // FROM users
+        // JOIN camp_managers
+        // ON camp_managers.user_id = users.id
+        // WHERE 
+        // (SELECT evacuation_centers.camp_manager_id 
+        // FROM evacuation_centers
+        // WHERE camp_manager_id IS NOT NULL) != camp_managers.user_id
+
+        // SELECT users.id, users.name
+        // FROM users
+        // JOIN camp_managers
+        // ON camp_managers.user_id = users.id
+        // LEFT JOIN evacuation_centers
+        // ON evacuation_centers.camp_manager_id  = users.id
+        // WHERE evacuation_centers.camp_manager_id ISNULL
+        }
 
     /**
      * Store a newly created resource in storage.
@@ -122,16 +146,32 @@ class EvacuationCenterController extends Controller
      */
     public function edit(Request $request)
     {
-        $evacuation_center = EvacuationCenter::find($request->input('id'));
+        $id = $request->input('id');
+        $evacuation_center = EvacuationCenter::find($id);
         //$evacuation_centers= EvacuationCenter::where('id', '=', $request->input('id'))->first();
-        $camp_managers = User::where('officer_type', 'Camp Manager')
+        // $camp_managers = User::where('officer_type', 'Camp Manager')
+        //     ->join('camp_managers', 'camp_managers.user_id', '=', 'users.id')
+        //     ->select('users.*')
+        //     ->get();
+        $camp_managers = DB::table('users')
             ->join('camp_managers', 'camp_managers.user_id', '=', 'users.id')
-            ->select('users.*', 'camp_managers.designation')
+            ->leftJoin('evacuation_centers', 'evacuation_centers.camp_manager_id', '=', 'users.id')
+            ->whereNull('evacuation_centers.camp_manager_id')
+            ->orWhere('evacuation_centers.camp_manager_id', $evacuation_center->camp_manager_id)
+            ->select('users.id', 'users.name')
+            ->orderByRaw('users.name ASC')
             ->get();
+        //return $evacuation_center->camp_manager_id;
         return view('admin.evacuation-center.edit', ['evacuation_center' => $evacuation_center, 'camp_managers' => $camp_managers]);
-        // return view('admin.evacuation-center.edit',[
-        //     'evacuation_centers'  => EvacuationCenter::where('id', '=', $request->input('id'))->first()
-        // ]);
+
+        // SELECT users.id, users.name
+        // FROM users
+        // JOIN camp_managers
+        // ON camp_managers.user_id = users.id
+        // LEFT JOIN evacuation_centers
+        // ON evacuation_centers.camp_manager_id  = users.id
+        // WHERE evacuation_centers.camp_manager_id ISNULL
+        // OR evacuation_centers.camp_manager_id = 3
     }
 
     /**

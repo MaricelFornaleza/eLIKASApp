@@ -21,10 +21,10 @@ class CreateEvacuationCentersTable extends Migration
             $table->float('latitude');
             $table->float('longitude');
             $table->integer('capacity');
-            $table->text('characteristics');
+            $table->text('characteristics')->nullable();
             $table->timestamps();
 
-            $table->foreign('camp_manager_id')->references('id')->on('camp_managers')
+            $table->foreign('camp_manager_id')->references('id')->on('users')
                 ->onUpdate('cascade')->onDelete('cascade');
         });
 
