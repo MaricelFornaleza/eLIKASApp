@@ -59,22 +59,25 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/chat', 'ChatController@index')->name('chat');
     Route::get('/chat/{id}', 'ChatController@getMessage');
     Route::post('chat', 'ChatController@sendMessage');
-    Route::get('/chat/search', 'ChatController@search');
+    Route::get('/search', 'ChatController@search');
 });
 
 Route::resource('supplies', 'SupplyController');
 Route::resource('inventory', 'InventoryController');
 
-Route::post('/import_excel_supplies', 'ImportExcelController@import');
-Route::get('/export_excel_supplies', 'ExportExcelController@export');
+// Route::post('/import_excel_supplies', 'ImportExcelController@import');
+// Route::get('/export_excel_supplies', 'ExportExcelController@export');
 
 Route::resource('relief-recipient', 'ReliefRecipientController');
 
 Route::prefix('import')->group(function () {
     Route::get('/field_officers', 'ImportController@importFieldOfficer');
     Route::post('/field_officers/store', 'ImportController@storeFieldOfficer');
+    Route::get('/supplies', 'ImportController@importSupplies');
+    Route::post('/supplies/store', 'ImportController@storeSupplies');
 });
 
 Route::prefix('export')->group(function () {
     Route::get('/field_officers', 'ExportController@exportFieldOfficer');
+    Route::get('/supplies', 'ExportController@exportSupplies');
 });

@@ -22,7 +22,7 @@ class InventoryController extends Controller
         $user_inventory = User::find($user->id)->user_inventory;
         $inventory_supplies = Inventory::find($user_inventory->id)->inventory_supplies;
         //dd($inventory_supplies);
-        return view('barangay-captain.inventory-resource.supplyList', ['inventory_supplies' => $inventory_supplies ]);
+        return view('admin.inventory-resource.supplyList', ['inventory_supplies' => $inventory_supplies]);
     }
 
     /**

@@ -1,4 +1,4 @@
-@extends('layouts.mobileBase')
+@extends('layouts.webBase')
 
 @section('css')
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
@@ -67,8 +67,21 @@
                                         Upload Excel File
                                     </button>
                                 </a>
+
                             </div>
+                            <!-- <form method="POST" enctype="multipart/form-data"
+                                action="{{ url('/import_excel_supplies') }}">
+                                @csrf
+                                <div class="ml-4 mr-4">
+                                    <input type="file" name="select_file">
+
+                                    <input type="submit" name="upload" class="btn btn-outline-primary" value="Upload">
+                                    </input>
+                                </div>
+                            </form> -->
+
                         </div>
+
                     </div>
                     <div class="card-body ">
                         <div>

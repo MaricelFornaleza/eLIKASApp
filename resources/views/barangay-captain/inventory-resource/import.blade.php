@@ -1,4 +1,4 @@
-@extends('layouts.webBase')
+@extends('layouts.mobileBase')
 
 @section('css')
 
@@ -13,30 +13,14 @@
             <div class="col-lg-8 ">
                 <div class="card">
                     <div class="card-header">
-                        <h5>Import Excel to add Field Officers</h5>
+                        <h5>Import Excel to add Supplies</h5>
 
                     </div>
                     <div class="card-body ">
-                        <h6>To add more than one field officer, you can upload an excel file.</h6>
-                        <div class="row">
-                            @if(count($errors) > 0)
-                            <div class="alert alert-danger col-12">
-                                <h6>
-                                    Upload Validation error
-                                </h6>
-                                <ul>
-                                    @foreach($errors->all() as $error)
-                                    <li>{{$error}}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                            @endif
-
-                        </div>
+                        <h6>To add more than one supply, you can upload an excel file.</h6>
                         <code>Important note: The file must contain the folowing format.</code>
 
-                        <form action="{{ url('/import/field_officers/store') }}" method="post"
-                            enctype="multipart/form-data">
+                        <form action="{{ url('/import/supplies/store') }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="row  mt-5 mb-5">
                                 <input type="file" name="import_file" id="">
