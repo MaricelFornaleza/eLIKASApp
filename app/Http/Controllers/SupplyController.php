@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Support\Facades\Session;
+
 class SupplyController extends Controller 
 {
     
@@ -40,6 +42,12 @@ class SupplyController extends Controller
      */
     public function store(Request $request)
     {
+        $validated = $request->validate([
+            'supply_type' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z]+$/'],
+            'quantity' => ['required', 'numeric', 'regex:/^\d+$/'],
+            'source' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z]+$/'],
+        ]);
+
         //
         $user = Auth::user();
 
@@ -47,11 +55,11 @@ class SupplyController extends Controller
 
         $supply = new Supply();
         $supply->inventory_id     = $user_inventory_id;
-        $supply->supply_type   = $request->input('supply_type');
-        $supply->quantity = $request->input('quantity');
-        $supply->source = $request->input('source');
+        $supply->supply_type   = $validated['supply_type'];
+        $supply->quantity = $validated['quantity'];
+        $supply->source = $validated['source'];
         $supply->save();
-        $request->session()->flash('message', 'Successfully created supply');
+        $request->session()->flash('message', 'Supply created successfully!');
          return redirect()->route('inventory.index');
     }
 
@@ -92,7 +100,7 @@ class SupplyController extends Controller
         $supply->quantity = $request->input('quantity');
         $supply->source = $request->input('source');
         $supply->save();
-        $request->session()->flash('message', 'Successfully created supply');
+        $request->session()->flash('message', 'Supply updated successfully!');
          return redirect()->route('inventory.index');
     }
 
@@ -108,6 +116,7 @@ class SupplyController extends Controller
         if($supply){
             $supply->delete();
         }
+        Session::flash('message', 'Supply deleted successfully!');
         return redirect()->route('inventory.index');
     }
 }

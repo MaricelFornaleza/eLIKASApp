@@ -8,13 +8,23 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
-class SuppliesImport implements ToCollection
+use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+
+
+class SuppliesImport implements ToCollection, WithHeadingRow
 {
     /**
      * @param Collection $collection
      */
     public function collection(Collection $collection)
     {
+        $validator = Validator::make($collection->toArray(), [
+            '*.supply_type' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z]+$/'],
+            '*.quantity' => ['required', 'numeric', 'regex:/^\d+$/'],
+            '*.source' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z]+$/'],
+        ])->validate();
+
         $user = Auth::user();
 
         $user_inventory_id = User::find($user->id)->user_inventory->id;
@@ -23,9 +33,9 @@ class SuppliesImport implements ToCollection
             if ($row->filter()->isNotEmpty()) {
                 $supply = new Supply();
                 $supply->inventory_id     = $user_inventory_id;
-                $supply->supply_type   = $row[0];
-                $supply->quantity = $row[1];
-                $supply->source = $row[2];
+                $supply->supply_type   = $row['supply_type'];
+                $supply->quantity = $row['quantity'];
+                $supply->source = $row['source'];
                 $supply->save();
             }
         }
