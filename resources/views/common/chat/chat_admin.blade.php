@@ -21,13 +21,12 @@ $(document).ready(function() {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+    // Enable pusher logging - don't include this in production
 
     Pusher.logToConsole = true;
-
     var pusher = new Pusher('ab82b7896a919c5e39dd', {
         cluster: 'ap1'
     });
-
     var channel = pusher.subscribe('my-channel');
     channel.bind('my-event', function(data) {
         if (my_id == data.sender) {
@@ -64,6 +63,7 @@ $(document).ready(function() {
             success: function(data, user) {
                 $('#messages').html(data);
                 scrollToBottom();
+                showConvo();
             }
         });
     });
@@ -90,7 +90,14 @@ $(document).ready(function() {
             })
         }
     });
+});
 
+function scrollToBottom() {
+    $('.message-wrapper').animate({
+        scrollTop: $('.message-wrapper').get(0).scrollHeight
+    }, 50);
+}
+$(document).ready(function() {
     $('#search-text').keyup(function() {
         var text = $(this).val();
 
@@ -128,18 +135,60 @@ $(document).ready(function() {
                         '</li>';
                 });
                 $('#result').html(_html);
-                $('#' + data.id).click();
+                $('.user').click(function() {
+                    $('.user').removeClass('active');
+                    $(this).addClass('active');
+                    $(this).find('.pending').remove();
+                    var senderName = $(this).find('.name').text();
+                    var avatarSrc = $(this).find('#sender-avatar')
+                        .attr('src');
+                    $('#selected-message').show();
+                    $('#avatar').attr('src', avatarSrc);
+                    $('.senderName').html(senderName);
+                    recipient = $(this).attr('id');
+                    $.ajax({
+                        type: "get",
+                        url: "chat/" + recipient,
+                        data: "",
+                        cache: false,
+                        success: function(data, user) {
+                            $('#messages').html(data);
+                            scrollToBottom();
+                            showConvo();
+                        }
+                    });
+                });
             }
         })
 
     });
 });
 
-function scrollToBottom() {
-    $('.message-wrapper').animate({
-        scrollTop: $('.message-wrapper').get(0).scrollHeight
-    }, 50);
+
+function showInbox() {
+    $('.inbox').show();
+    $('.convo').hide();
+
 }
+
+function showConvo() {
+    if ($(window).width() >= 767.98) {
+        $('.convo').show();
+        $('.inbox').show();
+    } else {
+        $('.convo').show();
+        $('.inbox').hide();
+    }
+}
+$(window).resize(function() {
+    if ($(window).width() >= 767.98) {
+        $('.convo').show();
+        $('.inbox').show();
+    } else {
+        $('.convo').hide();
+        $('.inbox').show();
+    }
+});
 </script>
 
 @endsection

@@ -151,3 +151,12 @@ input[type="text"]:focus {
 .active-tab {
     background-color: #07354d;
 }
+
+.chat-icon {
+    display: none;
+}
+@media (max-width: 767.98px) {
+    .chat-icon {
+        display: block;
+    }
+}
