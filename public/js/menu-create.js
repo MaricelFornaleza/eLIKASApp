@@ -164,8 +164,8 @@ document.getElementById("type").onchange = function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\laragon\www\eLIKAS-app\resources\js\coreui\menu-create.js */"./resources/js/coreui/menu-create.js");
-module.exports = __webpack_require__(/*! C:\laragon\www\eLIKAS-app\resources\sass\style.scss */"./resources/sass/style.scss");
+__webpack_require__(/*! C:\Users\sevsa\Documents\elikassev\resources\js\coreui\menu-create.js */"./resources/js/coreui/menu-create.js");
+module.exports = __webpack_require__(/*! C:\Users\sevsa\Documents\elikassev\resources\sass\style.scss */"./resources/sass/style.scss");
 
 
 /***/ })
