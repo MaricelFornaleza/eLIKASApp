@@ -29,7 +29,7 @@
         </div>
         <div class="row">
             @if(count($errors) > 0)
-            <div class="alert alert-danger">
+            <div class="alert alert-danger col-12">
                 <h6>
                     Upload Validation error
                 </h6>
@@ -70,12 +70,8 @@
                                         Upload Excel File
                                     </button>
                                 </a>
-
                             </div>
-
-
                         </div>
-
                     </div>
                     <div class="card-body ">
                         <div>

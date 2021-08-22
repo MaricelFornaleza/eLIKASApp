@@ -3,12 +3,11 @@
 namespace App\Exports;
 
 use Maatwebsite\Excel\Concerns\FromCollection;
-
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Inventory;
 
-class UsersExport implements FromCollection
+class SuppliesExport implements FromCollection
 {
     /**
      * @return \Illuminate\Support\Collection
