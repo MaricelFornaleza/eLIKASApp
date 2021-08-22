@@ -1,6 +1,6 @@
 var mymap = L.map('mapid', {
-  center: [13.6218, 123.1948],
-  zoom: 15, 
+  center: [13.6331, 123.2041],
+  zoom: 14, 
   doubleClickZoom: false,
 })
 

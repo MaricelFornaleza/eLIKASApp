@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\EvacuationCenter;
 use App\Models\StockLevel;
+use App\CustomClasses\UpdateMarker;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Pusher\Pusher;
 
 class EvacuationCenterController extends Controller
 {
@@ -96,7 +98,7 @@ class EvacuationCenterController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name'             => 'required|min:1|max:128',
+            'name'             => 'required|min:1|max:128|unique:evacuationcenters',
             'address'          => 'required|min:1|max:256',
             //'camp_manager'     => 'required|min:1|max:64',
             'capacity'         => 'required|numeric',
@@ -121,6 +123,10 @@ class EvacuationCenterController extends Controller
         ]);
 
         $request->session()->flash('message', 'Successfully created evacuation center');
+        
+        $updatemarker = new UpdateMarker;
+        $updatemarker->get_evac();
+        
         return redirect()->route('evacuation-center.index');        //or can be redirected to create
 
         //$bc = User::find($user->id)->user_inventory->name;
@@ -203,6 +209,10 @@ class EvacuationCenterController extends Controller
         $evacuation_center->longitude = $request->input('longitude');
         $evacuation_center->save();
         $request->session()->flash('message', 'Successfully updated evacuation center (' . $evacuation_center->name . ')');
+
+        $updatemarker = new UpdateMarker;
+        $updatemarker->get_evac();
+
         return redirect()->route('evacuation-center.index');
     }
 
@@ -218,6 +228,10 @@ class EvacuationCenterController extends Controller
         $evacuation_center->stock_level()->delete();
         $evacuation_center->delete();
         $request->session()->flash('message', 'Successfully deleted ' . $evacuation_center->name . ' evacuation center');
+        
+        $updatemarker = new UpdateMarker;
+        $updatemarker->get_evac();
+        
         return redirect()->route('evacuation-center.index');
     }
 }
