@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateReliefRecipientsTable extends Migration
+class CreateFamilyMembersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateReliefRecipientsTable extends Migration
      */
     public function up()
     {
-        Schema::create('relief_recipients', function (Blueprint $table) {
+        Schema::create('family_members', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->string('address');
+            $table->string('gender');
             $table->date('birthdate');
             $table->string('sectoral_classification');
-            $table->string('gender');
-            $table->string('family_representative');
+            $table->string('is_representative');
+            $table->string('family_code')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +32,6 @@ class CreateReliefRecipientsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('relief_recipients');
+        Schema::dropIfExists('family_members');
     }
 }

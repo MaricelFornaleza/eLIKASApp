@@ -1,156 +1,99 @@
 @extends('layouts.webBase')
 
+@section('css')
+
+@endsection
+
 @section('content')
 
-        <div class="container-fluid">
-          <div class="animated fadeIn">
-            <div class="row justify-content-center">
-              <div class="col-sm-12 col-md-10 col-lg-8 col-xl-6">
+<div class="container-fluid">
+    <div class="fade-in">
+
+        <div class="row center">
+            <div class="col-lg-8 ">
                 <div class="card">
                     <div class="card-header">
-                    <i class="fa fa-align-justify"></i> <h4>Add a Resident</h4></div>
-                    <div class="card-body">
-                        <form method="POST" action="{{ route('relief-recipient.update', $relief_recipient->id) }}">
+                        Edit Supply
+
+                    </div>
+                    <div class="card-body ">
+                        <form method="POST" action="{{ route('supplies.update', $supply->id) }}">
                             @csrf
                             @method('PUT')
-                            <div class="form-group row px-3">
-                                <label class="lead">Name<a style="color:red"> *</a></label>
-                                <input class="form-control" type="text" placeholder="{{ __('Enter Name') }}" name="name" value="{{ $relief_recipient->name }}" required autofocus>
-                            </div>
-
-                            <div class="form-group row px-3">
-                                <label class="lead">Address<a style="color:red"> *</a></label>
-                                <input class="form-control" type="text" placeholder="{{ __('Enter Address') }}" name="address" value="{{ $relief_recipient->address }}" required autofocus>
-                            </div>
-
-                            <div class="row justify-content-center">
-                              <div class="col-sm-12 col-md-10 col-lg-8 col-xl-6">
-                                <div class="form-group row px-3">
-                                  <label class="lead">Birthdate</label>
-                                  <input class="form-control" type="date" placeholder="{{ __('Enter Birthdate') }}" name="birthdate" value="{{ $relief_recipient->birthdate }}"required autofocus>
-                                </div>
-                              </div>
-                              <div class="col-sm-12 col-md-10 col-lg-8 col-xl-6">
-                                <div class="form-group row px-3">
-                                  <label class="lead">Sectoral Classification</label>
-                                  <select class="form-control" aria-label=".form-select-lg example" name="sectoral_classification"  required autofocus>
-                                    <option value="" disabled>Select</option>
-                                    @if($relief_recipient->sectoral_classification == 'Lactating')
-                                    <option value="Lactating" selected>Lactating</option>
-                                    @else
-                                    <option value="Lactating">Lactating</option>
-                                    @endif
-                                    @if($relief_recipient->sectoral_classification == 'PWD')
-                                    <option value="PWD" selected>PWD</option>
-                                    @else
-                                    <option value="PWD">PWD</option>
-                                    @endif
-                                    @if($relief_recipient->sectoral_classification == 'Senior Citizen')
-                                    <option value="Senior Citizen" selected>Senior Citizen</option>
-                                    @else
-                                    <option value="Senior Citizen">Senior Citizen</option>
-                                    @endif
-                                    @if($relief_recipient->sectoral_classification == 'Children')
-                                    <option value="Children" selected>Children</option>
-                                    @else
-                                    <option value="Children">Children</option>
-                                    @endif
-                                    @if($relief_recipient->sectoral_classification == 'Pregnant')
-                                    <option value="Pregnant" selected>Pregnant</option>
-                                    @else
-                                    <option value="Pregnant">Pregnant</option>
-                                    @endif
-                                    @if($relief_recipient->sectoral_classification == 'Solo Parent')
-                                    <option value="Solo Parent" selected>Solo Parent</option>
-                                    @else
-                                    <option value="Solo Parent">Solo Parent</option>
-                                    @endif
-                                  </select>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div class="row justify-content-center">
-                              <div class="col-sm-12 col-md-10 col-lg-8 col-xl-6">
-                                <div class="form-group row px-3">
-                                  <label class="lead">Gender</label>
-                                </div>
-                                <div class="px-3 row justify-content-center">
-                                  <div class="col-sm-12 col-md-10 col-lg-8 col-xl-6">
-                                    <div class="form-group row px-3">
-                                    @if($relief_recipient->gender == 'Female')
-                                      <input class="form-check-input" type="radio" name="gender" id="radio_female" value="Female" checked required autofocus>
-                                    @else
-                                    <input class="form-check-input" type="radio" name="gender" id="radio_female" value="Female" required autofocus>    
-                                    @endif
-                                      <label class="form-check-label" for="radio_female">
-                                        Female
-                                      </label>
+                            
+                            <!-- /.row-->
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                      <label class="lead">Supply Type</label>
+                                      <select class="form-control" aria-label=".form-select-lg example" name="supply_type"  required autofocus>
+                                        <option value="" disabled>Select</option>
+                                        @if($supply->supply_type == 'Food Pack')
+                                        <option value="Food Pack" selected>Food Pack</option>
+                                        @else
+                                        <option value="Food Pack">Food Pack</option>
+                                        @endif
+                                        @if($supply->supply_type == 'Water')
+                                        <option value="Water" selected>Water</option>
+                                        @else
+                                        <option value="Water">Water</option>
+                                        @endif
+                                        @if($supply->supply_type == 'Hygiene Kit')
+                                        <option value="Hygiene Kit" selected>Hygiene Kit</option>
+                                        @else
+                                        <option value="Hygiene Kit">Hygiene Kit</option>
+                                        @endif
+                                        @if($supply->supply_type == 'Clothes')
+                                        <option value="Clothes" selected>Clothes</option>
+                                        @else
+                                        <option value="Clothes">Clothes</option>
+                                        @endif
+                                        @if($supply->supply_type == 'ESA')
+                                        <option value="ESA" selected>ESA</option>
+                                        @else
+                                        <option value="ESA">ESA</option>
+                                        @endif
+                                      </select>
                                     </div>
-                                  </div>
-                                  <div class="col-sm-12 col-md-10 col-lg-8 col-xl-6">
-                                    <div class="form-group row px-3">
-                                    @if($relief_recipient->gender == 'Male')
-                                      <input class="form-check-input" type="radio" name="gender" id="radio_male" value="Male" checked required autofocus>
-                                    @else
-                                      <input class="form-check-input" type="radio" name="gender" id="radio_male" value="Male" required autofocus>
-                                    @endif
-                                      <label class="form-check-label" for="radio_male">
-                                        Male
-                                      </label>
-                                    </div>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                  <label class="lead">Quantity</a></label>
+                                  <input class="form-control" type="number" placeholder="{{ __('Enter Quantity') }}" name="quantity" value="{{ $supply->quantity }}" required autofocus>
+                                </div>
+                            </div>
+                            <!-- /.row-->
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                      <label class="lead">Source</label>
+                                      <input class="form-control" type="text" placeholder="{{ __('Enter Source') }}" name="source" value="{{ $supply->source }}" required autofocus>
                                   </div>
                                 </div>
-                              </div>
-
-                              <div class="col-sm-12 col-md-10 col-lg-8 col-xl-6">
-                                <div class="form-group row px-3">
-                                  <label class="lead">Family Representative</label>
-                                </div>
-                                <div class="px-3 row justify-content-center">
-                                  <div class="col-sm-12 col-md-10 col-lg-8 col-xl-6">
-                                    <div class="form-group row px-3">
-                                    @if($relief_recipient->family_representative == 'Yes')
-                                      <input class="form-check-input" type="radio" name="family_representative" id="radio_yes" value="Yes" checked required autofocus>
-                                    @else
-                                      <input class="form-check-input" type="radio" name="family_representative" id="radio_yes" value="Yes" required autofocus>
-                                    @endif
-                                      <label class="form-check-label" for="radio_yes">
-                                        Yes
-                                      </label>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-12 col-md-10 col-lg-8 col-xl-6">
-                                    <div class="form-group row px-3">
-                                    @if($relief_recipient->family_representative == 'No')
-                                      <input class="form-check-input" type="radio" name="family_representative" id="radio_no" value="No" checked required autofocus  >
-                                    @else
-                                        <input class="form-check-input" type="radio" name="family_representative" id="radio_no" value="No"  required autofocus  >
-                                    @endif
-                                    
-                                      <label class="form-check-label" for="radio_no">
-                                        No
-                                      </label>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
                             </div>
-         
-                          
- 
-                            <button class="btn  btn-warning" type="submit">{{ __('Save') }}</button>
-                            <a href="{{ route('relief-recipient.index') }}" class="btn btn-outline-secondary">{{ __('Back') }}</a> 
+                            
+                            <div class="row mt-5 center">
+                                <div class="col-4 ">
+                                    <button class="btn btn-primary px-4 " type="submit">{{ __('Update') }}</button>
+                                </div>
+                                <div class="col-4 ">
+                                    <a href="{{ route('inventory.index') }}" class="btn btn-outline-primary px-4 "
+                                        >{{ __('Cancel') }}</a>
+                                </div>
+                            </div>
                         </form>
+
                     </div>
                 </div>
-              </div>
             </div>
-          </div>
+            <!-- /.col-->
         </div>
+        <!-- /.row-->
+    </div>
+</div>
 
 @endsection
 
 @section('javascript')
 
 @endsection
+
