@@ -76,7 +76,8 @@ class FamilyMemberController extends Controller
      */
     public function edit($id)
     {
-        //
+        $family_member = FamilyMember::find($id);
+        return view('admin.relief-recipients.edit', ['family_member' => $family_member ]);
     }
 
     /**
@@ -88,7 +89,23 @@ class FamilyMemberController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            'name'              => ['required', 'string', 'max:255', 'alpha_spaces'],
+            'gender'            => ['required', 'string', 'max:255', 'regex:/^[A-Za-z]+$/'],
+            'birthdate'         => ['required', 'date_format:Y-m-d'],
+            'sectoral_classification' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z]+$/'],
+        ]);
+
+        $family_member = FamilyMember::find($id);
+        $family_member->name     = $validated['name'];
+        $family_member->gender   = $validated['gender'];
+        $family_member->birthdate = $validated['birthdate'];
+        $family_member->sectoral_classification = $validated['sectoral_classification'];
+        $family_member->gender = $request->input('gender');
+        $family_member->is_representative = 'No';
+        $family_member->save();
+        $request->session()->flash('message', 'Resident updated successfully!');
+        return redirect()->route('residents.index');
     }
 
     /**

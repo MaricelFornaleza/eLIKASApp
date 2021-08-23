@@ -116,7 +116,7 @@
                                         <td>
                                             <div class="row">
                                                 <div class="col-6 ">
-                                                    <a href="{{ url('/supplies/' . $family_member->id . '/edit') }}"><svg
+                                                    <a href="{{ url('/residents/' . $family_member->id . '/edit') }}"><svg
                                                             class="c-icon ">
                                                             <use
                                                                 xlink:href="{{ url('/icons/sprites/free.svg#cil-pencil') }}">
