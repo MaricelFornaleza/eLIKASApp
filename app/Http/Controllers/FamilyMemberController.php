@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\FamilyMember;
 
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
 
 class FamilyMemberController extends Controller
 {
@@ -16,6 +17,12 @@ class FamilyMemberController extends Controller
      */
     public function index()
     {
+        // $residents = DB::table('family_members')
+        //     ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
+        //     ->get();
+        //     dd($residents);
+        // $family_member = DB::table('family_members')->select('id', 'name','sectoral_classification')->get();
+        // dd($family_member);
         $family_members = FamilyMember::all();
         return view('admin.relief-recipients.familyMembersList', ['family_members' => $family_members]);
     }
@@ -42,7 +49,7 @@ class FamilyMemberController extends Controller
             'name'              => ['required', 'string', 'max:255', 'alpha_spaces'],
             'gender'            => ['required', 'string', 'max:255', 'regex:/^[A-Za-z]+$/'],
             'birthdate'         => ['required', 'date_format:Y-m-d'],
-            'sectoral_classification' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z]+$/'],
+            'sectoral_classification' => ['required', 'string', 'max:255', 'alpha_spaces'],
         ]);
 
         $family_member = new FamilyMember();
@@ -93,7 +100,7 @@ class FamilyMemberController extends Controller
             'name'              => ['required', 'string', 'max:255', 'alpha_spaces'],
             'gender'            => ['required', 'string', 'max:255', 'regex:/^[A-Za-z]+$/'],
             'birthdate'         => ['required', 'date_format:Y-m-d'],
-            'sectoral_classification' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z]+$/'],
+            'sectoral_classification' => ['required', 'string', 'max:255', 'alpha_spaces'],
         ]);
 
         $family_member = FamilyMember::find($id);
@@ -123,4 +130,21 @@ class FamilyMemberController extends Controller
         Session::flash('message', 'Resident deleted successfully!');
         return redirect()->route('residents.index');
     }
+
+    ///////////////////////////////////////// Group Family Members
+    public function group()
+    {
+        // $userData = FamilyMember::get();
+        // return json_encode(array('data'=>$userData));
+        // $residents = DB::table('family_members')
+        //     ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
+        //     ->get();
+           // dd($checkedResidents);
+        
+        $family_members = DB::table('family_members')->select('id', 'name','sectoral_classification')->get();
+
+        //$family_members = FamilyMember::all();
+        return view('admin.relief-recipients.groupFamilyMembers', ['family_members' => $family_members]);
+    }
 }
+ 

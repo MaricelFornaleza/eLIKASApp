@@ -61,6 +61,14 @@
                                 </a>
 
                             </div>
+                            <div class=" ml-3">
+                                <a href="{{ route('residents.group') }}">
+                                    <button class="btn btn-secondary secondary-button">
+                                        Group Resident
+                                    </button>
+                                </a>
+
+                            </div>
                             <div class=" ml-3 mr-4">
                                 <a href="{{ url('/import/supplies') }}">
                                     <button class="btn btn-outline-primary ">

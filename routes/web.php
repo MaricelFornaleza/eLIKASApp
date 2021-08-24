@@ -64,7 +64,11 @@ Route::group(['middleware' => ['auth']], function () {
 
 Route::resource('supplies', 'SupplyController');
 Route::resource('inventory', 'InventoryController');
+
 Route::resource('residents', 'FamilyMemberController');
+Route::get('residents.group', 'FamilyMemberController@group')->name('residents.group');
+
+
 
 // Route::post('/import_excel_supplies', 'ImportExcelController@import');
 // Route::get('/export_excel_supplies', 'ExportExcelController@export');
