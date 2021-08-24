@@ -7,21 +7,10 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-11">
-            <div class="row mb-4">
-                <div class=" mr-auto ml-3">
-                    <a href="/disaster-response/start">
-                        <button class="btn btn-danger ">
-                            Start Disaster Response
-                        </button>
-                    </a>
-                </div>
-                <div class=" ml-auto mr-3">
-                    <a href="/disaster-response/archive">
-                        Disaster Response Archive
-                    </a>
-                </div>
-            </div>
+        <div class="col-md-11 mb-2">
+            <h4 class="title">
+                Disaster Response Archive
+            </h4>
         </div>
 
         <div class="col-md-11">
@@ -52,15 +41,9 @@
                                 </h6>
                             </div>
                         </a>
-                        <a href="/disaster-response/stop/{{$disaster_response->id}}">
-                            <div class="card-footer">
-                                <svg class="c-icon">
-                                    <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-media-stop">
-                                    </use>
-                                </svg> Stop Disaster Response
-                            </div>
-                        </a>
-
+                        <div class="card-footer">
+                            Ended: {{ date('F j, Y', strtotime($disaster_response->date_ended)) }}
+                        </div>
                     </div>
                 </div>
 

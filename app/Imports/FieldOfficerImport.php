@@ -81,17 +81,17 @@ class FieldOfficerImport implements ToCollection, WithHeadingRow
 
                 //send an email to the newly registered field officer
                 //this will contain the temporary password of the user
-                // $to_name = $user->name;
-                // $to_email = $user->email;
-                // $data = [
-                //     'name' => $user->name,
-                //     'body' => $temp_pass
-                // ];
-                // Mail::send('emails.mail', $data, function ($message) use ($to_name, $to_email) {
-                //     $message->to($to_email, $to_name)
-                //         ->subject('eLIKAS Account Details');
-                //     $message->from('elikasph@gmail.com', 'eLIKAS Philippines');
-                // });
+                $to_name = $user->name;
+                $to_email = $user->email;
+                $data = [
+                    'name' => $user->name,
+                    'body' => $temp_pass
+                ];
+                Mail::send('emails.mail', $data, function ($message) use ($to_name, $to_email) {
+                    $message->to($to_email, $to_name)
+                        ->subject('eLIKAS Account Details');
+                    $message->from('elikasph@gmail.com', 'eLIKAS Philippines');
+                });
             }
         }
     }

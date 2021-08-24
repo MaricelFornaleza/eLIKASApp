@@ -20,6 +20,7 @@ use App\Http\Controllers\ImportExcelController;
 use App\Http\Controllers\ExportExcelController;
 use App\Http\Controllers\ReliefRecipientController;
 
+//login and register 
 Route::get('/', function () {
     $count = User::count();
     if ($count == 0) {
@@ -36,7 +37,20 @@ Route::auth('/register', function () {
 
 Auth::routes();
 
+//User Profile 
+Route::resource('/profile', 'ProfileController');
 
+
+//Disaster Response
+Route::prefix('disaster-response')->group(function () {
+    Route::get('/start', 'DisasterResponseController@start');
+    Route::post('/store', 'DisasterResponseController@store');
+    Route::get('/show/{id}', 'DisasterResponseController@show');
+    Route::get('/stop/{id}', 'DisasterResponseController@stop');
+    Route::get('/archive', 'DisasterResponseController@archive');
+});
+
+//map and evacuation center 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/home', 'HomeController@index')->name('home');
     Route::get('/map/get_couriers', 'MapController@get_couriers');
@@ -52,9 +66,19 @@ Route::group(['middleware' => ['auth']], function () {
     });
 });
 
+//field officer 
 Route::resource('/field_officers', 'FieldOfficerController');
 
-Route::resource('/profile', 'ProfileController');
+//requests
+
+//residents
+Route::resource('relief-recipient', 'ReliefRecipientController');
+
+//supply and inventory
+Route::resource('supplies', 'SupplyController');
+Route::resource('inventory', 'InventoryController');
+
+//chat
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/chat', 'ChatController@index')->name('chat');
     Route::get('/chat/{id}', 'ChatController@getMessage');
@@ -62,14 +86,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/search', 'ChatController@search');
 });
 
-Route::resource('supplies', 'SupplyController');
-Route::resource('inventory', 'InventoryController');
-
-// Route::post('/import_excel_supplies', 'ImportExcelController@import');
-// Route::get('/export_excel_supplies', 'ExportExcelController@export');
-
-Route::resource('relief-recipient', 'ReliefRecipientController');
-
+//import and export excel
 Route::prefix('import')->group(function () {
     Route::get('/field_officers', 'ImportController@importFieldOfficer');
     Route::post('/field_officers/store', 'ImportController@storeFieldOfficer');
@@ -80,4 +97,9 @@ Route::prefix('import')->group(function () {
 Route::prefix('export')->group(function () {
     Route::get('/field_officers', 'ExportController@exportFieldOfficer');
     Route::get('/supplies', 'ExportController@exportSupplies');
+});
+
+//barangay
+Route::prefix('barangay')->group(function () {
+    Route::get('/search', 'BarangayController@search');
 });
