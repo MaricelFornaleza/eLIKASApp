@@ -18,11 +18,14 @@ class InventoryController extends Controller
     public function index()
     {
         $user = Auth::user();
-
         $user_inventory = User::find($user->id)->user_inventory;
         $inventory_supplies = Inventory::find($user_inventory->id)->inventory_supplies;
         //dd($inventory_supplies);
-        return view('admin.inventory-resource.supplyList', ['inventory_supplies' => $inventory_supplies]);
+        if ($user->officer_type == "Administrator") {
+            return view('admin.inventory-resource.supplyList', ['inventory_supplies' => $inventory_supplies]);
+        } else if ($user->officer_type == "Barangay Captain") {
+            return view('barangay-captain.inventory-resource.supplyList', ['inventory_supplies' => $inventory_supplies]);
+        }
     }
 
     /**
