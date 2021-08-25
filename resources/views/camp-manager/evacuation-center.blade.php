@@ -27,37 +27,43 @@
                 <div class="row mt-5">
                     <!-- Evacuees button -->
                     <div class="col-md-6 col-lg-4  ">
-                        <div class="card overflow-hidden">
-                            <div class="card-body p-0 d-flex align-items-center">
-                                <div class="bg-accent py-4 px-4 mfe-3">
-                                    <svg class="c-icon c-icon-xl">
-                                        <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-settings"></use>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <div class="text-value text-accent">
-                                        <h5 class="mb-0 pb-0"><b>Evacuees</b> </h5>
+                        <a href="/camp-manager/evacuees">
+                            <div class="card overflow-hidden">
+                                <div class="card-body p-0 d-flex align-items-center">
+                                    <div class="bg-accent py-4 px-4 mfe-3">
+                                        <svg class="c-icon c-icon-xl">
+                                            <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-settings"></use>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <div class="text-value text-accent">
+                                            <h5 class="mb-0 pb-0"><b>Evacuees</b> </h5>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
+
+
                     <!-- Supply Button -->
                     <div class="col-md-6 col-lg-4  ">
-                        <div class="card overflow-hidden">
-                            <div class="card-body p-0 d-flex align-items-center">
-                                <div class="bg-secondary py-4 px-4 mfe-3">
-                                    <svg class="c-icon c-icon-xl">
-                                        <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-settings"></use>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <div class="text-value text-secondary">
-                                        <h5 class="mb-0 pb-0"><b>Supply</b> </h5>
+                        <a href="/camp-manager/supply-view">
+                            <div class="card overflow-hidden">
+                                <div class="card-body p-0 d-flex align-items-center">
+                                    <div class="bg-secondary py-4 px-4 mfe-3">
+                                        <svg class="c-icon c-icon-xl">
+                                            <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-settings"></use>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <div class="text-value text-secondary">
+                                            <h5 class="mb-0 pb-0"><b>Supply</b> </h5>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
 
                     <!-- Request Button -->

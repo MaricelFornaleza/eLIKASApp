@@ -79,3 +79,14 @@ body {
     outline: 0;
     box-shadow: 0 0 0 0.2rem rgba(31, 191, 219, 0.25) !important;
 }
+ul.list-group.list-group-striped li:nth-of-type(odd) {
+    background: #f4f7fc;
+}
+ul.list-group.list-group-striped li:nth-of-type(even) {
+    background: white;
+}
+.secondary-button {
+    background-color: #219ebc !important;
+    color: white !important;
+    border: none !important;
+}
