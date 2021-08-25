@@ -18,7 +18,7 @@ use App\Http\Controllers\SupplyController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ImportExcelController;
 use App\Http\Controllers\ExportExcelController;
-use App\Http\Controllers\ReliefRecipientController;
+use App\Http\Controllers\FamilyMemberController;
 
 //login and register 
 Route::get('/', function () {

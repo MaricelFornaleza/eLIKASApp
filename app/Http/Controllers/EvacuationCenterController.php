@@ -57,9 +57,13 @@ class EvacuationCenterController extends Controller
     {
         $camp_managers = User::where('officer_type', 'Camp Manager')
             ->join('camp_managers', 'camp_managers.user_id', '=', 'users.id')
-            ->select('users.*', 'camp_managers.designation')
+            ->select('users.*', 'camp_managers.designation', 'camp_managers.id as camp_manager_id')
             ->get();
+
+        //dd($camp_managers);
         return view('admin.evacuation-center.create', ['camp_managers' => $camp_managers]);
+
+
         //return dd($camp_managers);
     }
 

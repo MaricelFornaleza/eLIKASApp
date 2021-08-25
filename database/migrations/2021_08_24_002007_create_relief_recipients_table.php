@@ -15,12 +15,10 @@ class CreateReliefRecipientsTable extends Migration
     {
         Schema::create('relief_recipients', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
+            $table->string('family_code')->nullable();
+            $table->integer('no_of_members');
             $table->string('address');
-            $table->date('birthdate');
-            $table->string('sectoral_classification');
-            $table->string('gender');
-            $table->string('family_representative');
+            $table->string('recipient_type');
             $table->timestamps();
         });
     }
