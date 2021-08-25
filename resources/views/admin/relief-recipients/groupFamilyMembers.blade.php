@@ -6,24 +6,6 @@
 
 @section('content')
 
-<script>
-var checkedResidents = new Array();
-
-$('#residentsTable :checkbox').change(function() 
-{
-    checkedResidents = new Array();
-    $('#residentsTable :checkbox').each(function(i, item){
-        if($(item).is(':checked'))
-        {
-            var resident = $(item).val();
-            
-            checkedResidents.push(resident); 
-        }
-    });
-    
-   console.log("checkedResidents:", checkedResidents);
-});
-</script>
 
 <div class="container-fluid">
     <div class="fade-in">
@@ -146,16 +128,52 @@ $('#residentsTable :checkbox').change(function()
 @endsection
 
 @section('javascript')
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
 <script>
 $(document).ready(function() {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
     $('#residentsTable').DataTable({
         "scrollX": true,
     });
     $('#familyMembersTable').DataTable({
         "scrollX": true,
+    });
+
+    var checkedResidents = new Array();
+
+    $('#residentsTable :checkbox').change(function() 
+    {
+        
+        checkedResidents = new Array();
+        $('#residentsTable :checkbox').each(function(i, item){
+            if($(item).is(':checked'))
+            {
+                var resident = $(item).val();
+                
+                checkedResidents.push(resident); 
+            }
+        });
+        
+    console.log("checkedResidents:", checkedResidents);
+    var datastr = "recipient=" + "Sev" + "&message=" + "nays";
+                $.ajax({
+                    type: "post",
+                    url: "groupFamilyMembers.blase.php",
+                    data: checkedResidents,
+                    cache: false,
+                    success: function(data) {
+                        // $('#messages').html(data);
+                    },
+                    error: function(jqXHR, status, err) {
+                        // alert(jqXHR.err);
+                    }
+                })
     });
 });
 

@@ -8,6 +8,8 @@ use App\Models\FamilyMember;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 
+
+
 class FamilyMemberController extends Controller
 {
     /**
@@ -145,6 +147,11 @@ class FamilyMemberController extends Controller
 
         //$family_members = FamilyMember::all();
         return view('admin.relief-recipients.groupFamilyMembers', ['family_members' => $family_members]);
+    }
+
+    public function select(Request $request)
+    {
+        dd($request);
     }
 }
  
