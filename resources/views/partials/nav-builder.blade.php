@@ -80,7 +80,7 @@ if (!function_exists('renderDropdown')) {
             </a>
         </li>
         <li class="c-sidebar-nav-item">
-            <a class="c-sidebar-nav-link" href="/evacuation-centers">
+            <a class="c-sidebar-nav-link" href="/evacuation_centers">
                 <svg class="c-sidebar-nav-icon">
                     <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-house"></use>
                 </svg>Evacuation Centers
@@ -94,7 +94,7 @@ if (!function_exists('renderDropdown')) {
             </a>
         </li>
         <li class="c-sidebar-nav-item">
-            <a class="c-sidebar-nav-link" href="#">
+            <a class="c-sidebar-nav-link" href="/requests">
                 <svg class="c-sidebar-nav-icon">
                     <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-notes"></use>
                 </svg>Requests

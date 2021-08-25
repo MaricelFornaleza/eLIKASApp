@@ -13,11 +13,11 @@
             <div class="col-lg-8 ">
                 <div class="card">
                     <div class="card-header">
-                        <h5>Import Excel to add Field Officers</h5>
+                        <h5>Import Excel to add Evacuation Centers</h5>
 
                     </div>
                     <div class="card-body ">
-                        <h6>To add more than one field officer, you can upload an excel file.</h6>
+                        <h6>To add more than one evacuation center, you can upload an excel file.</h6>
                         <div class="row">
                             @if(count($errors) > 0)
                             <div class="alert alert-danger col-12">
@@ -30,25 +30,24 @@
                                     @endforeach
                                 </ul>
                             </div>
+                            <div class="mx-4">
+                                <code>Important note: The file must contain the following format.</code>
+                            </div>
                             @endif
 
                         </div>
-                        <code>Important note: The file must contain the following format.</code>
-
-                        <form action="{{ url('/import/field_officers/store') }}" method="post"
+                        
+                        <form action="{{ route('evacuation-center.file.store') }}" method="post"
                             enctype="multipart/form-data">
                             @csrf
-                            <div class="row  mt-5 mb-5">
+                            <div class="row mx-1 mt-5 mb-5">
                                 <input type="file" name="import_file" id="">
                             </div>
-                            <div class="row ">
-                                <div class="col-4 ">
-                                    <button class="btn btn-primary  " type="submit">{{ __('Import') }}</button>
+                            <div class="row">
+                                <div class="col-4">
+                                    <button class="btn btn-primary" type="submit">{{ __('Import') }}</button>
                                 </div>
                             </div>
-
-
-
                         </form>
 
                     </div>

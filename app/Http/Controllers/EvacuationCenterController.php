@@ -22,13 +22,13 @@ class EvacuationCenterController extends Controller
     {
         //$evacuation_centers = EvacuationCenter::paginate(5);
         //$camp_managers = User::find($evacuation_centers->input('camp_manager_id'));
-        $evacuation_centers =  DB::table('evacuation_centers')
+        $evacuation_centers = DB::table('evacuation_centers')
             ->leftJoin('users', 'evacuation_centers.camp_manager_id', '=', 'users.id')
             ->select('evacuation_centers.*', 'users.name as camp_manager_name')
             ->orderByRaw('evacuation_centers.id ASC')
             ->paginate(20);
 
-        return view('admin.evacuation-center.evacList', ['evacuation_centers' => $evacuation_centers]);
+        return view('admin.evacuation-center.evacList', ['evacuation_centers' => $evacuation_centers] );
 
 
         // SELECT evacuation_centers.id, users.name as camp_manager_name, evacuation_centers.name,
@@ -38,7 +38,6 @@ class EvacuationCenterController extends Controller
         //     LEFT JOIN users
         //     ON evacuation_centers.camp_manager_id = users.id
         //     ORDER BY evacuation_centers.id ASC
-        //         }
 
         // SELECT evacuation_centers.id, evacuation_centers.name, evacuation_centers.address, evacuation_centers.latitude,
         //     evacuation_centers.longitude, evacuation_centers.capacity, evacuation_centers.characteristics,
@@ -98,13 +97,13 @@ class EvacuationCenterController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name'             => 'required|min:1|max:128|unique:evacuationcenters',
+            'camp_manager_id'  => 'nullable',
+            'name'             => 'required|unique:evacuation_centers,name|min:1|max:128',
             'address'          => 'required|min:1|max:256',
-            //'camp_manager'     => 'required|min:1|max:64',
-            'capacity'         => 'required|numeric',
-            'characteristics'  => 'required',
             'latitude'         => 'required',
-            'longitude'        => 'required'
+            'longitude'        => 'required',
+            'capacity'         => 'required|numeric',
+            'characteristics'  => 'required'
         ]);
         //$user = Auth::user();
         $evacuation_center = new EvacuationCenter();
@@ -190,14 +189,14 @@ class EvacuationCenterController extends Controller
     public function update(Request $request)
     {
         $validatedData = $request->validate([
-            'id'               => 'required',
-            'name'             => 'required|min:1|max:128',
+            'id'               => 'required|numeric',
+            'camp_manager_id'  => 'nullable',
+            'name'             => 'required|unique:evacuation_centers,name|min:1|max:128',
             'address'          => 'required|min:1|max:256',
-            //'camp_manager'     => 'required|min:1|max:64',
-            'capacity'         => 'required|numeric',
-            'characteristics'  => 'required',
             'latitude'         => 'required',
-            'longitude'        => 'required'
+            'longitude'        => 'required',
+            'capacity'         => 'required|numeric',
+            'characteristics'  => 'required'
         ]);
         $evacuation_center = EvacuationCenter::where('id', '=', $request->input('id'))->first();
         $evacuation_center->name = $request->input('name');
@@ -208,7 +207,7 @@ class EvacuationCenterController extends Controller
         $evacuation_center->latitude = $request->input('latitude');
         $evacuation_center->longitude = $request->input('longitude');
         $evacuation_center->save();
-        $request->session()->flash('message', 'Successfully updated evacuation center (' . $evacuation_center->name . ')');
+        $request->session()->flash('message', 'Successfully updated ' . $evacuation_center->name . ' evacuation center');
 
         $updatemarker = new UpdateMarker;
         $updatemarker->get_evac();

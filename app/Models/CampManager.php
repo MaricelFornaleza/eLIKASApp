@@ -18,8 +18,13 @@ class CampManager extends Model
         return $this->belongsTo('App\Models\User');
     }
 
+    public function evacuation_center()
+    {
+        return $this->hasOne('App\Models\EvacuationCenter');
+    }
+
     public function request()
     {
-        return $this->hasMany('App\Models\Request');
+        return $this->hasMany('App\Models\DeliveryRequest');
     }
 }

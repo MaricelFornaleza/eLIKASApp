@@ -17,7 +17,7 @@ class CreateRequestsTable extends Migration
             $table->id();
             //$table->unsignedBigInteger('disaster_response_id');
             $table->unsignedBigInteger('camp_manager_id');
-            $table->unsignedBigInteger('courier_id');
+            $table->unsignedBigInteger('courier_id')->nullable();
             $table->date('date');
             $table->integer('food_packs');
             $table->integer('water');

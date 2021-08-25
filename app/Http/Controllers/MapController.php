@@ -26,7 +26,14 @@ class MapController extends Controller
             ->orderByRaw('evacuation_centers.id ASC')
             ->get();
 
-        return view('admin.map')->with(compact('evacuation_centers'));
+       $couriers = DB::table('couriers')
+            ->leftJoin('users', 'couriers.user_id', '=', 'users.id')
+            ->leftJoin('locations', 'couriers.user_id', '=', 'locations.courier_id')
+            ->select('users.id', 'users.name', 'locations.latitude', 'locations.longitude', 'locations.updated_at')
+            ->orderByRaw('users.name ASC')
+            ->get();
+
+        return view('admin.map')->with(compact('evacuation_centers'))->with(compact('couriers'));
         //return view('admin.map', $evacuation_centers );
         //echo json_encode($evacuation_centers);
     }
@@ -77,13 +84,37 @@ class MapController extends Controller
     public function get_couriers()
     {
         //$couriers = Courier::all();
-        $couriers =  DB::table('couriers')
+        $couriers = DB::table('couriers')
             ->join('locations', 'couriers.id', '=', 'locations.courier_id')
             ->select('couriers.*', 'locations.latitude', 'locations.longitude', 'locations.updated_at')
             ->orderByRaw('couriers.id ASC')
             ->get();
         
         return [ 'couriers' => $couriers ];
+    }
+
+    public function get_locations($id)
+    {
+        $evacuation_center = EvacuationCenter::find($id);
+        //$couriers = Courier::all();
+        $couriers =  DB::table('couriers')
+            ->leftJoin('users', 'couriers.user_id', '=', 'users.id')
+            ->leftJoin('locations', 'couriers.user_id', '=', 'locations.courier_id')
+            ->select('users.id', 'users.name', 'locations.latitude', 'locations.longitude', 'locations.updated_at')
+            ->orderByRaw('users.name ASC')
+            ->get();
+        // SELECT couriers.user_id, users.name, locations.latitude, locations.longitude, locations.updated_at
+        // FROM couriers
+        // LEFT JOIN users
+        // ON couriers.user_id = users.id
+        // LEFT JOIN locations
+        // ON couriers.user_id = locations.courier_id
+        // ORDER BY users.name ASC
+
+        $data = ['couriers' => $couriers, 'evacuation_center' => $evacuation_center];
+        //dd($data);
+        //print_r(json_encode($data));
+        return $data;
     }
 
     /**

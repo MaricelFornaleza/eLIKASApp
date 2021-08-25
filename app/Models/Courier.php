@@ -25,6 +25,6 @@ class Courier extends Model
 
     public function request()
     {
-        return $this->hasMany('App\Models\Request');
+        return $this->hasMany('App\Models\DeliveryRequest');
     }
 }

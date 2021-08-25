@@ -30,7 +30,8 @@ class UpdateMarker {
             ->orderByRaw('evacuation_centers.id ASC')
             ->get();
 
-        $data = ['evacuation_centers' => $evacuation_centers];
+        $type = "evacuation_center";
+        $data = ['content' => $evacuation_centers, 'type' => $type ];
         $this->pusher->trigger('my-channel', 'my-event', $data);
     }
 
@@ -42,8 +43,9 @@ class UpdateMarker {
             ->select('couriers.*', 'locations.latitude', 'locations.longitude', 'locations.updated_at')
             ->orderByRaw('couriers.id ASC')
             ->get();
-        
-        $data = ['couriers' => $couriers];
+
+        $type = "courier";
+        $data = ['content' => $couriers, 'type' => $type ];
         $this->pusher->trigger('my-channel', 'my-event', $data);
     }
 }

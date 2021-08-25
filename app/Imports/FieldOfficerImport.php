@@ -62,14 +62,14 @@ class FieldOfficerImport implements ToCollection, WithHeadingRow
                         'designation' => $row['designation'],
                     ]);
                 } else if ($user->officer_type == "Courier") {
-                    $courier = Courier::create([
+                    Courier::create([
                         'user_id' => $user->id,
                         'designation' => $row['designation'],
                     ]);
                     //put here location weak entity
                     //dd($courier->id);
                     Location::create([
-                        'courier_id' => $courier->id
+                        'courier_id' => $user->id
                     ]);
                 }
 

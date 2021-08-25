@@ -22,8 +22,8 @@ class SuppliesImport implements ToCollection
         foreach ($collection as $row) {
             if ($row->filter()->isNotEmpty()) {
                 $supply = new Supply();
-                $supply->inventory_id     = $user_inventory_id;
-                $supply->supply_type   = $row[0];
+                $supply->inventory_id = $user_inventory_id;
+                $supply->supply_type = $row[0];
                 $supply->quantity = $row[1];
                 $supply->source = $row[2];
                 $supply->save();
