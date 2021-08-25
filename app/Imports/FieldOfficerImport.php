@@ -4,7 +4,7 @@ namespace App\Imports;
 
 use App\Models\BarangayCaptain;
 use App\Models\CampManager;
-use App\Models\Contact;
+
 use App\Models\Courier;
 use App\Models\Inventory;
 use App\Models\Location;
@@ -28,12 +28,9 @@ class FieldOfficerImport implements ToCollection, WithHeadingRow
         $validator = Validator::make($collection->toArray(), [
             '*.name' => ['required', 'string', 'max:255', 'alpha_spaces'],
             '*.email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            '*.contact_no1' => ['required', 'numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
-            '*.contact_no2' => ['nullable', 'numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
+            '*.contact_no' => ['required', 'numeric', 'digits:11', 'unique:users', 'regex:/^(09)\d{9}$/'],
             '*.officer_type' => 'required',
         ])->validate();
-
-
 
         $temp_pass = Str::random(8);
 
@@ -44,6 +41,7 @@ class FieldOfficerImport implements ToCollection, WithHeadingRow
                     'name' => $row['name'],
                     'email' => $row['email'],
                     'officer_type' => $row['officer_type'],
+                    'contact_no' => $row['contact_no'],
                     'password' => Hash::make($temp_pass),
                 ]);
 
@@ -72,12 +70,6 @@ class FieldOfficerImport implements ToCollection, WithHeadingRow
                         'courier_id' => $courier->id
                     ]);
                 }
-
-                Contact::create([
-                    'user_id' => $user->id,
-                    'contact_no1' => $row['contact_no1'],
-                    'contact_no2' => $row['contact_no2'],
-                ]);
 
                 //send an email to the newly registered field officer
                 //this will contain the temporary password of the user

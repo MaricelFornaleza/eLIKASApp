@@ -2,15 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Laratrust\Traits\LaratrustUserTrait;
-
-
 
 class User extends Authenticatable
 {
@@ -28,7 +24,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'photo', 'email', 'officer_type', 'password',
+        'name', 'photo', 'email', 'officer_type', 'password', 'contact_no'
     ];
 
     /**
@@ -52,11 +48,6 @@ class User extends Authenticatable
     protected $dates = [
         'deleted_at'
     ];
-
-    function user_contacts()
-    {
-        return $this->hasMany('App\Models\Contact', 'user_id', 'user_id');
-    }
 
     function user_inventory()
     {

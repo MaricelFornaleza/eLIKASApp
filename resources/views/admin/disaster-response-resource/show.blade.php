@@ -9,8 +9,9 @@
     <div class="row justify-content-center">
         <div class="col-md-11 ">
             <div class="card ">
-                <img class="card-img-top img-fluid" src="{{url('/assets/dr-cover/'.$disaster_response -> photo)}}"
-                    alt="{{$disaster_response->disaster_type}}" style="height: 150px;">
+                <img class="card-img-top " src="{{url('/assets/dr-cover/'.$disaster_response -> photo)}}"
+                    alt="{{$disaster_response->disaster_type}}"
+                    style="height: 150px; object-fit: cover;  object-position: 0% 70%;">
                 <div class="card-img-overlay">
                     <h4 class="card-title mb-5 ">{{$disaster_response->disaster_type}}</h4>
                     <h6 class="card-text mb-0">{{$disaster_response->description}}</h6>

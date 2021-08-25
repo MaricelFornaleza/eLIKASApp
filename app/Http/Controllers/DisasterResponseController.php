@@ -49,7 +49,7 @@ class DisasterResponseController extends Controller
     }
     public function show($id)
     {
-        $disaster_reponse = DisasterResponse::find($id)->first();
+        $disaster_reponse = DisasterResponse::where('id', '=', $id)->first();
         $barangays = Barangay::all();
         return view('admin.disaster-response-resource.show', ['disaster_response' => $disaster_reponse, 'barangays' => $barangays]);
     }

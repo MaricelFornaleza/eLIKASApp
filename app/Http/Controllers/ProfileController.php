@@ -79,10 +79,9 @@ class ProfileController extends Controller
     {
         $user = User::find($id);
         $role = Auth::user()->officer_type;
-        $contacts = Contact::where('user_id', $user->id)->get();
         $admin = Admin::where('user_id', $user->id)->first();
         if ($role == "Administrator") {
-            return view('admin.admin_resource.edit')->with(compact('user', 'contacts', 'admin'));
+            return view('admin.admin_resource.edit')->with(compact('user', 'admin'));
         } else {
             return view('common.profile.edit')->with("user", $user);
         }
@@ -101,7 +100,7 @@ class ProfileController extends Controller
             'name' => ['required', 'string', 'max:255', 'alpha_spaces'],
             'email' => ['required', 'string', 'email', 'max:255',],
             'photo' => ['image', 'mimes:jpg,png,jpeg'],
-            'contact_no[]' => ['numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
+            'contact_no' => ['required', 'numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
             'branch' => ['required'],
             'password' => ['nullable', 'string', 'min:8', 'confirmed'],
         ]);
@@ -115,29 +114,11 @@ class ProfileController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->photo = $filename;
+        $user->contact_no = $request->contact_no;
         if ($request['password'] != null) {
             $user->password = Hash::make($request['password']);
         }
         $user->save();
-
-        //update contact
-        //the user can have 1 or more contact numbers
-        $contact_id = Contact::where('user_id', $user->id)->get();
-        foreach ($request->contact_no as $index => $contact_no) {
-            if ($request->contact_no[$index] != null) {
-                if (!empty($contact_id[$index])) {
-                    Contact::where('id', $contact_id[$index]->id)
-                        ->update([
-                            'contact_no' => $request->contact_no[$index],
-                        ]);
-                } else {
-                    Contact::create([
-                        'user_id' => $user->id,
-                        'contact_no' => $request->contact_no[$index],
-                    ]);
-                }
-            }
-        }
         Admin::where('user_id', $user->id)->update([
             'branch' => $validated['branch'],
         ]);
