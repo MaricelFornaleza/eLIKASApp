@@ -38,7 +38,12 @@ Route::auth('/register', function () {
 Auth::routes();
 
 //User Profile 
-Route::resource('/profile', 'ProfileController');
+Route::prefix('profile')->group(function () {
+    Route::get('/', 'ProfileController@index');
+    Route::get('/{id}/edit', 'ProfileController@edit');
+    Route::put('/{id}', 'ProfileController@update');
+    Route::put('/field-officer/{id}', 'ProfileController@updateFO');
+});
 
 
 //Disaster Response
@@ -107,6 +112,10 @@ Route::prefix('barangay')->group(function () {
     Route::get('/search', 'BarangayController@search');
 });
 
+// Barangay Captain
+Route::prefix('barangay-captain')->group(function () {
+    Route::get('/barangay-stats', 'BarangayCaptainController@barangayStats');
+});
 
 // camp manager
 Route::prefix('camp-manager')->group(function () {

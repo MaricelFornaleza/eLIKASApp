@@ -18,7 +18,7 @@ class HomeController extends Controller
             // dd($disaster_responses);
         } elseif ($role == 'Barangay Captain') {
             $disaster_responses = DisasterResponse::where('date_ended', '=', null)->get();
-            return view('barangay-captain.home');
+            return view('barangay-captain.home')->with('disaster_responses', $disaster_responses);
         } elseif ($role == 'Camp Manager') {
             $disaster_responses = DisasterResponse::where('date_ended', '=', null)->get();
             return view('camp-manager.home')->with('disaster_responses', $disaster_responses);

@@ -11,6 +11,13 @@
 
         <div class="row center">
             <div class="col-lg-8 ">
+                <div class="row">
+                    <div class="col-12">
+                        @if(Session::has('message'))
+                        <div class="alert alert-success">{{ Session::get('message') }}</div>
+                        @endif
+                    </div>
+                </div>
                 <div class="card">
                     <div class="card-header">
                         <div class="row">
@@ -18,7 +25,7 @@
                                 <h4>Profile</h4>
                             </div>
                             <div class="ml-4 mr-4">
-                                <a href="/profile/{{$user->id}}/edit">
+                                <a href="/profile/{{$user->user_id}}/edit">
                                     <button class="btn btn-primary">
                                         Edit Profile
                                     </button>
@@ -29,32 +36,25 @@
 
                     </div>
                     <div class="card-body ">
-                        <div class="row ">
-                            <div class="col-3 center ml-2 mr-2">
+                        <div class="row">
+                            <div class="col-md-3 center ml-2 mr-2">
                                 <img class="image rounded-circle" src="{{asset('/public/images/'.$user-> photo)}}"
                                     alt="profile_image">
                             </div>
-                            <div class="col-8 ">
+                            <div class="col-md-4 info mt-4">
                                 <h3 class="title"> {{$user -> name}}</h3>
-                                <h6>{{ $user ->type}}</h6>
-                                <h6>{{ $user ->email}}</h6>
-                                <h6>@if($user->user_contacts->count() > 1)
-                                    @foreach($user->user_contacts as $contact)
-                                    {{$contact -> contact_no}} /
-                                    @endforeach
-                                    @else
-                                    @foreach($user->user_contacts as $contact)
-                                    {{$contact -> contact_no}}
-                                    @endforeach
-                                    @endif
+                                <h6>{{ $user ->officer_type}} - {{ $user ->designation}}
+                                    {{ $user ->cm_designation}}
+                                    {{ $user ->barangay}}
                                 </h6>
-                                <h6>{{ $user ->branch}}</h6>
-
-
+                                <h6>{{ $user ->email}}</h6>
+                                <h6>{{ $user ->contact_no}}</h6>
 
                             </div>
-
                         </div>
+
+
+
 
 
                     </div>
