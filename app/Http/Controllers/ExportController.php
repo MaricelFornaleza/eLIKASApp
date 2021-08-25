@@ -6,6 +6,8 @@ use App\Exports\FieldOfficerExport;
 use App\Exports\SuppliesExport;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use PDF;
+
 
 class ExportController extends Controller
 {

@@ -8,6 +8,7 @@ use App\Models\DisasterResponse;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use PDF;
 
 class DisasterResponseController extends Controller
 {
@@ -60,5 +61,10 @@ class DisasterResponseController extends Controller
         $disaster_reponse->save();
         Session::flash('message', 'Disaster Response ended');
         return redirect('home');
+    }
+    public function exportPDF($id)
+    {
+        $pdf = PDF::loadView('admin.pdf.disaster-response');
+        return $pdf->download('Disaster Response report.pdf');
     }
 }

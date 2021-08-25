@@ -48,6 +48,7 @@ Route::prefix('disaster-response')->group(function () {
     Route::get('/show/{id}', 'DisasterResponseController@show');
     Route::get('/stop/{id}', 'DisasterResponseController@stop');
     Route::get('/archive', 'DisasterResponseController@archive');
+    Route::get('/export/{id}', 'DisasterResponseController@exportPDF');
 });
 
 //map and evacuation center 

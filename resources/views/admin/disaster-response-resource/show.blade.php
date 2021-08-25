@@ -13,10 +13,25 @@
                     alt="{{$disaster_response->disaster_type}}"
                     style="height: 150px; object-fit: cover;  object-position: 0% 70%;">
                 <div class="card-img-overlay">
-                    <h4 class="card-title mb-5 ">{{$disaster_response->disaster_type}}</h4>
-                    <h6 class="card-text mb-0">{{$disaster_response->description}}</h6>
-                    <h6 class="card-text ">{{ date('F j, Y', strtotime($disaster_response->date_started)) }}
-                    </h6>
+                    <div class="row">
+                        <div class="col-6">
+                            <h4 class="card-title mb-5 ">{{$disaster_response->disaster_type}}</h4>
+                            <h6 class="card-text mb-0">{{$disaster_response->description}}</h6>
+                            <h6 class="card-text ">{{ date('F j, Y', strtotime($disaster_response->date_started)) }}
+                            </h6>
+                        </div>
+
+                        <div class="ml-auto mr-2">
+                            <a href="/disaster-response/export/{{$disaster_response->id}}">
+                                <button class="btn btn-danger ">
+                                    Export to PDF
+                                </button>
+                            </a>
+                        </div>
+
+                    </div>
+
+
                 </div>
             </div>
         </div>
