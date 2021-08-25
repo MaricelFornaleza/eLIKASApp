@@ -39,3 +39,17 @@ body {
 
     font-size: 16px;
 }
+.bg-secondary {
+    background-color: #219ebc !important;
+}
+.cm-button {
+    width: 100%;
+    background-color: #f4f7fc;
+    height: 100px;
+}
+.text-accent {
+    color: #fb8500;
+}
+.text-secondary {
+    color: #219ebc !important;
+}

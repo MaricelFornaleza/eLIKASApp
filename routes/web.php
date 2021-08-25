@@ -106,3 +106,9 @@ Route::prefix('export')->group(function () {
 Route::prefix('barangay')->group(function () {
     Route::get('/search', 'BarangayController@search');
 });
+
+
+// camp manager
+Route::prefix('camp-manager')->group(function () {
+    Route::get('/evacuation-center', 'CampManagerController@evacuationCenter');
+});
