@@ -36,7 +36,7 @@
                             </div>
                             <!-- /.row-->
                             <div class="row">
-                                <div class="col-sm-12">
+                                <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="email">Email Address</label>
                                         <input class="form-control @error('email') is-invalid @enderror" required
@@ -49,9 +49,6 @@
                                         @enderror
                                     </div>
                                 </div>
-                            </div>
-                            <!-- /.row-->
-                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="contact_no">Contact Number</label>
@@ -65,8 +62,8 @@
                                         @enderror
                                     </div>
                                 </div>
-
                             </div>
+
                             <!-- /.row-->
                             <div class="row">
                                 <div class="form-group col-sm-6">

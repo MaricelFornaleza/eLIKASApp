@@ -74,6 +74,8 @@ Route::resource('/field_officers', 'FieldOfficerController');
 
 //residents
 Route::resource('relief-recipient', 'ReliefRecipientController');
+Route::resource('residents', 'FamilyMemberController');
+Route::get('residents.group', 'FamilyMemberController@group')->name('residents.group');
 
 //supply and inventory
 Route::resource('supplies', 'SupplyController');
