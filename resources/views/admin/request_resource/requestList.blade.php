@@ -175,7 +175,7 @@
                                                                     @csrf
                                                                     <label for="courier_id" class="mr-3 lead modal-title" id="exampleModalLabel">Assign Courier</label>
                                                                     <select name="courier_id" id='courier_id' class="w-100 form-control" required>
-                                                                        <option value=''>Select User</option>
+                                                                        {{-- <option value=''>Select User</option> --}}
                                                                         {{-- @foreach($couriers as $courier)
                                                                         <option value='{{ $courier->id }}'>
                                                                             {{ $courier->name }}
@@ -277,9 +277,11 @@ $(document).ready(function() {
         }
     });
 
-    $("#courier_id").select2();
+    // $("#courier_id").select2();
 
     $("#assignModal").on('shown.coreui.modal', function (e) {
+        $("#courier_id").select2();
+        $('#courier_id').append('<option value=' + '>Select Courier</option>');
         //console.log('The modal is fully shown.');
         setTimeout(function() {
             mymap.invalidateSize();
@@ -323,6 +325,7 @@ $(document).ready(function() {
 
     $("#assignModal").on('hidden.coreui.modal', function (e) {
         markers.clearLayers();
+        $('#courier_id').empty();
     });
     
     //remove on production

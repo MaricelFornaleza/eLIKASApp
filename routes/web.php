@@ -53,10 +53,10 @@ Route::group(['middleware' => ['auth']], function () {
     });
     Route::prefix('requests')->group(function () {
         Route::get('/',         'DeliveryRequestController@index')->name('request.index');
-        Route::get('/approve',   'DeliveryRequestController@approve')->name('request.approve');
+        Route::get('/admin_approve',   'DeliveryRequestController@approve')->name('request.approve');
         Route::get('/admin_cancel',   'DeliveryRequestController@admin_cancel')->name('request.admin_cancel');
         Route::get('/admin_decline',   'DeliveryRequestController@admin_decline')->name('request.admin_decline');
-        Route::post('/assign_courier',   'DeliveryRequestController@assign_courier')->name('request.assign_courier');
+        Route::post('/admin_assign',   'DeliveryRequestController@assign_courier')->name('request.assign_courier');
     });
 });
 
