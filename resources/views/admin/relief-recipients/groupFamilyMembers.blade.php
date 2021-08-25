@@ -164,7 +164,7 @@ $(document).ready(function() {
     var datastr = "recipient=" + "Sev" + "&message=" + "nays";
                 $.ajax({
                     type: "post",
-                    url: "groupFamilyMembers.blase.php",
+                    url: "residents.select",
                     data: checkedResidents,
                     cache: false,
                     success: function(data) {
