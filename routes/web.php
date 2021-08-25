@@ -91,4 +91,5 @@ Route::prefix('export')->group(function () {
     Route::get('/field_officers', 'ExportController@exportFieldOfficer');
     Route::get('/supplies', 'ExportController@exportSupplies');
     Route::get('/evacuation_centers', 'ExportController@exportEvacuationCenters')->name('evacuation-center.file.export');
+    Route::get('/requests', 'ExportController@exportDeliveryRequests')->name('request.file.export');
 });

@@ -33,7 +33,7 @@
             </div>
             <div class="col-lg-3 ml-auto">
 
-                <a href="" class="btn btn-block export-btn">
+                <a href="{{ route('request.file.export') }}" class="btn btn-block export-btn">
                     <svg class="c-icon mr-2">
                         <use xlink:href="{{ url('/icons/sprites/free.svg#cil-file') }}"></use>
                     </svg>
@@ -84,7 +84,7 @@
                                         <th>REQUEST ID</th>
                                         <th>MANAGER NAME</th>
                                         <th>EVACUATION CENTER</th>
-                                        <th>FOOD</th>
+                                        <th>FOOD PACKS</th>
                                         <th>WATER</th>
                                         <th>HYGIENE KIT</th>
                                         <th>CLOTHES</th>
