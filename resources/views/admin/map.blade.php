@@ -59,12 +59,12 @@
 <script src="{{ asset('js/map-js/leaflet-maps-simplified.js') }}"></script>
 
 <script type="text/javascript">
-var evacOptions = evacOptions();
+// var evacOptions = evacOptions();
 var evaclocations = '{{ $evacuation_centers }}';
 var courierlocations = '{{ $couriers }}';
 var result1 = JSON.parse(evaclocations.replace(/&quot;/g, '"'));
 var result2 = JSON.parse(courierlocations.replace(/&quot;/g, '"'));
-console.log(result2);
+//console.log(result2);
 var evac_markers = L.layerGroup();
 var courier_markers = L.layerGroup();
 
@@ -169,7 +169,7 @@ $.each(result1, function(key, value) {
                 '</div>' +
                 '</div>' +
                 '</div>' +
-                '</div>', evacOptions)
+                '</div>', evacOptions())
         .addTo(evac_markers);
 
     evac_markers.addTo(mymap);
@@ -196,19 +196,15 @@ $(document).ready(function() {
         cluster: 'ap1'
     });
 
-    var channel = pusher.subscribe('my-channel');
-    channel.bind('my-event', function(data) {
-        var result = data.content;
-
-        if(data.type == 'evacuation_center') {
-            evac_markers.clearLayers();
-            $.each(result, function(key, value) {
-                for (var i = 0; i < value.length; ++i) {
-                    //console.log(i);
-                    var marker = new L.marker([value[i].latitude, value[i].longitude], {
-                            icon: evacIcon()
-                            })
-                            .bindPopup('<div class="font-weight-bold">' + value[i].name + '</div>' +
+    var channel = pusher.subscribe('location-channel');
+    channel.bind('evac-event', function(data) {
+        var result = data;
+        evac_markers.clearLayers();
+        $.each(result, function(key, value) {
+            for (var i = 0; i < value.length; ++i) {
+                //console.log(i);
+                var marker = new L.marker([value[i].latitude, value[i].longitude], { icon: evacIcon()} )
+                    .bindPopup('<div class="font-weight-bold">' + value[i].name + '</div>' +
                                 '<div class="my-2">' +
                                 '<div class="progress-group">' +
                                 '<div class="progress-group-header align-items-end">' +
@@ -306,30 +302,28 @@ $(document).ready(function() {
                                 '</div>' +
                                 '</div>' +
                                 '</div>' +
-                                '</div>', evacOptions())
-                            .addTo(evac_markers);
-        
-                    evac_markers.addTo(mymap);
-                }
-            });
-        }
-        else if(data.type == 'courier') {
-            courier_markers.clearLayers();
-            $.each(result, function(key, value) {
-                for (var i = 0; i < value.length; ++i) {
-                    //console.log(i);
-                    var marker = new L.marker([value[i].latitude, value[i].longitude], {icon: truckIcon()})
-                            .bindPopup('<div class="font-weight-bold">' + value[i].name + '</div>', truckOptions())
-                            .addTo(courier_markers);
-        
-                    courier_markers.addTo(mymap);
-                }
-            });
-        }
-        
-        
+                                '</div>', evacuationOptions())
+                    .addTo(evac_markers);
+                evac_markers.addTo(mymap);
+            }
+        });
     });
 
+    channel.bind('courier-event', function(data) {
+        var result = data;
+        courier_markers.clearLayers();
+        $.each(result, function(key, value) {
+            for (var i = 0; i < value.length; ++i) {
+                //console.log(i);
+                var marker = new L.marker([value[i].latitude, value[i].longitude], {icon: truckIcon()})
+                    .bindPopup('<div class="font-weight-bold">' + value[i].name + '</div>', truckOptions())
+                    .addTo(courier_markers);
+                courier_markers.addTo(mymap);
+            }
+        })
+    });
+
+    //AJAX IMPLEMENTATION
     /*
     $.ajax({
         method: "GET",

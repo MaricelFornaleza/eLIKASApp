@@ -30,23 +30,26 @@ class EvacuationCenterController extends Controller
 
         return view('admin.evacuation-center.evacList', ['evacuation_centers' => $evacuation_centers] );
 
+        /*
+        SELECT evacuation_centers.id, users.name as camp_manager_name, evacuation_centers.name,
+            evacuation_centers.address, evacuation_centers.latitude, evacuation_centers.longitude,
+            evacuation_centers.capacity, evacuation_centers.characteristics
+            FROM evacuation_centers 
+            LEFT JOIN users
+            ON evacuation_centers.camp_manager_id = users.id
+            ORDER BY evacuation_centers.id 
+        */
 
-        // SELECT evacuation_centers.id, users.name as camp_manager_name, evacuation_centers.name,
-        //     evacuation_centers.address, evacuation_centers.latitude, evacuation_centers.longitude,
-        //     evacuation_centers.capacity, evacuation_centers.characteristics
-        //     FROM evacuation_centers 
-        //     LEFT JOIN users
-        //     ON evacuation_centers.camp_manager_id = users.id
-        //     ORDER BY evacuation_centers.id ASC
-
-        // SELECT evacuation_centers.id, evacuation_centers.name, evacuation_centers.address, evacuation_centers.latitude,
-        //     evacuation_centers.longitude, evacuation_centers.capacity, evacuation_centers.characteristics,
-        //     stock_levels.food_packs, stock_levels.water, stock_levels.hygiene_kit, stock_levels.medicine,
-        //     stock_levels.clothes, stock_levels.emergency_shelter_assistance
-        //     FROM public.evacuation_centers 
-        //     INNER JOIN public.stock_levels
-        //     ON evacuation_centers.id = stock_levels.evacuation_center_id
-        //     ORDER BY evacuation_centers.id ASC
+        /*
+        SELECT evacuation_centers.id, evacuation_centers.name, evacuation_centers.address, evacuation_centers.latitude,
+            evacuation_centers.longitude, evacuation_centers.capacity, evacuation_centers.characteristics,
+            stock_levels.food_packs, stock_levels.water, stock_levels.hygiene_kit, stock_levels.medicine,
+            stock_levels.clothes, stock_levels.emergency_shelter_assistance
+            FROM public.evacuation_centers 
+            INNER JOIN public.stock_levels
+            ON evacuation_centers.id = stock_levels.evacuation_center_id
+            ORDER BY evacuation_centers.id ASC
+        */
     }
 
     /**
@@ -70,22 +73,27 @@ class EvacuationCenterController extends Controller
         return view('admin.evacuation-center.create', ['camp_managers' => $camp_managers]);
         //return $camp_managers;
 
-        // SELECT users.id, users.name
-        // FROM users
-        // JOIN camp_managers
-        // ON camp_managers.user_id = users.id
-        // WHERE 
-        // (SELECT evacuation_centers.camp_manager_id 
-        // FROM evacuation_centers
-        // WHERE camp_manager_id IS NOT NULL) != camp_managers.user_id
+        /*
+        SELECT users.id, users.name
+            FROM users
+            JOIN camp_managers
+            ON camp_managers.user_id = users.id
+            WHERE 
+            (SELECT evacuation_centers.camp_manager_id 
+            FROM evacuation_centers
+            WHERE camp_manager_id IS NOT NULL) != camp_managers.user_id
+        */
 
-        // SELECT users.id, users.name
-        // FROM users
-        // JOIN camp_managers
-        // ON camp_managers.user_id = users.id
-        // LEFT JOIN evacuation_centers
-        // ON evacuation_centers.camp_manager_id  = users.id
-        // WHERE evacuation_centers.camp_manager_id ISNULL
+        /*
+        SELECT users.id, users.name
+            FROM users
+            JOIN camp_managers
+            ON camp_managers.user_id = users.id
+            LEFT JOIN evacuation_centers
+            ON evacuation_centers.camp_manager_id  = users.id
+            WHERE evacuation_centers.camp_manager_id ISNULL
+        */
+        
         }
 
     /**
@@ -121,7 +129,7 @@ class EvacuationCenterController extends Controller
             'evacuation_center_id' => $evacuation_center->id,
         ]);
 
-        $request->session()->flash('message', 'Successfully created evacuation center');
+        $request->session()->flash('message', 'Successfully created ' . $evacuation_center->name . ' evacuation center');
         
         $updatemarker = new UpdateMarker;
         $updatemarker->get_evac();
@@ -169,14 +177,16 @@ class EvacuationCenterController extends Controller
         //return $evacuation_center->camp_manager_id;
         return view('admin.evacuation-center.edit', ['evacuation_center' => $evacuation_center, 'camp_managers' => $camp_managers]);
 
-        // SELECT users.id, users.name
-        // FROM users
-        // JOIN camp_managers
-        // ON camp_managers.user_id = users.id
-        // LEFT JOIN evacuation_centers
-        // ON evacuation_centers.camp_manager_id  = users.id
-        // WHERE evacuation_centers.camp_manager_id ISNULL
-        // OR evacuation_centers.camp_manager_id = 3
+        /*
+        SELECT users.id, users.name
+            FROM users
+            JOIN camp_managers
+            ON camp_managers.user_id = users.id
+            LEFT JOIN evacuation_centers
+            ON evacuation_centers.camp_manager_id  = users.id
+            WHERE evacuation_centers.camp_manager_id ISNULL
+            OR evacuation_centers.camp_manager_id = 3
+        */
     }
 
     /**

@@ -21,7 +21,7 @@ class UpdateRequests {
         );
     }
     
-    public function get_requests()
+    public function get_requests($id)
     {
         $delivery_requests = DB::table('requests')
             ->leftJoin('users', 'requests.camp_manager_id', '=', 'users.id')
@@ -31,7 +31,7 @@ class UpdateRequests {
             ->get();
 
         $data = ['delivery_requests' => $delivery_requests];
-        $this->pusher->trigger('my-channel', 'my-event', $data);
+        $this->pusher->trigger('requests-channel', 'deliver-event', $data);
     }
 
 }

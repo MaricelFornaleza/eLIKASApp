@@ -73,7 +73,7 @@ function secondsToHm(d) {
   return ((h > 0 ? h + " h " + (m < 10 ? "0" : "") : "") + m + " min " + (s > 0 ? s + " s" : "")); // eslint-disable-line
 }
 
-function addMarker(mymap, clickMarker){
+function addMarker(mymap, clickMarker) {
   mymap.on('click', function (e){
     //clickMarker = new L.marker(e.latlng).addTo(mymap);
     var icon = L.icon({
@@ -92,7 +92,7 @@ function addMarker(mymap, clickMarker){
   });
 }
 
-function evacIcon(){
+function evacIcon() {
   return icon = L.icon({
     iconUrl: '/././assets/img/pins/orange-pin.png',
     iconSize: [61, 52],
@@ -101,17 +101,17 @@ function evacIcon(){
   });
 }
 
-function evacOptions(){
+function evacOptions() {
   return options = {
     'maxWidth': '400',
     'minWidth': '250',
     'autoClose': false,
     'closeOnClick': false,
-    'className': 'custom-popup'
+    'className': 'custom-popup',
   };
 }
 
-function truckIcon(){
+function truckIcon() {
   return icon = L.icon({
     iconUrl: 'assets/img/pins/mdi_truck-fast.png',
     iconSize: [32, 27],
@@ -120,7 +120,7 @@ function truckIcon(){
   });
 }
 
-function truckOptions(){
+function truckOptions() {
   return options = {
     'maxWidth': '400',
     'minWidth': '100',

@@ -97,7 +97,8 @@
                                         
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="requestTable">
+
                                     @foreach($delivery_requests as $delivery_request)
                                     <tr>
                                         <td>{{ $delivery_request->id }}</td>
@@ -317,7 +318,7 @@ $(document).ready(function() {
                     title: evacuation.name
                 })
                 .bindPopup('<div class="font-weight-bold text-center">' + evacuation.name + '</div>', truckOptions())
-                .addTo(markers).addTo(mymap);
+                .addTo(markers);
             markers.addTo(mymap);
             mymap.setView([evacuation.latitude, evacuation.longitude], 13); 
         });
@@ -335,12 +336,12 @@ $(document).ready(function() {
         cluster: 'ap1'
     });
 
-    var channel = pusher.subscribe('my-channel');
-    channel.bind('my-event', function(data) {
+    var channel = pusher.subscribe('requests-channel');
+    channel.bind('deliver-event', function(data) {
         //evac_markers.clearLayers();
+        var result = data;
 
-        var couriers = data.couriers;
-        $.each(couriers, function(key, value) {
+        $.each(result, function(key, value) {
             for (var i = 0; i < value.length; ++i) {
                 
             }
