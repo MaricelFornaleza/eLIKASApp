@@ -70,6 +70,8 @@ class EvacuationCenterController extends Controller
             ->select('users.id', 'users.name')
             ->orderByRaw('users.name ASC')
             ->get();
+
+        //dd($camp_managers);
         return view('admin.evacuation-center.create', ['camp_managers' => $camp_managers]);
         //return $camp_managers;
 

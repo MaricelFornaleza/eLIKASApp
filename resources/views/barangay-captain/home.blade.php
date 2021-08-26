@@ -4,18 +4,28 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Dashboard</div>
+            <h4>Active Disaster Response</h4>
+            <div class="row justify-content-start">
+                @foreach($disaster_responses as $disaster_response)
+                <div class="col-md-4">
+                    <div class="card img-fluid">
+                        <img class="card-img-top" src="{{url('/assets/dr-cover/'.$disaster_response -> photo)}}"
+                            alt="{{$disaster_response->disaster_type}}" style="height:100px; object-fit: cover;">
+                        <a href="/barangay-captain/barangay-stats">
+                            <div class="card-img-overlay text-white" style="height: 75px; ">
+                                <h4 class=" card-title mb-4 ">{{$disaster_response->disaster_type}}</h4>
+                                <h6 class=" card-text mb-0">{{$disaster_response->description}}</h6>
+                                <h6 class="card-text ">
+                                    {{ date('F j, Y', strtotime($disaster_response->date_started)) }}
+                                </h6>
+                            </div>
+                        </a>
 
-                <div class="card-body">
-                    @if (session('status'))
-                    <div class="alert alert-success" role="alert">
-                        {{ session('status') }}
+
                     </div>
-                    @endif
-
-                    You are logged in as Barangay Captain!
                 </div>
+                @endforeach
+
             </div>
         </div>
     </div>

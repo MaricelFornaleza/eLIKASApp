@@ -19,16 +19,16 @@ class FieldOfficerExport implements FromCollection, ShouldAutoSize, WithHeadings
             ->leftJoin('camp_managers', 'camp_managers.user_id', '=', 'users.id')
             ->leftJoin('barangay_captains', 'barangay_captains.user_id', '=', 'users.id')
             ->leftJoin('couriers', 'couriers.user_id', '=', 'users.id')
-            ->leftJoin('contacts', 'contacts.user_id', '=', 'users.id')
+
             ->select(
                 'users.name',
                 'users.email',
-                'contacts.contact_no1',
-                'contacts.contact_no2',
+                'users.contact_no',
                 'users.officer_type',
-                'camp_managers.designation',
-                'barangay_captains.barangay',
+                'camp_managers.designation as cm-designation',
                 'couriers.designation',
+                'barangay_captains.barangay',
+
             )
             ->get();
         return $field_officers;
@@ -39,9 +39,9 @@ class FieldOfficerExport implements FromCollection, ShouldAutoSize, WithHeadings
             'Name',
             'Email Address',
             'Contact No.',
-            'Contact No. (Optional)',
             'Officer Type',
-            'Designation',
+            'Camp Managers Designation',
+            'Coriers Designation',
             'Barangay',
         ];
     }

@@ -53,57 +53,20 @@
                             </div>
                             <!-- /.row-->
                             <div class="row">
-                                @if($contacts->count() == 1)
-                                @foreach($contacts as $contact)
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="contact_no[]">Contact Number</label>
-                                        <input class="form-control @error('contact_no[]') is-invalid @enderror" required
-                                            id="contact_no[]" name="contact_no[]" type="number"
-                                            value="0{{$contact->contact_no}}" placeholder="e.g. 09xxxxxxxxx">
-                                        @error('contact_no[]')
+                                        <label for="contact_no">Contact Number</label>
+                                        <input class="form-control @error('contact_no') is-invalid @enderror" required
+                                            id="contact_no" name="contact_no" type="number"
+                                            value="0{{$user->contact_no}}" placeholder="e.g. 09xxxxxxxxx">
+                                        @error('contact_no')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
                                     </div>
                                 </div>
-                                @endforeach
                                 <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label for="contact_no[]">Contact Number (Optional)</label>
-                                        <input class="form-control @error('contact_no[]') is-invalid @enderror"
-                                            id="contact_no[]" name="contact_no[]" type="number" value=""
-                                            placeholder="e.g. 09xxxxxxxxx">
-                                        @error('contact_no[]')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                @else
-                                @foreach($contacts as $contact)
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label for="contact_no[]">Contact Number</label>
-                                        <input class="form-control @error('contact_no[]') is-invalid @enderror" required
-                                            id="" name="contact_no[]" type="number" value="0{{$contact->contact_no}}"
-                                            placeholder="e.g. 09xxxxxxxxx">
-                                        @error('contact_no[]')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                @endforeach
-
-                                @endif
-                            </div>
-                            <!-- /.row-->
-                            <div class="row" id='branch'>
-                                <div class="col-sm-12">
                                     <div class="form-group">
                                         <label for="branch">Branch</label>
                                         <input class="form-control" value="{{ $admin->branch }}" autocomplete="branch"
@@ -115,7 +78,9 @@
                                         @enderror
                                     </div>
                                 </div>
+
                             </div>
+
 
                             <!-- /.row-->
                             <div class="form-group">
@@ -127,7 +92,8 @@
                                             <div class="col-sm-12 ">
                                                 <img id="preview-image-before-upload"
                                                     src="/public/images/{{$user->photo}}" alt="preview image"
-                                                    style="max-height: 75px;" class="rounded-circle mb-2">
+                                                    style="height: 100px; width: 100px; object-fit: cover;"
+                                                    class="rounded-circle mb-2">
                                                 <input class=" form-control @error('photo') is-invalid @enderror "
                                                     type="file" name="photo" value="{{ old('photo') }}" id="photo">
                                                 @error('photo')
@@ -180,17 +146,9 @@
 @endsection
 
 @section('javascript')
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
 <script type="text/javascript">
-function update() {
-    var select = document.getElementById('officer_type');
-    if (select.value == 'barangay_captain') {
-        document.getElementById('barangay').style.display = "block";
-        document.getElementById('designation').style.display = "none";
-    } else {
-        document.getElementById('barangay').style.display = "none";
-        document.getElementById('designation').style.display = "block";
-    }
-}
 $(document).ready(function(e) {
     $('#photo').change(function() {
         let reader = new FileReader();

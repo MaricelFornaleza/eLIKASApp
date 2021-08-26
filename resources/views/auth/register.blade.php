@@ -31,7 +31,7 @@
 
                                 <input id="email" class="form-control @error('email') is-invalid @enderror" type="email"
                                     placeholder="{{ __('E-Mail Address') }}" name="email" value="{{ old('email') }}"
-                                    required >
+                                    required>
                                 @error('email')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -40,9 +40,9 @@
                             </div>
                             <div class="input-group mb-3 ">
 
-                                <input id="contact_no1" class="form-control @error('contact_no1') is-invalid @enderror"
-                                    type="number" placeholder="{{ __('Contact Number') }}" name="contact_no1"
-                                    value="{{ old('contact_no1') }}" required >
+                                <input id="contact_no" class="form-control @error('contact_no') is-invalid @enderror"
+                                    type="number" placeholder="{{ __('Contact Number') }}" name="contact_no"
+                                    value="{{ old('contact_no') }}" required>
                                 @error('contact_no1')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -53,7 +53,7 @@
 
                                 <input id="branch" class="form-control @error('branch') is-invalid @enderror"
                                     type="text" placeholder="{{ __('Branch') }}" name="branch"
-                                    value="{{ old('branch') }}" required >
+                                    value="{{ old('branch') }}" required>
                                 @error('branch')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>

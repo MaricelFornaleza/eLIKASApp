@@ -92,9 +92,7 @@ body {
     align-self: flex-start;
     fill: currentColor;
 }
-.mobile-header {
-    background-color: #023047 !important;
-}
+
 .register {
     font-weight: 800 !important;
     color: #fb8500 !important;

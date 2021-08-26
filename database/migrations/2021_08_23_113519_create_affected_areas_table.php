@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateReliefRecipientsTable extends Migration
+class CreateAffectedAreasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,10 @@ class CreateReliefRecipientsTable extends Migration
      */
     public function up()
     {
-        Schema::create('relief_recipients', function (Blueprint $table) {
+        Schema::create('affected_areas', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
-            $table->string('address');
-            $table->date('birthdate');
-            $table->string('sectoral_classification');
-            $table->string('gender');
-            $table->string('family_representative');
+            $table->unsignedBigInteger('disaster_response_id');
+            $table->unsignedBigInteger('barangay_id');
             $table->timestamps();
         });
     }
@@ -32,6 +28,6 @@ class CreateReliefRecipientsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('relief_recipients');
+        Schema::dropIfExists('affected_areas');
     }
 }

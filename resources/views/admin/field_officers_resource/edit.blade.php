@@ -37,7 +37,7 @@
                             </div>
                             <!-- /.row-->
                             <div class="row">
-                                <div class="col-sm-12">
+                                <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="email">Email Address</label>
                                         <input class="form-control @error('email') is-invalid @enderror"
@@ -50,52 +50,21 @@
                                         @enderror
                                     </div>
                                 </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="contact_no">Contact Number</label>
+                                        <input class="form-control @error('contact_no') is-invalid @enderror" required
+                                            id="contact_no" name="contact_no" type="number"
+                                            value="0{{$user->contact_no}}" placeholder="e.g. 09xxxxxxxxx">
+                                        @error('contact_no')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
                             </div>
-                            <!-- /.row-->
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label for="contact_no1">Contact Number</label>
-                                        <input class="form-control @error('contact_no1') is-invalid @enderror" required
-                                            id="contact_no1" name="contact_no1" type="number"
-                                            value="0{{$contacts->contact_no1}}" placeholder="e.g. 09xxxxxxxxx">
-                                        @error('contact_no1')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                @if($contacts -> contact_no2 != null)
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label for="contact_no2">Contact Number</label>
-                                        <input class="form-control @error('contact_no2') is-invalid @enderror" required
-                                            id="contact_no2" name="contact_no2" type="number"
-                                            value="0{{$contacts->contact_no2}}" placeholder="e.g. 09xxxxxxxxx">
-                                        @error('contact_no2')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                @else
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label for="contact_no2">Contact Number</label>
-                                        <input class="form-control @error('contact_no2') is-invalid @enderror" required
-                                            id="contact_no2" name="contact_no2" type="number"
-                                            value="{{ old('contact_no2') }}" placeholder="e.g. 09xxxxxxxxx">
-                                        @error('contact_no2')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                @endif
-                            </div>
+
                             <!-- /.row-->
                             <div class="row">
                                 <div class="form-group col-sm-6">
@@ -165,7 +134,8 @@
                                             <div class="col-sm-12 ">
                                                 <img id="preview-image-before-upload"
                                                     src="/public/images/{{$user->photo}}" alt="preview image"
-                                                    style="max-height: 75px;" class="rounded-circle mb-2">
+                                                    style="height: 100px; width: 100px; object-fit: cover;"
+                                                    class="rounded-circle mb-2">
                                                 <input class=" form-control @error('photo') is-invalid @enderror "
                                                     type="file" name="photo" value="{{ old('photo') }}" id="photo">
                                                 @error('photo')

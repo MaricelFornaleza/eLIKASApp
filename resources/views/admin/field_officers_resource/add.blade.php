@@ -36,7 +36,7 @@
                             </div>
                             <!-- /.row-->
                             <div class="row">
-                                <div class="col-sm-12">
+                                <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="email">Email Address</label>
                                         <input class="form-control @error('email') is-invalid @enderror" required
@@ -49,29 +49,13 @@
                                         @enderror
                                     </div>
                                 </div>
-                            </div>
-                            <!-- /.row-->
-                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="contact_no1">Contact Number</label>
-                                        <input class="form-control @error('contact_no1') is-invalid @enderror" required
-                                            id="contact_no1" name="contact_no1" type="number"
-                                            placeholder="e.g. 09xxxxxxxxx" value="{{ old('contact_no1') }}">
-                                        @error('contact_no1')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label for="contact_no2">Contact Number (Optional)</label>
-                                        <input class="form-control @error('contact_no2') is-invalid @enderror"
-                                            id="contact_no2" name="contact_no2" type="number"
-                                            placeholder="e.g. 09xxxxxxxxx" value="{{ old('contact_no2') }}">
-                                        @error('contact_no2')
+                                        <label for="contact_no">Contact Number</label>
+                                        <input class="form-control @error('contact_no') is-invalid @enderror" required
+                                            id="contact_no" name="contact_no" type="number"
+                                            placeholder="e.g. 09xxxxxxxxx" value="{{ old('contact_no') }}">
+                                        @error('contact_no')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -79,6 +63,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <!-- /.row-->
                             <div class="row">
                                 <div class="form-group col-sm-6">
@@ -126,7 +111,8 @@
                                 <div class="row">
                                     <div class="col-sm-6 ">
                                         <img id="preview-image-before-upload" src="/public/images/Upload Image.png"
-                                            alt="preview image" style="max-height: 100px; " class="rounded-circle mb-2">
+                                            alt="preview image" style="height: 100px; width: 100px; object-fit: cover;"
+                                            class="rounded-circle mb-2">
                                         <input class=" form-control @error('photo') is-invalid @enderror " type="file"
                                             name="photo" value="{{ old('photo') }}" id="photo">
                                         @error('photo')
@@ -164,6 +150,8 @@
 @endsection
 
 @section('javascript')
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
 <script type="text/javascript">
 function update() {
     var select = document.getElementById('officer_type');

@@ -30,17 +30,13 @@
                         <div class="row ">
                             <div class="col-3 center ml-2 mr-2">
                                 <img class="image rounded-circle" src="{{asset('/public/images/'.$user-> photo)}}"
-                                    alt="profile_image">
+                                    alt="profile_image" style="object-fit: cover;">
                             </div>
                             <div class="col-8 ">
                                 <h3 class="title"> {{$user -> name}}</h3>
                                 <h6>{{ $user->officer_type}}</h6>
                                 <h6>{{ $user->email}}</h6>
-                                <h6>
-                                    @foreach($user->user_contacts as $contact)
-                                    <h6>0{{$contact -> contact_no}}</h6>
-                                    @endforeach
-                                </h6>
+                                <h6>0{{$user -> contact_no}}</h6>
                                 <h6>{{ $user ->branch}}</h6>
                             </div>
                         </div>

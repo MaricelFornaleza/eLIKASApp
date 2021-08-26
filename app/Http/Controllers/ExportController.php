@@ -8,6 +8,8 @@ use App\Exports\EvacuationCenterExport;
 use App\Exports\DeliveryRequestExport;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use PDF;
+
 
 class ExportController extends Controller
 {

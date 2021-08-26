@@ -98,17 +98,12 @@
                                     <tr>
                                         <td><img class="image rounded-circle"
                                                 src="{{asset('/public/images/'.$field_officer -> photo)}}"
-                                                alt="profile_image" style="width: 40px;height: 40px;"></td>
+                                                alt="profile_image"
+                                                style="height: 40px; width: 40px; object-fit: cover;"></td>
                                         <td>{{ $field_officer -> name }}</td>
                                         <td>{{ $field_officer -> officer_type}}</td>
                                         <td>{{ $field_officer -> email }}</td>
-                                        <td>@foreach($field_officer -> user_contacts as $contact)
-                                            <h6> 0{{$contact -> contact_no1}}</h6>
-                                            @if(!empty($contact -> contact_no2))
-                                            <h6> 0{{$contact -> contact_no2}}</h6>
-                                            @endif
-                                            @endforeach
-                                        </td>
+                                        <td>0{{$field_officer -> contact_no}}</td>
                                         <td>@empty($field_officer -> barangay )
                                             NA
                                             @endempty

@@ -18,8 +18,9 @@ use App\Http\Controllers\SupplyController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ImportExcelController;
 use App\Http\Controllers\ExportExcelController;
-use App\Http\Controllers\ReliefRecipientController;
+use App\Http\Controllers\FamilyMemberController;
 
+//login and register 
 Route::get('/', function () {
     $count = User::count();
     if ($count == 0) {
@@ -36,7 +37,26 @@ Route::auth('/register', function () {
 
 Auth::routes();
 
+//User Profile 
+Route::prefix('profile')->group(function () {
+    Route::get('/', 'ProfileController@index');
+    Route::get('/{id}/edit', 'ProfileController@edit');
+    Route::put('/{id}', 'ProfileController@update');
+    Route::put('/field-officer/{id}', 'ProfileController@updateFO');
+});
 
+
+//Disaster Response
+Route::prefix('disaster-response')->group(function () {
+    Route::get('/start', 'DisasterResponseController@start');
+    Route::post('/store', 'DisasterResponseController@store');
+    Route::get('/show/{id}', 'DisasterResponseController@show');
+    Route::get('/stop/{id}', 'DisasterResponseController@stop');
+    Route::get('/archive', 'DisasterResponseController@archive');
+    Route::get('/export/{id}', 'DisasterResponseController@exportPDF');
+});
+
+//map and evacuation center 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/home', 'HomeController@index')->name('home');
     Route::get('/map/get_locations/{id}', 'MapController@get_locations');
@@ -60,9 +80,21 @@ Route::group(['middleware' => ['auth']], function () {
     });
 });
 
+//field officer 
 Route::resource('/field_officers', 'FieldOfficerController');
 
-Route::resource('/profile', 'ProfileController');
+//requests
+
+//residents
+Route::resource('relief-recipient', 'ReliefRecipientController');
+Route::resource('residents', 'FamilyMemberController');
+Route::get('residents.group', 'FamilyMemberController@group')->name('residents.group');
+
+//supply and inventory
+Route::resource('supplies', 'SupplyController');
+Route::resource('inventory', 'InventoryController');
+
+//chat
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/chat', 'ChatController@index')->name('chat');
     Route::get('/chat/{id}', 'ChatController@getMessage');
@@ -70,14 +102,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/search', 'ChatController@search');
 });
 
-Route::resource('supplies', 'SupplyController');
-Route::resource('inventory', 'InventoryController');
-
-// Route::post('/import_excel_supplies', 'ImportExcelController@import');
-// Route::get('/export_excel_supplies', 'ExportExcelController@export');
-
-Route::resource('relief-recipient', 'ReliefRecipientController');
-
+//import and export excel
 Route::prefix('import')->group(function () {
     Route::get('/field_officers', 'ImportController@importFieldOfficer');
     Route::post('/field_officers/store', 'ImportController@storeFieldOfficer');
@@ -92,4 +117,27 @@ Route::prefix('export')->group(function () {
     Route::get('/supplies', 'ExportController@exportSupplies');
     Route::get('/evacuation_centers', 'ExportController@exportEvacuationCenters')->name('evacuation-center.file.export');
     Route::get('/requests', 'ExportController@exportDeliveryRequests')->name('request.file.export');
+});
+
+//barangay
+Route::prefix('barangay')->group(function () {
+    Route::get('/search', 'BarangayController@search');
+});
+
+// Barangay Captain
+Route::prefix('barangay-captain')->group(function () {
+    Route::get('/barangay-stats', 'BarangayCaptainController@barangayStats');
+});
+
+// camp manager
+Route::prefix('camp-manager')->group(function () {
+    Route::get('/evacuees', 'CampManagerController@evacuees');
+    Route::get('/admit-view', 'CampManagerController@admitView');
+    Route::get('/group-fam', 'CampManagerController@groupFam');
+    Route::get('/discharge-view', 'CampManagerController@dischargeView');
+    Route::get('/supply-view', 'CampManagerController@supplyView');
+    Route::get('/dispense', 'CampManagerController@dispenseView');
+    Route::get('/request-supply', 'CampManagerController@requestSupplyView');
+    Route::get('/history', 'CampManagerController@historyView');
+    Route::get('/details', 'CampManagerController@detailsView');
 });

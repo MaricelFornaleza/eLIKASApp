@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
-use App\Models\Contact;
 use App\Models\User;
 use App\Models\Inventory;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -56,8 +55,7 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255', 'alpha_spaces'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'branch' => ['required', 'string', 'max:255'],
-            'contact_no1' => ['required', 'numeric', 'digits:11', 'unique:contacts', 'regex:/^(09)\d{9}$/'],
-            
+            'contact_no' => ['required', 'numeric', 'digits:11', 'unique:users', 'regex:/^(09)\d{9}$/'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
@@ -75,16 +73,12 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'officer_type' => 'Administrator',
+            'contact_no' => $data['contact_no'],
             'password' => Hash::make($data['password']),
         ]);
         Admin::create([
             'user_id' => $user->id,
             'branch' =>  $data['branch'],
-        ]);
-        Contact::create([
-            'user_id' => $user->id,
-            'contact_no1' => $data['contact_no1'],
-            'contact_no2' => null,
         ]);
         Inventory::create([
             'user_id' => $user->id,
