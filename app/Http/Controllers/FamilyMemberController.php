@@ -132,10 +132,11 @@ class FamilyMemberController extends Controller
         Session::flash('message', 'Resident deleted successfully!');
         return redirect()->route('residents.index');
     }
-
+    public $hi = "hi";
     ///////////////////////////////////////// Group Family Members
     public function group()
     {
+      //  $hi ="hello";
         // $userData = FamilyMember::get();
         // return json_encode(array('data'=>$userData));
         // $residents = DB::table('family_members')
@@ -146,12 +147,13 @@ class FamilyMemberController extends Controller
         $family_members = DB::table('family_members')->select('id', 'name','sectoral_classification')->get();
 
         //$family_members = FamilyMember::all();
-        return view('admin.relief-recipients.groupFamilyMembers', ['family_members' => $family_members]);
+        return view('admin.relief-recipients.groupFamilyMembers', ['family_members' => $family_members, 'hi' => $this->hi]);
     }
 
     public function select(Request $request)
     {
-        dd($request);
+        $this->hi =$request->message;
+
     }
 }
  

@@ -67,7 +67,7 @@
                                     @foreach($family_members as $family_member)
 
                                     <tr>
-                                        <td><input class="col-sm-2 align-middle" type="checkbox" name= "name" value="{ id : {{ $family_member->id  }}, name : '{{ $family_member->name  }}' }" >{{ $family_member->name }}</td>
+                                        <td><input class="col-sm-2 align-middle" type="checkbox" name= "{{ $family_member->id  }}" value="{{ $family_member->name  }}" >{{ $family_member->name }}</td>
                                         <td>{{ $family_member->sectoral_classification }}</td>
                                     </tr>
                                     @endforeach
@@ -90,7 +90,7 @@
                     </div>
                     <div class="card-body ">
                         <div>
-                            <table id="familyMembersTable"
+                            <table id="familyMembersTable1"
                                 class="table table-borderless table-hover table-light table-striped "
                                 style="width: 100%;">
                                 <thead>
@@ -99,16 +99,12 @@
                                         <th>SECTORAL CLASSIFICATION</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    @foreach($family_members as $family_member)
+                                <tbody id="selectedResident" name="selectedResident">
+                                  
                                       
-                                        <tr>
-                                            <td>{{ $family_member->name }}</td>
-                                            <td>{{ $family_member->sectoral_classification }}</td>
-                                        </tr>
+                                        
                                      
                                 
-                                    @endforeach
 
                                 </tbody>
                             </table>
@@ -161,19 +157,17 @@ $(document).ready(function() {
         });
         
     console.log("checkedResidents:", checkedResidents);
-    var datastr = "recipient=" + "Sev" + "&message=" + "nays";
-                $.ajax({
-                    type: "post",
-                    url: "residents.select",
-                    data: checkedResidents,
-                    cache: false,
-                    success: function(data) {
-                        // $('#messages').html(data);
-                    },
-                    error: function(jqXHR, status, err) {
-                        // alert(jqXHR.err);
-                    }
-                })
+    let textHtml = "";
+    for (let i=0; i < checkedResidents.length; i++) {
+        textHtml += '<tr><td>'+checkedResidents[i]+'</td></tr>';
+    }
+    
+    $('#selectedResident').html(textHtml);  
+         
+        // checkedResidents.forEach(function(value) {
+        //     $('#thiswan').append('<tr><td>'value'</td></tr>');    
+        // });
+        
     });
 });
 

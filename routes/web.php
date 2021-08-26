@@ -66,7 +66,7 @@ Route::resource('supplies', 'SupplyController');
 Route::resource('inventory', 'InventoryController');
 
 Route::resource('residents', 'FamilyMemberController');
-Route::get('residents.select', 'FamilyMemberController@select');
+Route::post('residents.select', 'FamilyMemberController@select');
 Route::get('residents.group', 'FamilyMemberController@group')->name('residents.group');
 
 
