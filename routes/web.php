@@ -114,7 +114,10 @@ Route::prefix('barangay')->group(function () {
 
 // Barangay Captain
 Route::prefix('barangay-captain')->group(function () {
-    Route::get('/barangay-stats', 'BarangayCaptainController@barangayStats');
+    Route::get('/add-supply', 'BarangayCaptainController@addSupply');
+    Route::get('/dispense', 'BarangayCaptainController@dispenseView');
+    Route::get('/details/{id}', 'BarangayCaptainController@detailsView');
+    Route::get('/list', 'BarangayCaptainController@listView');
 });
 
 // camp manager

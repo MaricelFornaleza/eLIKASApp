@@ -10,9 +10,9 @@ use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\Session;
 
-class SupplyController extends Controller 
+class SupplyController extends Controller
 {
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -31,7 +31,7 @@ class SupplyController extends Controller
      */
     public function create()
     {
-        return view('barangay-captain.supply-resource.create');
+        return view('admin.supply-resource.create');
     }
 
     /**
@@ -43,7 +43,7 @@ class SupplyController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'supply_type' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z]+$/'],
+            'supply_type' => ['required', 'string', 'max:255', 'alpha_spaces'],
             'quantity' => ['required', 'numeric', 'regex:/^\d+$/'],
             'source' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z]+$/'],
         ]);
@@ -60,7 +60,7 @@ class SupplyController extends Controller
         $supply->source = $validated['source'];
         $supply->save();
         $request->session()->flash('message', 'Supply created successfully!');
-         return redirect()->route('inventory.index');
+        return redirect()->route('inventory.index');
     }
 
     /**
@@ -83,7 +83,7 @@ class SupplyController extends Controller
     public function edit($id)
     {
         $supply = Supply::find($id);
-        return view('barangay-captain.supply-resource.edit', ['supply' => $supply ]);
+        return view('barangay-captain.supply-resource.edit', ['supply' => $supply]);
     }
 
     /**
@@ -101,7 +101,7 @@ class SupplyController extends Controller
         $supply->source = $request->input('source');
         $supply->save();
         $request->session()->flash('message', 'Supply updated successfully!');
-         return redirect()->route('inventory.index');
+        return redirect()->route('inventory.index');
     }
 
     /**
@@ -113,7 +113,7 @@ class SupplyController extends Controller
     public function destroy($id)
     {
         $supply = Supply::find($id);
-        if($supply){
+        if ($supply) {
             $supply->delete();
         }
         Session::flash('message', 'Supply deleted successfully!');
