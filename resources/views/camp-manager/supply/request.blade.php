@@ -8,7 +8,7 @@
             <!--  Title  -->
             <div class="col-md-12 justify-content-between d-flex align-items-baseline p-0">
                 <div class="col-md-6">
-                    <h4 class="font-weight-bold">Dispense Supply</h4>
+                    <h4 class="font-weight-bold">Request Supply</h4>
                 </div>
 
             </div>
@@ -25,17 +25,7 @@
                 </select>
 
             </div>
-            <!-- Select Relief Recipient -->
-            <div class="form-group col-sm-6">
-                <label for="relief_recipient">Relief Recipient</label>
-                <select name="relief_recipient" class="form-control" id="relief_recipient">
-                    <option value="">Select</option>
-                    <option value="dr-1">Relief Recipient 1</option>
-                    <option value="dr-2">Relief Recipient 2</option>
-                    <option value="dr-3">Relief Recipient 3</option>
 
-                </select>
-            </div>
 
             <!-- Supply Info Form -->
             <div class="supply-info mt-5">
@@ -195,13 +185,21 @@
                         </div>
                     </div>
                 </div>
+                <!-- Note text Area -->
+                <div class="col-12">
+                    <label for="note">Note</label>
+                    <textarea id="note" name="note" placeholder="Write something.."
+                        style="width:100%; height:100px;"></textarea>
+
+                </div>
+
 
                 <!-- Buttons -->
                 <div class="">
                     <div class="col-12 center mt-5 ">
                         <div class="col-md-6 p-0 ">
                             <a href="">
-                                <button class="btn btn-accent  px-4 ">Dispense</button>
+                                <button class="btn btn-accent  px-4 ">Request</button>
                             </a>
                         </div>
                     </div>

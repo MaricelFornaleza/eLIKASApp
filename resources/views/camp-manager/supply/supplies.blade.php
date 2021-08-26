@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <!-- Barangay Information  -->
+            <!--  Title  -->
             <div class="col-md-12 justify-content-between d-flex align-items-baseline p-0">
                 <div class="col-md-6">
                     <h4 class="font-weight-bold">Supply</h4>
@@ -89,15 +89,24 @@
 
             <!-- buttons -->
             <div class="fixed-bottom col-md-6">
-                <div class="col-12 center mt-5 mb-5">
+                <div class="col-12 center mt-5 ">
                     <div class="col-md-6 p-0 ">
-                        <a href="/camp-manager/dispense">
-                            <button class="btn btn-accent  px-4 ">Dispense</button>
+                        <a href="/camp-manager/request-supply">
+                            <button class="btn btn-accent  px-4 ">Request Supply</button>
                         </a>
                     </div>
                 </div>
 
+                <div class="col-12 center mt-4">
+                    <div class="col-md-6 mb-4 p-0">
+                        <a href="/camp-manager/dispense">
+                            <button class="btn btn-accent-outline  px-4 ">Dispense</button>
+                        </a>
+                    </div>
+                </div>
             </div>
+
+
 
 
         </div>

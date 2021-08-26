@@ -4,6 +4,18 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
+            <!-- Select Disaster Response -->
+            <div class="form-group col-sm-6">
+                <label for="disaster_response">Disaster Response</label>
+                <select name="disaster_response" class="form-control" id="disaster_response">
+                    <option value="">Select</option>
+                    <option value="dr-1">Disaster Response 1</option>
+                    <option value="dr-2">Disaster Response 2</option>
+                    <option value="dr-3">Disaster Response 3</option>
+
+                </select>
+
+            </div>
             <!-- Barangay Information  -->
 
             <div class="col-md-6">
@@ -76,8 +88,8 @@
                     </li>
                 </ul>
             </div>
-            <div class="fixed-bottom">
-                <div class="col-12 center mt-5 ">
+            <div class="fixed-bottom mt-5">
+                <div class="col-12 center  ">
                     <div class="col-md-6 p-0 ">
                         <a href="#">
                             <button class="btn btn-accent  px-4 ">Admit</button>

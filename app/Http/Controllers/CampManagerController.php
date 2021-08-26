@@ -6,10 +6,6 @@ use Illuminate\Http\Request;
 
 class CampManagerController extends Controller
 {
-    public function evacuationCenter()
-    {
-        return view('camp-manager.evacuation-center');
-    }
     public function evacuees()
     {
         return view('camp-manager.evacuees.evacuees');
@@ -33,5 +29,17 @@ class CampManagerController extends Controller
     public function dispenseView()
     {
         return view('camp-manager.supply.dispense');
+    }
+    public function requestSupplyView()
+    {
+        return view('camp-manager.supply.request');
+    }
+    public function historyView()
+    {
+        return view('camp-manager.request.history');
+    }
+    public function detailsView()
+    {
+        return view('camp-manager.request.details');
     }
 }

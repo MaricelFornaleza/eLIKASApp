@@ -42,6 +42,9 @@ body {
 .bg-secondary {
     background-color: #219ebc !important;
 }
+.bg-secondary-accent {
+    background-color: #ffb703 !important;
+}
 .cm-button {
     width: 100%;
     background-color: #f4f7fc;
@@ -89,4 +92,7 @@ ul.list-group.list-group-striped li:nth-of-type(even) {
     background-color: #219ebc !important;
     color: white !important;
     border: none !important;
+}
+textarea:focus {
+    outline: 1px solid #219ebc !important;
 }
