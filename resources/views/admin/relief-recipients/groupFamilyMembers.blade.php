@@ -67,7 +67,7 @@
                                     @foreach($family_members as $family_member)
 
                                     <tr>
-                                        <td><input class="col-sm-2 align-middle" type="checkbox" name= "{{ $family_member->id  }}" value="{{ $family_member->name  }}" >{{ $family_member->name }}</td>
+                                        <td><input class="col-sm-2 align-middle" type="checkbox" name= "{{ $family_member->id  }}" value="<tr><td><input class='col-sm-2 align-middle' type='radio' value='{{ $family_member->id }}' id='selectedRepresentative' name='selectedRepresentative'>{{ $family_member->name }}</td><td>{{ $family_member->sectoral_classification  }}</td></tr> <input type='hidden' value='{{ $family_member->id }}' name='selectedResidents[]'>" >{{ $family_member->name }}</td>
                                         <td>{{ $family_member->sectoral_classification }}</td>
                                     </tr>
                                     @endforeach
@@ -89,27 +89,68 @@
                         </div>
                     </div>
                     <div class="card-body ">
+                        <form method="POST" action="residents.groupResidents">
+                        @csrf
                         <div>
-                            <table id="familyMembersTable1"
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="lead">Address</label>
+                                        <input class="form-control @error('address') is-invalid @enderror" type="text" placeholder="{{ __('Enter Address') }}" name="address" required autofocus>
+                                        @error('address')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="px-3 row justify-content-start">
+                                <div class="col-sm-6">
+                                    <div class="form-group row px-3">
+                                    <input class="form-check-input @error('recipient_type') is-invalid @enderror" type="radio" name="recipient_type" id="radio_evacuee" value="Evacuee" required autofocus>
+                                    <label class="form-check-label" for="radio_evacuee">
+                                           Evacuee
+                                    </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group row px-3">
+                                    <input class="form-check-input @error('recipient_type') is-invalid @enderror" type="radio" name="recipient_type" id="radio_non_evacuee" value="Non-Evacuee" checked>
+                                    <label class="form-check-label" for="radio_non_evacuee">
+                                        Non-Evacuee
+                                    </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <table id=""
                                 class="table table-borderless table-hover table-light table-striped "
                                 style="width: 100%;">
                                 <thead>
                                     <tr>
-                                        <th>NAME</th>
-                                        <th>SECTORAL CLASSIFICATION</th>
+                                        <th class="col-sm-6">NAME</th>
+                                        <th class="col-sm-6">SECTORAL CLASSIFICATION</th>
                                     </tr>
                                 </thead>
                                 <tbody id="selectedResident" name="selectedResident">
-                                  
-                                      
-                                        
-                                     
-                                
-
                                 </tbody>
                             </table>
+                      
+                            
 
+                            <div class="row mt-5 center">
+                                <div class="col-4 ">
+                                    <button class="btn btn-primary px-4 " type="submit">{{ __('Submit') }}</button>
+                                </div>
+                                <div class="col-4 ">
+                                    <a href="{{ route('residents.index') }}" class="btn btn-outline-primary px-4 "
+                                        >{{ __('Cancel') }}</a>
+                                </div>
+                            </div>
                         </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -159,7 +200,7 @@ $(document).ready(function() {
     console.log("checkedResidents:", checkedResidents);
     let textHtml = "";
     for (let i=0; i < checkedResidents.length; i++) {
-        textHtml += '<tr><td>'+checkedResidents[i]+'</td></tr>';
+        textHtml += checkedResidents[i];
     }
     
     $('#selectedResident').html(textHtml);  

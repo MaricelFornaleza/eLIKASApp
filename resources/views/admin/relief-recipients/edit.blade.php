@@ -68,6 +68,11 @@
                                         <label class="lead">Sectoral Classification</label>
                                         <select class="form-control @error('sectoral_classification') is-invalid @enderror" aria-label=".form-select-lg example" name="sectoral_classification"  required autofocus>
                                             <option value="" disabled>Select</option>
+                                            @if($family_member->sectoral_classification == 'None')
+                                            <option value="None" selected>None</option>
+                                            @else
+                                            <option value="None">None</option>
+                                            @endif
                                             @if($family_member->sectoral_classification == 'Lactating')
                                             <option value="Lactating" selected>Lactating</option>
                                             @else
