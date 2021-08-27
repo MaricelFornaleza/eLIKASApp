@@ -13,18 +13,18 @@
 
             <div class="col-md-6 ">
                 <div class="input-group mt-4">
-                    <input type="text" name="search-text" id="search-text" placeholder="Search" class="form-control ">
+                    <input type="text" name="search-text" id="search-text" placeholder="Search" onkeyup="searchText()" class="form-control ">
                 </div>
             </div>
 
             <div class="col-md-6 px-0 pt-4 ">
-                <ul class="list-group list-group-hover list-group-striped">
+                <ul class="list-group list-group-hover list-group-striped" id="ul-parent">
                     @foreach($delivery_requests as $delivery_request)
                     <a href="/camp-manager/details/{{ $delivery_request->id }}">
                         <li class="list-group-item list-group-item-action ">
                             <div class="row">
                                 <div class="col-8">
-                                    <h6 class="font-weight-bold">Request ID: {{ $delivery_request->id }}</h6>
+                                    <h6 class="font-weight-bold" id="request-id">Request ID: {{ $delivery_request->id }}</h6>
                                     <small>{{date('F d, Y', strtotime($delivery_request->date)) }}</small>
                                 </div>
                                 <div class="col-4">
@@ -102,4 +102,29 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('javascript')
+
+<script>
+    function searchText() {
+        var input = document.getElementById('search-text');
+        var filter = input.value.toUpperCase();
+        var ul = document.getElementById("ul-parent");
+        var a = ul.getElementsByTagName('a');
+        
+        for (var i = 0; i < a.length; i++) {
+            var li = a[i].getElementsByTagName("li")[0];
+            var txtValue = document.getElementById("request-id").textContent;
+            //console.log(li);
+            if (txtValue.toUpperCase().includes(filter)) {
+                a[i].style.display = "";
+            } else {
+                a[i].style.display = "none";
+            }
+        }
+    }
+
+</script>
+
 @endsection
