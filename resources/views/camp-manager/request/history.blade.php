@@ -2,6 +2,25 @@
 
 @section('content')
 <div class="container">
+    <div class="row">
+        <div class="col-12">
+            @if(Session::has('message'))
+            <div class="alert alert-success">
+                {{ Session::get('message') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @elseif(Session::has('error'))
+            <div class="alert alert-danger">
+                {{ Session::get('error') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @endif
+        </div>
+    </div>
     <div class="row justify-content-center">
         <div class="col-md-8">
             <!-- Ttiel  -->
@@ -25,22 +44,28 @@
                             <div class="row">
                                 <div class="col-8">
                                     <h6 class="font-weight-bold" id="request-id">Request ID: {{ $delivery_request->id }}</h6>
-                                    <small>{{date('F d, Y', strtotime($delivery_request->date)) }}</small>
+                                    <small>{{date('F d, Y, h:i a', strtotime($delivery_request->updated_at)) }}</small>
                                 </div>
                                 <div class="col-4">
                                     <span class="float-right ">
                                         @if( $delivery_request->status == 'pending' )
-                                        <div class="badge-pill bg-secondary-accent text-center" style="height: 20px; width:100px;">
-                                        @elseif( $delivery_request->status == 'preparing' )
+                                        <div class="badge-pill bg-secondary-accent text-center text-white" style="height: 20px; width:100px;">
+                                        @elseif( $delivery_request->status == 'preparing' || $delivery_request->status == 'preparing and accepted')
                                         <div class="badge-pill bg-accent text-center text-white" style="height: 20px; width:100px;">
-                                        @elseif( $delivery_request->status == 'in transit' )
+                                        @elseif( $delivery_request->status == 'in-transit' )
                                         <div class="badge-pill bg-secondary text-center text-white" style="height: 20px; width:100px;">
                                         @elseif( $delivery_request->status == 'Delivered' )
                                         <div class="badge-pill badge-primary text-center text-white" style="height: 20px; width:100px;">
                                         @elseif( $delivery_request->status == 'declined' || $delivery_request->status == 'cancelled' )
                                         <div class="badge-pill badge-danger text-center text-white" style="height: 20px; width:100px;">
                                         @endif
-                                        {{ strtoupper($delivery_request->status) }}
+                                            <strong>
+                                                @if( $delivery_request->status == 'preparing and accepted' )
+                                                PREPARING
+                                                @else
+                                                {{ strtoupper($delivery_request->status) }}
+                                                @endif
+                                            </strong>
                                         </div>
                                     </span>
                                 </div>

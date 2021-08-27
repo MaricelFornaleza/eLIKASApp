@@ -43,7 +43,7 @@ class CampManagerController extends Controller
     }
     public function historyView(Request $request)
     {
-        $delivery_requests = DeliveryRequest::all();
+        $delivery_requests = DeliveryRequest::orderBy('updated_at', 'DESC')->get();
         return view('camp-manager.request.history')->with('delivery_requests', $delivery_requests);
     }
     public function detailsView($id)
