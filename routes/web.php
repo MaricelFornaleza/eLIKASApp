@@ -73,10 +73,11 @@ Route::group(['middleware' => ['auth']], function () {
     });
     Route::prefix('requests')->group(function () {
         Route::get('/',         'DeliveryRequestController@index')->name('request.index');
-        Route::get('/admin_approve',   'DeliveryRequestController@approve')->name('request.approve');
-        Route::get('/admin_cancel',   'DeliveryRequestController@admin_cancel')->name('request.admin_cancel');
-        Route::get('/admin_decline',   'DeliveryRequestController@admin_decline')->name('request.admin_decline');
-        Route::post('/admin_assign',   'DeliveryRequestController@assign_courier')->name('request.assign_courier');
+        Route::get('/admin/approve',   'DeliveryRequestController@approve')->name('request.approve');
+        Route::get('/admin/cancel',   'DeliveryRequestController@admin_cancel')->name('request.admin_cancel');
+        Route::get('/admin/decline',   'DeliveryRequestController@admin_decline')->name('request.admin_decline');
+        Route::post('/admin/assign',   'DeliveryRequestController@assign_courier')->name('request.assign_courier');
+        Route::post('/store',   'DeliveryRequestController@store')->name('request.store');
     });
 });
 
@@ -139,5 +140,5 @@ Route::prefix('camp-manager')->group(function () {
     Route::get('/dispense', 'CampManagerController@dispenseView');
     Route::get('/request-supply', 'CampManagerController@requestSupplyView');
     Route::get('/history', 'CampManagerController@historyView');
-    Route::get('/details', 'CampManagerController@detailsView');
+    Route::get('/details/{id}', 'CampManagerController@detailsView');
 });

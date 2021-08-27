@@ -82,7 +82,7 @@
                                 <thead>
                                     <tr>
                                         <th>REQUEST ID</th>
-                                        <th>MANAGER NAME</th>
+                                        <th>CAMP MANAGER NAME</th>
                                         <th>EVACUATION CENTER</th>
                                         <th>FOOD PACKS</th>
                                         <th>WATER</th>
@@ -113,9 +113,9 @@
                                         <td>{{ $delivery_request->note }}</td>
                                         @if( $delivery_request->status == 'pending' )
                                         <td>
-                                            <span class="badge badge-pill badge-warning">
+                                            <div class="badge badge-pill bg-secondary-accent">
                                                 {{ strtoupper($delivery_request->status) }}
-                                            </span>
+                                            </div>
                                         </td>
                                         <td>
                                             <div class="row">
@@ -148,7 +148,7 @@
                                         </td>
                                         @elseif( $delivery_request->status == 'preparing' )
                                         <td>
-                                            <span class="badge badge-pill badge-info">
+                                            <span class="badge badge-pill bg-accent text-white">
                                                 {{ strtoupper($delivery_request->status) }}
                                             </span>
                                         </td>
@@ -217,7 +217,7 @@
                                         </td>
                                         @elseif( $delivery_request->status == 'in transit' )
                                         <td>
-                                            <span class="badge badge-pill badge-primary">
+                                            <span class="badge badge-pill bg-secondary text-white">
                                                 {{ strtoupper($delivery_request->status) }}
                                             </span>
                                         </td>
@@ -225,7 +225,7 @@
                                         </td>
                                         @elseif( $delivery_request->status == 'delivered' )
                                         <td>
-                                            <span class="badge badge-pill badge-success">
+                                            <span class="badge badge-pill badge-primary text-white">
                                                 {{ strtoupper($delivery_request->status) }}
                                             </span>
                                         </td>
@@ -233,7 +233,7 @@
                                         </td>
                                         @elseif( $delivery_request->status == 'declined' || $delivery_request->status == 'cancelled')
                                         <td>
-                                            <span class="badge badge-pill badge-danger">
+                                            <span class="badge badge-pill badge-danger text-white">
                                                 {{ strtoupper($delivery_request->status) }}
                                             </span>
                                         </td>

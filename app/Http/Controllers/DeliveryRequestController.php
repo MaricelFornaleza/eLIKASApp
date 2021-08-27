@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\DeliveryRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use Carbon\Carbon;
 
 class DeliveryRequestController extends Controller
 {
@@ -108,7 +111,37 @@ class DeliveryRequestController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = Auth::user();
+        $validated = $request->validate([
+            'disaster_response_id'          => ['required', 'numeric'],
+            'food_packs'                    => ['required', 'numeric', 'min:0', 'max:10000'],
+            'water'                         => ['required', 'numeric', 'min:0', 'max:10000'],
+            'clothes'                       => ['required', 'numeric', 'min:0', 'max:10000'],
+            'hygiene_kit'                   => ['required', 'numeric', 'min:0', 'max:10000'],
+            'medicine'                      => ['required', 'numeric', 'min:0', 'max:10000'],
+            'emergency_shelter_assistance'  => ['required', 'numeric', 'min:0', 'max:10000'],
+            'note'                          => ['required'],
+        ]);
+        
+        $delivery_request = DeliveryRequest::create([
+            'disaster_response_id'          => $validated['disaster_response_id'],
+            'camp_manager_id'               => $user->id,
+            'date'                          => Carbon::now(),
+            'food_packs'                    => $validated['food_packs'], 
+            'water'                         => $validated['water'], 
+            'hygiene_kit'                   => $validated['hygiene_kit'], 
+            'medicine'                      => $validated['medicine'], 
+            'clothes'                       => $validated['clothes'], 
+            'emergency_shelter_assistance'  => $validated['emergency_shelter_assistance'], 
+            'note'                          => $validated['note'], 
+            'status'                        => "pending"
+        ]);
+        
+        //$request->session()->flash('message', 'Successfully created request');
+
+        //TO-DO: put here dynamic updating
+
+        return redirect()->route('home');
     }
 
     /**

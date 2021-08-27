@@ -15,7 +15,7 @@ class CreateRequestsTable extends Migration
     {
         Schema::create('requests', function (Blueprint $table) {
             $table->id();
-            //$table->unsignedBigInteger('disaster_response_id');
+            $table->unsignedBigInteger('disaster_response_id');
             $table->unsignedBigInteger('camp_manager_id');
             $table->unsignedBigInteger('courier_id')->nullable();
             $table->date('date');
@@ -25,12 +25,12 @@ class CreateRequestsTable extends Migration
             $table->integer('medicine');
             $table->integer('clothes');
             $table->integer('emergency_shelter_assistance');
-            $table->text('note');
+            $table->text('note')->nullable();
             $table->string('status');
             $table->timestamps();
 
-            // $table->foreign('disaster_response_id')->references('id')->on('disaster_responses')
-            //     ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('disaster_response_id')->references('id')->on('disaster_responses')
+                ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('camp_manager_id')->references('id')->on('users')
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('courier_id')->references('id')->on('users')

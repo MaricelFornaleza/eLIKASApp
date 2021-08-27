@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class DisasterResponse extends Model
 {
     use HasFactory;
+    protected $table = 'disaster_responses';
     protected $fillable = [
         'date_started',
         'date_ended',
@@ -15,4 +16,9 @@ class DisasterResponse extends Model
         'description',
         'photo',
     ];
+
+    public function delivery_request()
+    {
+        return $this->hasMany('App\Models\DeliveryRequest');
+    }
 }

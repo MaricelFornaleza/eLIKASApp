@@ -13,205 +13,209 @@
 
             </div>
 
-            <!-- Select Disaster Response -->
-            <div class="form-group col-sm-6">
-                <label for="disaster_response">Disaster Response</label>
-                <select name="disaster_response" class="form-control" id="disaster_response">
-                    <option value="">Select</option>
-                    <option value="dr-1">Disaster Response 1</option>
-                    <option value="dr-2">Disaster Response 2</option>
-                    <option value="dr-3">Disaster Response 3</option>
+            <form method="POST" action="{{ route('request.store') }}">
+                @csrf
+                
+                <!-- Select Disaster Response -->
+                <div class="form-group col-sm-6">
+                    <label for="disaster_response">Disaster Response</label>
+                    <select name="disaster_response_id" class="form-control" id="disaster_response_id">
+                        <option value="">Select</option>
+                        @foreach($disaster_responses as $disaster_response)
+                        <option value="{{ $disaster_response->id }}">Disaster Response {{ $disaster_response->id }}</option>
+                        @endforeach
+                    </select>
 
-                </select>
-
-            </div>
-
-
-            <!-- Supply Info Form -->
-            <div class="supply-info mt-5">
-                <!-- title -->
-                <div class="row title px-3 font-weight-bold ">
-                    <div class="col-7">
-                        Supply Type
-                    </div>
-                    <div class="col-5 text-center">
-                        Quantity
-                    </div>
                 </div>
-                <!-- food packs input -->
-                <div class="form-group row px-3 mt-3">
-                    <label class="col-7 col-form-label" for="food-qty">Food Packs</label>
-                    <div class="col-5 text-right">
-                        <div class="input-group">
-                            <span class="input-group-btn ">
-                                <button type="button" class="btn btn-default btn-number p-1" disabled="disabled"
-                                    data-type="minus" data-field="quant[1]">
-                                    <span class="iconify" data-icon="eva:minus-circle-outline" data-width="24"></span>
-                                </button>
-                            </span>
-                            <input type="text" name="quant[1]" class="form-control input-number" value="1" min="1"
-                                max="10000">
-                            <span class="input-group-btn ">
-                                <button type="button" class="btn btn-default btn-number p-1 " data-type="plus"
-                                    data-field="quant[1]">
-                                    <span class="iconify text-accent" data-icon="eva:plus-circle-outline"
-                                        data-width="24"></span>
 
-                                </button>
-                            </span>
+                <!-- Supply Info Form -->
+                <div class="supply-info mt-5">
+
+                    <!-- title -->
+                    <div class="row title px-3 font-weight-bold ">
+                        <div class="col-7">
+                            Supply Type
+                        </div>
+                        <div class="col-5 text-center">
+                            Quantity
                         </div>
                     </div>
-                </div>
-                <!-- Water input -->
-                <div class="form-group row px-3 mt-3">
-                    <label class="col-7 col-form-label" for="food-qty">Water</label>
-                    <div class="col-5 text-right">
-                        <div class="input-group">
-                            <span class="input-group-btn ">
-                                <button type="button" class="btn btn-default btn-number p-1" disabled="disabled"
-                                    data-type="minus" data-field="quant[1]">
-                                    <span class="iconify" data-icon="eva:minus-circle-outline" data-width="24"></span>
-                                </button>
-                            </span>
-                            <input type="text" name="quant[1]" class="form-control input-number" value="1" min="1"
-                                max="10000">
-                            <span class="input-group-btn ">
-                                <button type="button" class="btn btn-default btn-number p-1 " data-type="plus"
-                                    data-field="quant[1]">
-                                    <span class="iconify text-accent" data-icon="eva:plus-circle-outline"
-                                        data-width="24"></span>
+                    
+                    <!-- food packs input -->
+                    <div class="form-group row px-3 mt-3">
+                        <label class="col-7 col-form-label" for="food-qty">Food Packs</label>
+                        <div class="col-5 text-right">
+                            <div class="input-group">
+                                <span class="input-group-btn ">
+                                    <button type="button" class="btn btn-default btn-number p-1" disabled="disabled"
+                                        data-type="minus" data-field="food_packs">
+                                        <span class="iconify" data-icon="eva:minus-circle-outline" data-width="24"></span>
+                                    </button>
+                                </span>
+                                <input type="text" name="food_packs" class="form-control input-number" value="0" min="0"
+                                    max="10000">
+                                <span class="input-group-btn ">
+                                    <button type="button" class="btn btn-default btn-number p-1 " data-type="plus"
+                                        data-field="food_packs">
+                                        <span class="iconify text-accent" data-icon="eva:plus-circle-outline"
+                                            data-width="24"></span>
 
-                                </button>
-                            </span>
+                                    </button>
+                                </span>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Clothes input -->
-                <div class="form-group row px-3 mt-3">
-                    <label class="col-7 col-form-label" for="food-qty">Clothes</label>
-                    <div class="col-5 text-right">
-                        <div class="input-group">
-                            <span class="input-group-btn ">
-                                <button type="button" class="btn btn-default btn-number p-1" disabled="disabled"
-                                    data-type="minus" data-field="quant[1]">
-                                    <span class="iconify" data-icon="eva:minus-circle-outline" data-width="24"></span>
-                                </button>
-                            </span>
-                            <input type="text" name="quant[1]" class="form-control input-number" value="1" min="1"
-                                max="10000">
-                            <span class="input-group-btn ">
-                                <button type="button" class="btn btn-default btn-number p-1 " data-type="plus"
-                                    data-field="quant[1]">
-                                    <span class="iconify text-accent" data-icon="eva:plus-circle-outline"
-                                        data-width="24"></span>
+                    <!-- Water input -->
+                    <div class="form-group row px-3 mt-3">
+                        <label class="col-7 col-form-label" for="food-qty">Water</label>
+                        <div class="col-5 text-right">
+                            <div class="input-group">
+                                <span class="input-group-btn ">
+                                    <button type="button" class="btn btn-default btn-number p-1" disabled="disabled"
+                                        data-type="minus" data-field="water">
+                                        <span class="iconify" data-icon="eva:minus-circle-outline" data-width="24"></span>
+                                    </button>
+                                </span>
+                                <input type="text" name="water" class="form-control input-number" value="0" min="0"
+                                    max="10000">
+                                <span class="input-group-btn ">
+                                    <button type="button" class="btn btn-default btn-number p-1 " data-type="plus"
+                                        data-field="water">
+                                        <span class="iconify text-accent" data-icon="eva:plus-circle-outline"
+                                            data-width="24"></span>
 
-                                </button>
-                            </span>
+                                    </button>
+                                </span>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Hygiene Kit input -->
-                <div class="form-group row px-3 mt-3">
-                    <label class="col-7 col-form-label" for="food-qty">Hygiene Kit</label>
-                    <div class="col-5 text-right">
-                        <div class="input-group">
-                            <span class="input-group-btn ">
-                                <button type="button" class="btn btn-default btn-number p-1" disabled="disabled"
-                                    data-type="minus" data-field="quant[1]">
-                                    <span class="iconify" data-icon="eva:minus-circle-outline" data-width="24"></span>
-                                </button>
-                            </span>
-                            <input type="text" name="quant[1]" class="form-control input-number" value="1" min="1"
-                                max="10000">
-                            <span class="input-group-btn ">
-                                <button type="button" class="btn btn-default btn-number p-1 " data-type="plus"
-                                    data-field="quant[1]">
-                                    <span class="iconify text-accent" data-icon="eva:plus-circle-outline"
-                                        data-width="24"></span>
+                    <!-- Clothes input -->
+                    <div class="form-group row px-3 mt-3">
+                        <label class="col-7 col-form-label" for="food-qty">Clothes</label>
+                        <div class="col-5 text-right">
+                            <div class="input-group">
+                                <span class="input-group-btn ">
+                                    <button type="button" class="btn btn-default btn-number p-1" disabled="disabled"
+                                        data-type="minus" data-field="clothes">
+                                        <span class="iconify" data-icon="eva:minus-circle-outline" data-width="24"></span>
+                                    </button>
+                                </span>
+                                <input type="text" name="clothes" class="form-control input-number" value="0" min="0"
+                                    max="10000">
+                                <span class="input-group-btn ">
+                                    <button type="button" class="btn btn-default btn-number p-1 " data-type="plus"
+                                        data-field="clothes">
+                                        <span class="iconify text-accent" data-icon="eva:plus-circle-outline"
+                                            data-width="24"></span>
 
-                                </button>
-                            </span>
+                                    </button>
+                                </span>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Medicine input -->
-                <div class="form-group row px-3 mt-3">
-                    <label class="col-7 col-form-label" for="food-qty">Medicine</label>
-                    <div class="col-5 text-right">
-                        <div class="input-group">
-                            <span class="input-group-btn ">
-                                <button type="button" class="btn btn-default btn-number p-1" disabled="disabled"
-                                    data-type="minus" data-field="quant[1]">
-                                    <span class="iconify" data-icon="eva:minus-circle-outline" data-width="24"></span>
-                                </button>
-                            </span>
-                            <input type="text" name="quant[1]" class="form-control input-number" value="1" min="1"
-                                max="10000">
-                            <span class="input-group-btn ">
-                                <button type="button" class="btn btn-default btn-number p-1 " data-type="plus"
-                                    data-field="quant[1]">
-                                    <span class="iconify text-accent" data-icon="eva:plus-circle-outline"
-                                        data-width="24"></span>
+                    <!-- Hygiene Kit input -->
+                    <div class="form-group row px-3 mt-3">
+                        <label class="col-7 col-form-label" for="food-qty">Hygiene Kit</label>
+                        <div class="col-5 text-right">
+                            <div class="input-group">
+                                <span class="input-group-btn ">
+                                    <button type="button" class="btn btn-default btn-number p-1" disabled="disabled"
+                                        data-type="minus" data-field="hygiene_kit">
+                                        <span class="iconify" data-icon="eva:minus-circle-outline" data-width="24"></span>
+                                    </button>
+                                </span>
+                                <input type="text" name="hygiene_kit" class="form-control input-number" value="0" min="0"
+                                    max="10000">
+                                <span class="input-group-btn ">
+                                    <button type="button" class="btn btn-default btn-number p-1 " data-type="plus"
+                                        data-field="hygiene_kit">
+                                        <span class="iconify text-accent" data-icon="eva:plus-circle-outline"
+                                            data-width="24"></span>
 
-                                </button>
-                            </span>
+                                    </button>
+                                </span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- Emergency Shelter Assistance input -->
-                <div class="form-group row px-3 mt-3">
-                    <label class="col-7 col-form-label" for="food-qty">Emergency Shelter Assistance</label>
-                    <div class="col-5 text-right">
-                        <div class="input-group">
-                            <span class="input-group-btn ">
-                                <button type="button" class="btn btn-default btn-number p-1" disabled="disabled"
-                                    data-type="minus" data-field="quant[1]">
-                                    <span class="iconify" data-icon="eva:minus-circle-outline" data-width="24"></span>
-                                </button>
-                            </span>
-                            <input type="text" name="quant[1]" class="form-control input-number" value="1" min="1"
-                                max="10000">
-                            <span class="input-group-btn ">
-                                <button type="button" class="btn btn-default btn-number p-1 " data-type="plus"
-                                    data-field="quant[1]">
-                                    <span class="iconify text-accent" data-icon="eva:plus-circle-outline"
-                                        data-width="24"></span>
 
-                                </button>
-                            </span>
+                    <!-- Medicine input -->
+                    <div class="form-group row px-3 mt-3">
+                        <label class="col-7 col-form-label" for="food-qty">Medicine</label>
+                        <div class="col-5 text-right">
+                            <div class="input-group">
+                                <span class="input-group-btn ">
+                                    <button type="button" class="btn btn-default btn-number p-1" disabled="disabled"
+                                        data-type="minus" data-field="medicine">
+                                        <span class="iconify" data-icon="eva:minus-circle-outline" data-width="24"></span>
+                                    </button>
+                                </span>
+                                <input type="text" name="medicine" class="form-control input-number" value="0" min="0"
+                                    max="10000">
+                                <span class="input-group-btn ">
+                                    <button type="button" class="btn btn-default btn-number p-1 " data-type="plus"
+                                        data-field="medicine">
+                                        <span class="iconify text-accent" data-icon="eva:plus-circle-outline"
+                                            data-width="24"></span>
+
+                                    </button>
+                                </span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- Note text Area -->
-                <div class="col-12">
-                    <label for="note">Note</label>
-                    <textarea id="note" name="note" placeholder="Write something.."
-                        style="width:100%; height:100px;"></textarea>
+                    
+                    <!-- Emergency Shelter Assistance input -->
+                    <div class="form-group row px-3 mt-3">
+                        <label class="col-7 col-form-label" for="food-qty">Emergency Shelter Assistance</label>
+                        <div class="col-5 text-right">
+                            <div class="input-group">
+                                <span class="input-group-btn ">
+                                    <button type="button" class="btn btn-default btn-number p-1" disabled="disabled"
+                                        data-type="minus" data-field="emergency_shelter_assistance">
+                                        <span class="iconify" data-icon="eva:minus-circle-outline" data-width="24"></span>
+                                    </button>
+                                </span>
+                                <input type="text" name="emergency_shelter_assistance" class="form-control input-number" value="0" min="0"
+                                    max="10000">
+                                <span class="input-group-btn ">
+                                    <button type="button" class="btn btn-default btn-number p-1 " data-type="plus"
+                                        data-field="emergency_shelter_assistance">
+                                        <span class="iconify text-accent" data-icon="eva:plus-circle-outline"
+                                            data-width="24"></span>
 
-                </div>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
 
+                    <!-- Note text Area -->
+                    <div class="col-12">
+                        <label for="note">Note</label>
+                        <textarea class="form-control" id="note" name="note" placeholder="Write something.."
+                            rows="5"></textarea>
+                    </div>
+
+                    
+                </div>
 
                 <!-- Buttons -->
-                <div class="">
                     <div class="col-12 center mt-5 ">
                         <div class="col-md-6 p-0 ">
-                            <a href="">
-                                <button class="btn btn-accent  px-4 ">Request</button>
-                            </a>
+                            <button class="btn  btn-accent  px-4" type="submit">{{ __('Request') }}</button>
                         </div>
                     </div>
                     <div class="col-12 center mt-4">
                         <div class="col-md-6 mb-4 p-0">
-                            <a href="">
-                                <button class="btn btn-accent-outline  px-4 ">Cancel</button>
+                            <a href="/camp-manager/supply-view"  class="btn btn-accent-outline  px-4">
+                                {{ __('Cancel') }}
                             </a>
                         </div>
                     </div>
-                </div>
-            </div>
+                
+            </form>
 
         </div>
     </div>
@@ -239,7 +243,6 @@ $('.btn-number').click(function(e) {
             }
 
         } else if (type == 'plus') {
-
             if (currentVal < input.attr('max')) {
                 input.val(currentVal + 1).change();
             }
@@ -258,9 +261,12 @@ $('.input-number').focusin(function() {
 $('.input-number').change(function() {
 
     minValue = parseInt($(this).attr('min'));
-    maxValue = parseInt($(this).attr('max'));
+    maxValue = parseInt($(this).attr('max')); 
     valueCurrent = parseInt($(this).val());
 
+    if(isNaN(valueCurrent))
+        return;
+        
     name = $(this).attr('name');
     if (valueCurrent >= minValue) {
         $(".btn-number[data-type='minus'][data-field='" + name + "']").removeAttr('disabled')

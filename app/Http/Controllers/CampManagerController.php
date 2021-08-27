@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\DisasterResponse;
+use App\Models\DeliveryRequest;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class CampManagerController extends Controller
 {
@@ -32,14 +38,17 @@ class CampManagerController extends Controller
     }
     public function requestSupplyView()
     {
-        return view('camp-manager.supply.request');
+        $disaster_responses = DisasterResponse::all();
+        return view('camp-manager.supply.request')->with('disaster_responses', $disaster_responses);
     }
-    public function historyView()
+    public function historyView(Request $request)
     {
-        return view('camp-manager.request.history');
+        $delivery_requests = DeliveryRequest::all();
+        return view('camp-manager.request.history')->with('delivery_requests', $delivery_requests);
     }
-    public function detailsView()
+    public function detailsView($id)
     {
-        return view('camp-manager.request.details');
+        $delivery_request = DeliveryRequest::find($id);
+        return view('camp-manager.request.details')->with('delivery_request', $delivery_request);
     }
 }
