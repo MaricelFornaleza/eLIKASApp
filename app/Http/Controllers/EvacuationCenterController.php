@@ -131,13 +131,8 @@ class EvacuationCenterController extends Controller
             'evacuation_center_id' => $evacuation_center->id,
         ]);
 
-<<<<<<< HEAD
         $request->session()->flash('message', 'Successfully created ' . $evacuation_center->name . ' evacuation center');
         
-=======
-        $request->session()->flash('message', 'Successfully created evacuation center');
-
->>>>>>> c44e46506ebd39d6c9920d3720b6f7f3b58fd1a8
         $updatemarker = new UpdateMarker;
         $updatemarker->get_evac();
 
