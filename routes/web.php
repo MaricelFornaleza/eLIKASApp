@@ -81,6 +81,8 @@ Route::resource('/field_officers', 'FieldOfficerController');
 Route::resource('relief-recipient', 'ReliefRecipientController');
 Route::resource('residents', 'FamilyMemberController');
 Route::get('residents.group', 'FamilyMemberController@group')->name('residents.group');
+Route::post('residents.groupResidents', 'FamilyMemberController@groupResidents');
+
 
 //supply and inventory
 Route::resource('supplies', 'SupplyController');
@@ -94,7 +96,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/search', 'ChatController@search');
 });
 
-//import and export excel
+
+// Import 
 Route::prefix('import')->group(function () {
     Route::get('/field_officers', 'ImportController@importFieldOfficer');
     Route::post('/field_officers/store', 'ImportController@storeFieldOfficer');
@@ -102,6 +105,7 @@ Route::prefix('import')->group(function () {
     Route::post('/supplies/store', 'ImportController@storeSupplies');
 });
 
+// Export
 Route::prefix('export')->group(function () {
     Route::get('/field_officers', 'ExportController@exportFieldOfficer');
     Route::get('/supplies', 'ExportController@exportSupplies');
