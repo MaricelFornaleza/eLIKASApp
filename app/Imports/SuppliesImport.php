@@ -20,9 +20,9 @@ class SuppliesImport implements ToCollection, WithHeadingRow
     public function collection(Collection $collection)
     {
         $validator = Validator::make($collection->toArray(), [
-            '*.supply_type' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z]+$/'],
-            '*.quantity' => ['required', 'numeric', 'regex:/^\d+$/'],
-            '*.source' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z]+$/'],
+            '*.supply_type' => ['required', 'string', 'max:255', 'alpha_spaces'],
+            '*.quantity' => ['required', 'numeric', "min:1"],
+            '*.source' => ['required', 'string', 'max:255'],
         ])->validate();
 
         $user = Auth::user();

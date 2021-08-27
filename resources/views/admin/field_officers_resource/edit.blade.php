@@ -79,9 +79,18 @@
                                 <div class="col-sm-6" id='barangay'>
                                     <div class=" form-group">
                                         <label for="barangay">Barangay</label>
-                                        <input class="form-control @error('barangay') is-invalid @enderror"
-                                            id="barangay" name="barangay" type="text" placeholder="Enter your Barangay"
-                                            value="{{ $barangay_captain->barangay }}">
+                                        <select name="barangay" id="barangay"
+                                            class=" form-control @error('barangay') is-invalid @enderror">
+                                            <option value='{{ $barangay_captain->barangay }}' selected>
+                                                {{ $barangay_captain->barangay }}
+                                            </option>
+                                            @foreach($barangays as $barangay)
+                                            <option value='{{ $barangay->name }}'>
+                                                {{ $barangay->name }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+
                                         @error('barangay')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -153,8 +162,8 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="password">New Password</label>
-                                            <input class="form-control" autocomplete="password" id="password"
-                                                name="password" type="password">
+                                            <input class="form-control  @error('password') is-invalid @enderror"
+                                                autocomplete="password" id="password" name="password" type="password">
                                             @error('password')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -195,6 +204,8 @@
 @endsection
 
 @section('javascript')
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
 <script type="text/javascript">
 function update() {
     var select = document.getElementById('officer_type');

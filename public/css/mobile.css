@@ -96,3 +96,6 @@ ul.list-group.list-group-striped li:nth-of-type(even) {
 textarea:focus {
     outline: 1px solid #219ebc !important;
 }
+.btn-outline-primary {
+    width: 100% !important;
+}

@@ -8,6 +8,11 @@ use App\Models\FamilyMember;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 
+use Illuminate\Support\Str;
+use App\Models\ReliefRecipient;
+
+
+
 class FamilyMemberController extends Controller
 {
     /**
@@ -17,14 +22,25 @@ class FamilyMemberController extends Controller
      */
     public function index()
     {
-        // $residents = DB::table('family_members')
-        //     ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
-        //     ->get();
-        //     dd($residents);
+        $residents = DB::table('family_members')
+            ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
+            ->select(
+                'family_members.id as fm_id',
+                'family_members.family_code',
+                'name',
+                'gender',
+                'birthdate',
+                'sectoral_classification',
+                'is_representative',
+                'address',
+                'recipient_type'
+            )
+            ->get();
+        // dd($residents);
         // $family_member = DB::table('family_members')->select('id', 'name','sectoral_classification')->get();
         // dd($family_member);
-        $family_members = FamilyMember::all();
-        return view('admin.relief-recipients.familyMembersList', ['family_members' => $family_members]);
+        // $family_members = FamilyMember::all();
+        return view('admin.relief-recipients.familyMembersList', ['family_members' => $residents]);
     }
 
     /**
@@ -84,7 +100,7 @@ class FamilyMemberController extends Controller
     public function edit($id)
     {
         $family_member = FamilyMember::find($id);
-        return view('admin.relief-recipients.edit', ['family_member' => $family_member ]);
+        return view('admin.relief-recipients.edit', ['family_member' => $family_member]);
     }
 
     /**
@@ -124,7 +140,7 @@ class FamilyMemberController extends Controller
     public function destroy($id)
     {
         $family_member = FamilyMember::find($id);
-        if($family_member){
+        if ($family_member) {
             $family_member->delete();
         }
         Session::flash('message', 'Resident deleted successfully!');
@@ -134,17 +150,49 @@ class FamilyMemberController extends Controller
     ///////////////////////////////////////// Group Family Members
     public function group()
     {
+        //  $hi ="hello";
         // $userData = FamilyMember::get();
         // return json_encode(array('data'=>$userData));
         // $residents = DB::table('family_members')
         //     ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
         //     ->get();
-           // dd($checkedResidents);
-        
-        $family_members = DB::table('family_members')->select('id', 'name','sectoral_classification')->get();
+        // dd($checkedResidents);
+
+        $family_members = DB::table('family_members')->select('id', 'name', 'sectoral_classification')->get();
 
         //$family_members = FamilyMember::all();
         return view('admin.relief-recipients.groupFamilyMembers', ['family_members' => $family_members]);
     }
+
+    public function groupResidents(Request $request)
+    {
+
+        $validated = $request->validate([
+            'address'              => ['required', 'string', 'max:255'],
+            'recipient_type'              => ['required', 'string', 'max:255']
+        ]);
+
+        $family_code = 'eLIKAS-' . Str::random(6);
+        $no_of_members = 1;
+
+        foreach ($request->selectedResidents as $selectedResident) {
+            $no_of_members = +1;
+            $family_member = FamilyMember::find($selectedResident);
+            $family_member->family_code   = $family_code;
+            $family_member->save();
+        }
+
+        $family_member_rep = FamilyMember::find($request->selectedRepresentative);
+        $family_member_rep->is_representative = 'Yes';
+        $family_member_rep->save();
+
+        $relief_recipient = new ReliefRecipient();
+        $relief_recipient->family_code     = $family_code;
+        $relief_recipient->no_of_members     = $no_of_members;
+        $relief_recipient->address     = $validated['address'];
+        $relief_recipient->recipient_type     = $validated['recipient_type'];
+        $relief_recipient->save();
+        $request->session()->flash('message', 'Group Resident successfully!');
+        return redirect()->route('residents.index');
+    }
 }
- 

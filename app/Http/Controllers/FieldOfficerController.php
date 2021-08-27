@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Barangay;
 use App\Models\BarangayCaptain;
 use App\Models\CampManager;
-use App\Models\Contact;
 use App\Models\Courier;
 use App\Models\Location;
 use App\Models\Inventory;
 use Illuminate\Http\Request;
 use App\Models\User;
+
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
@@ -52,7 +54,8 @@ class FieldOfficerController extends Controller
      */
     public function create()
     {
-        return view('admin.field_officers_resource.add');
+        $barangays = Barangay::all();
+        return view('admin.field_officers_resource.add')->with('barangays', $barangays);
     }
 
     /**
@@ -76,7 +79,7 @@ class FieldOfficerController extends Controller
                 'photo' => ['image', 'mimes:jpg,png,jpeg'],
                 'contact_no' => ['required', 'numeric', 'digits:11', 'unique:users', 'regex:/^(09)\d{9}$/'],
                 'officer_type' => ['required'],
-                'barangay' => ['required'],
+                'barangay' => ['required', 'unique:barangay_captains'],
                 'designation' => ['nullable'],
             ]);
         } else {
@@ -140,21 +143,6 @@ class FieldOfficerController extends Controller
             ]);
         }
 
-        //create contact
-        //the user can have 1 or more contact numbers
-        // foreach ($request->contact_no as $index => $contact_no) {
-        //     if ($request->contact_no[$index] != null) {
-        //         Contact::create([
-        //             'user_id' => $user->id,
-        //             'contact_no' => $request->contact_no[$index],
-        //         ]);
-        //     }
-        // }
-        // Contact::create([
-        //     'user_id' => $user->id,
-        //     'contact_no1' => $request->contact_no1,
-        //     'contact_no2' => $request->contact_no2,
-        // ]);
 
 
         //send an email to the newly registered field officer
@@ -195,11 +183,11 @@ class FieldOfficerController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
-
+        $barangays = Barangay::all();
         $barangay_captain = BarangayCaptain::where('user_id', $user->id)->first();
         $camp_designation = CampManager::where('user_id', $user->id)->first();
         $courier_designation = Courier::where('user_id', $user->id)->first();
-        return view('admin.field_officers_resource.edit')->with(compact(["user", 'barangay_captain', 'courier_designation', 'camp_designation']));
+        return view('admin.field_officers_resource.edit')->with(compact(["user", 'barangay_captain', 'courier_designation', 'camp_designation', 'barangays']));
         // dd($contacts);
     }
 
@@ -214,6 +202,8 @@ class FieldOfficerController extends Controller
     {
         //find the user first 
         $user = User::findOrFail($id);
+        $barangay_captain = BarangayCaptain::where('user_id', '=', $user->id)->first();
+
 
         //this validation checks the officer type first
         //if barangay captain, the barangay field must be required
@@ -221,11 +211,11 @@ class FieldOfficerController extends Controller
         if ($request['officer_type'] == 'Barangay Captain') {
             $validated = $request->validate([
                 'name' => ['required', 'string', 'max:255', 'alpha_spaces'],
-                'email' => ['required', 'string', 'email', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
                 'photo' => ['image', 'mimes:jpg,png,jpeg'],
                 'officer_type' => ['required'],
-                'contact_no' => ['required', 'numeric', 'digits:11', 'regex:/^(09)\d{9}$/'],
-                'barangay' => ['required'],
+                'contact_no' => ['required', 'numeric', 'digits:11', 'regex:/^(09)\d{9}$/', Rule::unique('users')->ignore($user->id)],
+                'barangay' => ['required', Rule::unique('barangay_captains')->ignore($barangay_captain->id)],
                 'designation' => ['nullable'],
                 'password' => ['nullable', 'string', 'min:8', 'confirmed'],
             ]);

@@ -66,6 +66,7 @@
                                         <label class="lead">Sectoral Classification</label>
                                         <select class="form-control @error('sectoral_classification') is-invalid @enderror" aria-label=".form-select-lg example" name="sectoral_classification" required autofocus>
                                             <option value="" selected disabled>Select</option>
+                                            <option value="None">None</option>
                                             <option value="Lactating">Lactating</option>
                                             <option value="PWD">PWD</option>
                                             <option value="Senior Citizen">Senior Citizen</option>

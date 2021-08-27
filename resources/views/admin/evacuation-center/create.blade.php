@@ -40,16 +40,27 @@
                                 <div class="col-sm-12 col-md-6">
                                     <div class="form-group row px-3">
                                         <label for="name">Name of the Evacuation Center <code>*</code></label>
-                                        <input class="form-control" type="text"
+                                        <input class="form-control @error('name') is-invalid @enderror" type="text"
                                             placeholder="{{ __('Enter evacuation center name') }}" name="name" required
-                                            autofocus>
+                                            value="{{ old('name') }}" autofocus>
+                                        @error('name')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
                                     </div>
 
                                     <div class="form-group row px-3">
                                         <label>Address <code>*</code></label>
-                                        <input class="form-control" type="text"
+                                        <input class="form-control @error('address') is-invalid @enderror"
+                                            value="{{ old('address') }}" type="text"
                                             placeholder="{{ __('Enter evacuation center address') }}" name="address"
-                                            required autofocus>
+                                            required>
+                                        @error('address')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
                                     </div>
 
                                     <div class="row">
@@ -76,30 +87,56 @@
                                             <div class="form-group row px-3">
                                                 <label>Capacity
                                                     <code>*</code></label>
-                                                <input class="form-control" type="number"
+                                                <input class="form-control @error('capacity') is-invalid @enderror"
+                                                    value="{{ old('capacity') }}" type="number"
                                                     placeholder="{{ __('Enter Capacity') }}" value=0 name="capacity"
-                                                    required autofocus>
+                                                    required>
+                                                @error('capacity')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="form-group row px-3">
                                         <label for="characteristics">Other Characteristics</label>
-                                        <textarea class="form-control" id="characteristics" name="characteristics"
-                                            rows="6" placeholder="Enter evacuation center characteristics"
-                                            autofocus></textarea>
+                                        <textarea class="form-control @error('characteristics') is-invalid @enderror"
+                                            value="{{ old('characteristics') }}" id="characteristics"
+                                            name="characteristics" rows="6"
+                                            placeholder="Enter evacuation center characteristics" autofocus></textarea>
+                                        @error('characteristics')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
                                     </div>
-                                    
+
                                     <div class="form-group row">
                                         <div class="col-6">
                                             <label for="latitude">Latitude</label>
-                                            <input name="latitude" id="latitude" class="form-control" pattern="[+-]?([0-9]*[.])?[0-9]+"
+                                            <input name="latitude" id="latitude"
+                                                class="form-control @error('latitude') is-invalid @enderror"
+                                                value="{{ old('latitude') }}" pattern="[+-]?([0-9]*[.])?[0-9]+"
                                                 required />
+                                            @error('latitude')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
                                         </div>
                                         <div class="col-6">
                                             <label for="longitude">Longitude</label>
-                                            <input name="longitude" id="longitude" class="form-control" pattern="[+-]?([0-9]*[.])?[0-9]+"
+                                            <input name="longitude" id="longitude"
+                                                class="form-control @error('longitude') is-invalid @enderror"
+                                                value="{{ old('longitude') }}" pattern="[+-]?([0-9]*[.])?[0-9]+"
                                                 required />
+                                            @error('longitude')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
@@ -131,8 +168,12 @@
 <script>
 var clickMarker = new L.marker();
 addMarker(mymap, clickMarker);
-document.getElementById('latitude').oninput = function() { get_lat() };
-document.getElementById('longitude').oninput = function() { get_lng() };
+document.getElementById('latitude').oninput = function() {
+    get_lat()
+};
+document.getElementById('longitude').oninput = function() {
+    get_lng()
+};
 
 $(document).ready(function() {
     // Initialize select2
@@ -147,6 +188,5 @@ $(document).ready(function() {
     //     clickMarker.setLatLng(lat,lng).setIcon(evacIcon()).addTo(mymap);
     // });
 });
-    
 </script>
 @endsection

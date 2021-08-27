@@ -13,8 +13,8 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 class EvacuationCenterImport implements ToCollection, WithHeadingRow
 {
     /**
-    * @param Collection $collection
-    */
+     * @param Collection $collection
+     */
     public function collection(Collection $collection)
     {
         $validator = Validator::make($collection->toArray(), [
@@ -22,8 +22,8 @@ class EvacuationCenterImport implements ToCollection, WithHeadingRow
             '*.address'         => 'required|min:1|max:256',
             '*.latitude'        => 'required',
             '*.longitude'       => 'required',
-            '*.capacity'        => 'required|numeric',
-            '*.characteristics' => 'required'
+            '*.capacity'        => 'required|numeric|min:1',
+            '*.characteristics' => 'nullable'
         ])->validate();
 
         foreach ($collection as $row) {

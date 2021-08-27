@@ -28,7 +28,7 @@ class EvacuationCenterController extends Controller
             ->orderByRaw('evacuation_centers.id ASC')
             ->paginate(20);
 
-        return view('admin.evacuation-center.evacList', ['evacuation_centers' => $evacuation_centers] );
+        return view('admin.evacuation-center.evacList', ['evacuation_centers' => $evacuation_centers]);
 
         /*
         SELECT evacuation_centers.id, users.name as camp_manager_name, evacuation_centers.name,
@@ -112,8 +112,8 @@ class EvacuationCenterController extends Controller
             'address'          => 'required|min:1|max:256',
             'latitude'         => 'required',
             'longitude'        => 'required',
-            'capacity'         => 'required|numeric',
-            'characteristics'  => 'required'
+            'capacity'         => 'required|numeric|min:1',
+            'characteristics'  => 'nullable'
         ]);
         //$user = Auth::user();
         $evacuation_center = new EvacuationCenter();
@@ -131,11 +131,16 @@ class EvacuationCenterController extends Controller
             'evacuation_center_id' => $evacuation_center->id,
         ]);
 
+<<<<<<< HEAD
         $request->session()->flash('message', 'Successfully created ' . $evacuation_center->name . ' evacuation center');
         
+=======
+        $request->session()->flash('message', 'Successfully created evacuation center');
+
+>>>>>>> c44e46506ebd39d6c9920d3720b6f7f3b58fd1a8
         $updatemarker = new UpdateMarker;
         $updatemarker->get_evac();
-        
+
         return redirect()->route('evacuation-center.index');        //or can be redirected to create
 
         //$bc = User::find($user->id)->user_inventory->name;
@@ -203,12 +208,12 @@ class EvacuationCenterController extends Controller
         $validatedData = $request->validate([
             'id'               => 'required|numeric',
             'camp_manager_id'  => 'nullable',
-            'name'             => 'required|unique:evacuation_centers,name|min:1|max:128',
+            'name'             => 'required|min:1|max:128',
             'address'          => 'required|min:1|max:256',
             'latitude'         => 'required',
             'longitude'        => 'required',
-            'capacity'         => 'required|numeric',
-            'characteristics'  => 'required'
+            'capacity'         => 'required|numeric|min:1',
+            'characteristics'  => 'nullable'
         ]);
         $evacuation_center = EvacuationCenter::where('id', '=', $request->input('id'))->first();
         $evacuation_center->name = $request->input('name');
@@ -239,10 +244,10 @@ class EvacuationCenterController extends Controller
         $evacuation_center->stock_level()->delete();
         $evacuation_center->delete();
         $request->session()->flash('message', 'Successfully deleted ' . $evacuation_center->name . ' evacuation center');
-        
+
         $updatemarker = new UpdateMarker;
         $updatemarker->get_evac();
-        
+
         return redirect()->route('evacuation-center.index');
     }
 }

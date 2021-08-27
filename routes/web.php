@@ -90,6 +90,8 @@ Route::resource('/field_officers', 'FieldOfficerController');
 Route::resource('relief-recipient', 'ReliefRecipientController');
 Route::resource('residents', 'FamilyMemberController');
 Route::get('residents.group', 'FamilyMemberController@group')->name('residents.group');
+Route::post('residents.groupResidents', 'FamilyMemberController@groupResidents');
+
 
 //supply and inventory
 Route::resource('supplies', 'SupplyController');
@@ -103,7 +105,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/search', 'ChatController@search');
 });
 
-//import and export excel
+
+// Import 
 Route::prefix('import')->group(function () {
     Route::get('/field_officers', 'ImportController@importFieldOfficer');
     Route::post('/field_officers/store', 'ImportController@storeFieldOfficer');
@@ -113,6 +116,7 @@ Route::prefix('import')->group(function () {
     Route::post('/evacuation_centers/store', 'ImportController@storeEvacuationCenters')->name('evacuation-center.file.store');
 });
 
+// Export
 Route::prefix('export')->group(function () {
     Route::get('/field_officers', 'ExportController@exportFieldOfficer');
     Route::get('/supplies', 'ExportController@exportSupplies');
@@ -120,17 +124,22 @@ Route::prefix('export')->group(function () {
     Route::get('/requests', 'ExportController@exportDeliveryRequests')->name('request.file.export');
 });
 
+
 //barangay
 Route::prefix('barangay')->group(function () {
     Route::get('/search', 'BarangayController@search');
 });
 
+
 // Barangay Captain
 Route::prefix('barangay-captain')->group(function () {
-    Route::get('/barangay-stats', 'BarangayCaptainController@barangayStats');
+    Route::get('/add-supply', 'BarangayCaptainController@addSupply');
+    Route::get('/dispense', 'BarangayCaptainController@dispenseView');
+    Route::get('/details/{id}', 'BarangayCaptainController@detailsView');
+    Route::get('/list', 'BarangayCaptainController@listView');
 });
 
-// camp manager
+// Camp Manager
 Route::prefix('camp-manager')->group(function () {
     Route::get('/evacuees', 'CampManagerController@evacuees');
     Route::get('/admit-view', 'CampManagerController@admitView');
@@ -141,4 +150,9 @@ Route::prefix('camp-manager')->group(function () {
     Route::get('/request-supply', 'CampManagerController@requestSupplyView');
     Route::get('/history', 'CampManagerController@historyView');
     Route::get('/details/{id}', 'CampManagerController@detailsView');
+});
+
+// Courier
+Route::prefix('courier')->group(function () {
+    Route::get('/details', 'CourierController@details');
 });

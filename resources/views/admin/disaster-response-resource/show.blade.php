@@ -17,8 +17,13 @@
                         <div class="col-6">
                             <h4 class="card-title mb-5 ">{{$disaster_response->disaster_type}}</h4>
                             <h6 class="card-text mb-0">{{$disaster_response->description}}</h6>
-                            <h6 class="card-text ">{{ date('F j, Y', strtotime($disaster_response->date_started)) }}
-                            </h6>
+                            <small class="card-text ">
+                                {{ date('F j, Y', strtotime($disaster_response->date_started)) }}
+                                @empty($disaster_response->date_ended)
+                                @else
+                                - {{ date('F j, Y', strtotime($disaster_response->date_started)) }}
+                                @endempty
+                            </small>
                         </div>
 
                         <div class="ml-auto mr-2">

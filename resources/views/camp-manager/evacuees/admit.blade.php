@@ -9,11 +9,11 @@
                 <div class="col-7">
                     <h5 class="font-weight-bold">List of Residents </h5>
                 </div>
-                <div class="col-5 text-right ">
+                <!-- <div class="col-5 text-right ">
                     <a href="">
                         <button class="btn btn-secondary secondary-button px-4 ">Add new</button>
                     </a>
-                </div>
+                </div> -->
             </div>
 
 
