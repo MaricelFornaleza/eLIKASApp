@@ -138,7 +138,7 @@ Route::prefix('barangay-captain')->group(function () {
     Route::get('/list', 'BarangayCaptainController@listView');
 });
 
-// camp manager
+// Camp Manager
 Route::prefix('camp-manager')->group(function () {
     Route::get('/evacuees', 'CampManagerController@evacuees');
     Route::get('/admit-view', 'CampManagerController@admitView');
@@ -149,4 +149,9 @@ Route::prefix('camp-manager')->group(function () {
     Route::get('/request-supply', 'CampManagerController@requestSupplyView');
     Route::get('/history', 'CampManagerController@historyView');
     Route::get('/details', 'CampManagerController@detailsView');
+});
+
+// Courier
+Route::prefix('courier')->group(function () {
+    Route::get('/details', 'CourierController@details');
 });

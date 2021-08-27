@@ -48,8 +48,7 @@
                             </div>
                             <div class="col-4">
                                 <span class="float-right ">
-                                    <div class="rounded bg-primary text-white text-center"
-                                        style="height: 20px; width:100px;">
+                                    <div class="rounded bg-primary text-white text-center px-2 py-1">
                                         Delivered</div>
                                 </span>
                             </div>

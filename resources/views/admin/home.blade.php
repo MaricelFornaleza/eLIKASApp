@@ -35,7 +35,8 @@
             <div class="row justify-content-start">
                 @empty($disaster_responses)
                 No active Disaster Response
-                @endempty
+                @else
+
                 @foreach($disaster_responses as $disaster_response)
 
                 <div class="col-md-4">
@@ -47,9 +48,13 @@
                             <div class="card-img-overlay" style="height: 100px;">
                                 <h4 class="card-title mb-4 ">{{$disaster_response->disaster_type}}</h4>
                                 <h6 class="card-text mb-0">{{$disaster_response->description}}</h6>
-                                <h6 class="card-text ">
+                                <small class="card-text ">
                                     {{ date('F j, Y', strtotime($disaster_response->date_started)) }}
-                                </h6>
+                                    @empty($disaster_response->date_ended)
+                                    @else
+                                    - {{ date('F j, Y', strtotime($disaster_response->date_started)) }}
+                                    @endempty
+                                </small>
                             </div>
                         </a>
                         <a href="/disaster-response/stop/{{$disaster_response->id}}">
@@ -66,6 +71,7 @@
 
 
                 @endforeach
+                @endempty
 
             </div>
         </div>
