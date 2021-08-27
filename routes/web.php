@@ -59,16 +59,24 @@ Route::prefix('disaster-response')->group(function () {
 //map and evacuation center 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/map/get_locations/{id}', 'MapController@get_locations');
     Route::get('/map/get_couriers', 'MapController@get_couriers');
-    Route::get('/map/get_evac', 'MapController@get_evac');
+    Route::get('/map/get_evac', 'MapController@get_evac')->name('map.evacs');
     Route::resource('/map', 'MapController');
-    Route::prefix('evacuation-centers')->group(function () {
+    Route::prefix('evacuation_centers')->group(function () {
         Route::get('/',         'EvacuationCenterController@index')->name('evacuation-center.index');
         Route::get('/create',   'EvacuationCenterController@create')->name('evacuation-center.create');
         Route::post('/store',   'EvacuationCenterController@store')->name('evacuation-center.store');
         Route::get('/edit',     'EvacuationCenterController@edit')->name('evacuation-center.edit');
         Route::post('/update',  'EvacuationCenterController@update')->name('evacuation-center.update');
         Route::delete('/delete',   'EvacuationCenterController@delete')->name('evacuation-center.delete');
+    });
+    Route::prefix('requests')->group(function () {
+        Route::get('/',         'DeliveryRequestController@index')->name('request.index');
+        Route::get('/admin_approve',   'DeliveryRequestController@approve')->name('request.approve');
+        Route::get('/admin_cancel',   'DeliveryRequestController@admin_cancel')->name('request.admin_cancel');
+        Route::get('/admin_decline',   'DeliveryRequestController@admin_decline')->name('request.admin_decline');
+        Route::post('/admin_assign',   'DeliveryRequestController@assign_courier')->name('request.assign_courier');
     });
 });
 
@@ -103,6 +111,8 @@ Route::prefix('import')->group(function () {
     Route::post('/field_officers/store', 'ImportController@storeFieldOfficer');
     Route::get('/supplies', 'ImportController@importSupplies');
     Route::post('/supplies/store', 'ImportController@storeSupplies');
+    Route::get('/evacuation_centers', 'ImportController@importEvacuationCenters')->name('evacuation-center.file.import');
+    Route::post('/evacuation_centers/store', 'ImportController@storeEvacuationCenters')->name('evacuation-center.file.store');
 });
 
 // Export
@@ -111,10 +121,14 @@ Route::prefix('export')->group(function () {
     Route::get('/supplies', 'ExportController@exportSupplies');
 });
 
+Route::get('/evacuation_centers', 'ExportController@exportEvacuationCenters')->name('evacuation-center.file.export');
+Route::get('/requests', 'ExportController@exportDeliveryRequests')->name('request.file.export');
+
 //barangay
 Route::prefix('barangay')->group(function () {
     Route::get('/search', 'BarangayController@search');
 });
+
 
 // Barangay Captain
 Route::prefix('barangay-captain')->group(function () {

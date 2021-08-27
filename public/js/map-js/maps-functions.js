@@ -101,6 +101,16 @@ function evacIcon(){
   });
 }
 
+function evacOptions(){
+  return options = {
+    'maxWidth': '400',
+    'minWidth': '250',
+    'autoClose': false,
+    'closeOnClick': false,
+    'className': 'custom-popup'
+  };
+}
+
 function truckIcon(){
   return icon = L.icon({
     iconUrl: 'assets/img/pins/mdi_truck-fast.png',
@@ -108,6 +118,16 @@ function truckIcon(){
     iconAnchor: [9, 21],
     popupAnchor: [0, -14]
   });
+}
+
+function truckOptions(){
+  return options = {
+    'maxWidth': '400',
+    'minWidth': '100',
+    'autoClose': false,
+    'closeOnClick': false,
+    // 'className': 'custom-popup'
+  };
 }
 
 function get_lat() {

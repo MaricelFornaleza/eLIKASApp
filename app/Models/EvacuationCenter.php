@@ -10,16 +10,22 @@ class EvacuationCenter extends Model
     use HasFactory;
     protected $table = 'evacuation_centers';
 
-    // protected $fillable = [
-    //     'user_id', 'name', 'address', 'latitude', 'longitude', 'capacity', 'characteristics' 
-    // ];
+    protected $fillable = [
+        'name', 
+        'camp_manager_id', 
+        'address', 
+        'latitude', 
+        'longitude', 
+        'capacity', 
+        'characteristics' 
+    ];
 
     /**
      * Get the Camp_Manager that manages the Evacuation Center.
      */
     public function camp_manager()
     {
-        return $this->belongsTo('App\Models\CampManager', 'camp_manager_id')->withTrashed();
+        return $this->belongsTo('App\Models\CampManager');
     }
 
     public function stock_level()

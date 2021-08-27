@@ -86,7 +86,7 @@
                                     <div class="form-group row px-3">
                                         <label for="characteristics">Other Characteristics</label>
                                         <textarea class="form-control" id="characteristics" name="characteristics"
-                                            rows="6" placeholder="Enter evacuation center characteristics" required
+                                            rows="6" placeholder="Enter evacuation center characteristics"
                                             autofocus></textarea>
                                     </div>
                                     
@@ -105,6 +105,7 @@
                                 </div>
 
                                 <div class="col-sm-12 col-md-6">
+                                    <div class="mb-2">Please place the pin on the exact location</div>
                                     <div class="w-100 " id="mapid"></div>
                                 </div>
                             </div>

@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Request extends Model
+class DeliveryRequest extends Model
 {
     use HasFactory;
-    protected $table = 'request';
+    protected $table = 'requests';
     protected $fillable = [
         //'disaster_response_id',
         'camp_manager_id', 
@@ -30,10 +30,10 @@ class Request extends Model
     // }
     public function camp_manager()
     {
-        return $this->belongsTo('App\Models\CampManager');
+        return $this->belongsTo('App\Models\User','user_id');
     }
     public function courier()
     {
-        return $this->belongsTo('App\Models\Courier');
+        return $this->belongsTo('App\Models\User','user_id');
     }
 }

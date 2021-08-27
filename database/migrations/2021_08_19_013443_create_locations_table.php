@@ -20,7 +20,7 @@ class CreateLocationsTable extends Migration
             $table->float('longitude')->nullable();
             //$table->timestamp('DateTime');
             $table->timestamps();
-            $table->foreign('courier_id')->references('id')->on('couriers')
+            $table->foreign('courier_id')->references('id')->on('users')
                 ->onUpdate('cascade')->onDelete('cascade');
         });
     }

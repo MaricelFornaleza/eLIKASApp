@@ -17,7 +17,7 @@ class CreateRequestsTable extends Migration
             $table->id();
             //$table->unsignedBigInteger('disaster_response_id');
             $table->unsignedBigInteger('camp_manager_id');
-            $table->unsignedBigInteger('courier_id');
+            $table->unsignedBigInteger('courier_id')->nullable();
             $table->date('date');
             $table->integer('food_packs');
             $table->integer('water');
@@ -31,9 +31,9 @@ class CreateRequestsTable extends Migration
 
             // $table->foreign('disaster_response_id')->references('id')->on('disaster_responses')
             //     ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('camp_manager_id')->references('id')->on('camp_managers')
+            $table->foreign('camp_manager_id')->references('id')->on('users')
                 ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('courier_id')->references('id')->on('couriers')
+            $table->foreign('courier_id')->references('id')->on('users')
                 ->onUpdate('cascade')->onDelete('cascade');
         });
     }

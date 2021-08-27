@@ -129,14 +129,14 @@ class FieldOfficerController extends Controller
                 'designation' => $validated['designation'],
             ]);
         } else if ($user->officer_type == "Courier") {
-            $courier = Courier::create([
+            Courier::create([
                 'user_id' => $user->id,
                 'designation' => $validated['designation'],
             ]);
             //put here location weak entity
             //dd($courier->id);
             Location::create([
-                'courier_id' => $courier->id
+                'courier_id' => $user->id
             ]);
         }
 

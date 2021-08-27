@@ -15,18 +15,38 @@
             </div>
             <div class="col-lg-3 ml-auto">
 
-                <button class="btn btn-block export-btn">
+                <a href="{{ route('evacuation-center.file.export') }}" class="btn btn-block export-btn">
                     <svg class="c-icon mr-2">
                         <use xlink:href="{{ url('/icons/sprites/free.svg#cil-file') }}"></use>
                     </svg>
                     Export to Excel
-                </button>
+                </a>
             </div>
+        </div>
+        <div class="row">
+            @if(count($errors) > 0)
+            <div class="alert alert-danger col-12">
+                <h6>
+                    Upload Validation error
+                </h6>
+                <ul>
+                    @foreach($errors as $error)
+                    <li>{{$error}}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+
         </div>
         <div class="row">
             <div class="col-12">
                 @if(Session::has('message'))
-                <div class="alert alert-success">{{ Session::get('message') }}</div>
+                <div class="alert alert-success">
+                    {{ Session::get('message') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
                 @endif
             </div>
         </div>
@@ -43,7 +63,7 @@
                                 </a>
                             </div>
                             <div class=" ml-3 mr-4">
-                                <a href="#">
+                                <a href="{{ route('evacuation-center.file.import') }}">
                                     <button class="btn btn-outline-primary ">
                                         Upload Excel File
                                     </button>
@@ -83,7 +103,7 @@
                                         <td>{{ $evacuation_center->name }}</td>
                                         <td>{{ $evacuation_center->address }}</td>
                                         <td>{{ $evacuation_center->characteristics }}</td>
-                                        @if($evacuation_center->camp_manager_name == "")
+                                        @if($evacuation_center->camp_manager_name == null)
                                         <td class="text-danger"><strong>{{ __('None') }}</strong></td>
                                         @else
                                         <td>{{ $evacuation_center->camp_manager_name }}</td>
