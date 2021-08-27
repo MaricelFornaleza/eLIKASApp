@@ -15,11 +15,13 @@ class ExportController extends Controller
 {
     public function exportFieldOfficer()
     {
-        return Excel::download(new FieldOfficerExport, 'FieldOfficer.xls');
+        $todayDate = date("Y-m-d");
+        return Excel::download(new FieldOfficerExport, 'FieldOfficer_' . $todayDate . '.xls');
     }
     public function exportSupplies()
     {
-        return Excel::download(new SuppliesExport, 'Supplies.xls');
+        $todayDate = date("Y-m-d");
+        return Excel::download(new SuppliesExport, 'Supplies_ ' . $todayDate . '.xls');
     }
     public function exportEvacuationCenters()
     {
@@ -28,7 +30,7 @@ class ExportController extends Controller
     }
     public function exportDeliveryRequests()
     {
-       $todayDate = date("Y-m-d");
+        $todayDate = date("Y-m-d");
         return Excel::download(new DeliveryRequestExport, 'Requests_' . $todayDate . '.xls');
     }
 }

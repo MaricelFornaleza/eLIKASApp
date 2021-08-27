@@ -143,21 +143,6 @@ class FieldOfficerController extends Controller
             ]);
         }
 
-        //create contact
-        //the user can have 1 or more contact numbers
-        // foreach ($request->contact_no as $index => $contact_no) {
-        //     if ($request->contact_no[$index] != null) {
-        //         Contact::create([
-        //             'user_id' => $user->id,
-        //             'contact_no' => $request->contact_no[$index],
-        //         ]);
-        //     }
-        // }
-        // Contact::create([
-        //     'user_id' => $user->id,
-        //     'contact_no1' => $request->contact_no1,
-        //     'contact_no2' => $request->contact_no2,
-        // ]);
 
 
         //send an email to the newly registered field officer

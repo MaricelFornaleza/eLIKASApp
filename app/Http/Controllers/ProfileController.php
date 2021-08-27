@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use App\Models\BarangayCaptain;
 use App\Models\CampManager;
-use App\Models\Contact;
 use App\Models\Courier;
 use App\Models\Inventory;
 use App\Models\User;

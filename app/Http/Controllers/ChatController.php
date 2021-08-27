@@ -15,18 +15,11 @@ class ChatController extends Controller
 {
     function index()
     {
-        // $users =  DB::select(
-        //     "SELECT users.id, users.name, users.photo, users.email,
-        // count(is_read) as unread 
-        // FROM users
-        // LEFT JOIN chats
-        //     ON users.id = chats.sender
-        //     AND is_read = 0
-        //     AND chats.recipient = " . Auth::id() .
-        //         " WHERE users.id != " . Auth::id() .
-        //         " GROUP BY users.id, users.name, users.photo, users.email
-        //     order by users.name ASC"
-        // );
+        // join users table and chats table where the recipient is the authenticated user
+        // do not get the authenticated user
+        // Ang sender dapat dae nya macount si is_read na 0 (or unread messages) na bako para saiya
+        // select id, name, photo, email, and count the unread messages
+
         $users = User::leftJoin('chats', function ($join) {
             $join->on('users.id', '=', 'chats.sender')
                 ->where('chats.is_read', '=', '0')
