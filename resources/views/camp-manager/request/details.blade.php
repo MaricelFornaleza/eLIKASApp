@@ -12,8 +12,18 @@
                 </div>
                 <div class="col-5 text-right ">
                     <span class="float-right ">
-                        <div class="rounded bg-primary text-white text-center" style="height: 20px; width:100px;">
-                            Delivered</div>
+                        @if( $delivery_request->status == 'pending' )
+                        <div class="badge-pill bg-secondary-accent text-center" style="height: 20px; width:100px;">
+                        @elseif( $delivery_request->status == 'preparing' )
+                        <div class="badge-pill bg-accent text-center text-white" style="height: 20px; width:100px;">
+                        @elseif( $delivery_request->status == 'in transit' )
+                        <div class="badge-pill bg-secondary text-center text-white" style="height: 20px; width:100px;">
+                        @elseif( $delivery_request->status == 'Delivered' )
+                        <div class="badge-pill badge-primary text-center text-white" style="height: 20px; width:100px;">
+                        @elseif( $delivery_request->status == 'declined' || $delivery_request->status == 'cancelled' )
+                        <div class="badge-pill badge-danger text-center text-white" style="height: 20px; width:100px;">
+                        @endif
+                        {{ strtoupper($delivery_request->status) }}</div>
                     </span>
                 </div>
 
@@ -22,12 +32,8 @@
             <!-- Select Disaster Response -->
             <div class="form-group col-sm-6">
                 <label for="disaster_response">Disaster Response</label>
-                <select name="disaster_response" class="form-control" id="disaster_response">
-                    <option value="">Select</option>
-                    <option value="dr-1">Disaster Response 1</option>
-                    <option value="dr-2">Disaster Response 2</option>
-                    <option value="dr-3">Disaster Response 3</option>
-
+                <select name="disaster_response" class="form-control" id="disaster_response" disabled>
+                    <option value="{{ $delivery_request->disaster_response_id }}">Disaster Response {{ $delivery_request->disaster_response_id }}</option>
                 </select>
 
             </div>
@@ -48,7 +54,7 @@
                 <div class="form-group row px-3 mt-3">
                     <label class="col-7 col-form-label" for="food-qty">Food Packs</label>
                     <div class="col-5 text-right my-auto">
-                        <h6>200</h6>
+                        <h6>{{ $delivery_request->food_packs }}</h6>
 
                     </div>
                 </div>
@@ -56,7 +62,7 @@
                 <div class="form-group row px-3 mt-3">
                     <label class="col-7 col-form-label" for="food-qty">Water</label>
                     <div class="col-5 text-right my-auto">
-                        <h6>200</h6>
+                        <h6>{{ $delivery_request->water }}</h6>
 
                     </div>
                 </div>
@@ -65,7 +71,7 @@
                 <div class="form-group row px-3 mt-3">
                     <label class="col-7 col-form-label" for="food-qty">Clothes</label>
                     <div class="col-5 text-right my-auto">
-                        <h6>200</h6>
+                        <h6>{{ $delivery_request->clothes }}</h6>
 
                     </div>
                 </div>
@@ -74,7 +80,7 @@
                 <div class="form-group row px-3 mt-3">
                     <label class="col-7 col-form-label" for="food-qty">Hygiene Kit</label>
                     <div class="col-5 text-right my-auto">
-                        <h6>200</h6>
+                        <h6>{{ $delivery_request->hygiene_kit }}</h6>
 
                     </div>
                 </div>
@@ -83,7 +89,7 @@
                 <div class="form-group row px-3 mt-3">
                     <label class="col-7 col-form-label" for="food-qty">Medicine</label>
                     <div class="col-5 text-right my-auto">
-                        <h6>200</h6>
+                        <h6>{{ $delivery_request->medicine }}</h6>
 
                     </div>
                 </div>
@@ -91,15 +97,16 @@
                 <div class="form-group row px-3 mt-3">
                     <label class="col-7 col-form-label" for="food-qty">Emergency Shelter Assistance</label>
                     <div class="col-5 text-right my-auto">
-                        <h6>200</h6>
+                        <h6>{{ $delivery_request->emergency_shelter_assistance }}</h6>
 
                     </div>
                 </div>
                 <!-- Note text Area -->
                 <div class="col-12">
                     <label for="note">Note</label>
-                    <textarea id="note" name="note" placeholder="Write something.."
-                        style="width:100%; height:100px;"></textarea>
+                    <textarea id="note" name="note" placeholder="Write something.." disabled
+                        style="width:100%; height:100px;" > {{ $delivery_request->note }}
+                    </textarea>
 
                 </div>
 

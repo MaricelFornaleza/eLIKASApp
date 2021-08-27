@@ -72,7 +72,7 @@
                                                     class="h-100 form-control">
                                                     <option value=''>Select User</option>
                                                     @foreach($camp_managers as $camp_manager)
-                                                    <option value='{{ $camp_manager->camp_manager_id }}'>
+                                                    <option value='{{ $camp_manager->id }}'>
                                                         {{ $camp_manager->name }}
                                                     </option>
                                                     @endforeach

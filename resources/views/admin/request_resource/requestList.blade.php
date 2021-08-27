@@ -82,7 +82,7 @@
                                 <thead>
                                     <tr>
                                         <th>REQUEST ID</th>
-                                        <th>MANAGER NAME</th>
+                                        <th>CAMP MANAGER NAME</th>
                                         <th>EVACUATION CENTER</th>
                                         <th>FOOD PACKS</th>
                                         <th>WATER</th>
@@ -97,7 +97,8 @@
                                         
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="requestTable">
+
                                     @foreach($delivery_requests as $delivery_request)
                                     <tr>
                                         <td>{{ $delivery_request->id }}</td>
@@ -112,9 +113,9 @@
                                         <td>{{ $delivery_request->note }}</td>
                                         @if( $delivery_request->status == 'pending' )
                                         <td>
-                                            <span class="badge badge-pill badge-warning">
+                                            <div class="badge badge-pill bg-secondary-accent">
                                                 {{ strtoupper($delivery_request->status) }}
-                                            </span>
+                                            </div>
                                         </td>
                                         <td>
                                             <div class="row">
@@ -147,7 +148,7 @@
                                         </td>
                                         @elseif( $delivery_request->status == 'preparing' )
                                         <td>
-                                            <span class="badge badge-pill badge-info">
+                                            <span class="badge badge-pill bg-accent text-white">
                                                 {{ strtoupper($delivery_request->status) }}
                                             </span>
                                         </td>
@@ -216,7 +217,7 @@
                                         </td>
                                         @elseif( $delivery_request->status == 'in transit' )
                                         <td>
-                                            <span class="badge badge-pill badge-primary">
+                                            <span class="badge badge-pill bg-secondary text-white">
                                                 {{ strtoupper($delivery_request->status) }}
                                             </span>
                                         </td>
@@ -224,7 +225,7 @@
                                         </td>
                                         @elseif( $delivery_request->status == 'delivered' )
                                         <td>
-                                            <span class="badge badge-pill badge-success">
+                                            <span class="badge badge-pill badge-primary text-white">
                                                 {{ strtoupper($delivery_request->status) }}
                                             </span>
                                         </td>
@@ -232,7 +233,7 @@
                                         </td>
                                         @elseif( $delivery_request->status == 'declined' || $delivery_request->status == 'cancelled')
                                         <td>
-                                            <span class="badge badge-pill badge-danger">
+                                            <span class="badge badge-pill badge-danger text-white">
                                                 {{ strtoupper($delivery_request->status) }}
                                             </span>
                                         </td>
@@ -317,7 +318,7 @@ $(document).ready(function() {
                     title: evacuation.name
                 })
                 .bindPopup('<div class="font-weight-bold text-center">' + evacuation.name + '</div>', truckOptions())
-                .addTo(markers).addTo(mymap);
+                .addTo(markers);
             markers.addTo(mymap);
             mymap.setView([evacuation.latitude, evacuation.longitude], 13); 
         });
@@ -335,12 +336,12 @@ $(document).ready(function() {
         cluster: 'ap1'
     });
 
-    var channel = pusher.subscribe('my-channel');
-    channel.bind('my-event', function(data) {
+    var channel = pusher.subscribe('requests-channel');
+    channel.bind('deliver-event', function(data) {
         //evac_markers.clearLayers();
+        var result = data;
 
-        var couriers = data.couriers;
-        $.each(couriers, function(key, value) {
+        $.each(result, function(key, value) {
             for (var i = 0; i < value.length; ++i) {
                 
             }

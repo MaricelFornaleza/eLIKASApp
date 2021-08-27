@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Models\EvacuationCenter;
 use App\Models\StockLevel;
+use App\CustomClasses\UpdateMarker;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -41,5 +42,8 @@ class EvacuationCenterImport implements ToCollection, WithHeadingRow
                 ]);
             }
         }
+
+        $updatemarker = new UpdateMarker;
+        $updatemarker->get_evac();
     }
 }

@@ -10,7 +10,7 @@ class DeliveryRequest extends Model
     use HasFactory;
     protected $table = 'requests';
     protected $fillable = [
-        //'disaster_response_id',
+        'disaster_response_id',
         'camp_manager_id', 
         'courier_id',
         'date',
@@ -20,14 +20,14 @@ class DeliveryRequest extends Model
         'medicine', 
         'clothes', 
         'emergency_shelter_assistance', 
-        'notes', 
+        'note', 
         'status'
     ];
 
-    // public function disaster_response()
-    // {
-    //     return $this->belongsTo('App\Models\DisasterResponse');
-    // }
+    public function disaster_response()
+    {
+        return $this->belongsTo('App\Models\DisasterResponse');
+    }
     public function camp_manager()
     {
         return $this->belongsTo('App\Models\User','user_id');

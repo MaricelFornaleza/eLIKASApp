@@ -67,7 +67,7 @@
                     </div>
 
                     <!-- Request Button -->
-                    <div class="col-md-6 col-lg-4  ">
+                    <div class="col-md-6 col-lg-4">
                         <a href="/camp-manager/history">
                             <div class="card overflow-hidden">
                                 <div class="card-body p-0 d-flex align-items-center">

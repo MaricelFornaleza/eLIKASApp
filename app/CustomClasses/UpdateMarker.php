@@ -16,7 +16,7 @@ class UpdateMarker {
         $this->pusher = new Pusher(
             env('PUSHER_APP_KEY'),
             env('PUSHER_APP_SECRET'),
-            env('PUSHER_APP_id'),
+            env('PUSHER_APP_ID'),
             $this->options
         );
     }
@@ -30,9 +30,9 @@ class UpdateMarker {
             ->orderByRaw('evacuation_centers.id ASC')
             ->get();
 
-        $type = "evacuation_center";
-        $data = ['content' => $evacuation_centers, 'type' => $type ];
-        $this->pusher->trigger('my-channel', 'my-event', $data);
+        //$type = "evacuation_center";
+        $data = [ 'evacuation_centers' => $evacuation_centers ];
+        $this->pusher->trigger('location-channel', 'evac-event', $data);
     }
 
     public function get_couriers()
@@ -44,8 +44,8 @@ class UpdateMarker {
             ->orderByRaw('couriers.id ASC')
             ->get();
 
-        $type = "courier";
-        $data = ['content' => $couriers, 'type' => $type ];
-        $this->pusher->trigger('my-channel', 'my-event', $data);
+        //$type = "courier";
+        $data = [ 'couriers' => $couriers ];
+        $this->pusher->trigger('location-channel', 'courier-event', $data);
     }
 }
