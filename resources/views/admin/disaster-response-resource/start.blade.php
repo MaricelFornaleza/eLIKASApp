@@ -95,9 +95,11 @@
                                                     <label class="form-check-label" for="{{$barangay->id}}">
                                                         {{$barangay->name}}
                                                     </label>
+
                                                 </div>
                                             </div>
                                             @endforeach
+
                                         </div>
 
 

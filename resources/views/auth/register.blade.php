@@ -43,7 +43,7 @@
                                 <input id="contact_no" class="form-control @error('contact_no') is-invalid @enderror"
                                     type="number" placeholder="{{ __('Contact Number') }}" name="contact_no"
                                     value="{{ old('contact_no') }}" required>
-                                @error('contact_no1')
+                                @error('contact_no')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>

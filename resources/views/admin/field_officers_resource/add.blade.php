@@ -1,6 +1,11 @@
 @extends('layouts.webBase')
 
 @section('css')
+<!-- Select2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
 @endsection
 
@@ -78,11 +83,22 @@
 
                                 </div>
                                 <div class="col-sm-6" id='barangay'>
-                                    <div class="form-group">
+                                    <div class="form-group ">
                                         <label for="barangay">Barangay</label>
-                                        <input class="form-control @error('barangay') is-invalid @enderror"
+                                        <select name="barangay" id="barangay"
+                                            class=" form-control @error('barangay') is-invalid @enderror">
+                                            <option value=''>Select Barangay</option>
+                                            @foreach($barangays as $barangay)
+                                            <option value='{{ $barangay->name }}'>
+                                                {{ $barangay->name }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+
+
+                                        <!-- <input class="form-control @error('barangay') is-invalid @enderror"
                                             id="barangay" name="barangay" type="text" placeholder="Enter your Barangay"
-                                            value="{{ old('barangay') }}">
+                                            value="{{ old('barangay') }}"> -->
                                         @error('barangay')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -164,8 +180,6 @@ function update() {
     }
 }
 
-
-
 $(document).ready(function(e) {
     $('#photo').change(function() {
         let reader = new FileReader();
@@ -174,6 +188,8 @@ $(document).ready(function(e) {
         }
         reader.readAsDataURL(this.files[0]);
     });
+    $("#barangay").select2();
+
 });
 </script>
 @endsection

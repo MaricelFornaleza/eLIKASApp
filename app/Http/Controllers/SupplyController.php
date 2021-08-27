@@ -44,7 +44,7 @@ class SupplyController extends Controller
     {
         $validated = $request->validate([
             'supply_type' => ['required', 'string', 'max:255', 'alpha_spaces'],
-            'quantity' => ['required', 'numeric', 'regex:/^\d+$/'],
+            'quantity' => ['required', 'numeric', 'min:1'],
             'source' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z]+$/'],
         ]);
 
@@ -83,7 +83,7 @@ class SupplyController extends Controller
     public function edit($id)
     {
         $supply = Supply::find($id);
-        return view('barangay-captain.supply-resource.edit', ['supply' => $supply]);
+        return view('admin.supply-resource.edit', ['supply' => $supply]);
     }
 
     /**
