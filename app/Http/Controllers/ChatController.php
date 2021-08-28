@@ -72,7 +72,7 @@ class ChatController extends Controller
         $pusher = new Pusher(
             env('PUSHER_APP_KEY'),
             env('PUSHER_APP_SECRET'),
-            env('PUSHER_APP_id'),
+            env('PUSHER_APP_ID'),
             $options
         );
 
