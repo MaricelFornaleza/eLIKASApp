@@ -1,0 +1,101 @@
+.mobile-header {
+    background-color: #023047 !important;
+}
+body {
+    background-color: #fff !important;
+    font-family: "Poppins" !important;
+}
+.c-header-brand {
+    min-height: 20px !important;
+}
+.c-header-nav-icon {
+    color: white !important;
+}
+.bg-accent {
+    background-color: #fb8500 !important;
+}
+.center {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+.label-small {
+    font-size: 10px !important;
+}
+.btn-primary {
+    background-color: #023047 !important;
+    width: 100%;
+    font-size: 16px;
+}
+.btn-accent {
+    background-color: #fb8500 !important;
+    width: 100%;
+    color: white;
+    font-size: 16px;
+}
+.btn-accent-outline {
+    border: 2px solid #fb8500 !important;
+    width: 100%;
+
+    font-size: 16px;
+}
+.bg-secondary {
+    background-color: #219ebc !important;
+}
+.bg-secondary-accent {
+    background-color: #ffb703 !important;
+}
+.cm-button {
+    width: 100%;
+    background-color: #f4f7fc;
+    height: 100px;
+}
+.text-accent {
+    color: #fb8500;
+}
+.text-secondary {
+    color: #219ebc !important;
+}
+.image {
+    width: 150px;
+    height: 150px;
+}
+@media (max-width: 575.98px) {
+    .image {
+        width: 75px;
+        height: 75px;
+    }
+    .info {
+        text-align: center;
+    }
+}
+.form-control {
+    border: none !important;
+    color: rgba(2, 48, 71, 0.5) !important;
+    background-color: #f4f7fc !important;
+    border-color: #fff !important;
+}
+.form-control:focus {
+    color: #768192;
+    background-color: #fff;
+    border-color: #219ebc !important;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(31, 191, 219, 0.25) !important;
+}
+ul.list-group.list-group-striped li:nth-of-type(odd) {
+    background: #f4f7fc;
+}
+ul.list-group.list-group-striped li:nth-of-type(even) {
+    background: white;
+}
+.secondary-button {
+    background-color: #219ebc !important;
+    color: white !important;
+    border: none !important;
+}
+textarea:focus {
+    outline: 1px solid #219ebc !important;
+}
+.btn-outline-primary {
+    width: 100% !important;
+}

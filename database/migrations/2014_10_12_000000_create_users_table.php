@@ -16,14 +16,47 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->string('photo')->default('Avatar-default.png');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->bigInteger('contact_no')->unique();
             $table->string('password');
-            $table->string('photo')->nullable();
-            $table->bigInteger('number')->unique()->nullable();
+            $table->string('officer_type');
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
+        });
+        Schema::create('admins', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id');
+            $table->string('branch');
+            $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onUpdate('cascade')->onDelete('cascade');
+        });
+        Schema::create('camp_managers', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id');
+            $table->string('designation');
+            $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onUpdate('cascade')->onDelete('cascade');
+        });
+        Schema::create('barangay_captains', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id');
+            $table->string('barangay');
+            $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onUpdate('cascade')->onDelete('cascade');
+        });
+        Schema::create('couriers', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id');
+            $table->string('designation');
+            $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
@@ -34,6 +67,11 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('admins');
+        Schema::dropIfExists('camp_managers');
+        Schema::dropIfExists('barangay_captains');
+        Schema::dropIfExists('couriers');
+
         Schema::dropIfExists('users');
     }
 }

@@ -38,23 +38,25 @@ if (!function_exists('renderDropdown')) {
 
 <head>
     <script type="text/javascript">
-        function refreshTime() {
-            var refresh = 1000;
-            mytime = setTimeout('display_dateTime()', refresh);
-        }
+    function refreshTime() {
+        var refresh = 1000;
+        mytime = setTimeout('display_dateTime()', refresh);
+    }
 
-        function display_dateTime() {
-            var date = new Date();
-            document.getElementById("time").innerHTML = date.toLocaleTimeString();
-            refreshTime();
-        }
+    function display_dateTime() {
+        var date = new Date();
+        document.getElementById("time").innerHTML = date.toLocaleTimeString();
+        refreshTime();
+    }
     </script>
 </head>
 
 <body onload="display_dateTime();">
     <div class="c-sidebar-brand" onload=display_dateTime();>
-        <img class="c-sidebar-brand-full" src="{{ url('/assets/brand/Logo-horizontal-white.svg') }}" height="25" alt="eLIKAS Logo">
-        <img class="c-sidebar-brand-minimized" src="{{ url('assets/brand/Logo-icon-white.svg') }}" height="25" alt="eLIKAS Logo">
+        <img class="c-sidebar-brand-full" src="{{ url('/assets/brand/Logo-horizontal-white.svg') }}" height="25"
+            alt="eLIKAS Logo">
+        <img class="c-sidebar-brand-minimized" src="{{ url('assets/brand/Logo-icon-white.svg') }}" height="25"
+            alt="eLIKAS Logo">
     </div>
     <div class="sidebar-date">
         <h1 id="time"></h1>
@@ -64,64 +66,65 @@ if (!function_exists('renderDropdown')) {
     </div>
     <ul class="c-sidebar-nav">
         <li class="c-sidebar-nav-item">
-            <a class="c-sidebar-nav-link" href="#">
+            <a class="c-sidebar-nav-link" href="/home">
                 <svg class="c-sidebar-nav-icon">
                     <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-home"></use>
                 </svg>Home
             </a>
         </li>
         <li class="c-sidebar-nav-item">
-            <a class="c-sidebar-nav-link" href="#">
+            <a class="c-sidebar-nav-link" href="/map">
                 <svg class="c-sidebar-nav-icon">
-                    <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-home"></use>
+                    <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-map"></use>
                 </svg>Map
             </a>
         </li>
         <li class="c-sidebar-nav-item">
-            <a class="c-sidebar-nav-link" href="#">
+            <a class="c-sidebar-nav-link" href="/evacuation_centers">
                 <svg class="c-sidebar-nav-icon">
-                    <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-home"></use>
+                    <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-house"></use>
                 </svg>Evacuation Centers
             </a>
         </li>
         <li class="c-sidebar-nav-item">
-            <a class="c-sidebar-nav-link" href="#">
+            <a class="c-sidebar-nav-link" href="/field_officers">
                 <svg class="c-sidebar-nav-icon">
-                    <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-home"></use>
+                    <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-people"></use>
                 </svg>Field Officers
             </a>
         </li>
         <li class="c-sidebar-nav-item">
-            <a class="c-sidebar-nav-link" href="#">
+            <a class="c-sidebar-nav-link" href="/requests">
                 <svg class="c-sidebar-nav-icon">
-                    <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-home"></use>
+                    <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-notes"></use>
                 </svg>Requests
             </a>
         </li>
         <li class="c-sidebar-nav-item">
-            <a class="c-sidebar-nav-link" href="#">
+            <a class="c-sidebar-nav-link" href="{{ route('residents.index') }}">
                 <svg class="c-sidebar-nav-icon">
-                    <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-home"></use>
+                    <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-people"></use>
                 </svg>Residents
             </a>
         </li>
         <li class="c-sidebar-nav-item">
-            <a class="c-sidebar-nav-link" href="#">
+            <a class="c-sidebar-nav-link" href="{{ route('inventory.index') }}">
                 <svg class="c-sidebar-nav-icon">
-                    <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-home"></use>
+                    <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-file"></use>
                 </svg>Inventory
             </a>
         </li>
         <li class="c-sidebar-nav-item">
-            <a class="c-sidebar-nav-link" href="#">
+            <a class="c-sidebar-nav-link" href="/chat">
                 <svg class="c-sidebar-nav-icon">
-                    <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-home"></use>
+                    <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-chat-bubble"></use>
                 </svg>Chat
             </a>
         </li>
 
     </ul>
-    <button class="c-sidebar-minimizer c-class-toggler" type="button" data-target="_parent" data-class="c-sidebar-minimized"></button>
+    <button class="c-sidebar-minimizer c-class-toggler" type="button" data-target="_parent"
+        data-class="c-sidebar-minimized"></button>
     </div>
 
 </body>
