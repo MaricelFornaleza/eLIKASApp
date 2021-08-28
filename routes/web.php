@@ -79,9 +79,12 @@ Route::prefix('import')->group(function () {
     Route::post('/field_officers/store', 'ImportController@storeFieldOfficer');
     Route::get('/supplies', 'ImportController@importSupplies');
     Route::post('/supplies/store', 'ImportController@storeSupplies');
+    Route::get('/residents', 'ImportController@importResidents');
+    Route::post('/residents/store', 'ImportController@storeResidents');
 });
 
 Route::prefix('export')->group(function () {
     Route::get('/field_officers', 'ExportController@exportFieldOfficer');
     Route::get('/supplies', 'ExportController@exportSupplies');
+    Route::get('/residents', 'ExportController@exportResidents');
 });

@@ -16,7 +16,7 @@
             </div>
             <div class="col-lg-3 ml-auto">
 
-                <a href="{{ url('/export/supplies') }}" class="btn btn-block export-btn">
+                <a href="{{ url('/export/residents') }}" class="btn btn-block export-btn">
                     <svg class="c-icon mr-2">
                         <use xlink:href="{{ url('/icons/sprites/free.svg#cil-file') }}"></use>
                     </svg>
@@ -70,7 +70,7 @@
 
                             </div>
                             <div class=" ml-3 mr-4">
-                                <a href="{{ url('/import/supplies') }}">
+                                <a href="{{ url('/import/residents') }}">
                                     <button class="btn btn-outline-primary ">
                                         Upload Excel File
                                     </button>

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 
 use App\Imports\FieldOfficerImport;
 use App\Imports\SuppliesImport;
+use App\Imports\ResidentsImport;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
@@ -43,5 +45,22 @@ class ImportController extends Controller
         Excel::import(new SuppliesImport, $filename);
         Session::flash('message', 'Excel uploaded successfully!');
         return redirect('inventory');
+    }
+
+    public function importResidents()
+    {
+        return view('admin.relief-recipients-resource.import');
+    }
+    public function storeResidents(Request $request)
+    {
+        $this->validate($request, [
+            'import_file'  => 'required|mimes:xls,xlsx'
+        ]);
+
+        $filename = $request->file('import_file');
+
+        Excel::import(new ResidentsImport, $filename);
+        Session::flash('message', 'Excel uploaded successfully!');
+        return redirect('residents');
     }
 }
