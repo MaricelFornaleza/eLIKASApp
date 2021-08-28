@@ -44,7 +44,7 @@
                     </div>
                 </div>
                 <!-- Supply Info Form -->
-                <div class="supply-info mt-5 mb-2">
+                <div class="supply-info mt-4 mb-2">
                     <!-- title -->
                     <div class="row title px-3 mb-2 font-weight-bold ">
                         <div class="col-7">
@@ -107,9 +107,9 @@
                     </div>
                     <!-- Note text Area -->
                     <div class="col-12">
-                        <label for="note" class="my-1">Note</label>
-                        <textarea id="note" name="note" placeholder="Write something.."
-                            style="width:100%; height:100px;" disabled>  {{ $delivery_request->note }}
+                        <label for="note">Note</label>
+                        <textarea class="form-control" id="note" name="note" placeholder="Write something.."
+                        rows="5" disabled>{{ $delivery_request->note }}
                         </textarea>
                     </div>
 
@@ -139,11 +139,14 @@
                     @elseif( $delivery_request->status == "in-transit")
                     <div class="col-12 center mt-4">
                         <div class="col-md-6 mt-4 mb-4 p-0">
-                            <a href="{{ route('request.courier_cancel', [ 'id' => $delivery_request->id ]) }}"
+                            <a href="{{ route('request.cancel', [ 'id' => $delivery_request->id ]) }}"
                                 onclick="return confirm('Are you sure to cancel the request?')"> 
                                 <button class="btn btn-accent-outline  px-4 ">Cancel</button>
                             </a>
                         </div>
+                    </div>
+                    @else
+                    <div class="col-md-6 mt-4 mb-4 p-0">
                     </div>
                     @endif
                 </div>

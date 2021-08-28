@@ -76,8 +76,8 @@
                     </div> --}}
                     <div class="card-body">
                         <div>
-                            <table id="evacuationCenter"
-                            class="table table-borderless table-hover table-light table-striped" 
+                            <table id="requestList"
+                                class="table table-borderless table-hover table-light table-striped" 
                                 style="width: 100%;">
                                 <thead>
                                     <tr>
@@ -206,7 +206,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
-                                                    <a href="{{ route('request.admin_cancel', ['id' => $delivery_request->id] ) }}" onclick="return confirm('Are you sure to cancel the request?')">
+                                                    <a href="{{ route('request.cancel', ['id' => $delivery_request->id] ) }}" onclick="return confirm('Are you sure to cancel the request?')">
                                                         <svg width="25" height="25" xmlns="http://www.w3.org/2000/svg">
                                                             <image href="{{ url('icons/sprites/decline-request.svg') }}" height="25" width="25"/>
                                                         </svg>
@@ -227,7 +227,7 @@
                                                 <div class="col-6 ">
                                                 </div>
                                                 <div class="col-6">
-                                                    <a href="{{ route('request.admin_cancel', ['id' => $delivery_request->id] ) }}" onclick="return confirm('Are you sure to cancel the request?')">
+                                                    <a href="{{ route('request.cancel', ['id' => $delivery_request->id] ) }}" onclick="return confirm('Are you sure to cancel the request?')">
                                                         <svg width="25" height="25" xmlns="http://www.w3.org/2000/svg">
                                                             <image href="{{ url('icons/sprites/decline-request.svg') }}" height="25" width="25"/>
                                                         </svg>
@@ -289,7 +289,7 @@
 
 var markers = L.layerGroup();
 $(document).ready(function() {
-    $('#evacuationCenter').DataTable({
+    $('#requestList').DataTable({
         "scrollX": true,
         "order": [],
     });
@@ -369,9 +369,7 @@ $(document).ready(function() {
         var result = data;
 
         $.each(result, function(key, value) {
-            for (var i = 0; i < value.length; ++i) {
-                
-            }
+            $('#messages').html(value);
         });
     });
 

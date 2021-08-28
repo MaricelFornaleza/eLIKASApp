@@ -37,14 +37,14 @@
             </div>
 
             <div class="col-md-6 px-0 pt-4 ">
-                <ul class="list-group list-group-hover list-group-striped" id="ul-parent">
+                <ul class="list-group list-group-hover list-group-striped mb-4" id="ul-parent">
                     @foreach($delivery_requests as $delivery_request)
                     <a href="/camp-manager/details/{{ $delivery_request->id }}">
                         <li class="list-group-item list-group-item-action ">
                             <div class="row">
                                 <div class="col-8">
-                                    <h6 class="font-weight-bold" id="request-id">Request ID: {{ $delivery_request->id }}</h6>
-                                    <small>{{date('F d, Y, h:i a', strtotime($delivery_request->updated_at)) }}</small>
+                                    <h6 class="font-weight-bold request-id">Request ID: {{ $delivery_request->id }}</h6>
+                                    <small class="request-date">{{date('F d, Y, h:i a', strtotime($delivery_request->updated_at)) }}</small>
                                 </div>
                                 <div class="col-4">
                                     <span class="float-right ">
@@ -59,7 +59,7 @@
                                         @elseif( $delivery_request->status == 'declined' || $delivery_request->status == 'cancelled' )
                                         <div class="badge-pill badge-danger text-center text-white" style="height: 20px; width:100px;">
                                         @endif
-                                            <strong>
+                                            <strong class="request-status">
                                                 @if( $delivery_request->status == 'preparing and accepted' )
                                                 PREPARING
                                                 @else
@@ -138,11 +138,15 @@
         var ul = document.getElementById("ul-parent");
         var a = ul.getElementsByTagName('a');
         
+        filter = filter.replace(/\s+/g, '');
+        var reqID, date, status, a;
         for (var i = 0; i < a.length; i++) {
-            var li = a[i].getElementsByTagName("li")[0];
-            var txtValue = document.getElementById("request-id").textContent;
-            //console.log(li);
-            if (txtValue.toUpperCase().includes(filter)) {
+            //li = a[i].getElementsByTagName("li")[0];
+            reqID = document.getElementsByClassName("request-id")[i].textContent.replace(/\s+/g, '');
+            date = document.getElementsByClassName("request-date")[i].textContent.replace(/\s+/g, '');
+            status = document.getElementsByClassName("request-status")[i].textContent.replace(/\s+/g, '');
+           
+            if (reqID.toUpperCase().includes(filter) || date.toUpperCase().includes(filter) || status.toUpperCase().includes(filter) ) {
                 a[i].style.display = "";
             } else {
                 a[i].style.display = "none";

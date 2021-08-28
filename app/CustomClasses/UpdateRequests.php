@@ -23,12 +23,12 @@ class UpdateRequests {
     
     public function get_requests($id)
     {
-        $delivery_requests = DB::table('requests')
-            ->leftJoin('users', 'requests.camp_manager_id', '=', 'users.id')
-            ->leftJoin('evacuation_centers', 'evacuation_centers.camp_manager_id', '=', 'requests.camp_manager_id')
-            ->select('users.name as camp_manager_name','evacuation_centers.name as evacuation_center_name','requests.*')
-            ->orderByRaw('updated_at ASC')
-            ->get();
+        // $delivery_requests = DB::table('requests')
+        //     ->leftJoin('users', 'requests.camp_manager_id', '=', 'users.id')
+        //     ->leftJoin('evacuation_centers', 'evacuation_centers.camp_manager_id', '=', 'requests.camp_manager_id')
+        //     ->select('users.name as camp_manager_name','evacuation_centers.name as evacuation_center_name','requests.*')
+        //     ->orderByRaw('updated_at ASC')
+        //     ->get();
 
         $data = ['delivery_requests' => $delivery_requests];
         $this->pusher->trigger('requests-channel', 'deliver-event', $data);

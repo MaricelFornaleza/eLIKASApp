@@ -13,7 +13,7 @@
                 <div class="col-5 text-right ">
                     <span class="float-right ">
                         @if( $delivery_request->status == 'pending' )
-                        <div class="badge-pill bg-secondary-accent text-center" style="height: 20px; width:100px;">
+                        <div class="badge-pill bg-secondary-accent text-center text-white" style="height: 20px; width:100px;">
                         @elseif( $delivery_request->status == 'preparing' )
                         <div class="badge-pill bg-accent text-center text-white" style="height: 20px; width:100px;">
                         @elseif( $delivery_request->status == 'in transit' )
@@ -104,14 +104,26 @@
                 <!-- Note text Area -->
                 <div class="col-12">
                     <label for="note">Note</label>
-                    <textarea id="note" name="note" placeholder="Write something.." disabled
-                        style="width:100%; height:100px;" > {{ $delivery_request->note }}
+                    <textarea class="form-control" id="note" name="note" placeholder="Write something.."
+                    rows="5" disabled>{{ $delivery_request->note }}
                     </textarea>
-
                 </div>
 
+                
+                <div>
+                    @if( $delivery_request->status == "pending" )
+                    <div class="col-12 center mt-5">
+                        <div class="col-md-6 mb-1 p-0">
+                            <a href="{{ route('request.cancel', [ 'id' => $delivery_request->id ]) }}"
+                                onclick="return confirm('Are you sure to cancel the request?')">
+                                <button class="btn btn-accent-outline  px-4 ">Cancel</button>
+                            </a>
+                        </div>
+                    </div>
+                    @endif
+                </div>
 
-
+                
             </div>
 
         </div>

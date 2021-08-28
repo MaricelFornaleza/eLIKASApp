@@ -52,26 +52,22 @@ class DeliveryRequestController extends Controller
         return redirect()->back()->with('message', 'You have approved Request ID ' . $id);
     }
 
-    public function admin_cancel(Request $request)
+    public function cancel(Request $request)
     {
+        $role = Auth::user()->officer_type;
         $id = $request->input('id');
+
         DeliveryRequest::where('id', $id)->update([
             'status' => 'cancelled'
         ]);
 
-        return redirect()->back()->with('message', 'You have cancelled Request ID ' . $id);
-
-    }
-    
-    public function admin_decline(Request $request)
-    {
-        $id = $request->input('id');
-        DeliveryRequest::where('id', $id)->update([
-            'status' => 'declined'
-        ]);
-
-        return redirect()->back()->with('message', 'You have declined Request ID ' . $id);
-
+        $request->session()->flash('message', 'You have cancelled Request ID ' . $id );
+        if ($role == 'Administrator')
+            return redirect()->back();
+        else if ($role == 'Camp Manager')
+            return redirect()->route('request.camp-manager.history');
+        else if ($role == 'Courier')
+            return redirect()->route('home');
     }
 
     public function assign_courier(Request $request)
@@ -104,18 +100,7 @@ class DeliveryRequestController extends Controller
         return redirect()->route('home')->with('message', 'You have accepted Request ID ' . $id);
 
     }
-
-    public function courier_cancel(Request $request)
-    {
-        $id = $request->input('id');
-        DeliveryRequest::where('id', $id)->update([
-            'status' => 'cancelled'
-        ]);
-
-        return redirect()->route('home')->with('message', 'You have cancelled Request ID ' . $id);
-
-    }
-
+    
     public function courier_decline(Request $request)
     {
         $id = $request->input('id');
@@ -123,7 +108,7 @@ class DeliveryRequestController extends Controller
             'status' => 'declined'
         ]);
 
-        return redirect()->back()->with('message', 'You have declined Request ID ' . $id);
+        return redirect()->route('home')->with('message', 'You have declined Request ID ' . $id);
 
     }
 
