@@ -106,24 +106,7 @@
                                 </div>
                             </div>
 
-                            <div class="px-3 row justify-content-start">
-                                <div class="col-sm-6">
-                                    <div class="form-group row px-3">
-                                    <input class="form-check-input @error('recipient_type') is-invalid @enderror" type="radio" name="recipient_type" id="radio_evacuee" value="Evacuee" required autofocus>
-                                    <label class="form-check-label" for="radio_evacuee">
-                                           Evacuee
-                                    </label>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group row px-3">
-                                    <input class="form-check-input @error('recipient_type') is-invalid @enderror" type="radio" name="recipient_type" id="radio_non_evacuee" value="Non-Evacuee" checked>
-                                    <label class="form-check-label" for="radio_non_evacuee">
-                                        Non-Evacuee
-                                    </label>
-                                    </div>
-                                </div>
-                            </div>
+                   
 
                             <table id=""
                                 class="table table-borderless table-hover table-light table-striped "

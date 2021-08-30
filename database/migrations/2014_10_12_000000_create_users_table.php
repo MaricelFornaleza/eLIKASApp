@@ -24,7 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('officer_type');
             $table->rememberToken();
             $table->timestamps();
-            $table->softDeletes();
+            // $table->softDeletes();
         });
         Schema::create('admins', function (Blueprint $table) {
             $table->bigIncrements('id');

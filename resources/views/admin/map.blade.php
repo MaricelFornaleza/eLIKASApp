@@ -70,116 +70,121 @@ var courier_markers = L.layerGroup();
 
 $.each(result1, function(key, value) {
     //console.log(value.latitude);
-    var marker = new L.marker([value.latitude, value.longitude], {icon: evacIcon()})
-        .bindPopup('<div class="font-weight-bold">' + value.name + '</div>' +
-                '<div class="my-2">' +
-                '<div class="progress-group">' +
-                '<div class="progress-group-header align-items-end">' +
-                '<div>Food</div>' +
-                '<div class="ml-auto font-weight-bold mr-2">' + value.food_packs +
-                '</div>' +
-                '<div class="text-muted small">(' + (value.food_packs / 100 * 100) +
-                '%)</div>' +
-                '</div>' +
-                '<div class="progress-group-bars">' +
-                '<div class="progress progress-xs">' +
-                '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                (value.food_packs / 100 * 100) +
-                '%" aria-valuenow="56" aria-valuemin="0" aria-valuemax="100"></div>' +
-                '</div>' +
-                '</div>' +
-                '</div>' +
-                '<div class="progress-group">' +
-                '<div class="progress-group-header align-items-end">' +
-                '<div>Water</div>' +
-                '<div class="ml-auto font-weight-bold mr-2">' + value.water +
-                '</div>' +
-                '<div class="text-muted small">(' + (value.water / 100 * 100) +
-                '%)</div>' +
-                '</div>' +
-                '<div class="progress-group-bars">' +
-                '<div class="progress progress-xs">' +
-                '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                (value.water / 100 * 100) +
-                '%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>' +
-                '</div>' +
-                '</div>' +
-                '</div>' +
-                '<div class="progress-group">' +
-                '<div class="progress-group-header align-items-end">' +
-                '<div>Clothes</div>' +
-                '<div class="ml-auto font-weight-bold mr-2">' + value.clothes +
-                '</div>' +
-                '<div class="text-muted small">(' + (value.clothes / 100 * 100) +
-                '%)</div>' +
-                '</div>' +
-                '<div class="progress-group-bars">' +
-                '<div class="progress progress-xs">' +
-                '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                (value.clothes / 100 * 100) +
-                '%" aria-valuenow="11" aria-valuemin="0" aria-valuemax="100"></div>' +
-                '</div>' +
-                '</div>' +
-                '</div>' +
-                '<div class="progress-group">' +
-                '<div class="progress-group-header align-items-end">' +
-                '<div>Hygiene Kit</div>' +
-                '<div class="ml-auto font-weight-bold mr-2">' + value.hygiene_kit +
-                '</div>' +
-                '<div class="text-muted small">(' + (value.hygiene_kit / 100 * 100) +
-                '%)</div>' +
-                '</div>' +
-                '<div class="progress-group-bars">' +
-                '<div class="progress progress-xs">' +
-                '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                (value.hygiene_kit / 100 * 100) +
-                '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="100"></div>' +
-                '</div>' +
-                '</div>' +
-                '</div>' +
-                '<div class="progress-group">' +
-                '<div class="progress-group-header align-items-end">' +
-                '<div>Medicine</div>' +
-                '<div class="ml-auto font-weight-bold mr-2">' + value.medicine +
-                '</div>' +
-                '<div class="text-muted small">(' + (value.medicine / 100 * 100) +
-                '%)</div>' +
-                '</div>' +
-                '<div class="progress-group-bars">' +
-                '<div class="progress progress-xs">' +
-                '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                (value.medicine / 100 * 100) +
-                '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="100"></div>' +
-                '</div>' +
-                '</div>' +
-                '</div>' +
-                '<div class="progress-group">' +
-                '<div class="progress-group-header align-items-end">' +
-                '<div>ESA</div>' +
-                '<div class="ml-auto font-weight-bold mr-2">' + value 
-                .emergency_shelter_assistance + '</div>' +
-                '<div class="text-muted small">(' + (value 
-                    .emergency_shelter_assistance / 100 * 100) + '%)</div>' +
-                '</div>' +
-                '<div class="progress-group-bars">' +
-                '<div class="progress progress-xs">' +
-                '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                (value.emergency_shelter_assistance / 100 * 100) +
-                '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="100"></div>' +
-                '</div>' +
-                '</div>' +
-                '</div>' +
-                '</div>', evacOptions())
-        .addTo(evac_markers);
+    if(value.latitude !== null && value.longitude !== null) {
+        var marker = new L.marker([value.latitude, value.longitude], {icon: evacIcon()})
+            .bindPopup('<div class="font-weight-bold">' + value.name + '</div>' +
+                    '<div class="my-2">' +
+                    '<div class="progress-group">' +
+                    '<div class="progress-group-header align-items-end">' +
+                    '<div>Food</div>' +
+                    '<div class="ml-auto font-weight-bold mr-2">' + value.food_packs +
+                    '</div>' +
+                    '<div class="text-muted small">(' + (value.food_packs / 100 * 100) +
+                    '%)</div>' +
+                    '</div>' +
+                    '<div class="progress-group-bars">' +
+                    '<div class="progress progress-xs">' +
+                    '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
+                    (value.food_packs / 100 * 100) +
+                    '%" aria-valuenow="56" aria-valuemin="0" aria-valuemax="100"></div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="progress-group">' +
+                    '<div class="progress-group-header align-items-end">' +
+                    '<div>Water</div>' +
+                    '<div class="ml-auto font-weight-bold mr-2">' + value.water +
+                    '</div>' +
+                    '<div class="text-muted small">(' + (value.water / 100 * 100) +
+                    '%)</div>' +
+                    '</div>' +
+                    '<div class="progress-group-bars">' +
+                    '<div class="progress progress-xs">' +
+                    '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
+                    (value.water / 100 * 100) +
+                    '%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="progress-group">' +
+                    '<div class="progress-group-header align-items-end">' +
+                    '<div>Clothes</div>' +
+                    '<div class="ml-auto font-weight-bold mr-2">' + value.clothes +
+                    '</div>' +
+                    '<div class="text-muted small">(' + (value.clothes / 100 * 100) +
+                    '%)</div>' +
+                    '</div>' +
+                    '<div class="progress-group-bars">' +
+                    '<div class="progress progress-xs">' +
+                    '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
+                    (value.clothes / 100 * 100) +
+                    '%" aria-valuenow="11" aria-valuemin="0" aria-valuemax="100"></div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="progress-group">' +
+                    '<div class="progress-group-header align-items-end">' +
+                    '<div>Hygiene Kit</div>' +
+                    '<div class="ml-auto font-weight-bold mr-2">' + value.hygiene_kit +
+                    '</div>' +
+                    '<div class="text-muted small">(' + (value.hygiene_kit / 100 * 100) +
+                    '%)</div>' +
+                    '</div>' +
+                    '<div class="progress-group-bars">' +
+                    '<div class="progress progress-xs">' +
+                    '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
+                    (value.hygiene_kit / 100 * 100) +
+                    '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="100"></div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="progress-group">' +
+                    '<div class="progress-group-header align-items-end">' +
+                    '<div>Medicine</div>' +
+                    '<div class="ml-auto font-weight-bold mr-2">' + value.medicine +
+                    '</div>' +
+                    '<div class="text-muted small">(' + (value.medicine / 100 * 100) +
+                    '%)</div>' +
+                    '</div>' +
+                    '<div class="progress-group-bars">' +
+                    '<div class="progress progress-xs">' +
+                    '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
+                    (value.medicine / 100 * 100) +
+                    '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="100"></div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="progress-group">' +
+                    '<div class="progress-group-header align-items-end">' +
+                    '<div>ESA</div>' +
+                    '<div class="ml-auto font-weight-bold mr-2">' + value 
+                    .emergency_shelter_assistance + '</div>' +
+                    '<div class="text-muted small">(' + (value 
+                        .emergency_shelter_assistance / 100 * 100) + '%)</div>' +
+                    '</div>' +
+                    '<div class="progress-group-bars">' +
+                    '<div class="progress progress-xs">' +
+                    '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
+                    (value.emergency_shelter_assistance / 100 * 100) +
+                    '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="100"></div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>', evacOptions())
+            .addTo(evac_markers);
 
-    evac_markers.addTo(mymap);
+        evac_markers.addTo(mymap);
+    }
+   
 });
 
 $.each(result2, function(key, value) {
-    var marker = L.marker([value.latitude, value.longitude], {icon: truckIcon()})
-        .bindPopup('<div class="font-weight-bold">' + value.name + '</div>', truckOptions())
-        .addTo(courier_markers);
-    courier_markers.addTo(mymap);
+    if(value.latitude !== null && value.longitude !== null) {
+        var marker = L.marker([value.latitude, value.longitude], {icon: truckIcon()})
+            .bindPopup('<div class="font-weight-bold">' + value.name + '</div>', truckOptions())
+            .addTo(courier_markers);
+        courier_markers.addTo(mymap);
+    }
 });
 
 $(document).ready(function() {
@@ -203,108 +208,110 @@ $(document).ready(function() {
         $.each(result, function(key, value) {
             for (var i = 0; i < value.length; ++i) {
                 //console.log(i);
-                var marker = new L.marker([value[i].latitude, value[i].longitude], { icon: evacIcon()} )
-                    .bindPopup('<div class="font-weight-bold">' + value[i].name + '</div>' +
-                                '<div class="my-2">' +
-                                '<div class="progress-group">' +
-                                '<div class="progress-group-header align-items-end">' +
-                                '<div>Food</div>' +
-                                '<div class="ml-auto font-weight-bold mr-2">' + value[i].food_packs +
-                                '</div>' +
-                                '<div class="text-muted small">(' + (value[i].food_packs / 100 * 100) +
-                                '%)</div>' +
-                                '</div>' +
-                                '<div class="progress-group-bars">' +
-                                '<div class="progress progress-xs">' +
-                                '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                                (value[i].food_packs / 100 * 100) +
-                                '%" aria-valuenow="56" aria-valuemin="0" aria-valuemax="100"></div>' +
-                                '</div>' +
-                                '</div>' +
-                                '</div>' +
-                                '<div class="progress-group">' +
-                                '<div class="progress-group-header align-items-end">' +
-                                '<div>Water</div>' +
-                                '<div class="ml-auto font-weight-bold mr-2">' + value[i].water +
-                                '</div>' +
-                                '<div class="text-muted small">(' + (value[i].water / 100 * 100) +
-                                '%)</div>' +
-                                '</div>' +
-                                '<div class="progress-group-bars">' +
-                                '<div class="progress progress-xs">' +
-                                '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                                (value[i].water / 100 * 100) +
-                                '%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>' +
-                                '</div>' +
-                                '</div>' +
-                                '</div>' +
-                                '<div class="progress-group">' +
-                                '<div class="progress-group-header align-items-end">' +
-                                '<div>Clothes</div>' +
-                                '<div class="ml-auto font-weight-bold mr-2">' + value[i].clothes +
-                                '</div>' +
-                                '<div class="text-muted small">(' + (value[i].clothes / 100 * 100) +
-                                '%)</div>' +
-                                '</div>' +
-                                '<div class="progress-group-bars">' +
-                                '<div class="progress progress-xs">' +
-                                '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                                (value[i].clothes / 100 * 100) +
-                                '%" aria-valuenow="11" aria-valuemin="0" aria-valuemax="100"></div>' +
-                                '</div>' +
-                                '</div>' +
-                                '</div>' +
-                                '<div class="progress-group">' +
-                                '<div class="progress-group-header align-items-end">' +
-                                '<div>Hygiene Kit</div>' +
-                                '<div class="ml-auto font-weight-bold mr-2">' + value[i].hygiene_kit +
-                                '</div>' +
-                                '<div class="text-muted small">(' + (value[i].hygiene_kit / 100 * 100) +
-                                '%)</div>' +
-                                '</div>' +
-                                '<div class="progress-group-bars">' +
-                                '<div class="progress progress-xs">' +
-                                '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                                (value[i].hygiene_kit / 100 * 100) +
-                                '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="100"></div>' +
-                                '</div>' +
-                                '</div>' +
-                                '</div>' +
-                                '<div class="progress-group">' +
-                                '<div class="progress-group-header align-items-end">' +
-                                '<div>Medicine</div>' +
-                                '<div class="ml-auto font-weight-bold mr-2">' + value[i].medicine +
-                                '</div>' +
-                                '<div class="text-muted small">(' + (value[i].medicine / 100 * 100) +
-                                '%)</div>' +
-                                '</div>' +
-                                '<div class="progress-group-bars">' +
-                                '<div class="progress progress-xs">' +
-                                '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                                (value[i].medicine / 100 * 100) +
-                                '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="100"></div>' +
-                                '</div>' +
-                                '</div>' +
-                                '</div>' +
-                                '<div class="progress-group">' +
-                                '<div class="progress-group-header align-items-end">' +
-                                '<div>ESA</div>' +
-                                '<div class="ml-auto font-weight-bold mr-2">' + value[i] 
-                                .emergency_shelter_assistance + '</div>' +
-                                '<div class="text-muted small">(' + (value[i] 
-                                    .emergency_shelter_assistance / 100 * 100) + '%)</div>' +
-                                '</div>' +
-                                '<div class="progress-group-bars">' +
-                                '<div class="progress progress-xs">' +
-                                '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                                (value[i].emergency_shelter_assistance / 100 * 100) +
-                                '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="100"></div>' +
-                                '</div>' +
-                                '</div>' +
-                                '</div>' +
-                                '</div>', evacuationOptions())
-                    .addTo(evac_markers);
-                evac_markers.addTo(mymap);
+                if(value.latitude !== null && value.longitude !== null) {
+                    var marker = new L.marker([value[i].latitude, value[i].longitude], { icon: evacIcon()} )
+                        .bindPopup('<div class="font-weight-bold">' + value[i].name + '</div>' +
+                                    '<div class="my-2">' +
+                                    '<div class="progress-group">' +
+                                    '<div class="progress-group-header align-items-end">' +
+                                    '<div>Food</div>' +
+                                    '<div class="ml-auto font-weight-bold mr-2">' + value[i].food_packs +
+                                    '</div>' +
+                                    '<div class="text-muted small">(' + (value[i].food_packs / 100 * 100) +
+                                    '%)</div>' +
+                                    '</div>' +
+                                    '<div class="progress-group-bars">' +
+                                    '<div class="progress progress-xs">' +
+                                    '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
+                                    (value[i].food_packs / 100 * 100) +
+                                    '%" aria-valuenow="56" aria-valuemin="0" aria-valuemax="100"></div>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '<div class="progress-group">' +
+                                    '<div class="progress-group-header align-items-end">' +
+                                    '<div>Water</div>' +
+                                    '<div class="ml-auto font-weight-bold mr-2">' + value[i].water +
+                                    '</div>' +
+                                    '<div class="text-muted small">(' + (value[i].water / 100 * 100) +
+                                    '%)</div>' +
+                                    '</div>' +
+                                    '<div class="progress-group-bars">' +
+                                    '<div class="progress progress-xs">' +
+                                    '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
+                                    (value[i].water / 100 * 100) +
+                                    '%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '<div class="progress-group">' +
+                                    '<div class="progress-group-header align-items-end">' +
+                                    '<div>Clothes</div>' +
+                                    '<div class="ml-auto font-weight-bold mr-2">' + value[i].clothes +
+                                    '</div>' +
+                                    '<div class="text-muted small">(' + (value[i].clothes / 100 * 100) +
+                                    '%)</div>' +
+                                    '</div>' +
+                                    '<div class="progress-group-bars">' +
+                                    '<div class="progress progress-xs">' +
+                                    '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
+                                    (value[i].clothes / 100 * 100) +
+                                    '%" aria-valuenow="11" aria-valuemin="0" aria-valuemax="100"></div>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '<div class="progress-group">' +
+                                    '<div class="progress-group-header align-items-end">' +
+                                    '<div>Hygiene Kit</div>' +
+                                    '<div class="ml-auto font-weight-bold mr-2">' + value[i].hygiene_kit +
+                                    '</div>' +
+                                    '<div class="text-muted small">(' + (value[i].hygiene_kit / 100 * 100) +
+                                    '%)</div>' +
+                                    '</div>' +
+                                    '<div class="progress-group-bars">' +
+                                    '<div class="progress progress-xs">' +
+                                    '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
+                                    (value[i].hygiene_kit / 100 * 100) +
+                                    '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="100"></div>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '<div class="progress-group">' +
+                                    '<div class="progress-group-header align-items-end">' +
+                                    '<div>Medicine</div>' +
+                                    '<div class="ml-auto font-weight-bold mr-2">' + value[i].medicine +
+                                    '</div>' +
+                                    '<div class="text-muted small">(' + (value[i].medicine / 100 * 100) +
+                                    '%)</div>' +
+                                    '</div>' +
+                                    '<div class="progress-group-bars">' +
+                                    '<div class="progress progress-xs">' +
+                                    '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
+                                    (value[i].medicine / 100 * 100) +
+                                    '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="100"></div>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '<div class="progress-group">' +
+                                    '<div class="progress-group-header align-items-end">' +
+                                    '<div>ESA</div>' +
+                                    '<div class="ml-auto font-weight-bold mr-2">' + value[i] 
+                                    .emergency_shelter_assistance + '</div>' +
+                                    '<div class="text-muted small">(' + (value[i] 
+                                        .emergency_shelter_assistance / 100 * 100) + '%)</div>' +
+                                    '</div>' +
+                                    '<div class="progress-group-bars">' +
+                                    '<div class="progress progress-xs">' +
+                                    '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
+                                    (value[i].emergency_shelter_assistance / 100 * 100) +
+                                    '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="100"></div>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</div>', evacOptions())
+                        .addTo(evac_markers);
+                    evac_markers.addTo(mymap);
+                }
             }
         });
     });
@@ -315,10 +322,12 @@ $(document).ready(function() {
         $.each(result, function(key, value) {
             for (var i = 0; i < value.length; ++i) {
                 //console.log(i);
-                var marker = new L.marker([value[i].latitude, value[i].longitude], {icon: truckIcon()})
-                    .bindPopup('<div class="font-weight-bold">' + value[i].name + '</div>', truckOptions())
-                    .addTo(courier_markers);
-                courier_markers.addTo(mymap);
+                if(value.latitude !== null && value.longitude !== null) {
+                    var marker = new L.marker([value[i].latitude, value[i].longitude], {icon: truckIcon()})
+                        .bindPopup('<div class="font-weight-bold">' + value[i].name + '</div>', truckOptions())
+                        .addTo(courier_markers);
+                    courier_markers.addTo(mymap);
+                }
             }
         })
     });

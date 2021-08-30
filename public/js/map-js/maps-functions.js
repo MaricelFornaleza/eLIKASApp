@@ -134,7 +134,7 @@ function get_lat() {
   lat = $('#latitude').val();
   lng = $('#longitude').val();
   if(lat && lng) {
-    console.log(lat,lng);
+    // console.log(lat,lng);
     clickMarker.setLatLng([lat,lng]).setIcon(evacIcon()).addTo(mymap);
   }
 }
@@ -143,7 +143,7 @@ function get_lng() {
   lat = $('#latitude').val();
   lng = $('#longitude').val();
   if(lat && lng) {
-    console.log(lat,lng);
+    // console.log(lat,lng);
     clickMarker.setLatLng([lat,lng]).setIcon(evacIcon()).addTo(mymap);
   }
 }

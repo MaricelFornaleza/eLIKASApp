@@ -80,6 +80,17 @@ class EvacuationCenterController extends Controller
             FROM users
             JOIN camp_managers
             ON camp_managers.user_id = users.id
+            WHERE 
+            (SELECT evacuation_centers.camp_manager_id 
+            FROM evacuation_centers
+            WHERE camp_manager_id IS NOT NULL) != camp_managers.user_id
+        */
+
+        /*
+        SELECT users.id, users.name
+            FROM users
+            JOIN camp_managers
+            ON camp_managers.user_id = users.id
             LEFT JOIN evacuation_centers
             ON evacuation_centers.camp_manager_id  = users.id
             WHERE evacuation_centers.camp_manager_id ISNULL

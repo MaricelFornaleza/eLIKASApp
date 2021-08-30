@@ -12,7 +12,7 @@ class User extends Authenticatable
 {
 
     use Notifiable;
-    use SoftDeletes;
+    // use SoftDeletes;
 
     use HasFactory;
 
@@ -45,9 +45,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    protected $dates = [
-        'deleted_at'
-    ];
+    // protected $dates = [
+    //     'deleted_at'
+    // ];
 
     function user_inventory()
     {

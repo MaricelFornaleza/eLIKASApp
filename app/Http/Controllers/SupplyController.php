@@ -45,7 +45,7 @@ class SupplyController extends Controller
         $validated = $request->validate([
             'supply_type' => ['required', 'string', 'max:255', 'alpha_spaces'],
             'quantity' => ['required', 'numeric', 'min:1'],
-            'source' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z]+$/'],
+            'source' => ['required', 'string', 'max:255', 'alpha_spaces'],
         ]);
 
         //
