@@ -41,7 +41,7 @@ class FieldOfficerExport implements FromCollection, ShouldAutoSize, WithHeadings
             'Contact No.',
             'Officer Type',
             'Camp Managers Designation',
-            'Coriers Designation',
+            'Couriers Designation',
             'Barangay',
         ];
     }

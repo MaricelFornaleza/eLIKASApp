@@ -166,7 +166,7 @@ class FamilyMemberController extends Controller
     {
 
         $validated = $request->validate([
-            'address'              => ['required', 'string', 'max:255', 'alpha_spaces']
+            'address'              => ['required', 'string', 'max:255']
         ]);
 
         $family_code = 'eLIKAS-' . Str::random(6);

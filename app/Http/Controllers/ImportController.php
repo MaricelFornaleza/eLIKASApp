@@ -5,12 +5,9 @@ namespace App\Http\Controllers;
 
 use App\Imports\FieldOfficerImport;
 use App\Imports\SuppliesImport;
-<<<<<<< HEAD
 use App\Imports\EvacuationCenterImport;
-=======
 use App\Imports\ResidentsImport;
 
->>>>>>> 526f3801039cc1aa5733c1ecd9e67386f03282b5
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
@@ -51,19 +48,11 @@ class ImportController extends Controller
         return redirect('inventory');
     }
 
-<<<<<<< HEAD
     public function importEvacuationCenters()
     {
         return view('admin.evacuation-center.import');
     }
     public function storeEvacuationCenters(Request $request)
-=======
-    public function importResidents()
-    {
-        return view('admin.relief-recipients-resource.import');
-    }
-    public function storeResidents(Request $request)
->>>>>>> 526f3801039cc1aa5733c1ecd9e67386f03282b5
     {
         $this->validate($request, [
             'import_file'  => 'required|mimes:xls,xlsx'
@@ -71,7 +60,6 @@ class ImportController extends Controller
 
         $filename = $request->file('import_file');
 
-<<<<<<< HEAD
         Excel::import(new EvacuationCenterImport, $filename);
 
         //update the map with new markers
@@ -80,10 +68,21 @@ class ImportController extends Controller
 
         Session::flash('message', 'Excel uploaded successfully!');
         return redirect('evacuation_centers');
-=======
+    }
+    public function importResidents()
+    {
+        return view('admin.relief-recipients-resource.import');
+    }
+    public function storeResidents(Request $request)
+    {
+        $this->validate($request, [
+            'import_file'  => 'required|mimes:xls,xlsx'
+        ]);
+
+        $filename = $request->file('import_file');
+
         Excel::import(new ResidentsImport, $filename);
         Session::flash('message', 'Excel uploaded successfully!');
         return redirect('residents');
->>>>>>> 526f3801039cc1aa5733c1ecd9e67386f03282b5
     }
 }
