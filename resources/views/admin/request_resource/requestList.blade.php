@@ -113,7 +113,7 @@
                                         <td>{{ $delivery_request->note }}</td>
                                         @if( $delivery_request->status == 'pending' )
                                         <td>
-                                            <div class="badge badge-pill bg-secondary-accent">
+                                            <div class="badge badge-pill bg-secondary-accent text-white">
                                                 {{ strtoupper($delivery_request->status) }}
                                             </div>
                                         </td>
@@ -146,7 +146,7 @@
                                                 </form>
                                             </div>
                                         </td>
-                                        @elseif( $delivery_request->status == 'preparing' )
+                                        @elseif( $delivery_request->status == 'preparing' && empty($delivery_request->courier_id))
                                         <td>
                                             <span class="badge badge-pill bg-accent text-white">
                                                 {{ strtoupper($delivery_request->status) }}
@@ -215,7 +215,28 @@
                                                 </form>
                                             </div>
                                         </td>
-                                        @elseif( $delivery_request->status == 'in transit' )
+                                        @elseif( $delivery_request->status == 'preparing' && !empty($delivery_request->courier_id) )
+                                        <td>
+                                            <span class="badge badge-pill bg-accent text-white">
+                                                {{-- {{ strtoupper($delivery_request->status) }} --}}
+                                                PREPARING
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div class="row">
+                                                <div class="col-6 ">
+                                                </div>
+                                                <div class="col-6">
+                                                    <a href="{{ route('request.admin_cancel', ['id' => $delivery_request->id] ) }}" onclick="return confirm('Are you sure to cancel the request?')">
+                                                        <svg width="25" height="25" xmlns="http://www.w3.org/2000/svg">
+                                                            <image href="{{ url('icons/sprites/decline-request.svg') }}" height="25" width="25"/>
+                                                        </svg>
+                                                    </a>
+                                                </div>
+                                                </form>
+                                            </div>
+                                        </td>
+                                        @elseif( $delivery_request->status == 'in-transit' )
                                         <td>
                                             <span class="badge badge-pill bg-secondary text-white">
                                                 {{ strtoupper($delivery_request->status) }}
@@ -270,6 +291,7 @@ var markers = L.layerGroup();
 $(document).ready(function() {
     $('#evacuationCenter').DataTable({
         "scrollX": true,
+        "order": [],
     });
 
     $.ajaxSetup({
@@ -282,6 +304,7 @@ $(document).ready(function() {
 
     $("#assignModal").on('shown.coreui.modal', function (e) {
         $("#courier_id").select2();
+        $("#courier_id").prop('disabled', true);
         $('#courier_id').append('<option value=' + '>Select Courier</option>');
         //console.log('The modal is fully shown.');
         setTimeout(function() {
@@ -296,17 +319,19 @@ $(document).ready(function() {
         }).done(function(data) {
             // markers.clearLayers();
             var evacuation = data.evacuation_center;
-            //console.log(evacuation);
+            console.log(evacuation);
             var result = data.couriers;
             $.each(result, function(key, value) {
                 //console.log(value.latitude);
                 $('#courier_id').append('<option value=' + value.id +'>' + value.name + '</option>');
-
-                var courier = L.marker([value.latitude, value.longitude], {icon: truckIcon()})
+                if(value.latitude && value.longitude) {
+                    var courier = L.marker([value.latitude, value.longitude], {icon: truckIcon()})
                     .bindPopup('<div class="font-weight-bold text-center">' + value.name + '</div>', truckOptions())
                     .addTo(markers);
-                markers.addTo(mymap);
-                courier.openPopup();
+                    markers.addTo(mymap);
+                    courier.openPopup();
+                }
+                
             });
             L.marker([evacuation.latitude, evacuation.longitude], 
                     {icon: L.icon({
@@ -321,6 +346,8 @@ $(document).ready(function() {
                 .addTo(markers);
             markers.addTo(mymap);
             mymap.setView([evacuation.latitude, evacuation.longitude], 13); 
+            
+            $("#courier_id").prop('disabled', false);
         });
     });
 

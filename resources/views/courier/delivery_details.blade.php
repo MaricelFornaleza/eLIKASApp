@@ -8,6 +8,18 @@
 
 <div class="container-fluid">
     <div class="fade-in">
+        <div class="row">
+            <div class="col-12">
+                @if(Session::has('message'))
+                <div class="alert alert-success">
+                    {{ Session::get('message') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                @endif
+            </div>
+        </div>
         <div class="row center">
             <div class="col-md-8">
 
@@ -18,7 +30,7 @@
                         Recipient:
                     </div>
                     <div class="col-8 ">
-                        <h6>Quantity</h6>
+                        <h6>{{ $delivery_request->camp_manager_name }}</h6>
                     </div>
                 </div>
                 <div class="form-group row px-3 mt-3">
@@ -26,15 +38,15 @@
                         Address:
                     </div>
                     <div class="col-8 ">
-                        <h6>Del Rosario Elementary School</h6>
-                        <small>Del Rosario, Naga City</small>
+                        <h6>{{ $delivery_request->evacuation_center_name }}</h6>
+                        <small>{{ $delivery_request->address }}</small>
 
                     </div>
                 </div>
                 <!-- Supply Info Form -->
                 <div class="supply-info mt-5 mb-2">
                     <!-- title -->
-                    <div class="row title px-3 font-weight-bold ">
+                    <div class="row title px-3 mb-2 font-weight-bold ">
                         <div class="col-7">
                             Supply Type
                         </div>
@@ -46,7 +58,7 @@
                     <div class="form-group row px-3 py-0 my-1 ">
                         <label class="col-7 col-form-label" for="food-qty">Food Packs</label>
                         <div class="col-5 text-right my-auto">
-                            <h6>200</h6>
+                            <h6>{{ $delivery_request->food_packs }}</h6>
 
                         </div>
                     </div>
@@ -54,7 +66,7 @@
                     <div class="form-group row px-3 py-0 my-1 ">
                         <label class="col-7 col-form-label" for="food-qty">Water</label>
                         <div class="col-5 text-right my-auto">
-                            <h6>200</h6>
+                            <h6>{{ $delivery_request->water }}</h6>
 
                         </div>
                     </div>
@@ -63,7 +75,7 @@
                     <div class="form-group row px-3 py-0 my-1">
                         <label class="col-7 col-form-label" for="food-qty">Clothes</label>
                         <div class="col-5 text-right my-auto">
-                            <h6>200</h6>
+                            <h6>{{ $delivery_request->clothes }}</h6>
 
                         </div>
                     </div>
@@ -72,7 +84,7 @@
                     <div class="form-group row px-3 py-0 my-1">
                         <label class="col-7 col-form-label" for="food-qty">Hygiene Kit</label>
                         <div class="col-5 text-right my-auto">
-                            <h6>200</h6>
+                            <h6>{{ $delivery_request->hygiene_kit }}</h6>
 
                         </div>
                     </div>
@@ -81,7 +93,7 @@
                     <div class="form-group row px-3 py-0 my-1">
                         <label class="col-7 col-form-label" for="food-qty">Medicine</label>
                         <div class="col-5 text-right my-auto">
-                            <h6>200</h6>
+                            <h6>{{ $delivery_request->medicine }}</h6>
 
                         </div>
                     </div>
@@ -89,39 +101,52 @@
                     <div class="form-group row px-3 py-0 my-1">
                         <label class="col-7 col-form-label" for="food-qty">Emergency Shelter Assistance</label>
                         <div class="col-5 text-right my-auto">
-                            <h6>200</h6>
+                            <h6>{{ $delivery_request->emergency_shelter_assistance }}</h6>
 
                         </div>
                     </div>
                     <!-- Note text Area -->
                     <div class="col-12">
-                        <label for="note">Note</label>
+                        <label for="note" class="my-1">Note</label>
                         <textarea id="note" name="note" placeholder="Write something.."
-                            style="width:100%; height:100px;"></textarea>
-
+                            style="width:100%; height:100px;" disabled>  {{ $delivery_request->note }}
+                        </textarea>
                     </div>
 
-
-
                 </div>
+
+                
                 <!-- Buttons -->
                 <div class="">
+                    @if( $delivery_request->status == "preparing")
                     <div class="col-12 center mt-5 ">
                         <div class="col-md-6 p-0 ">
-                            <a href="">
+                            <a href="{{ route('request.courier_accept', [ 'id' => $delivery_request->id ]) }}"
+                                onclick="return confirm('Are you sure to accept the request?')">
                                 <button class="btn btn-accent  px-4 ">Accept</button>
                             </a>
                         </div>
                     </div>
+
                     <div class="col-12 center mt-4">
                         <div class="col-md-6 mb-4 p-0">
-                            <a href="">
+                            <a href="{{ route('request.courier_decline', [ 'id' => $delivery_request->id ]) }}"
+                                onclick="return confirm('Are you sure to decline the request?')">
+                                <button class="btn btn-accent-outline  px-4 ">Decline</button>
+                            </a>
+                        </div>
+                    </div>
+                    @elseif( $delivery_request->status == "in-transit")
+                    <div class="col-12 center mt-4">
+                        <div class="col-md-6 mt-4 mb-4 p-0">
+                            <a href="{{ route('request.courier_cancel', [ 'id' => $delivery_request->id ]) }}"
+                                onclick="return confirm('Are you sure to cancel the request?')"> 
                                 <button class="btn btn-accent-outline  px-4 ">Cancel</button>
                             </a>
                         </div>
                     </div>
+                    @endif
                 </div>
-
 
             </div>
         </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\DeliveryRequest;
+use App\Models\EvacuationCenter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +28,7 @@ class DeliveryRequestController extends Controller
                 'evacuation_centers.name as evacuation_center_name',
                 'evacuation_centers.id as evacuation_center_id',
                 'requests.*')
-            ->orderByRaw('updated_at ASC')
+            ->orderByRaw('updated_at DESC')
             ->paginate(20);
 
         // SELECT users.name as camp_manager_name, evacuation_centers.name as evacuation_center_name, requests.*
@@ -77,7 +78,7 @@ class DeliveryRequestController extends Controller
     {
         $id = $request->input('id');
         DeliveryRequest::where('id', $id)->update([
-            'status' => 'in transit',
+            'status' => 'preparing',
             'courier_id' => $request->input('courier_id')
         ]);
 
@@ -91,6 +92,39 @@ class DeliveryRequestController extends Controller
             . $delivery_requests->courier_name 
             . ' to ' 
             . $delivery_requests->evacuation_center_name);
+    }
+
+    public function courier_accept(Request $request)
+    {
+        $id = $request->input('id');
+        DeliveryRequest::where('id', $id)->update([
+            'status' => 'in-transit'
+        ]);
+
+        return redirect()->route('home')->with('message', 'You have accepted Request ID ' . $id);
+
+    }
+
+    public function courier_cancel(Request $request)
+    {
+        $id = $request->input('id');
+        DeliveryRequest::where('id', $id)->update([
+            'status' => 'cancelled'
+        ]);
+
+        return redirect()->route('home')->with('message', 'You have cancelled Request ID ' . $id);
+
+    }
+
+    public function courier_decline(Request $request)
+    {
+        $id = $request->input('id');
+        DeliveryRequest::where('id', $id)->update([
+            'status' => 'declined'
+        ]);
+
+        return redirect()->back()->with('message', 'You have declined Request ID ' . $id);
+
     }
 
     /**
@@ -122,7 +156,13 @@ class DeliveryRequestController extends Controller
             'emergency_shelter_assistance'  => ['required', 'numeric', 'min:0', 'max:10000'],
             'note'                          => ['required'],
         ]);
-        
+        $evacuation_center = EvacuationCenter::where('camp_manager_id', '=', $user->id)->first();
+        //dd($evacuation_center);
+        if(empty($evacuation_center)){
+            $request->session()->flash('error', 'You are not assigned to an evacuation center.');
+            return redirect()->route('request.camp-manager.history');
+        }
+
         $delivery_request = DeliveryRequest::create([
             'disaster_response_id'          => $validated['disaster_response_id'],
             'camp_manager_id'               => $user->id,
@@ -137,11 +177,11 @@ class DeliveryRequestController extends Controller
             'status'                        => "pending"
         ]);
         
-        //$request->session()->flash('message', 'Successfully created request');
+        $request->session()->flash('message', 'Successfully sent a request');
 
         //TO-DO: put here dynamic updating
 
-        return redirect()->route('home');
+        return redirect()->route('request.camp-manager.history');
     }
 
     /**

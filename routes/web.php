@@ -78,6 +78,9 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/admin/decline',   'DeliveryRequestController@admin_decline')->name('request.admin_decline');
         Route::post('/admin/assign',   'DeliveryRequestController@assign_courier')->name('request.assign_courier');
         Route::post('/store',   'DeliveryRequestController@store')->name('request.store');
+        Route::get('/courier/accept',   'DeliveryRequestController@courier_accept')->name('request.courier_accept');
+        Route::get('/courier/decline',   'DeliveryRequestController@courier_decline')->name('request.courier_decline');
+        Route::get('/courier/cancel',   'DeliveryRequestController@courier_cancel')->name('request.courier_cancel');
     });
 });
 
@@ -147,11 +150,11 @@ Route::prefix('camp-manager')->group(function () {
     Route::get('/supply-view', 'CampManagerController@supplyView');
     Route::get('/dispense', 'CampManagerController@dispenseView');
     Route::get('/request-supply', 'CampManagerController@requestSupplyView');
-    Route::get('/history', 'CampManagerController@historyView');
+    Route::get('/history', 'CampManagerController@historyView')->name('request.camp-manager.history');
     Route::get('/details/{id}', 'CampManagerController@detailsView');
 });
 
 // Courier
 Route::prefix('courier')->group(function () {
-    Route::get('/details', 'CourierController@details');
+    Route::get('/details/{id}', 'CourierController@details');
 });
