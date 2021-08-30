@@ -6,6 +6,7 @@ use App\Exports\FieldOfficerExport;
 use App\Exports\SuppliesExport;
 use App\Exports\EvacuationCenterExport;
 use App\Exports\DeliveryRequestExport;
+use App\Exports\ResidentsExport;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use PDF;
@@ -32,5 +33,9 @@ class ExportController extends Controller
     {
         $todayDate = date("Y-m-d");
         return Excel::download(new DeliveryRequestExport, 'Requests_' . $todayDate . '.xls');
+    }
+    public function exportResidents()
+    {
+        return Excel::download(new ResidentsExport, 'Residents.xls');
     }
 }

@@ -117,6 +117,8 @@ Route::prefix('import')->group(function () {
     Route::post('/supplies/store', 'ImportController@storeSupplies');
     Route::get('/evacuation_centers', 'ImportController@importEvacuationCenters')->name('evacuation-center.file.import');
     Route::post('/evacuation_centers/store', 'ImportController@storeEvacuationCenters')->name('evacuation-center.file.store');
+    Route::get('/residents', 'ImportController@importResidents');
+    Route::post('/residents/store', 'ImportController@storeResidents');
 });
 
 // Export
@@ -125,6 +127,7 @@ Route::prefix('export')->group(function () {
     Route::get('/supplies', 'ExportController@exportSupplies');
     Route::get('/evacuation_centers', 'ExportController@exportEvacuationCenters')->name('evacuation-center.file.export');
     Route::get('/requests', 'ExportController@exportDeliveryRequests')->name('request.file.export');
+    Route::get('/residents', 'ExportController@exportResidents');
 });
 
 //barangay
