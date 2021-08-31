@@ -16,9 +16,9 @@
                         <div class="badge-pill bg-secondary-accent text-center text-white" style="height: 20px; width:100px;">
                         @elseif( $delivery_request->status == 'preparing' )
                         <div class="badge-pill bg-accent text-center text-white" style="height: 20px; width:100px;">
-                        @elseif( $delivery_request->status == 'in transit' )
+                        @elseif( $delivery_request->status == 'in-transit' )
                         <div class="badge-pill bg-secondary text-center text-white" style="height: 20px; width:100px;">
-                        @elseif( $delivery_request->status == 'Delivered' )
+                        @elseif( $delivery_request->status == 'delivered' )
                         <div class="badge-pill badge-primary text-center text-white" style="height: 20px; width:100px;">
                         @elseif( $delivery_request->status == 'declined' || $delivery_request->status == 'cancelled' )
                         <div class="badge-pill badge-danger text-center text-white" style="height: 20px; width:100px;">
@@ -120,8 +120,19 @@
                             </a>
                         </div>
                     </div>
+                    @elseif( $delivery_request->status == "in-transit")
+                    <div class="col-12 center mt-4">
+                        <div class="col-md-6 mt-4 mb-4 p-0">
+                            <a href="{{ route('request.receive_supplies', [ 'id' => $delivery_request->id ]) }}"
+                                onclick="return confirm('Are you sure to receive the supplies?')"> 
+                                <button class="btn btn-accent px-4 ">Receive Supplies</button>
+                            </a>
+                        </div>
+                    </div>
                     @endif
                 </div>
+
+
 
                 
             </div>

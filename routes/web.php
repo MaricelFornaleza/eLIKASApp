@@ -74,6 +74,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::prefix('requests')->group(function () {
         Route::get('/',         'DeliveryRequestController@index')->name('request.index');
         Route::get('/refresh',         'DeliveryRequestController@refresh')->name('request.refresh');
+        Route::get('/receive',   'DeliveryRequestController@receive_supplies')->name('request.receive_supplies');
         Route::post('/store',   'DeliveryRequestController@store')->name('request.store');
         Route::get('/cancel',   'DeliveryRequestController@cancel')->name('request.cancel');
         Route::get('/admin/approve',   'DeliveryRequestController@approve')->name('request.approve');

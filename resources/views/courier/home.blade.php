@@ -60,8 +60,9 @@
                         @endif
 
                         @foreach($delivery_requests as $delivery_request)
-                            <a href="/courier/details/{{ $delivery_request->id }}">
-                                <li class="list-group-item list-group-item-action {{ $delivery_request->status }}">
+                            
+                            <li class="list-group-item list-group-item-action {{ $delivery_request->status }}">
+                                <a href="/courier/details/{{ $delivery_request->id }}">
                                     <div class="row">
                                         <div class="col-8">
                                             <h6 class="font-weight-bold">{{date('g:i a, F d, Y', strtotime($delivery_request->updated_at)) }}</h6>
@@ -102,8 +103,9 @@
                                             </span>
                                         </div>
                                     </div>
-                                </li>
-                            </a>
+                                </a>
+                            </li>
+                            
                         
                         @endforeach
                         {{-- <li class="list-group-item list-group-item-action ">
@@ -208,7 +210,7 @@ $(document).ready(function() {
         cluster: 'ap1'
     });
 
-    var channel = pusher.subscribe('requests-channel');
+    var channel = pusher.subscribe('requests01-channel');
     channel.bind('courier-deliver-event', function(data) {
         var html = "";
         //console.log(data.delivery_requests);
@@ -227,8 +229,8 @@ $(document).ready(function() {
         }
         $.each(data, function(key, value) {
             for(var i = 0; i < value.length; ++i) {
-                html += `<a href="/courier/details/${value[i].id}">
-                                <li class="list-group-item list-group-item-action  ${value[i].status}">
+                html += `<li class="list-group-item list-group-item-action  ${value[i].status}">
+                            <a href="/courier/details/${value[i].id}">
                                     <div class="row">
                                         <div class="col-8">
                                             <h6 class="font-weight-bold">${value[i].updated_at}</h6>
@@ -255,9 +257,9 @@ $(document).ready(function() {
                     html += `<div class="rounded bg-danger text-white text-center px-2 py-1">Declined</div>`;
                 }
                 else if(value[i].status == 'delivered') {
-                    html += `<div class="rounded bg-primary text-white text-center px-2 py-1">Declined</div>`;
+                    html += `<div class="rounded bg-primary text-white text-center px-2 py-1">Delivered</div>`;
                 }         
-                html += `</span></div></div></li></a>`;
+                html += `</span></div></div></a></li>`;
             }
         });
         $('#ul-parent').html(html);

@@ -30,6 +30,7 @@ class CampManagerController extends Controller
     }
     public function supplyView()
     {
+        $user = Auth::id();
         return view('camp-manager.supply.supplies');
     }
     public function dispenseView()

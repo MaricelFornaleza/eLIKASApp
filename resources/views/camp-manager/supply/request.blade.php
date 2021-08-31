@@ -28,7 +28,7 @@
                 <!-- Select Disaster Response -->
                 <div class="form-group col-sm-6">
                     <label for="disaster_response">Disaster Response</label>
-                    <select name="disaster_response_id" class="form-control" id="disaster_response_id">
+                    <select name="disaster_response_id" class="form-control" id="disaster_response_id" required>
                         <option value="">Select</option>
                         @foreach($disaster_responses as $disaster_response)
                         <option value="{{ $disaster_response->id }}">Disaster Response {{ $disaster_response->id }}</option>

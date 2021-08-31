@@ -289,7 +289,7 @@
 <script>
 
 var markers = L.layerGroup();
-
+var ajax_request;
 $(document).ready(function() {
     var table = $('#requesTable').DataTable({
         "scrollX": true,
@@ -315,7 +315,7 @@ $(document).ready(function() {
 
         var evacID = $(e.relatedTarget).data('evac-id');
         //console.log(evacID);
-        $.ajax({
+        ajax_request = $.ajax({
             method: "GET",
             url: "/map/get_locations/" + evacID,
         }).done(function(data) {
@@ -357,7 +357,7 @@ $(document).ready(function() {
         markers.clearLayers();
         $('#courier_id').empty();
      
-        //ajax_request.abort();
+        ajax_request.abort();
         //$(".modal.fade.in").removeClass("modal fade in");
     });
 
@@ -370,7 +370,7 @@ $(document).ready(function() {
         cluster: 'ap1'
     });
 
-    var channel = pusher.subscribe('requests-channel');
+    var channel = pusher.subscribe('requests01-channel');
     channel.bind('admin-deliver-event', function(data0) {
         if ($.fn.dataTable.isDataTable('#requestTable')) {
                 $('#requestTable').DataTable().clear();
