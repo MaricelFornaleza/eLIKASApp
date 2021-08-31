@@ -167,7 +167,7 @@ $(document).ready(function() {
 
     var checkedResidents = new Array();
 
-    $('#residentsTable :checkbox' || '#residentsTable :tableBody').change(function() 
+    $('#residentsTable :checkbox').change(function() 
     {
         
         checkedResidents = new Array();

@@ -138,8 +138,18 @@ class FamilyMemberController extends Controller
     public function destroy($id)
     {
         $family_member = FamilyMember::find($id);
-        if ($family_member) {
-            $family_member->delete();
+        $count_members = DB::table('family_members')->where('family_code', $family_member->family_code)->count();
+        if ($count_members == 1) {
+            if ($family_member) {
+                $family_member->delete();
+                $relief_recipient = DB::table('relief_recipients')->where('family_code', $family_member->family_code);
+                $relief_recipient->delete();
+            }
+        }else 
+        { 
+            if ($family_member) {
+                $family_member->delete();
+            }
         }
         Session::flash('message', 'Resident deleted successfully!');
         return redirect()->route('residents.index');
@@ -171,13 +181,15 @@ class FamilyMemberController extends Controller
 
         $family_code = 'eLIKAS-' . Str::random(6);
         $no_of_members = 1;
-
-        foreach ($request->selectedResidents as $selectedResident) {
-            $no_of_members = +1;
+        if($request->selectedResidents){
+            foreach ($request->selectedResidents as $selectedResident) {
+            $no_of_members =+ 1;
             $family_member = FamilyMember::find($selectedResident);
             $family_member->family_code   = $family_code;
             $family_member->save();
+            }
         }
+        
 
         $family_member_rep = FamilyMember::find($request->selectedRepresentative);
         $family_member_rep->is_representative = 'Yes';
