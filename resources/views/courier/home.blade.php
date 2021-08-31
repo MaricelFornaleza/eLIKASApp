@@ -46,9 +46,9 @@
 
 
                 <div class="col-md-12 col-sm-12 col-lg-12 col-xl-12 px-0 pt-4 ">
-                    <ul class="list-group list-group-hover list-group-striped">
+                    <ul class="list-group list-group-hover list-group-striped mb-4" id="ul-parent">
                         @if(empty($is_empty->id))
-                            <li class="list-group-item list-group-item-action ">
+                            <li class="list-group-item list-group-item-action preparing in-transit cancelled decline delivered" id="default">
                                 <div class="row">
                                     <div class="col-12">
                                         <h6 class="font-weight-bold text-center">
@@ -58,38 +58,53 @@
                                 </div>
                             </li>
                         @endif
-                        @foreach($delivery_requests as $delivery_request)
-                        <li class="list-group-item list-group-item-action {{ $delivery_request->status }}">
-                            <a href="/courier/details/{{ $delivery_request->id }}">
-                                <div class="row">
-                                    <div class="col-8">
-                                        <h6 class="font-weight-bold">{{date('h:i a, F d, Y', strtotime($delivery_request->updated_at)) }}</h6>
-                                        <small>{{ $delivery_request->evacuation_center_name }}</small>
 
+                        @foreach($delivery_requests as $delivery_request)
+                            <a href="/courier/details/{{ $delivery_request->id }}">
+                                <li class="list-group-item list-group-item-action {{ $delivery_request->status }}">
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <h6 class="font-weight-bold">{{date('g:i a, F d, Y', strtotime($delivery_request->updated_at)) }}</h6>
+                                            <small>{{ $delivery_request->evacuation_center_name }}</small>
+
+                                        </div>
+                                        
+                                        <div class="col-4">
+                                            <span class="float-right ">
+                                                @if( $delivery_request->status == 'preparing' )
+                                                <div>
+                                                   <a href="/requests/courier/accept/{{ $delivery_request->id }}" onclick="return confirm('Are you sure to accept the request?')">
+                                                    <button class="btn btn-acccent bg-accent text-white text-center" >Accept</button>
+                                                </a> 
+                                                </div>
+                                                
+                                                @elseif( $delivery_request->status == 'in-transit' )
+                                                <div
+                                                    class="rounded bg-secondary text-white text-center px-2 py-1">
+                                                    In&#8209;transit
+                                                </div>
+                                                @elseif( $delivery_request->status == 'cancelled' )
+                                                <div
+                                                    class="rounded bg-danger text-white text-center px-2 py-1">
+                                                    Cancelled
+                                                </div>
+                                                @elseif( $delivery_request->status == 'declined' )
+                                                <div
+                                                    class="rounded bg-danger text-white text-center px-2 py-1">
+                                                    Declined
+                                                </div>
+                                                @elseif( $delivery_request->status == 'delivered' )
+                                                <div
+                                                    class="rounded bg-primary text-white text-center px-2 py-1">
+                                                    Delivered
+                                                </div>
+                                                @endif
+                                            </span>
+                                        </div>
                                     </div>
-                                    
-                                    <div class="col-4">
-                                        <span class="float-right ">
-                                            @if( $delivery_request->status == 'preparing' )
-                                            <a href="{{ route('request.admin_cancel', ['id' => $delivery_request->id] ) }}" onclick="return confirm('Are you sure to accept the request?')">
-                                                <button class="btn btn-acccent bg-accent text-white text-center" >Accept</button>
-                                            </a>
-                                            @elseif( $delivery_request->status == 'in-transit' )
-                                            <div href=""
-                                                class="rounded bg-secondary text-white text-center px-2 py-1">
-                                                In-transit
-                                            </div>
-                                            @elseif( $delivery_request->status == 'cancelled' )
-                                            <div href=""
-                                                class="rounded bg-danger text-white text-center px-2 py-1">
-                                                Cancelled
-                                            </div>
-                                            @endif
-                                        </span>
-                                    </div>
-                                </div>
+                                </li>
                             </a>
-                        </li>
+                        
                         @endforeach
                         {{-- <li class="list-group-item list-group-item-action ">
                             <a href="/courier/details">
@@ -122,7 +137,7 @@
     var li, li_a, li_b, li_c, li_d, li_e;
     filter('all');
     function filter(status) {
-        //var ul = document.getElementById("list-group");
+        //var def = document.getElementById("default");
         li = document.getElementsByClassName('list-group-item');
         li_a = document.getElementsByClassName('preparing');
         li_b = document.getElementsByClassName('in-transit');
@@ -135,6 +150,8 @@
 
         for (var i = 0; i < li.length; i++) {
             //console.log(li);
+            // if(def !== null )
+            //     break;
             li[i].style.display = "none";
             //show_remove(status, i);
         }
@@ -183,6 +200,69 @@
             }
         } 
     }
+$(document).ready(function() {
+    //remove on production
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('ab82b7896a919c5e39dd', {
+        cluster: 'ap1'
+    });
+
+    var channel = pusher.subscribe('requests-channel');
+    channel.bind('courier-deliver-event', function(data) {
+        var html = "";
+        //console.log(data.delivery_requests);
+        //console.log(data.is_empty);
+        if(data == null) {
+            html += `<li class="list-group-item list-group-item-action ">
+                        <div class="row">
+                            <div class="col-12">
+                                <h6 class="font-weight-bold text-center">
+                                    No delivery requests yet.
+                                </h6>
+                            </div>
+                        </div>
+                    </li>`;
+            return;
+        }
+        $.each(data, function(key, value) {
+            for(var i = 0; i < value.length; ++i) {
+                html += `<a href="/courier/details/${value[i].id}">
+                                <li class="list-group-item list-group-item-action  ${value[i].status}">
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <h6 class="font-weight-bold">${value[i].updated_at}</h6>
+                                            <small> ${value[i].evacuation_center_name} </small>
+                                        </div>
+                                        <div class="col-4">
+                                            <span class="float-right ">`;
+                            
+                if(value[i].status == 'preparing') { 
+                    //var url = '{{ route("request.courier_accept", ":slug") }}';
+                    //var url = "{{route('request.courier_accept', '')}}"+"/"+value[i].id;
+                    //url = url.replace(':slug', value[i].id);
+                    html += `<a href="/requests/courier/accept/` + value[i].id + `" onclick="return confirm('Are you sure to accept the request?')">
+                            <button class="btn btn-acccent bg-accent text-white text-center" >Accept</button>
+                            </a>`;
+                } 
+                else if(value[i].status == 'in-transit') {
+                    html += `<div class="rounded bg-secondary text-white text-center px-2 py-1">In&#8209;transit</div>`;
+                }
+                else if(value[i].status == 'cancelled') {
+                    html += `<div class="rounded bg-danger text-white text-center px-2 py-1">Cancelled</div>`;
+                }
+                else if(value[i].status == 'declined') {
+                    html += `<div class="rounded bg-danger text-white text-center px-2 py-1">Declined</div>`;
+                }
+                else if(value[i].status == 'delivered') {
+                    html += `<div class="rounded bg-primary text-white text-center px-2 py-1">Declined</div>`;
+                }         
+                html += `</span></div></div></li></a>`;
+            }
+        });
+        $('#ul-parent').html(html);
+    });
+});
     
 </script>
 @endsection

@@ -63,7 +63,7 @@
                                         <th>SECTORAL CLASSIFICATION</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="tableBody" name="tableBody">
                                     @foreach($family_members as $family_member)
 
                                     <tr>
@@ -167,7 +167,7 @@ $(document).ready(function() {
 
     var checkedResidents = new Array();
 
-    $('#residentsTable :checkbox').change(function() 
+    $('#residentsTable :checkbox' || '#residentsTable :tableBody').change(function() 
     {
         
         checkedResidents = new Array();

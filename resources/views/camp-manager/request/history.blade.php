@@ -38,45 +38,36 @@
             </div>
 
             <div class="col-md-6 px-0 pt-4 ">
-                <ul class="list-group list-group-hover list-group-striped" id="ul-parent">
+                <ul class="list-group list-group-hover list-group-striped mb-4" id="ul-parent">
                     @foreach($delivery_requests as $delivery_request)
                     <a href="/camp-manager/details/{{ $delivery_request->id }}">
                         <li class="list-group-item list-group-item-action ">
                             <div class="row">
                                 <div class="col-8">
-                                    <h6 class="font-weight-bold" id="request-id">Request ID: {{ $delivery_request->id }}
-                                    </h6>
-                                    <small>{{date('F d, Y, h:i a', strtotime($delivery_request->updated_at)) }}</small>
+                                    <h6 class="font-weight-bold request-id">Request ID: {{ $delivery_request->id }}</h6>
+                                    <small class="request-date">{{date('F d, Y, g:i a', strtotime($delivery_request->updated_at)) }}</small>
                                 </div>
                                 <div class="col-4">
                                     <span class="float-right ">
                                         @if( $delivery_request->status == 'pending' )
-                                        <div class="badge-pill bg-secondary-accent text-center text-white"
-                                            style="height: 20px; width:100px;">
-                                            @elseif( $delivery_request->status == 'preparing' ||
-                                            $delivery_request->status == 'preparing and accepted')
-                                            <div class="badge-pill bg-accent text-center text-white"
-                                                style="height: 20px; width:100px;">
-                                                @elseif( $delivery_request->status == 'in-transit' )
-                                                <div class="badge-pill bg-secondary text-center text-white"
-                                                    style="height: 20px; width:100px;">
-                                                    @elseif( $delivery_request->status == 'Delivered' )
-                                                    <div class="badge-pill badge-primary text-center text-white"
-                                                        style="height: 20px; width:100px;">
-                                                        @elseif( $delivery_request->status == 'declined' ||
-                                                        $delivery_request->status == 'cancelled' )
-                                                        <div class="badge-pill badge-danger text-center text-white"
-                                                            style="height: 20px; width:100px;">
-                                                            @endif
-                                                            <strong>
-                                                                @if( $delivery_request->status == 'preparing and
-                                                                accepted' )
-                                                                PREPARING
-                                                                @else
-                                                                {{ strtoupper($delivery_request->status) }}
-                                                                @endif
-                                                            </strong>
-                                                        </div>
+                                        <div class="badge-pill bg-secondary-accent text-center text-white" style="height: 20px; width:100px;">
+                                        @elseif( $delivery_request->status == 'preparing')
+                                        <div class="badge-pill bg-accent text-center text-white" style="height: 20px; width:100px;">
+                                        @elseif( $delivery_request->status == 'in-transit' )
+                                        <div class="badge-pill bg-secondary text-center text-white" style="height: 20px; width:100px;">
+                                        @elseif( $delivery_request->status == 'delivered' )
+                                        <div class="badge-pill badge-primary text-center text-white" style="height: 20px; width:100px;">
+                                        @elseif( $delivery_request->status == 'declined' || $delivery_request->status == 'cancelled' )
+                                        <div class="badge-pill badge-danger text-center text-white" style="height: 20px; width:100px;">
+                                        @endif
+                                            <strong class="request-status">
+                                                @if( $delivery_request->status == 'preparing and accepted' )
+                                                PREPARING
+                                                @else
+                                                {{ strtoupper($delivery_request->status) }}
+                                                @endif
+                                            </strong>
+                                        </div>
                                     </span>
                                 </div>
                             </div>
@@ -147,18 +138,68 @@ function searchText() {
     var filter = input.value.toUpperCase();
     var ul = document.getElementById("ul-parent");
     var a = ul.getElementsByTagName('a');
-
+    
+    filter = filter.replace(/\s+/g, '');
+    var reqID, date, status, a;
     for (var i = 0; i < a.length; i++) {
-        var li = a[i].getElementsByTagName("li")[0];
-        var txtValue = document.getElementById("request-id").textContent;
-        //console.log(li);
-        if (txtValue.toUpperCase().includes(filter)) {
+        //li = a[i].getElementsByTagName("li")[0];
+        reqID = document.getElementsByClassName("request-id")[i].textContent.replace(/\s+/g, '');
+        date = document.getElementsByClassName("request-date")[i].textContent.replace(/\s+/g, '');
+        status = document.getElementsByClassName("request-status")[i].textContent.replace(/\s+/g, '');
+        
+        if (reqID.toUpperCase().includes(filter) || date.toUpperCase().includes(filter) || status.toUpperCase().includes(filter) ) {
             a[i].style.display = "";
         } else {
             a[i].style.display = "none";
         }
     }
 }
+$(document).ready( function() {
+    //remove on production
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('ab82b7896a919c5e39dd', {
+        cluster: 'ap1'
+    });
+
+    var channel = pusher.subscribe('requests-channel');
+    channel.bind('camp_manger-deliver-event', function(data) {
+        var html = "";
+             
+        $.each(data, function(key, value) {
+            for(var i=0; i < value.length; i++) {
+                html += `<a href="/camp-manager/details/${value[i].id}">
+                    <li class="list-group-item list-group-item-action ">
+                        <div class="row">
+                            <div class="col-8">
+                                <h6 class="font-weight-bold request-id">Request ID: ${value[i].id}</h6>
+                                <small class="request-date">` + value[i].updated_at +  `</small>
+                            </div>
+                            <div class="col-4">
+                                <span class="float-right ">`;
+                if(value[i].status == 'pending') 
+                    html += `<div class="badge-pill bg-secondary-accent text-center text-white" style="height: 20px; width:100px;">`;
+                else if(value[i].status == 'preparing')      
+                    html += `<div class="badge-pill bg-accent text-center text-white" style="height: 20px; width:100px;">`;
+                else if(value[i].status == 'in-transit')      
+                    html += `<div class="badge-pill bg-secondary text-center text-white" style="height: 20px; width:100px;">`;
+                else if(value[i].status == 'delivered')
+                    html += `<div class="badge-pill badge-primary text-center text-white" style="height: 20px; width:100px;">`;
+                else if(value[i].status == 'declined' || value[i].status == 'cancelled')
+                    html += `<div class="badge-pill badge-danger text-center text-white" style="height: 20px; width:100px;">`;
+
+                // console.log(value[i].updated_at);
+                // console.log(value[i].status);
+                html += `<strong class="request-status">` + value[i].status.toUpperCase() + `</strong>`;
+                html += `</div></span></div></div></li></a>`;
+                
+            }
+        });
+        $('#ul-parent').html(html);
+    });
+});
+    
+
 </script>
 
 @endsection

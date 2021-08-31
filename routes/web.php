@@ -68,14 +68,14 @@ Route::group(['middleware' => ['auth']], function () {
     // Requests
     Route::prefix('requests')->group(function () {
         Route::get('/',         'DeliveryRequestController@index')->name('request.index');
+        Route::get('/refresh',         'DeliveryRequestController@refresh')->name('request.refresh');
+        Route::post('/store',   'DeliveryRequestController@store')->name('request.store');
+        Route::get('/cancel',   'DeliveryRequestController@cancel')->name('request.cancel');
         Route::get('/admin/approve',   'DeliveryRequestController@approve')->name('request.approve');
-        Route::get('/admin/cancel',   'DeliveryRequestController@admin_cancel')->name('request.admin_cancel');
         Route::get('/admin/decline',   'DeliveryRequestController@admin_decline')->name('request.admin_decline');
         Route::post('/admin/assign',   'DeliveryRequestController@assign_courier')->name('request.assign_courier');
-        Route::post('/store',   'DeliveryRequestController@store')->name('request.store');
-        Route::get('/courier/accept',   'DeliveryRequestController@courier_accept')->name('request.courier_accept');
+        Route::get('/courier/accept/{id}',   'DeliveryRequestController@courier_accept')->name('request.courier_accept');
         Route::get('/courier/decline',   'DeliveryRequestController@courier_decline')->name('request.courier_decline');
-        Route::get('/courier/cancel',   'DeliveryRequestController@courier_cancel')->name('request.courier_cancel');
     });
 
     Route::group(['middleware' => ['officertype:Admin&BC']], function () {

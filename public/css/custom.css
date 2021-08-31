@@ -2,6 +2,9 @@ body {
     background-color: #f4f7fc !important;
     font-family: "Poppins" !important;
 }
+body:not(.modal-open){
+  padding-right: 0px !important;
+}
 .bg-accent {
     background-color: #fb8500 !important;
 }

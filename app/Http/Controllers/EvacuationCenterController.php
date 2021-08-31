@@ -130,8 +130,8 @@ class EvacuationCenterController extends Controller
             'evacuation_center_id' => $evacuation_center->id,
         ]);
 
-        $request->session()->flash('message', 'Successfully created ' . $evacuation_center->name . ' evacuation center');
-
+        $request->session()->flash('message', 'Successfully created ' . $evacuation_center->name . ' evacuation center!');
+        
         $updatemarker = new UpdateMarker;
         $updatemarker->get_evac();
 
@@ -218,7 +218,7 @@ class EvacuationCenterController extends Controller
         $evacuation_center->latitude = $request->input('latitude');
         $evacuation_center->longitude = $request->input('longitude');
         $evacuation_center->save();
-        $request->session()->flash('message', 'Successfully updated ' . $evacuation_center->name . ' evacuation center');
+        $request->session()->flash('message', 'Successfully updated ' . $evacuation_center->name . ' evacuation center!');
 
         $updatemarker = new UpdateMarker;
         $updatemarker->get_evac();
@@ -237,7 +237,7 @@ class EvacuationCenterController extends Controller
         $evacuation_center = EvacuationCenter::find($request->input('id'));
         $evacuation_center->stock_level()->delete();
         $evacuation_center->delete();
-        $request->session()->flash('message', 'Successfully deleted ' . $evacuation_center->name . ' evacuation center');
+        $request->session()->flash('message', 'Successfully deleted ' . $evacuation_center->name . ' evacuation center!');
 
         $updatemarker = new UpdateMarker;
         $updatemarker->get_evac();

@@ -161,7 +161,7 @@ document.getElementById("type").onchange = function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\laragon\www\eLIKAS-app\resources\js\coreui\menu-edit.js */"./resources/js/coreui/menu-edit.js");
+module.exports = __webpack_require__(/*! C:\Users\sevsa\Documents\elikasseptember\resources\js\coreui\menu-edit.js */"./resources/js/coreui/menu-edit.js");
 
 
 /***/ })
