@@ -16,7 +16,8 @@
                 <div class="progress-group">
                     <div class="progress-group-header">
                         <div>Food Packs</div>
-                        <div class="mfs-auto font-weight-bold">43%</div>
+                        <div class="mfs-auto font-weight-bold mr-2">{{ $stock_level->food_packs }}</div>
+                        <div class="font-weight-bold">(43%)</div>
                     </div>
                     <div class="progress-group-bars">
                         <div class="progress progress-xs">
@@ -28,7 +29,8 @@
                 <div class="progress-group">
                     <div class="progress-group-header">
                         <div>Water</div>
-                        <div class="mfs-auto font-weight-bold">43%</div>
+                        <div class="mfs-auto font-weight-bold mr-2">{{ $stock_level->water }}</div>
+                        <div class="font-weight-bold">(43%)</div>
                     </div>
                     <div class="progress-group-bars">
                         <div class="progress progress-xs">
@@ -40,7 +42,8 @@
                 <div class="progress-group">
                     <div class="progress-group-header">
                         <div>Clothes</div>
-                        <div class="mfs-auto font-weight-bold">43%</div>
+                        <div class="mfs-auto font-weight-bold mr-2">{{ $stock_level->clothes }}</div>
+                        <div class="font-weight-bold">(43%)</div>
                     </div>
                     <div class="progress-group-bars">
                         <div class="progress progress-xs">
@@ -52,7 +55,8 @@
                 <div class="progress-group">
                     <div class="progress-group-header">
                         <div>Hygiene Kit</div>
-                        <div class="mfs-auto font-weight-bold">43%</div>
+                        <div class="mfs-auto font-weight-bold mr-2">{{ $stock_level->hygiene_kit }}</div>
+                        <div class="font-weight-bold">(43%)</div>
                     </div>
                     <div class="progress-group-bars">
                         <div class="progress progress-xs">
@@ -64,7 +68,8 @@
                 <div class="progress-group">
                     <div class="progress-group-header">
                         <div>Medicine</div>
-                        <div class="mfs-auto font-weight-bold">43%</div>
+                        <div class="mfs-auto font-weight-bold mr-2">{{ $stock_level->medicine }}</div>
+                        <div class="font-weight-bold">(43%)</div>
                     </div>
                     <div class="progress-group-bars">
                         <div class="progress progress-xs">
@@ -76,7 +81,8 @@
                 <div class="progress-group">
                     <div class="progress-group-header">
                         <div>Emergency Shelter Assistance</div>
-                        <div class="mfs-auto font-weight-bold">43%</div>
+                        <div class="mfs-auto font-weight-bold mr-2">{{ $stock_level->emergency_shelter_assistance }}</div>
+                        <div class="font-weight-bold">(43%)</div>
                     </div>
                     <div class="progress-group-bars">
                         <div class="progress progress-xs">

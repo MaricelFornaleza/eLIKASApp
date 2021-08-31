@@ -171,7 +171,7 @@ class DeliveryRequestController extends Controller
         $update_request->refreshList();
         $update_request->refreshDeliveries($delivery_request->courier_id);
         
-        return redirect()->route('request.camp-manager.history')->with('message', 'Request ID ' . $id . ' has been delivered! Check your supplies to confirm.');
+        return redirect()->route('request.camp-manager.history')->with('message', 'Request ID ' . $id . ' has been delivered! Check your supply inventory to confirm.');
     }
 
     public function courier_accept($id)
