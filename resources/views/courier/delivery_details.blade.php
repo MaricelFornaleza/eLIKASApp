@@ -141,7 +141,7 @@
                         <div class="col-md-6 mt-4 mb-4 p-0">
                             <a href="{{ route('request.cancel', [ 'id' => $delivery_request->id ]) }}"
                                 onclick="return confirm('Are you sure to cancel the request?')"> 
-                                <button class="btn btn-accent-outline  px-4 ">Cancel</button>
+                                <button class="btn btn-accent-outline  px-4 ">Cancel Request</button>
                             </a>
                         </div>
                     </div>

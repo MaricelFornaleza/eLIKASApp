@@ -28,7 +28,12 @@ class HomeController extends Controller
             $delivery_requests = DeliveryRequest::where('courier_id', '=', $user->id)
                 ->join('evacuation_centers', 'evacuation_centers.camp_manager_id', '=', 'requests.camp_manager_id')
                 ->select('evacuation_centers.name as evacuation_center_name', 'requests.*')
-                ->orderBy('updated_at', 'DESC')
+                ->orderByRaw("CASE WHEN requests.status = 'pending' THEN '1'
+                            WHEN requests.status = 'preparing' THEN '2'
+                            WHEN requests.status = 'in-transit' THEN '3'
+                            WHEN requests.status = 'delivered' THEN '4'
+                            WHEN requests.status = 'cancelled' THEN '5'
+                            WHEN requests.status = 'decline' THEN '6' END ASC, requests.updated_at DESC")
                 ->get();
             
             $is_empty = DeliveryRequest::where('courier_id', '=', $user->id)->first();

@@ -2,6 +2,15 @@
 
 @section('content')
 <div class="container">
+    {{-- <div class="row">
+        <div class="col-12 d-none" id="error">
+            <div class="alert alert-danger">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    </div> --}}
     <div class="row justify-content-center">
         <div class="col-md-8">
 
@@ -13,7 +22,7 @@
 
             </div>
 
-            <form method="POST" action="{{ route('request.store') }}">
+            <form method="POST" action="{{ route('request.store') }}" onsubmit="return validateForm()">
                 @csrf
                 
                 <!-- Select Disaster Response -->
@@ -52,7 +61,7 @@
                                         <span class="iconify" data-icon="eva:minus-circle-outline" data-width="24"></span>
                                     </button>
                                 </span>
-                                <input type="text" name="food_packs" class="form-control input-number" value="0" min="0"
+                                <input type="text" id="food_packs" name="food_packs" class="form-control input-number" value="0" min="0"
                                     max="10000">
                                 <span class="input-group-btn ">
                                     <button type="button" class="btn btn-default btn-number p-1 " data-type="plus"
@@ -77,7 +86,7 @@
                                         <span class="iconify" data-icon="eva:minus-circle-outline" data-width="24"></span>
                                     </button>
                                 </span>
-                                <input type="text" name="water" class="form-control input-number" value="0" min="0"
+                                <input type="text"id="water" name="water" class="form-control input-number" value="0" min="0"
                                     max="10000">
                                 <span class="input-group-btn ">
                                     <button type="button" class="btn btn-default btn-number p-1 " data-type="plus"
@@ -102,7 +111,7 @@
                                         <span class="iconify" data-icon="eva:minus-circle-outline" data-width="24"></span>
                                     </button>
                                 </span>
-                                <input type="text" name="clothes" class="form-control input-number" value="0" min="0"
+                                <input type="text" id="clothes" name="clothes" class="form-control input-number" value="0" min="0"
                                     max="10000">
                                 <span class="input-group-btn ">
                                     <button type="button" class="btn btn-default btn-number p-1 " data-type="plus"
@@ -127,7 +136,7 @@
                                         <span class="iconify" data-icon="eva:minus-circle-outline" data-width="24"></span>
                                     </button>
                                 </span>
-                                <input type="text" name="hygiene_kit" class="form-control input-number" value="0" min="0"
+                                <input type="text" id="hygiene_kit" name="hygiene_kit" class="form-control input-number" value="0" min="0"
                                     max="10000">
                                 <span class="input-group-btn ">
                                     <button type="button" class="btn btn-default btn-number p-1 " data-type="plus"
@@ -152,7 +161,7 @@
                                         <span class="iconify" data-icon="eva:minus-circle-outline" data-width="24"></span>
                                     </button>
                                 </span>
-                                <input type="text" name="medicine" class="form-control input-number" value="0" min="0"
+                                <input type="text" id="medicine" name="medicine" class="form-control input-number" value="0" min="0"
                                     max="10000">
                                 <span class="input-group-btn ">
                                     <button type="button" class="btn btn-default btn-number p-1 " data-type="plus"
@@ -177,7 +186,7 @@
                                         <span class="iconify" data-icon="eva:minus-circle-outline" data-width="24"></span>
                                     </button>
                                 </span>
-                                <input type="text" name="emergency_shelter_assistance" class="form-control input-number" value="0" min="0"
+                                <input type="text" id="emergency_shelter_assistance" name="emergency_shelter_assistance" class="form-control input-number" value="0" min="0"
                                     max="10000">
                                 <span class="input-group-btn ">
                                     <button type="button" class="btn btn-default btn-number p-1 " data-type="plus"
@@ -298,5 +307,24 @@ $(".input-number").keydown(function(e) {
         e.preventDefault();
     }
 });
+
+function validateForm() {
+    // $('#error').removeClass('d-none');
+    let food_packs = $('#food_packs').val();
+    let water = $('#water').val();
+    let clothes = $('#clothes').val();
+    let hygiene_kit = $('#hygiene_kit').val();
+    let medicine = $('#medicine').val();
+    let emergency_shelter_assistance = $('#emergency_shelter_assistance').val();
+
+    if( food_packs == '0' && water == '0'
+        && clothes == '0' && hygiene_kit == '0' 
+        && medicine == '0' && emergency_shelter_assistance == '0' ) {
+        alert("Request must contain at least 1 supply quantity!");
+        // $('#error').addClass('d-block');
+        // $('.alert-danger').append("Request must contain at least 1 supply quantity!");
+        return false;
+    }
+}
 </script>
 @endsection

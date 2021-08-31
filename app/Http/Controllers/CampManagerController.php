@@ -43,7 +43,13 @@ class CampManagerController extends Controller
     }
     public function historyView(Request $request)
     {
-        $delivery_requests = DeliveryRequest::orderBy('updated_at', 'DESC')->get();
+        $delivery_requests = DeliveryRequest::orderByRaw("CASE WHEN requests.status = 'pending' THEN '1'
+                WHEN requests.status = 'preparing' THEN '2'
+                WHEN requests.status = 'in-transit' THEN '3'
+                WHEN requests.status = 'delivered' THEN '4'
+                WHEN requests.status = 'cancelled' THEN '5'
+                WHEN requests.status = 'decline' THEN '6' END ASC, requests.updated_at DESC")
+            ->get();
         return view('camp-manager.request.history')->with('delivery_requests', $delivery_requests);
     }
     public function detailsView($id)
