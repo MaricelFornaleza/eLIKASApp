@@ -79,14 +79,14 @@ $.each(result1, function(key, value) {
                     '<div>Food</div>' +
                     '<div class="ml-auto font-weight-bold mr-2">' + value.food_packs +
                     '</div>' +
-                    '<div class="text-muted small">(' + (value.food_packs / 100 * 100) +
+                    '<div class="text-muted small">(' + (value.food_packs / value.capacity * 100) +
                     '%)</div>' +
                     '</div>' +
                     '<div class="progress-group-bars">' +
                     '<div class="progress progress-xs">' +
                     '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                    (value.food_packs / 100 * 100) +
-                    '%" aria-valuenow="56" aria-valuemin="0" aria-valuemax="100"></div>' +
+                    (value.food_packs / value.capacity * 100) +
+                    '%" aria-valuenow="56" aria-valuemin="0" aria-valuemax="' + value.capacity + '"></div>' +
                     '</div>' +
                     '</div>' +
                     '</div>' +
@@ -95,14 +95,14 @@ $.each(result1, function(key, value) {
                     '<div>Water</div>' +
                     '<div class="ml-auto font-weight-bold mr-2">' + value.water +
                     '</div>' +
-                    '<div class="text-muted small">(' + (value.water / 100 * 100) +
+                    '<div class="text-muted small">(' + (value.water / value.capacity * 100) +
                     '%)</div>' +
                     '</div>' +
                     '<div class="progress-group-bars">' +
                     '<div class="progress progress-xs">' +
                     '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                    (value.water / 100 * 100) +
-                    '%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>' +
+                    (value.water / value.capacity * 100) +
+                    '%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="' + value.capacity + '"></div>' +
                     '</div>' +
                     '</div>' +
                     '</div>' +
@@ -111,14 +111,14 @@ $.each(result1, function(key, value) {
                     '<div>Clothes</div>' +
                     '<div class="ml-auto font-weight-bold mr-2">' + value.clothes +
                     '</div>' +
-                    '<div class="text-muted small">(' + (value.clothes / 100 * 100) +
+                    '<div class="text-muted small">(' + (value.clothes / value.capacity * 100) +
                     '%)</div>' +
                     '</div>' +
                     '<div class="progress-group-bars">' +
                     '<div class="progress progress-xs">' +
                     '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                    (value.clothes / 100 * 100) +
-                    '%" aria-valuenow="11" aria-valuemin="0" aria-valuemax="100"></div>' +
+                    (value.clothes / value.capacity * 100) +
+                    '%" aria-valuenow="11" aria-valuemin="0" aria-valuemax="' + value.capacity + '"></div>' +
                     '</div>' +
                     '</div>' +
                     '</div>' +
@@ -127,14 +127,14 @@ $.each(result1, function(key, value) {
                     '<div>Hygiene Kit</div>' +
                     '<div class="ml-auto font-weight-bold mr-2">' + value.hygiene_kit +
                     '</div>' +
-                    '<div class="text-muted small">(' + (value.hygiene_kit / 100 * 100) +
+                    '<div class="text-muted small">(' + (value.hygiene_kit / value.capacity * 100) +
                     '%)</div>' +
                     '</div>' +
                     '<div class="progress-group-bars">' +
                     '<div class="progress progress-xs">' +
                     '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                    (value.hygiene_kit / 100 * 100) +
-                    '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="100"></div>' +
+                    (value.hygiene_kit / value.capacity * 100) +
+                    '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="' + value.capacity + '"></div>' +
                     '</div>' +
                     '</div>' +
                     '</div>' +
@@ -143,14 +143,14 @@ $.each(result1, function(key, value) {
                     '<div>Medicine</div>' +
                     '<div class="ml-auto font-weight-bold mr-2">' + value.medicine +
                     '</div>' +
-                    '<div class="text-muted small">(' + (value.medicine / 100 * 100) +
+                    '<div class="text-muted small">(' + (value.medicine / value.capacity * 100) +
                     '%)</div>' +
                     '</div>' +
                     '<div class="progress-group-bars">' +
                     '<div class="progress progress-xs">' +
                     '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                    (value.medicine / 100 * 100) +
-                    '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="100"></div>' +
+                    (value.medicine / value.capacity * 100) +
+                    '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="' + value.capacity + '"></div>' +
                     '</div>' +
                     '</div>' +
                     '</div>' +
@@ -160,13 +160,13 @@ $.each(result1, function(key, value) {
                     '<div class="ml-auto font-weight-bold mr-2">' + value 
                     .emergency_shelter_assistance + '</div>' +
                     '<div class="text-muted small">(' + (value 
-                        .emergency_shelter_assistance / 100 * 100) + '%)</div>' +
+                        .emergency_shelter_assistance / value.capacity * 100) + '%)</div>' +
                     '</div>' +
                     '<div class="progress-group-bars">' +
                     '<div class="progress progress-xs">' +
                     '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                    (value.emergency_shelter_assistance / 100 * 100) +
-                    '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="100"></div>' +
+                    (value.emergency_shelter_assistance / value.capacity * 100) +
+                    '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="' + value.capacity + '"></div>' +
                     '</div>' +
                     '</div>' +
                     '</div>' +
@@ -217,14 +217,14 @@ $(document).ready(function() {
                                     '<div>Food</div>' +
                                     '<div class="ml-auto font-weight-bold mr-2">' + value[i].food_packs +
                                     '</div>' +
-                                    '<div class="text-muted small">(' + (value[i].food_packs / 100 * 100) +
+                                    '<div class="text-muted small">(' + (value[i].food_packs / value[i].capacity * 100) +
                                     '%)</div>' +
                                     '</div>' +
                                     '<div class="progress-group-bars">' +
                                     '<div class="progress progress-xs">' +
                                     '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                                    (value[i].food_packs / 100 * 100) +
-                                    '%" aria-valuenow="56" aria-valuemin="0" aria-valuemax="100"></div>' +
+                                    (value[i].food_packs / value[i].capacity * 100) +
+                                    '%" aria-valuenow="56" aria-valuemin="0" aria-valuemax="' + value[i].capacity + '"></div>' +
                                     '</div>' +
                                     '</div>' +
                                     '</div>' +
@@ -233,14 +233,14 @@ $(document).ready(function() {
                                     '<div>Water</div>' +
                                     '<div class="ml-auto font-weight-bold mr-2">' + value[i].water +
                                     '</div>' +
-                                    '<div class="text-muted small">(' + (value[i].water / 100 * 100) +
+                                    '<div class="text-muted small">(' + (value[i].water / value[i].capacity * 100) +
                                     '%)</div>' +
                                     '</div>' +
                                     '<div class="progress-group-bars">' +
                                     '<div class="progress progress-xs">' +
                                     '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                                    (value[i].water / 100 * 100) +
-                                    '%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>' +
+                                    (value[i].water / value[i].capacity * 100) +
+                                    '%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="' + value[i].capacity + '"></div>' +
                                     '</div>' +
                                     '</div>' +
                                     '</div>' +
@@ -249,14 +249,14 @@ $(document).ready(function() {
                                     '<div>Clothes</div>' +
                                     '<div class="ml-auto font-weight-bold mr-2">' + value[i].clothes +
                                     '</div>' +
-                                    '<div class="text-muted small">(' + (value[i].clothes / 100 * 100) +
+                                    '<div class="text-muted small">(' + (value[i].clothes / value[i].capacity * 100) +
                                     '%)</div>' +
                                     '</div>' +
                                     '<div class="progress-group-bars">' +
                                     '<div class="progress progress-xs">' +
                                     '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                                    (value[i].clothes / 100 * 100) +
-                                    '%" aria-valuenow="11" aria-valuemin="0" aria-valuemax="100"></div>' +
+                                    (value[i].clothes / value[i].capacity * 100) +
+                                    '%" aria-valuenow="11" aria-valuemin="0" aria-valuemax="' + value[i].capacity + '"></div>' +
                                     '</div>' +
                                     '</div>' +
                                     '</div>' +
@@ -265,14 +265,14 @@ $(document).ready(function() {
                                     '<div>Hygiene Kit</div>' +
                                     '<div class="ml-auto font-weight-bold mr-2">' + value[i].hygiene_kit +
                                     '</div>' +
-                                    '<div class="text-muted small">(' + (value[i].hygiene_kit / 100 * 100) +
+                                    '<div class="text-muted small">(' + (value[i].hygiene_kit / value[i].capacity * 100) +
                                     '%)</div>' +
                                     '</div>' +
                                     '<div class="progress-group-bars">' +
                                     '<div class="progress progress-xs">' +
                                     '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                                    (value[i].hygiene_kit / 100 * 100) +
-                                    '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="100"></div>' +
+                                    (value[i].hygiene_kit / value[i].capacity * 100) +
+                                    '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="' + value[i].capacity + '"></div>' +
                                     '</div>' +
                                     '</div>' +
                                     '</div>' +
@@ -281,30 +281,30 @@ $(document).ready(function() {
                                     '<div>Medicine</div>' +
                                     '<div class="ml-auto font-weight-bold mr-2">' + value[i].medicine +
                                     '</div>' +
-                                    '<div class="text-muted small">(' + (value[i].medicine / 100 * 100) +
+                                    '<div class="text-muted small">(' + (value[i].medicine / value[i].capacity * 100) +
                                     '%)</div>' +
                                     '</div>' +
                                     '<div class="progress-group-bars">' +
                                     '<div class="progress progress-xs">' +
                                     '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                                    (value[i].medicine / 100 * 100) +
-                                    '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="100"></div>' +
+                                    (value[i].medicine / value[i].capacity * 100) +
+                                    '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="' + value[i].capacity + '"></div>' +
                                     '</div>' +
                                     '</div>' +
                                     '</div>' +
                                     '<div class="progress-group">' +
                                     '<div class="progress-group-header align-items-end">' +
                                     '<div>ESA</div>' +
-                                    '<div class="ml-auto font-weight-bold mr-2">' + value[i] 
-                                    .emergency_shelter_assistance + '</div>' +
-                                    '<div class="text-muted small">(' + (value[i] 
-                                        .emergency_shelter_assistance / 100 * 100) + '%)</div>' +
+                                    '<div class="ml-auto font-weight-bold mr-2">' + 
+                                    value[i].emergency_shelter_assistance + '</div>' +
+                                    '<div class="text-muted small">(' + 
+                                    (value[i].emergency_shelter_assistance / value[i].capacity * 100) + '%)</div>' +
                                     '</div>' +
                                     '<div class="progress-group-bars">' +
                                     '<div class="progress progress-xs">' +
                                     '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                                    (value[i].emergency_shelter_assistance / 100 * 100) +
-                                    '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="100"></div>' +
+                                    (value[i].emergency_shelter_assistance / value[i].capacity * 100) +
+                                    '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="' + value[i].capacity + '"></div>' +
                                     '</div>' +
                                     '</div>' +
                                     '</div>' +

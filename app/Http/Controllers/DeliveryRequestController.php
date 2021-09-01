@@ -82,7 +82,7 @@ class DeliveryRequestController extends Controller
         $delivery_requests->save();
 
         $update_requests = new UpdateRequests;
-        $update_requests->refreshHistory();
+        $update_requests->refreshHistory($delivery_requests->camp_manager_id);
         // $update_requests->refreshDeliveries($delivery_requests->courier_id);
 
         return redirect()->back()->with('message', 'You have approved Request ID ' . $id);

@@ -69,10 +69,10 @@ class CampManagerController extends Controller
         $family_member_rep->save();
 
         $relief_recipient = new ReliefRecipient();
-        $relief_recipient->family_code     = $family_code;
-        $relief_recipient->no_of_members     = count($request->selectedResidents);
-        $relief_recipient->address     = 'N/A';
-        $relief_recipient->recipient_type     = 'Evacuee';
+        $relief_recipient->family_code      = $family_code;
+        $relief_recipient->no_of_members    = count($request->selectedResidents);
+        $relief_recipient->address          = 'N/A';
+        $relief_recipient->recipient_type   = 'Evacuee';
         $relief_recipient->save();
 
         $user = Auth::user();
@@ -102,7 +102,7 @@ class CampManagerController extends Controller
         } 
         else {
             $stock_level = $evacuation_center->stock_level()->first();
-            return view('camp-manager.supply.supplies')->with('stock_level', $stock_level);
+            return view('camp-manager.supply.supplies', ['capacity' => $evacuation_center->capacity, 'stock_level' => $stock_level] );
         }
     }
     public function dispenseView()
@@ -116,7 +116,9 @@ class CampManagerController extends Controller
     }
     public function historyView(Request $request)
     {
-        $delivery_requests = DeliveryRequest::orderByRaw("CASE WHEN requests.status = 'pending' THEN '1'
+        $id = Auth::id();
+        $delivery_requests = DeliveryRequest::where('camp_manager_id', '=', $id)
+            ->orderByRaw("CASE WHEN requests.status = 'pending' THEN '1'
                 WHEN requests.status = 'preparing' THEN '2'
                 WHEN requests.status = 'in-transit' THEN '3'
                 WHEN requests.status = 'delivered' THEN '4'

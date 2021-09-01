@@ -24,8 +24,8 @@ class HomeController extends Controller
             $disaster_responses = DisasterResponse::where('date_ended', '=', null)->get();
             return view('camp-manager.home')->with('disaster_responses', $disaster_responses);
         } elseif ($role == 'Courier') {
-            $user = Auth::user();
-            $delivery_requests = DeliveryRequest::where('courier_id', '=', $user->id)
+            $id = Auth::id();
+            $delivery_requests = DeliveryRequest::where('courier_id', '=', $id)
                 ->join('evacuation_centers', 'evacuation_centers.camp_manager_id', '=', 'requests.camp_manager_id')
                 ->select('evacuation_centers.name as evacuation_center_name', 'requests.*')
                 ->orderByRaw("CASE WHEN requests.status = 'pending' THEN '1'
@@ -36,7 +36,7 @@ class HomeController extends Controller
                             WHEN requests.status = 'decline' THEN '6' END ASC, requests.updated_at DESC")
                 ->get();
             
-            $is_empty = DeliveryRequest::where('courier_id', '=', $user->id)->first();
+            $is_empty = DeliveryRequest::where('courier_id', '=', $id)->first();
             /*
             SELECT evacuation_centers.name, requests.*
                 FROM requests

@@ -206,6 +206,8 @@ function show_remove(x) {
         }
     }
 }
+
+var my_id = "{{ Auth::id() }}";
 $(document).ready(function() {
     //remove on production
     Pusher.logToConsole = true;
@@ -214,12 +216,13 @@ $(document).ready(function() {
         cluster: 'ap1'
     });
 
-    var channel = pusher.subscribe('requests01-channel');
-    channel.bind('courier-deliver-event', function(data) {
+    var channel = pusher.subscribe('requests-CR' + my_id + '-channel');
+    channel.bind('deliver-event', function(data) {
         var html = "";
-        //console.log(data.delivery_requests);
         //console.log(data.is_empty);
-        if (data == null) {
+        var result = data.delivery_requests;
+        console.log(result);
+        if (result == null) {
             html += `<li class="list-group-item list-group-item-action ">
                         <div class="row">
                             <div class="col-12">
@@ -231,42 +234,44 @@ $(document).ready(function() {
                     </li>`;
             return;
         }
-        $.each(data, function(key, value) {
-            for (var i = 0; i < value.length; ++i) {
-                html += `<li class="list-group-item list-group-item-action  ${value[i].status}">
-                            <a href="/courier/details/${value[i].id}">
-                                    <div class="row">
-                                        <div class="col-8">
-                                            <h6 class="font-weight-bold">${value[i].updated_at}</h6>
-                                            <small> ${value[i].evacuation_center_name} </small>
-                                        </div>
-                                        <div class="col-4">
-                                            <span class="float-right ">`;
+        if(my_id == data.recipient) {
+            $.each(result, function(key, value) {
+                for (var i = 0; i < value.length; ++i) {
+                    html += `<li class="list-group-item list-group-item-action  ${value[i].status}">
+                                <a href="/courier/details/${value[i].id}">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <h6 class="font-weight-bold">${value[i].updated_at}</h6>
+                                                <small> ${value[i].evacuation_center_name} </small>
+                                            </div>
+                                            <div class="col-4">
+                                                <span class="float-right ">`;
 
-                if (value[i].status == 'preparing') {
-                    //var url = '{{ route("request.courier_accept", ":slug") }}';
-                    //var url = "{{route('request.courier_accept', '')}}"+"/"+value[i].id;
-                    //url = url.replace(':slug', value[i].id);
-                    html += `<a href="/requests/courier/accept/` + value[i].id + `" onclick="return confirm('Are you sure to accept the request?')">
-                            <button class="btn btn-acccent bg-accent text-white text-center" >Accept</button>
-                            </a>`;
-                } else if (value[i].status == 'in-transit') {
-                    html +=
-                        `<div class="rounded bg-secondary text-white text-center px-2 py-1">In&#8209;transit</div>`;
-                } else if (value[i].status == 'cancelled') {
-                    html +=
-                        `<div class="rounded bg-danger text-white text-center px-2 py-1">Cancelled</div>`;
-                } else if (value[i].status == 'declined') {
-                    html +=
-                        `<div class="rounded bg-danger text-white text-center px-2 py-1">Declined</div>`;
-                } else if (value[i].status == 'delivered') {
-                    html +=
-                        `<div class="rounded bg-primary text-white text-center px-2 py-1">Delivered</div>`;
+                    if (value[i].status == 'preparing') {
+                        //var url = '{{ route("request.courier_accept", ":slug") }}';
+                        //var url = "{{route('request.courier_accept', '')}}"+"/"+value[i].id;
+                        //url = url.replace(':slug', value[i].id);
+                        html += `<a href="/requests/courier/accept/` + value[i].id + `" onclick="return confirm('Are you sure to accept the request?')">
+                                <button class="btn btn-acccent bg-accent text-white text-center" >Accept</button>
+                                </a>`;
+                    } else if (value[i].status == 'in-transit') {
+                        html +=
+                            `<div class="rounded bg-secondary text-white text-center px-2 py-1">In&#8209;transit</div>`;
+                    } else if (value[i].status == 'cancelled') {
+                        html +=
+                            `<div class="rounded bg-danger text-white text-center px-2 py-1">Cancelled</div>`;
+                    } else if (value[i].status == 'declined') {
+                        html +=
+                            `<div class="rounded bg-danger text-white text-center px-2 py-1">Declined</div>`;
+                    } else if (value[i].status == 'delivered') {
+                        html +=
+                            `<div class="rounded bg-primary text-white text-center px-2 py-1">Delivered</div>`;
+                    }
+                    html += `</span></div></div></a></li>`;
                 }
-                html += `</span></div></div></a></li>`;
-            }
-        });
-        $('#ul-parent').html(html);
+            });
+            $('#ul-parent').html(html);
+        }
     });
 });
 </script>
