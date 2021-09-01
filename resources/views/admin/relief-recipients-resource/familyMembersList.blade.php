@@ -122,22 +122,19 @@
                                         <td>{{ $family_member->gender }}</td>
                                         <td>{{ $family_member->birthdate }}</td>
                                         <td>{{ $family_member->sectoral_classification }}</td>
-                                        <td>{{ $family_member->is_representative }}</td>
-                                        @if($family_member->address == "")
-                                        <td class="text-danger"><strong>{{ __('N/A') }}</strong></td>
-                                        @else
+                                        <td>{{ $family_member->is_family_head }}</td>
                                         <td>{{ $family_member->address }}</td>
-                                        @endif
                                         @if($family_member->recipient_type == "")
                                         <td class="text-danger"><strong>{{ __('N/A') }}</strong></td>
                                         @else
                                         <td>{{ $family_member->recipient_type }}</td>
                                         @endif
-                                        
+
                                         <td>
                                             <div class="row">
                                                 <div class="col-6 ">
-                                                    <a href="{{ url('/residents/' . $family_member->fm_id . '/edit') }}"><svg
+                                                    <a
+                                                        href="{{ url('/residents/' . $family_member->fm_id . '/edit') }}"><svg
                                                             class="c-icon ">
                                                             <use
                                                                 xlink:href="{{ url('/icons/sprites/free.svg#cil-pencil') }}">
@@ -148,7 +145,8 @@
                                                 </div>
 
                                                 <div class="col-6 ">
-                                                    <form action="{{ route('residents.destroy', $family_member->fm_id ) }}"
+                                                    <form
+                                                        action="{{ route('residents.destroy', $family_member->fm_id ) }}"
                                                         method="post">
                                                         @csrf
                                                         @method("DELETE")

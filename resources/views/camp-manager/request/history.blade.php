@@ -7,7 +7,7 @@
             @if(Session::has('message'))
             <div class="alert alert-success">
                 {{ Session::get('message') }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <button type="button" class="close align-middle" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -45,29 +45,37 @@
                             <div class="row">
                                 <div class="col-8">
                                     <h6 class="font-weight-bold request-id">Request ID: {{ $delivery_request->id }}</h6>
-                                    <small class="request-date">{{date('F d, Y, g:i a', strtotime($delivery_request->updated_at)) }}</small>
+                                    <small
+                                        class="request-date">{{date('F d, Y, g:i a', strtotime($delivery_request->updated_at)) }}</small>
                                 </div>
                                 <div class="col-4">
                                     <span class="float-right ">
                                         @if( $delivery_request->status == 'pending' )
-                                        <div class="badge-pill bg-secondary-accent text-center text-white" style="height: 20px; width:100px;">
-                                        @elseif( $delivery_request->status == 'preparing')
-                                        <div class="badge-pill bg-accent text-center text-white" style="height: 20px; width:100px;">
-                                        @elseif( $delivery_request->status == 'in-transit' )
-                                        <div class="badge-pill bg-secondary text-center text-white" style="height: 20px; width:100px;">
-                                        @elseif( $delivery_request->status == 'delivered' )
-                                        <div class="badge-pill badge-primary text-center text-white" style="height: 20px; width:100px;">
-                                        @elseif( $delivery_request->status == 'declined' || $delivery_request->status == 'cancelled' )
-                                        <div class="badge-pill badge-danger text-center text-white" style="height: 20px; width:100px;">
-                                        @endif
-                                            <strong class="request-status">
-                                                @if( $delivery_request->status == 'preparing and accepted' )
-                                                PREPARING
-                                                @else
-                                                {{ strtoupper($delivery_request->status) }}
-                                                @endif
-                                            </strong>
-                                        </div>
+                                        <div class="badge-pill bg-secondary-accent text-center text-white"
+                                            style="height: 20px; width:100px;">
+                                            @elseif( $delivery_request->status == 'preparing')
+                                            <div class="badge-pill bg-accent text-center text-white"
+                                                style="height: 20px; width:100px;">
+                                                @elseif( $delivery_request->status == 'in-transit' )
+                                                <div class="badge-pill bg-secondary text-center text-white"
+                                                    style="height: 20px; width:100px;">
+                                                    @elseif( $delivery_request->status == 'delivered' )
+                                                    <div class="badge-pill badge-primary text-center text-white"
+                                                        style="height: 20px; width:100px;">
+                                                        @elseif( $delivery_request->status == 'declined' ||
+                                                        $delivery_request->status == 'cancelled' )
+                                                        <div class="badge-pill badge-danger text-center text-white"
+                                                            style="height: 20px; width:100px;">
+                                                            @endif
+                                                            <strong class="request-status">
+                                                                @if( $delivery_request->status == 'preparing and
+                                                                accepted' )
+                                                                PREPARING
+                                                                @else
+                                                                {{ strtoupper($delivery_request->status) }}
+                                                                @endif
+                                                            </strong>
+                                                        </div>
                                     </span>
                                 </div>
                             </div>
@@ -138,7 +146,7 @@ function searchText() {
     var filter = input.value.toUpperCase();
     var ul = document.getElementById("ul-parent");
     var a = ul.getElementsByTagName('a');
-    
+
     filter = filter.replace(/\s+/g, '');
     var reqID, date, status, a;
     for (var i = 0; i < a.length; i++) {
@@ -146,15 +154,16 @@ function searchText() {
         reqID = document.getElementsByClassName("request-id")[i].textContent.replace(/\s+/g, '');
         date = document.getElementsByClassName("request-date")[i].textContent.replace(/\s+/g, '');
         status = document.getElementsByClassName("request-status")[i].textContent.replace(/\s+/g, '');
-        
-        if (reqID.toUpperCase().includes(filter) || date.toUpperCase().includes(filter) || status.toUpperCase().includes(filter) ) {
+
+        if (reqID.toUpperCase().includes(filter) || date.toUpperCase().includes(filter) || status.toUpperCase()
+            .includes(filter)) {
             a[i].style.display = "";
         } else {
             a[i].style.display = "none";
         }
     }
 }
-$(document).ready( function() {
+$(document).ready(function() {
     //remove on production
     Pusher.logToConsole = true;
 
@@ -165,41 +174,45 @@ $(document).ready( function() {
     var channel = pusher.subscribe('requests01-channel');
     channel.bind('camp_manger-deliver-event', function(data) {
         var html = "";
-             
+
         $.each(data, function(key, value) {
-            for(var i=0; i < value.length; i++) {
+            for (var i = 0; i < value.length; i++) {
                 html += `<a href="/camp-manager/details/${value[i].id}">
                     <li class="list-group-item list-group-item-action ">
                         <div class="row">
                             <div class="col-8">
                                 <h6 class="font-weight-bold request-id">Request ID: ${value[i].id}</h6>
-                                <small class="request-date">` + value[i].updated_at +  `</small>
+                                <small class="request-date">` + value[i].updated_at + `</small>
                             </div>
                             <div class="col-4">
                                 <span class="float-right ">`;
-                if(value[i].status == 'pending') 
-                    html += `<div class="badge-pill bg-secondary-accent text-center text-white" style="height: 20px; width:100px;">`;
-                else if(value[i].status == 'preparing')      
-                    html += `<div class="badge-pill bg-accent text-center text-white" style="height: 20px; width:100px;">`;
-                else if(value[i].status == 'in-transit')      
-                    html += `<div class="badge-pill bg-secondary text-center text-white" style="height: 20px; width:100px;">`;
-                else if(value[i].status == 'delivered')
-                    html += `<div class="badge-pill badge-primary text-center text-white" style="height: 20px; width:100px;">`;
-                else if(value[i].status == 'declined' || value[i].status == 'cancelled')
-                    html += `<div class="badge-pill badge-danger text-center text-white" style="height: 20px; width:100px;">`;
+                if (value[i].status == 'pending')
+                    html +=
+                    `<div class="badge-pill bg-secondary-accent text-center text-white" style="height: 20px; width:100px;">`;
+                else if (value[i].status == 'preparing')
+                    html +=
+                    `<div class="badge-pill bg-accent text-center text-white" style="height: 20px; width:100px;">`;
+                else if (value[i].status == 'in-transit')
+                    html +=
+                    `<div class="badge-pill bg-secondary text-center text-white" style="height: 20px; width:100px;">`;
+                else if (value[i].status == 'delivered')
+                    html +=
+                    `<div class="badge-pill badge-primary text-center text-white" style="height: 20px; width:100px;">`;
+                else if (value[i].status == 'declined' || value[i].status == 'cancelled')
+                    html +=
+                    `<div class="badge-pill badge-danger text-center text-white" style="height: 20px; width:100px;">`;
 
                 // console.log(value[i].updated_at);
                 // console.log(value[i].status);
-                html += `<strong class="request-status">` + value[i].status.toUpperCase() + `</strong>`;
+                html += `<strong class="request-status">` + value[i].status.toUpperCase() +
+                    `</strong>`;
                 html += `</div></span></div></div></li></a>`;
-                
+
             }
         });
         $('#ul-parent').html(html);
     });
 });
-    
-
 </script>
 
 @endsection

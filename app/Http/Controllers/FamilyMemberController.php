@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Family;
 use Illuminate\Http\Request;
 use App\Models\FamilyMember;
 
@@ -23,7 +24,12 @@ class FamilyMemberController extends Controller
     public function index()
     {
         $residents = DB::table('family_members')
-            ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
+            ->leftJoin('families', 'family_members.family_code', '=', 'families.family_code')
+            ->leftJoin('relief_recipients', function ($join) {
+                $join->on('family_members.family_code', '=', 'relief_recipients.family_code')
+                    ->leftJoin('evacuees', 'evacuees.relief_recipient_id', '=', 'relief_recipients.id')
+                    ->where('evacuees.date_discharged', '!=', null);
+            })
             ->select(
                 'family_members.id as fm_id',
                 'family_members.family_code',
@@ -31,9 +37,9 @@ class FamilyMemberController extends Controller
                 'gender',
                 'birthdate',
                 'sectoral_classification',
-                'is_representative',
+                'is_family_head',
                 'address',
-                'recipient_type'
+                'relief_recipients.recipient_type'
             )
             ->get();
         // dd($residents);
@@ -65,6 +71,9 @@ class FamilyMemberController extends Controller
             'name'              => ['required', 'string', 'max:255', 'alpha_spaces'],
             'gender'            => ['required', 'string', 'max:255', 'regex:/^[A-Za-z]+$/'],
             'birthdate'         => ['required', 'date_format:Y-m-d'],
+            'address'           => ['required', 'string', 'max:255'],
+            'family_code'       => ['nullable', 'string', 'max:255', 'exists:families,family_code'],
+            'is_family_head'    => ['required', 'string', 'max:255'],
             'sectoral_classification' => ['required', 'string', 'max:255', 'alpha_spaces'],
         ]);
 
@@ -72,9 +81,16 @@ class FamilyMemberController extends Controller
         $family_member->name     = $validated['name'];
         $family_member->gender   = $validated['gender'];
         $family_member->birthdate = $validated['birthdate'];
+        $family_member->address = $validated['address'];
         $family_member->sectoral_classification = $validated['sectoral_classification'];
-        $family_member->is_representative = 'No';
+        $family_member->is_family_head = $validated['is_family_head'];
+        $family_member->family_code = $validated['family_code'];
         $family_member->save();
+
+        if ($request['family_code'] != null) {
+            $family = Family::find($family_member->family_code);
+            $family->no_of_members = +1;
+        }
         $request->session()->flash('message', 'Resident added successfully!');
         return redirect()->route('residents.index');
     }
@@ -115,6 +131,9 @@ class FamilyMemberController extends Controller
             'name'              => ['required', 'string', 'max:255', 'alpha_spaces'],
             'gender'            => ['required', 'string', 'max:255', 'regex:/^[A-Za-z]+$/'],
             'birthdate'         => ['required', 'date_format:Y-m-d'],
+            'address'           => ['required', 'string', 'max:255'],
+            'family_code'       => ['nullable', 'string', 'max:255', 'exists:families,family_code'],
+            'is_family_head'    => ['required', 'string', 'max:255'],
             'sectoral_classification' => ['required', 'string', 'max:255', 'alpha_spaces'],
         ]);
 
@@ -122,8 +141,10 @@ class FamilyMemberController extends Controller
         $family_member->name     = $validated['name'];
         $family_member->gender   = $validated['gender'];
         $family_member->birthdate = $validated['birthdate'];
+        $family_member->address = $validated['address'];
         $family_member->sectoral_classification = $validated['sectoral_classification'];
-        $family_member->is_representative = 'No';
+        $family_member->is_family_head = $validated['is_family_head'];
+        $family_member->family_code = $validated['family_code'];
         $family_member->save();
         $request->session()->flash('message', 'Resident updated successfully!');
         return redirect()->route('residents.index');
@@ -145,8 +166,7 @@ class FamilyMemberController extends Controller
                 $relief_recipient = DB::table('relief_recipients')->where('family_code', $family_member->family_code);
                 $relief_recipient->delete();
             }
-        }else 
-        { 
+        } else {
             if ($family_member) {
                 $family_member->delete();
             }
@@ -181,15 +201,15 @@ class FamilyMemberController extends Controller
 
         $family_code = 'eLIKAS-' . Str::random(6);
         $no_of_members = 1;
-        if($request->selectedResidents){
+        if ($request->selectedResidents) {
             foreach ($request->selectedResidents as $selectedResident) {
-            $no_of_members =+ 1;
-            $family_member = FamilyMember::find($selectedResident);
-            $family_member->family_code   = $family_code;
-            $family_member->save();
+                $no_of_members = +1;
+                $family_member = FamilyMember::find($selectedResident);
+                $family_member->family_code   = $family_code;
+                $family_member->save();
             }
         }
-        
+
 
         $family_member_rep = FamilyMember::find($request->selectedRepresentative);
         $family_member_rep->is_representative = 'Yes';
