@@ -103,7 +103,7 @@
                                         <td>{{ $evacuation_center->name }}</td>
                                         <td>{{ $evacuation_center->address }}</td>
                                         @if($evacuation_center->characteristics == null)
-                                        <td><strong>No description added.</strong></td>
+                                        <td class="font-italic">No description added.</td>
                                         @else
                                         <td>{{ $evacuation_center->characteristics }}</td>
                                         @endif

@@ -33,8 +33,13 @@ class CampManagerController extends Controller
     {
         $id = Auth::id();
         $evacuation_center = EvacuationCenter::where('camp_manager_id', '=', $id)->first();
-        $stock_level = $evacuation_center->stock_level()->first();
-        return view('camp-manager.supply.supplies')->with('stock_level', $stock_level);
+        if(empty($evacuation_center)) {
+           abort(403, "You have not been assigned to an evacuation center yet. Contact your adminstrator for further info.");
+        } 
+        else {
+            $stock_level = $evacuation_center->stock_level()->first();
+            return view('camp-manager.supply.supplies')->with('stock_level', $stock_level);
+        }
     }
     public function dispenseView()
     {

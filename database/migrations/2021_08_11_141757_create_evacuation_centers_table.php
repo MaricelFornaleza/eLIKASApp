@@ -16,7 +16,7 @@ class CreateEvacuationCentersTable extends Migration
         Schema::create('evacuation_centers', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('camp_manager_id')->nullable();
-            $table->string('name')->unique();
+            $table->string('name');
             $table->string('address');
             $table->float('latitude');
             $table->float('longitude');
