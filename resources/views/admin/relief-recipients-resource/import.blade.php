@@ -13,11 +13,11 @@
             <div class="col-lg-8 ">
                 <div class="card">
                     <div class="card-header">
-                        <h5>Import Excel to add Supplies</h5>
+                        <h5>Import Excel to add Residents</h5>
 
                     </div>
                     <div class="card-body ">
-                        <h6>To add more than one supply, you can upload an excel file.</h6>
+                        <h6>To add more than one resident, you can upload an excel file.</h6>
                         <code>Important note: The file must contain the folowing format.</code>
 
                         <form action="{{ url('/import/residents/store') }}" method="post" enctype="multipart/form-data">

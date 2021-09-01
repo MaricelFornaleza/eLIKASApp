@@ -103,7 +103,7 @@
                                         <th>GENDER</th>
                                         <th>BIRTHDATE</th>
                                         <th>SECTORAL CLASSIFICATION</th>
-                                        <th>FAMILY REPRESENTATIVE</th>
+                                        <th>FAMILY HEAD</th>
                                         <th>ADDRESS</th>
                                         <th>STATUS</th>
                                         <th>ACTION</th>
