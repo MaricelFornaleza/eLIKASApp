@@ -19,7 +19,8 @@ class CreateFamilyMembersTable extends Migration
             $table->string('gender');
             $table->date('birthdate');
             $table->string('sectoral_classification');
-            $table->string('is_representative');
+            $table->string('is_family_head');
+            $table->string('address');
             $table->string('family_code')->nullable();
             $table->timestamps();
         });

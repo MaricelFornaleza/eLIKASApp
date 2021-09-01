@@ -2,7 +2,7 @@
 
 @section('content')
 
-@if(Route::has('count'))
+@if(Route::has('count') )
 @include('errors.registration_error')
 @else
 <div class="container">

@@ -11,6 +11,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
+use App\Models\FamilyMember;
+use App\Models\Evacuee;
+use App\Models\CampManager;
+use App\Models\ReliefRecipient;
+use Illuminate\Support\Str;
+
 class CampManagerController extends Controller
 {
     public function evacuees()
@@ -19,11 +25,69 @@ class CampManagerController extends Controller
     }
     public function admitView()
     {
-        return view('camp-manager.evacuees.admit');
+        $family_members = DB::table('family_members')->select('id', 'name')->get();
+        return view('camp-manager.evacuees.admit', ['family_members' => $family_members]);
     }
-    public function groupFam()
+    public function groupFam(Request $request)
     {
-        return view('camp-manager.evacuees.group-fam');
+       // dd($request->checkedResidents);
+       $family_members=array();
+       foreach ($request->checkedResidents as $checkedResident) {
+        $family_member = FamilyMember::find($checkedResident);
+            if($family_member){
+                array_push($family_members, $family_member);
+            }
+        }
+        //dd($family_members);
+         $disaster_responses = DisasterResponse::all();
+         return view('camp-manager.evacuees.group-fam', ['disaster_responses' => $disaster_responses, 'family_members' => $family_members]);
+    }
+    public function admit(Request $request)
+    {
+       // dd($request->selectedResidents, $request->selectedRepresentative);
+    //    $family_members=array();
+    //    foreach ($request->checkedResidents as $checkedResident) {
+    //     $family_member = FamilyMember::find($checkedResident);
+    //         if($family_member){
+    //             array_push($family_members, $family_member);
+    //         }
+    //     }
+    //     //dd($family_members);
+    //      $disaster_responses = DisasterResponse::all();
+    //      return view('camp-manager.evacuees.group-fam', ['disaster_responses' => $disaster_responses, 'family_members' => $family_members]);
+        $family_code = 'eLIKAS-' . Str::random(6);
+        if($request->selectedResidents){
+            foreach ($request->selectedResidents as $selectedResident) {
+            $family_member = FamilyMember::find($selectedResident);
+            $family_member->family_code   = $family_code;
+            $family_member->save();
+            }
+        }
+
+        $family_member_rep = FamilyMember::find($request->selectedRepresentative);
+        $family_member_rep->is_representative = 'Yes';
+        $family_member_rep->save();
+
+        $relief_recipient = new ReliefRecipient();
+        $relief_recipient->family_code     = $family_code;
+        $relief_recipient->no_of_members     = count($request->selectedResidents);
+        $relief_recipient->address     = 'N/A';
+        $relief_recipient->recipient_type     = 'Evacuee';
+        $relief_recipient->save();
+
+        $user = Auth::user();
+        $evacuation_center = DB::table('evacuation_centers')->where('camp_manager_id', $user->id)->first();
+      //  $evacuation_center = CampManager::find($camp_manager->user_id)->evacuation_center;
+        
+      // dd($evacuation_center);
+
+        $evacuee = new Evacuee();
+        $evacuee->relief_recipient_id = $relief_recipient->id;
+        $evacuee->evacuation_center_id = $evacuation_center->id;
+        $evacuee->save();
+        
+        $request->session()->flash('message', 'Admit Resident successfully!');
+        return view('camp-manager.evacuees.evacuees');
     }
     public function dischargeView()
     {

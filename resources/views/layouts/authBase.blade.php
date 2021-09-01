@@ -10,7 +10,8 @@
     <meta name="author" content="Maricel Fornaleza, Renier Jay Managaoang, Severino Sarate III">
     <meta name="keyword" content="elikas,Disaster Response,Emergency Resource,Emergency Resource Management System">
     <title>eLIKAS</title>
-    <link rel="icon" sizes="57x57" href="assets/favicon/Logo-icon-blue.svg">
+    <link rel="icon" sizes="57x57" href="/assets/brand/Logo-icon-blue.svg">
+
 
     <!-- Icons-->
     <link href="{{ asset('css/free.min.css') }}" rel="stylesheet"> <!-- icons -->

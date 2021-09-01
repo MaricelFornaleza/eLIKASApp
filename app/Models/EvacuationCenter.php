@@ -25,11 +25,16 @@ class EvacuationCenter extends Model
      */
     public function camp_manager()
     {
-        return $this->belongsTo('App\Models\CampManager');
+        return $this->belongsTo('App\Models\CampManager', 'camp_manager_id');
     }
 
     public function stock_level()
     {
         return $this->hasOne('App\Models\StockLevel');
+    }
+
+    public function evacuees()
+    {
+        return $this->hasMany('App\Models\Evacuee');
     }
 }

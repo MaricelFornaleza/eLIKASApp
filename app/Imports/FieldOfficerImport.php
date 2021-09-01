@@ -32,17 +32,17 @@ class FieldOfficerImport implements ToCollection, WithHeadingRow
             '*.officer_type' => 'required',
         ])->validate();
 
-        $temp_pass = Str::random(8);
+
 
         foreach ($collection as $row) {
             if ($row->filter()->isNotEmpty()) {
-
+                $temp_pass = Str::random(8);
                 $user =  User::create([
                     'name' => $row['name'],
                     'email' => $row['email'],
                     'officer_type' => $row['officer_type'],
                     'contact_no' => $row['contact_no'],
-                    'password' => Hash::make($temp_pass),
+                    'password' => Hash::make(Str::random(8)),
                 ]);
 
                 if ($user->officer_type == "Barangay Captain") {

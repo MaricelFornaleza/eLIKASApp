@@ -95,8 +95,7 @@ class EvacuationCenterController extends Controller
             ON evacuation_centers.camp_manager_id  = users.id
             WHERE evacuation_centers.camp_manager_id ISNULL
         */
-        
-        }
+    }
 
     /**
      * Store a newly created resource in storage.

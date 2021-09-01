@@ -1,7 +1,6 @@
 @extends('layouts.webBase')
 @section('css')
 <link href="{{ asset('css/disaster-response.css') }}" rel="stylesheet">
-
 @endsection
 
 @section('content')
