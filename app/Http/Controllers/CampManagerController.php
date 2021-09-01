@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\EvacuationCenter;
 use App\Models\DisasterResponse;
 use App\Models\DeliveryRequest;
 use Illuminate\Support\Facades\DB;
@@ -94,7 +95,10 @@ class CampManagerController extends Controller
     }
     public function supplyView()
     {
-        return view('camp-manager.supply.supplies');
+        $id = Auth::id();
+        $evacuation_center = EvacuationCenter::where('camp_manager_id', '=', $id)->first();
+        $stock_level = $evacuation_center->stock_level()->first();
+        return view('camp-manager.supply.supplies')->with('stock_level', $stock_level);
     }
     public function dispenseView()
     {

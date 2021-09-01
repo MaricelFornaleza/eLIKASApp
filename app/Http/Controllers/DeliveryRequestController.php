@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\CampManager;
 use App\Models\DeliveryRequest;
 use App\Models\EvacuationCenter;
 use App\CustomClasses\UpdateRequests;
@@ -145,6 +146,32 @@ class DeliveryRequestController extends Controller
             . $delivery_requests->courier_name 
             . ' to ' 
             . $delivery_requests->evacuation_center_name);
+    }
+
+    public function receive_supplies(Request $request)
+    {
+        $id = $request->input('id');
+        $delivery_request = DeliveryRequest::where('id', '=', $id)->first();
+        
+        // $user = CampManager::where('user_id', '=', $delivery_request->camp_manager_id)->first();
+        $evacuation_center = EvacuationCenter::where('camp_manager_id', '=', $delivery_request->camp_manager_id)->first();
+        $prev_stock = $evacuation_center->stock_level()->first();
+        $evacuation_center->stock_level()->update([
+            'food_packs'                    => ($prev_stock->food_packs + $delivery_request->food_packs),
+            'water'                         => ($prev_stock->water + $delivery_request->water),
+            'hygiene_kit'                   => ($prev_stock->hygiene_kit + $delivery_request->hygiene_kit),
+            'medicine'                      => ($prev_stock->medicine + $delivery_request->medicine),
+            'clothes'                       => ($prev_stock->clothes + $delivery_request->clothes),
+            'emergency_shelter_assistance'  => ($prev_stock->emergency_shelter_assistance + $delivery_request->emergency_shelter_assistance),
+        ]);
+        $delivery_request->status = "delivered";
+        $delivery_request->save();
+
+        $update_request = new UpdateRequests;
+        $update_request->refreshList();
+        $update_request->refreshDeliveries($delivery_request->courier_id);
+        
+        return redirect()->route('request.camp-manager.history')->with('message', 'Request ID ' . $id . ' has been delivered! Check your supply inventory to confirm.');
     }
 
     public function courier_accept($id)

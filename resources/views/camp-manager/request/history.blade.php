@@ -162,7 +162,7 @@ $(document).ready( function() {
         cluster: 'ap1'
     });
 
-    var channel = pusher.subscribe('requests-channel');
+    var channel = pusher.subscribe('requests01-channel');
     channel.bind('camp_manger-deliver-event', function(data) {
         var html = "";
              

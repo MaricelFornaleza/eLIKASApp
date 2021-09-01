@@ -65,7 +65,7 @@ class UpdateRequests {
         //$data = $view->render();
         $data = [ 'delivery_requests' => $delivery_requests ];
         $dummyData = 'dummyData';
-        $this->pusher->trigger('requests-channel', 'admin-deliver-event', $dummyData);
+        $this->pusher->trigger('requests01-channel', 'admin-deliver-event', $dummyData);
     }
 
     public function refreshHistory()
@@ -79,7 +79,7 @@ class UpdateRequests {
 
         $data = [ 'delivery_requests' => $delivery_requests ];
 
-        $this->pusher->trigger('requests-channel', 'camp_manger-deliver-event', $data);
+        $this->pusher->trigger('requests01-channel', 'camp_manger-deliver-event', $data);
     }
 
     public function refreshDeliveries($id)
@@ -96,7 +96,7 @@ class UpdateRequests {
         //$is_empty = DeliveryRequest::where('courier_id', '=', $id)->first();
         $data = [ 'delivery_requests' => $delivery_requests ];
 
-        $this->pusher->trigger('requests-channel', 'courier-deliver-event', $data);
+        $this->pusher->trigger('requests01-channel', 'courier-deliver-event', $data);
     }
 
 }

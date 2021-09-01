@@ -22,10 +22,31 @@
         </div>
         <div class="row center">
             <div class="col-md-8">
-
+                <div class="col-md-12 justify-content-between d-flex align-items-baseline p-0">
+                    <div class="col-7">
+                        <h5 class="font-weight-bold">Delivery Details</h5>
+                    </div>
+                    <div class="col-5 text-right ">
+                        <span class="float-right ">
+                            @if( $delivery_request->status == 'pending' )
+                            <div class="badge-pill bg-secondary-accent text-center text-white" style="height: 20px; width:100px;">
+                            @elseif( $delivery_request->status == 'preparing' )
+                            <div class="badge-pill bg-accent text-center text-white" style="height: 20px; width:100px;">
+                            @elseif( $delivery_request->status == 'in-transit' )
+                            <div class="badge-pill bg-secondary text-center text-white" style="height: 20px; width:100px;">
+                            @elseif( $delivery_request->status == 'delivered' )
+                            <div class="badge-pill badge-primary text-center text-white" style="height: 20px; width:100px;">
+                            @elseif( $delivery_request->status == 'declined' || $delivery_request->status == 'cancelled' )
+                            <div class="badge-pill badge-danger text-center text-white" style="height: 20px; width:100px;">
+                            @endif
+                            {{ strtoupper($delivery_request->status) }}</div>
+                        </span>
+                    </div>
+    
+                </div>
                 <!-- request info -->
 
-                <div class="form-group row px-3 mt-3">
+                <div class="form-group row px-3 mt-1">
                     <div class="col-4 font-weight-bold">
                         Recipient:
                     </div>
