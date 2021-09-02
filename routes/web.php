@@ -146,9 +146,9 @@ Route::group(['middleware' => ['auth']], function () {
         Route::prefix('camp-manager')->group(function () {
             Route::get('/evacuees', 'CampManagerController@evacuees');
             Route::get('/admit-view', 'CampManagerController@admitView');
-            Route::post('/select-fam', 'CampManagerController@selectFam');
             Route::post('/admit', 'CampManagerController@admit');
             Route::get('/discharge-view', 'CampManagerController@dischargeView');
+            Route::post('/discharge', 'CampManagerController@discharge');
             Route::get('/supply-view', 'CampManagerController@supplyView');
             Route::get('/dispense', 'CampManagerController@dispenseView');
             Route::get('/request-supply', 'CampManagerController@requestSupplyView');
