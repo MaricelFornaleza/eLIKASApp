@@ -57,7 +57,7 @@
                     @enderror
                     <div class="col-12 center mt-5 ">
                         <div class="col-md-6 p-0 ">
-                            <button class="btn  btn-accent  px-4" type="submit">{{ __('Next') }}</button>
+                            <button class="btn  btn-accent  px-4" type="submit">{{ __('Admit') }}</button>
                         </div>
                     </div>
                     <div class="col-12 center mt-4">

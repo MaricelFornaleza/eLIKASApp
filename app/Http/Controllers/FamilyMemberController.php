@@ -177,16 +177,32 @@ class FamilyMemberController extends Controller
             //     $relief_recipient->family_code = $family_member->family_code;
             //     $relief_recipient->recipient_type = 'Non-Evacuee';
             //     $relief_recipient->save();}else 
-                
+            
             if($findFamily != null){
                 $family = Family::find($findFamily->id);
-                $family->no_of_members = $family->no_of_members+1;
-                $family->save();
+                if($prev_family_member_family_code != null){
+                    if($family->family_code != $prev_family_member_family_code){
+                        $family->no_of_members = $family->no_of_members+1;
+                        $family->save();
+                        
+                        $findAnotherFamily =  DB::table('families')->where('family_code', $prev_family_member_family_code)->first();
+                        $anotherFamily = Family::find($findAnotherFamily->id);
+                        if($findAnotherFamily->no_of_members <= 1){
+                            $anotherFamily->delete();
+                        }else{
+                            $anotherFamily->no_of_members = $anotherFamily->no_of_members-1;
+                            $anotherFamily->save();
+                        }
+                    }
+                }else{
+                    $family->no_of_members = $family->no_of_members+1;
+                    $family->save();
+                }
             }
         }else if($request['family_code'] == null){
             if($prev_family_member_family_code != null){
                 $findFamily =  DB::table('families')->where('family_code', $prev_family_member_family_code)->first();
-                if ($findFamily->no_of_members == 1) {
+                if ($findFamily->no_of_members <= 1) {
                     $family = Family::find($findFamily->id);
                     $family->delete();
                     // $relief_recipient = DB::table('relief_recipients')->where('family_code', $prev_family_member_family_code);
@@ -217,7 +233,7 @@ class FamilyMemberController extends Controller
         //   $count_members = DB::table('families')->where('family_code', $family_member->family_code)->count();
             if ($findFamily == null) {
                 $family_member->delete();
-            }else if ($findFamily->no_of_members == 1) {
+            }else if ($findFamily->no_of_members <= 1) {
                     $family_member->delete();
                     $family = Family::find($findFamily->id);
                     $family->delete();
