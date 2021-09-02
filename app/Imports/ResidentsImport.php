@@ -24,7 +24,6 @@ class ResidentsImport implements ToCollection, WithHeadingRow
     public function collection(Collection $collection)
     {
         $validator = Validator::make($collection->toArray(), [
-            '*.family_code'       => ['nullable', 'string', 'max:255'],
             '*.name'              => ['required', 'string', 'max:255', 'alpha_spaces'],
             '*.gender'            => ['required', 'string', 'max:255', 'regex:/^[A-Za-z]+$/'],
             '*.birthdate'         => ['required', 'date_format:Y-m-d'],
@@ -36,7 +35,6 @@ class ResidentsImport implements ToCollection, WithHeadingRow
         foreach ($collection as $row) {
             if ($row->filter()->isNotEmpty()) {
                 $family_member = new FamilyMember();
-                $family_member->family_code = $row['family_code'];
                 $family_member->name     = $row['name'];
                 $family_member->gender   = $row['gender'];
                 $family_member->birthdate = $row['birthdate'];
@@ -45,24 +43,24 @@ class ResidentsImport implements ToCollection, WithHeadingRow
                 $family_member->address   = $row['address'];
                 $family_member->save();
 
-                if ($row['family_code'] != null) {
-                    $findFamily =  DB::table('families')->where('family_code', $family_member->family_code)->first();
-                    if($findFamily == null){
-                        $family = new Family();
-                        $family->family_code = $family_member->family_code;
-                        $family->no_of_members = 1;
-                        $family->save();
+                // if ($row['family_code'] != null) {
+                //     $findFamily =  DB::table('families')->where('family_code', $family_member->family_code)->first();
+                //     if($findFamily == null){
+                //         $family = new Family();
+                //         $family->family_code = $family_member->family_code;
+                //         $family->no_of_members = 1;
+                //         $family->save();
 
-                        $relief_recipient = new ReliefRecipient();
-                        $relief_recipient->family_code = $family_member->family_code;
-                        $relief_recipient->recipient_type = 'Non-Evacuee';
-                        $relief_recipient->save();
-                    }else if($findFamily != null){
-                        $family = Family::find($findFamily->id);
-                        $family->no_of_members = $family->no_of_members+1;
-                        $family->save();
-                    }
-                }
+                //         $relief_recipient = new ReliefRecipient();
+                //         $relief_recipient->family_code = $family_member->family_code;
+                //         $relief_recipient->recipient_type = 'Non-Evacuee';
+                //         $relief_recipient->save();
+                //     }else if($findFamily != null){
+                //         $family = Family::find($findFamily->id);
+                //         $family->no_of_members = $family->no_of_members+1;
+                //         $family->save();
+                //     }
+                // }
 
                 
             }

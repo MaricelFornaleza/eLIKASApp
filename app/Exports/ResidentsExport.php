@@ -17,7 +17,6 @@ class ResidentsExport implements FromCollection, ShouldAutoSize, WithHeadings
     {
         $residents = DB::table('family_members')
             ->leftJoin('families', 'family_members.family_code', '=', 'families.family_code')
-            ->leftJoin('relief_recipients', 'relief_recipients.family_code', '=', 'families.family_code')
             ->select(
                 'family_members.family_code',
                 'name',
@@ -25,8 +24,7 @@ class ResidentsExport implements FromCollection, ShouldAutoSize, WithHeadings
                 'birthdate',
                 'sectoral_classification',
                 'is_family_head',
-                'address',
-                'relief_recipients.recipient_type'
+                'address'
             )
             ->get();
         return $residents;
@@ -41,8 +39,7 @@ class ResidentsExport implements FromCollection, ShouldAutoSize, WithHeadings
             'Birthdate',
             'Sectoral_Classification',
             'Is_Family_Head',
-            'Address',
-            'Status'
+            'Address'
         ];
     }
 }

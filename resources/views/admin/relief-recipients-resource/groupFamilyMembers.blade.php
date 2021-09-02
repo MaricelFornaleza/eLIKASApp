@@ -22,7 +22,7 @@
             @if(count($errors) > 0)
             <div class="alert alert-danger col-12">
                 <h6>
-                    Upload Validation error
+                    Input Error
                 </h6>
                 <ul>
                     @foreach($errors as $error)
@@ -53,6 +53,8 @@
                         </div>
                     </div>
                     <div class="card-body ">
+                        <form method="POST" action="residents.groupResidents">
+                        @csrf
                         <div>
                             <table id="residentsTable"
                                 class="table table-borderless table-hover table-light table-striped "
@@ -65,20 +67,32 @@
                                 </thead>
                                 <tbody id="tableBody" name="tableBody">
                                     @foreach($family_members as $family_member)
-
+ <!-- //     value="<tr><td><input class='col-sm-2 align-middle' type='radio' value='{{ $family_member->id }}' id='selectedRepresentative' name='selectedRepresentative'>{{ $family_member->name }}</td><td>{{ $family_member->sectoral_classification  }}</td></tr> <input type='hidden' value='{{ $family_member->id }}' name='selectedResidents[]'>"  -->
                                     <tr>
-                                        <td><input class="col-sm-2 align-middle" type="checkbox" name= "{{ $family_member->id  }}" value="<tr><td><input class='col-sm-2 align-middle' type='radio' value='{{ $family_member->id }}' id='selectedRepresentative' name='selectedRepresentative'>{{ $family_member->name }}</td><td>{{ $family_member->sectoral_classification  }}</td></tr> <input type='hidden' value='{{ $family_member->id }}' name='selectedResidents[]'>" >{{ $family_member->name }}</td>
+                                        <td><input class="col-sm-2 align-middle" type="checkbox" name= "selectedResidents[]" value='{{$family_member->id}}' >{{ $family_member->name }}</td>
                                         <td>{{ $family_member->sectoral_classification }}</td>
                                     </tr>
                                     @endforeach
 
                                 </tbody>
                             </table>
+                            <div class="row mt-5 center">
+                                <div class="col-4 ">
+                                    <button class="btn btn-primary px-4 " type="submit">{{ __('Submit') }}</button>
+                                </div>
+                                <div class="col-4 ">
+                                    <a href="{{ route('residents.index') }}" class="btn btn-outline-primary px-4 "
+                                        >{{ __('Cancel') }}</a>
+                                </div>
+                            </div>
                         </div>
+                        </form>
                     </div>
                 </div>
             </div>
-
+        </div>
+        <!-- /.row-->
+<!-- 
             <div class="col-sm-6">
                 <div class="card">
                     <div class="card-header">
@@ -136,10 +150,9 @@
                         </form>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <!-- /.col-->
-        </div>
-        <!-- /.row-->
+        
     </div>
 </div>
 
@@ -165,34 +178,30 @@ $(document).ready(function() {
         "scrollX": true,
     });
 
-    var checkedResidents = new Array();
+    // var checkedResidents = new Array();
 
-    $('#residentsTable :checkbox').change(function() 
-    {
+    // $('#residentsTable :checkbox').change(function() 
+    // {
         
-        checkedResidents = new Array();
-        $('#residentsTable :checkbox').each(function(i, item){
-            if($(item).is(':checked'))
-            {
-                var resident = $(item).val();
+    //     checkedResidents = new Array();
+    //     $('#residentsTable :checkbox').each(function(i, item){
+    //         if($(item).is(':checked'))
+    //         {
+    //             var resident = $(item).val();
                 
-                checkedResidents.push(resident); 
-            }
-        });
+    //             checkedResidents.push(resident); 
+    //         }
+    //     });
         
-    console.log("checkedResidents:", checkedResidents);
-    let textHtml = "";
-    for (let i=0; i < checkedResidents.length; i++) {
-        textHtml += checkedResidents[i];
-    }
+    // console.log("checkedResidents:", checkedResidents);
+    // let textHtml = "";
+    // for (let i=0; i < checkedResidents.length; i++) {
+    //     textHtml += checkedResidents[i];
+    // }
     
-    $('#selectedResident').html(textHtml);  
-         
-        // checkedResidents.forEach(function(value) {
-        //     $('#thiswan').append('<tr><td>'value'</td></tr>');    
-        // });
+    // $('#selectedResident').html(textHtml);  
         
-    });
+    // });
 });
 
 </script>
