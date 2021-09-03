@@ -16,7 +16,7 @@ class CreateAffectedAreasTable extends Migration
         Schema::create('affected_areas', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('disaster_response_id');
-            $table->unsignedBigInteger('barangay_id');
+            $table->string('barangay');
             $table->timestamps();
         });
     }

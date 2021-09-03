@@ -40,14 +40,15 @@ class DisasterResponseController extends Controller
             'photo' => $validated['disaster_type'] . ".png"
         ]);
 
+        $data = [];
         foreach ($request->barangay as $index => $barangay) {
-            if ($request->barangay[$index] != null) {
-                AffectedArea::create([
-                    'disaster_response_id' => $disaster_reponse->id,
-                    'barangay_id' => $request->barangay[$index],
-                ]);
-            }
+            $data[] = [
+                'disaster_response_id' => $disaster_reponse->id,
+                'barangay' => $request->barangay[$index],
+            ];
         }
+        AffectedArea::insert($data);
+
         Session::flash('message', 'Disaster Response started.');
         return redirect('home');
     }

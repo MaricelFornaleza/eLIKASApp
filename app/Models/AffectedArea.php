@@ -10,6 +10,6 @@ class AffectedArea extends Model
     use HasFactory;
     protected $fillable = [
         'disaster_response_id',
-        'barangay_id'
+        'barangay'
     ];
 }
