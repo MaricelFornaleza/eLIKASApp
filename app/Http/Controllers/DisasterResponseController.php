@@ -55,7 +55,8 @@ class DisasterResponseController extends Controller
     public function show($id)
     {
         $disaster_reponse = DisasterResponse::where('id', '=', $id)->first();
-        $barangays = Barangay::all();
+        $barangays = AffectedArea::where('disaster_response_id', '=', $id)->select('barangay')->first();
+        $barangays = explode(',', $barangays->barangay);
         return view('admin.disaster-response-resource.show', ['disaster_response' => $disaster_reponse, 'barangays' => $barangays]);
     }
     public function stop($id)
