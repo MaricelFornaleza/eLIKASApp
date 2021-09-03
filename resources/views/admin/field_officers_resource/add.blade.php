@@ -83,7 +83,7 @@
 
                                 </div>
 
-                                <div class="col-sm-6 pr-3" id='barangay'>
+                                <!-- <div class="col-sm-6 pr-3" id='barangay'>
                                     <input type="hidden" name="city_code" id="city_code"
                                         value="{{$admin_city->city_psgc}}">
                                     <input type="hidden" name="barangay" id="barangay_name" value="">
@@ -100,8 +100,8 @@
                                         </span>
                                         @enderror
                                     </div>
-                                </div>
-                                <div class="col-sm-6" id='designation' style="display: none;">
+                                </div> -->
+                                <div class="col-sm-6" id='designation' >
                                     <div class="form-group">
                                         <label for="designation">Designation</label>
                                         <input class="form-control @error('designation') is-invalid @enderror"
