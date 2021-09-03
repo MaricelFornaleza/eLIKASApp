@@ -103,7 +103,7 @@
                                         <th>GENDER</th>
                                         <th>BIRTHDATE</th>
                                         <th>SECTORAL CLASSIFICATION</th>
-                                        <th>FAMILY REPRESENTATIVE</th>
+                                        <th>FAMILY HEAD</th>
                                         <th>ADDRESS</th>
                                         <th>STATUS</th>
                                         <th>ACTION</th>
@@ -125,7 +125,7 @@
                                         <td>{{ $family_member->is_family_head }}</td>
                                         <td>{{ $family_member->address }}</td>
                                         @if($family_member->recipient_type == "")
-                                        <td class="text-danger"><strong>{{ __('N/A') }}</strong></td>
+                                        <td>Non-Evacuee</td>
                                         @else
                                         <td>{{ $family_member->recipient_type }}</td>
                                         @endif

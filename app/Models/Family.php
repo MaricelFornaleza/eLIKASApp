@@ -11,7 +11,6 @@ class Family extends Model
 
     protected $fillable = [
         'family_code',
-        'no_of_members',
-        'address'
+        'no_of_members'
     ];
 }
