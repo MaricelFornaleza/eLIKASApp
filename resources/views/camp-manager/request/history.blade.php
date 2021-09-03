@@ -163,6 +163,8 @@ function searchText() {
         }
     }
 }
+
+var my_id = "{{ Auth::id() }}";
 $(document).ready(function() {
     //remove on production
     Pusher.logToConsole = true;
@@ -171,46 +173,46 @@ $(document).ready(function() {
         cluster: 'ap1'
     });
 
-    var channel = pusher.subscribe('requests01-channel');
-    channel.bind('camp_manger-deliver-event', function(data) {
+    var channel = pusher.subscribe('requests-CM' + my_id + '-channel');
+    channel.bind('deliver-event', function(data) {
         var html = "";
-
-        $.each(data, function(key, value) {
-            for (var i = 0; i < value.length; i++) {
-                html += `<a href="/camp-manager/details/${value[i].id}">
+        if(my_id == data.recipient) {
+            var result = data.delivery_requests;
+            // console.log(result);
+            $.each(result, function(key, value) {
+                html += `<a href="/camp-manager/details/${value.id}">
                     <li class="list-group-item list-group-item-action ">
                         <div class="row">
                             <div class="col-8">
-                                <h6 class="font-weight-bold request-id">Request ID: ${value[i].id}</h6>
-                                <small class="request-date">` + value[i].updated_at + `</small>
+                                <h6 class="font-weight-bold request-id">Request ID: ${value.id}</h6>
+                                <small class="request-date">` + value.updated_at + `</small>
                             </div>
                             <div class="col-4">
                                 <span class="float-right ">`;
-                if (value[i].status == 'pending')
+                if (value.status == 'pending')
                     html +=
                     `<div class="badge-pill bg-secondary-accent text-center text-white" style="height: 20px; width:100px;">`;
-                else if (value[i].status == 'preparing')
+                else if (value.status == 'preparing')
                     html +=
                     `<div class="badge-pill bg-accent text-center text-white" style="height: 20px; width:100px;">`;
-                else if (value[i].status == 'in-transit')
+                else if (value.status == 'in-transit')
                     html +=
                     `<div class="badge-pill bg-secondary text-center text-white" style="height: 20px; width:100px;">`;
-                else if (value[i].status == 'delivered')
+                else if (value.status == 'delivered')
                     html +=
                     `<div class="badge-pill badge-primary text-center text-white" style="height: 20px; width:100px;">`;
-                else if (value[i].status == 'declined' || value[i].status == 'cancelled')
+                else if (value.status == 'declined' || value.status == 'cancelled')
                     html +=
                     `<div class="badge-pill badge-danger text-center text-white" style="height: 20px; width:100px;">`;
 
-                // console.log(value[i].updated_at);
-                // console.log(value[i].status);
-                html += `<strong class="request-status">` + value[i].status.toUpperCase() +
+                // console.log(value.updated_at);
+                // console.log(value.status);
+                html += `<strong class="request-status">` + value.status.toUpperCase() +
                     `</strong>`;
                 html += `</div></span></div></div></li></a>`;
-
-            }
-        });
-        $('#ul-parent').html(html);
+            });
+            $('#ul-parent').html(html);
+        }
     });
 });
 </script>

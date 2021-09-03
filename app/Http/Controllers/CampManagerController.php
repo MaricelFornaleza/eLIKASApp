@@ -29,14 +29,14 @@ class CampManagerController extends Controller
     {
         $disaster_responses = DisasterResponse::all();
         $family_members = DB::table('family_members')
-        ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
-        ->whereNotNull('family_members.family_code')->where('family_members.is_family_head', 'Yes')
-        ->where(function ($query) {
-            $query->where('relief_recipients.recipient_type', 'Non-Evacuee')
-                  ->orWhere('relief_recipients.recipient_type', null);
-        })
-        ->select('family_members.family_code', 'name')
-        ->get();
+            ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
+            ->whereNotNull('family_members.family_code')->where('family_members.is_family_head', 'Yes')
+            ->where(function ($query) {
+                $query->where('relief_recipients.recipient_type', 'Non-Evacuee')
+                    ->orWhere('relief_recipients.recipient_type', null);
+            })
+            ->select('family_members.family_code', 'name')
+            ->get();
         return view('camp-manager.evacuees.admit', ['family_members' => $family_members, 'disaster_responses' => $disaster_responses]);
     }
     // public function selectFam(Request $request)
@@ -57,14 +57,14 @@ class CampManagerController extends Controller
     {
         $user = Auth::user();
         $evacuation_center = DB::table('evacuation_centers')->where('camp_manager_id', $user->id)->first();
-    
+
         $validated = $request->validate([
             'checkedResidents'              => ['required'],
             'disaster_response_id'              => ['required'],
         ]);
         foreach ($request->checkedResidents as $checkedResident) {
             $find_checkedResident = DB::table('relief_recipients')->where('family_code', $checkedResident)->first();
-            if($find_checkedResident != null){
+            if ($find_checkedResident != null) {
                 $relief_recipient = ReliefRecipient::find($find_checkedResident->id);
                 $relief_recipient->disaster_response_id = $request->disaster_response_id;
                 $relief_recipient->recipient_type = 'Evacuee';
@@ -75,25 +75,24 @@ class CampManagerController extends Controller
                 $evacuee->date_admitted = now();
                 $evacuee->evacuation_center_id = $evacuation_center->id;
                 $evacuee->save();
-            }else if($find_checkedResident == null){
+            } else if ($find_checkedResident == null) {
                 $relief_recipient = new ReliefRecipient();
                 $relief_recipient->family_code = $checkedResident;
                 $relief_recipient->disaster_response_id = $request->disaster_response_id;
                 $relief_recipient->recipient_type = 'Evacuee';
                 $relief_recipient->save();
-    
+
                 $evacuee = new Evacuee();
                 $evacuee->relief_recipient_id = $relief_recipient->id;
                 $evacuee->date_admitted = now();
                 $evacuee->evacuation_center_id = $evacuation_center->id;
                 $evacuee->save();
             }
-            
         }
 
         $request->session()->flash('message', 'Admit Resident successfully!');
         return view('camp-manager.evacuees.evacuees');
-      //  dd(now());
+        //  dd(now());
     }
     // public function admit(Request $request)
     // {
@@ -121,35 +120,35 @@ class CampManagerController extends Controller
     //     $family_member_rep->is_representative = 'Yes';
     //     $family_member_rep->save();
 
-    //     $relief_recipient = new ReliefRecipient();
-    //     $relief_recipient->family_code     = $family_code;
-    //     $relief_recipient->no_of_members     = count($request->selectedResidents);
-    //     $relief_recipient->address     = 'N/A';
-    //     $relief_recipient->recipient_type     = 'Evacuee';
-    //     $relief_recipient->save();
+    // $relief_recipient = new ReliefRecipient();
+    // $relief_recipient->family_code      = $family_code;
+    // $relief_recipient->no_of_members    = count($request->selectedResidents);
+    // $relief_recipient->address          = 'N/A';
+    // $relief_recipient->recipient_type   = 'Evacuee';
+    // $relief_recipient->save();
 
     //     $user = Auth::user();
     //     $evacuation_center = DB::table('evacuation_centers')->where('camp_manager_id', $user->id)->first();
     //   //  $evacuation_center = CampManager::find($camp_manager->user_id)->evacuation_center;
-        
+
     //   // dd($evacuation_center);
 
     //     $evacuee = new Evacuee();
     //     $evacuee->relief_recipient_id = $relief_recipient->id;
     //     $evacuee->evacuation_center_id = $evacuation_center->id;
     //     $evacuee->save();
-        
+
     //     $request->session()->flash('message', 'Admit Resident successfully!');
     //     return view('camp-manager.evacuees.evacuees');
     // }
     public function dischargeView()
     {
-         $family_members = DB::table('family_members')
-        ->whereNotNull('family_members.family_code')->where('is_family_head', 'Yes')
-        ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
-        ->where('relief_recipients.recipient_type', 'Evacuee')
-        ->select('family_members.family_code', 'name')
-        ->get();
+        $family_members = DB::table('family_members')
+            ->whereNotNull('family_members.family_code')->where('is_family_head', 'Yes')
+            ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
+            ->where('relief_recipients.recipient_type', 'Evacuee')
+            ->select('family_members.family_code', 'name')
+            ->get();
         return view('camp-manager.evacuees.discharge', ['family_members' => $family_members]);
     }
     public function discharge(Request $request)
@@ -157,7 +156,7 @@ class CampManagerController extends Controller
         $validated = $request->validate([
             'checkedEvacuees'              => ['required'],
         ]);
-       // dd($request->checkedEvacuees);
+        // dd($request->checkedEvacuees);
         foreach ($request->checkedEvacuees as $checkedEvacuee) {
             $findRelief_recipient = DB::table('relief_recipients')->where('family_code', $checkedEvacuee)->first();
             $relief_recipient = ReliefRecipient::find($findRelief_recipient->id);
@@ -176,8 +175,12 @@ class CampManagerController extends Controller
     {
         $id = Auth::id();
         $evacuation_center = EvacuationCenter::where('camp_manager_id', '=', $id)->first();
-        $stock_level = $evacuation_center->stock_level()->first();
-        return view('camp-manager.supply.supplies')->with('stock_level', $stock_level);
+        if (empty($evacuation_center)) {
+            abort(403, "You have not been assigned to an evacuation center yet. Contact your adminstrator for further info.");
+        } else {
+            $stock_level = $evacuation_center->stock_level()->first();
+            return view('camp-manager.supply.supplies', ['capacity' => $evacuation_center->capacity, 'stock_level' => $stock_level]);
+        }
     }
     public function dispenseView()
     {
@@ -190,7 +193,9 @@ class CampManagerController extends Controller
     }
     public function historyView(Request $request)
     {
-        $delivery_requests = DeliveryRequest::orderByRaw("CASE WHEN requests.status = 'pending' THEN '1'
+        $id = Auth::id();
+        $delivery_requests = DeliveryRequest::where('camp_manager_id', '=', $id)
+            ->orderByRaw("CASE WHEN requests.status = 'pending' THEN '1'
                 WHEN requests.status = 'preparing' THEN '2'
                 WHEN requests.status = 'in-transit' THEN '3'
                 WHEN requests.status = 'delivered' THEN '4'

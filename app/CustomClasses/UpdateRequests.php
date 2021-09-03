@@ -65,21 +65,20 @@ class UpdateRequests {
         //$data = $view->render();
         $data = [ 'delivery_requests' => $delivery_requests ];
         $dummyData = 'dummyData';
-        $this->pusher->trigger('requests01-channel', 'admin-deliver-event', $dummyData);
+        $this->pusher->trigger('requests-admin-channel', 'deliver-event', $dummyData);
     }
 
-    public function refreshHistory()
+    public function refreshHistory($id)
     {
         // $delivery_requests = DeliveryRequest::orderBy('updated_at', 'DESC')->get();
-
         $delivery_requests = DB::table('requests')
             ->select(DB::raw("id, status, TO_CHAR(updated_at, 'FMMonth DD, YYYY, FMHH12:MI am') as updated_at"))
             ->orderBy('updated_at', 'DESC')
             ->get();
 
-        $data = [ 'delivery_requests' => $delivery_requests ];
+        $data = [ 'delivery_requests' => $delivery_requests, 'recipient' => $id ];
 
-        $this->pusher->trigger('requests01-channel', 'camp_manger-deliver-event', $data);
+        $this->pusher->trigger('requests-CM' . $id . '-channel', 'deliver-event', $data);
     }
 
     public function refreshDeliveries($id)
@@ -94,9 +93,9 @@ class UpdateRequests {
             ->get();
         
         //$is_empty = DeliveryRequest::where('courier_id', '=', $id)->first();
-        $data = [ 'delivery_requests' => $delivery_requests ];
+        $data = [ 'delivery_requests' => $delivery_requests, 'recipient' => $id ];
 
-        $this->pusher->trigger('requests01-channel', 'courier-deliver-event', $data);
+        $this->pusher->trigger('requests-CR' . $id . '-channel', 'deliver-event', $data);
     }
 
 }

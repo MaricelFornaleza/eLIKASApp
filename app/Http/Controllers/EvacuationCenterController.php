@@ -107,7 +107,7 @@ class EvacuationCenterController extends Controller
     {
         $validatedData = $request->validate([
             'camp_manager_id'  => 'nullable',
-            'name'             => 'required|unique:evacuation_centers,name|min:1|max:128',
+            'name'             => 'required|min:1|max:128',
             'address'          => 'required|min:1|max:256',
             'latitude'         => 'required',
             'longitude'        => 'required',
@@ -204,7 +204,7 @@ class EvacuationCenterController extends Controller
             'camp_manager_id'  => 'nullable',
             'name'             => 'required|min:1|max:128',
             'address'          => 'required|min:1|max:256',
-            'latitude'         => 'required',
+            'latitude'         => 'required',   //|unique:evacuation_centers,latitude
             'longitude'        => 'required',
             'capacity'         => 'required|numeric|min:1',
             'characteristics'  => 'nullable'

@@ -12,7 +12,7 @@
 /public/scss
 # /public/assets
 /public/svg
-/public/icons
+# /public/icons
 /public/vendors
 # /public/public
 /storage/*.key

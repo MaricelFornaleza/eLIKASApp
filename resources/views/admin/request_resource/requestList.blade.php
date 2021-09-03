@@ -296,6 +296,20 @@ $(document).ready(function() {
         "order": [],
     });
 
+    // var cors_api_url = 'https://cors-anywhere.herokuapp.com/';
+    // var settings = {
+    //     "url": cors_api_url + "https://bkintanar-psgc.herokuapp.com/api/cities/051724000?include=barangays",
+    //     "method": "GET",
+    //     "timeout": 0,
+    //     "headers": {
+    //         "Accept": "application/json"
+    //     },
+    // };
+
+    // $.ajax(settings).done(function (response) {
+    //     console.log(response);
+    // });
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -370,8 +384,8 @@ $(document).ready(function() {
         cluster: 'ap1'
     });
 
-    var channel = pusher.subscribe('requests01-channel');
-    channel.bind('admin-deliver-event', function(data0) {
+    var channel = pusher.subscribe('requests-admin-channel');
+    channel.bind('deliver-event', function(data0) {
         if ($.fn.dataTable.isDataTable('#requestTable')) {
                 $('#requestTable').DataTable().clear();
                 $('#requestTable').DataTable().destroy();

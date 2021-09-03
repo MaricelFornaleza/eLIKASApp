@@ -70,22 +70,34 @@ class DeliveryRequestController extends Controller
             ->paginate(20);
             
         return view('admin.request_resource.body', ['delivery_requests' => $delivery_requests] );
-        // $data = [ 'delivery_requests' => $delivery_requests ];
-        // return $data;
     }
 
     public function approve(Request $request)
     {
         $id = $request->input('id');
-        $delivery_requests = DeliveryRequest::where('id', '=', $id)->first();
-        $delivery_requests->status = "preparing";
-        $delivery_requests->save();
+        $delivery_request = DeliveryRequest::where('id', '=', $id)->first();
+        $delivery_request->status = "preparing";
+        $delivery_request->save();
 
         $update_requests = new UpdateRequests;
-        $update_requests->refreshHistory();
-        // $update_requests->refreshDeliveries($delivery_requests->courier_id);
+        $update_requests->refreshHistory($delivery_request->camp_manager_id);
 
         return redirect()->back()->with('message', 'You have approved Request ID ' . $id);
+    }
+
+    public function admin_decline(Request $request)
+    {
+        $id = $request->input('id');
+        $delivery_request = DeliveryRequest::where('id', '=', $id)->first();
+        $delivery_request->status = 'declined';
+        $delivery_request->save();
+
+        $update_requests = new UpdateRequests;
+        $update_requests->refreshHistory($delivery_request->camp_manager_id);
+        $update_requests->refreshDeliveries($delivery_request->courier_id);
+        
+        return redirect()->back()->with('message', 'You have declined Request ID ' . $id);
+
     }
 
     public function cancel(Request $request)
@@ -93,16 +105,18 @@ class DeliveryRequestController extends Controller
         $role = Auth::user()->officer_type;
         $id = $request->input('id');
 
-        $delivery_request = DeliveryRequest::where('id', $id)->update([
-            'status' => 'cancelled'
-        ]);
+        // DeliveryRequest::where('id', $id)->update([
+        //     'status' => 'cancelled'
+        // ])
+        $delivery_request = DeliveryRequest::where('id', '=', $id)->first();
+        $delivery_request->status = 'cancelled';
+        $delivery_request->save();
 
         $request->session()->flash('message', 'You have cancelled Request ID ' . $id );
 
         $update_requests = new UpdateRequests;
         if ($role == 'Administrator') {
-            $update_requests->refreshHistory();
-            //dd($delivery_request->courier_id);
+            $update_requests->refreshHistory($delivery_request->camp_manager_id);
             if(!empty($delivery_request->courier_id))
                 $update_requests->refreshDeliveries($delivery_request->courier_id);
 
@@ -116,7 +130,7 @@ class DeliveryRequestController extends Controller
         }
         else if ($role == 'Courier') {
             $update_requests->refreshList();
-            $update_requests->refreshHistory();
+            $update_requests->refreshHistory($delivery_request->camp_manager_id);
 
             return redirect()->route('home');
         }
@@ -131,21 +145,20 @@ class DeliveryRequestController extends Controller
             'courier_id' => $request->input('courier_id')
         ]);
 
-        $delivery_requests = DeliveryRequest::where('requests.id', '=', $id)
+        $delivery_request = DeliveryRequest::where('requests.id', '=', $id)
             ->leftJoin('users', 'requests.courier_id', '=', 'users.id')
             ->leftJoin('evacuation_centers', 'evacuation_centers.camp_manager_id', '=', 'requests.camp_manager_id')
             ->select('users.id', 'users.name as courier_name','evacuation_centers.name as evacuation_center_name')
             ->first();
 
         $update_requests = new UpdateRequests;
-        //$update_requests->refreshHistory();
         $update_requests->refreshDeliveries($request->input('courier_id'));
 
         //dd($delivery_requests->courier_name);
         return redirect()->back()->with('message', 'You have assigned ' 
-            . $delivery_requests->courier_name 
+            . $delivery_request->courier_name 
             . ' to ' 
-            . $delivery_requests->evacuation_center_name);
+            . $delivery_request->evacuation_center_name);
     }
 
     public function receive_supplies(Request $request)
@@ -167,23 +180,25 @@ class DeliveryRequestController extends Controller
         $delivery_request->status = "delivered";
         $delivery_request->save();
 
-        $update_request = new UpdateRequests;
-        $update_request->refreshList();
-        $update_request->refreshDeliveries($delivery_request->courier_id);
+        $update_requests = new UpdateRequests;
+        $update_requests->refreshList();
+        $update_requests->refreshDeliveries($delivery_request->courier_id);
         
         return redirect()->route('request.camp-manager.history')->with('message', 'Request ID ' . $id . ' has been delivered! Check your supply inventory to confirm.');
     }
 
     public function courier_accept($id)
     {
-        //$id = $request->input('id');
-        DeliveryRequest::where('id', $id)->update([
-            'status' => 'in-transit'
-        ]);
+        // DeliveryRequest::where('id', $id)->update([
+        //     'status' => 'in-transit'
+        // ]);
+        $delivery_request = DeliveryRequest::where('id', '=', $id)->first();
+        $delivery_request->status = 'in-transit';
+        $delivery_request->save();
 
         $update_requests = new UpdateRequests;
         $update_requests->refreshList();
-        $update_requests->refreshHistory();
+        $update_requests->refreshHistory($delivery_request->camp_manager_id);
 
         return redirect()->route('home')->with('message', 'You have accepted Request ID ' . $id);
 
@@ -192,13 +207,16 @@ class DeliveryRequestController extends Controller
     public function courier_decline(Request $request)
     {
         $id = $request->input('id');
-        DeliveryRequest::where('id', $id)->update([
-            'status' => 'declined'
-        ]);
+        // DeliveryRequest::where('id', $id)->update([
+        //     'status' => 'declined'
+        // ]);
+        $delivery_request = DeliveryRequest::where('id', '=', $id)->first();
+        $delivery_request->status = 'declined';
+        $delivery_request->save();
 
         $update_requests = new UpdateRequests;
         $update_requests->refreshList();
-        $update_requests->refreshHistory();
+        $update_requests->refreshHistory($delivery_request->camp_manager_id);
         
         return redirect()->route('home')->with('message', 'You have declined Request ID ' . $id);
 

@@ -148,7 +148,7 @@
                                 </div>
                             </div>
 
-                            <button class="btn  btn-warning" type="submit">{{ __('Submit') }}</button>
+                            <button class="btn  btn-warning" type="submit">{{ __('Update') }}</button>
                             <a href="{{ route('evacuation-center.index') }}"
                                 class="btn btn-outline-secondary">{{ __('Cancel') }}</a>
                         </form>
