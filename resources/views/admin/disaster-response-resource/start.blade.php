@@ -1,6 +1,11 @@
 @extends('layouts.webBase')
 
 @section('css')
+<!-- Select2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
 @endsection
 
@@ -85,20 +90,19 @@
                                             </div>
                                         </div>
                                         <div class="result">
-                                            @foreach($barangays as $barangay)
+                                            <input type="hidden" name="city_code" id="city_code"
+                                                value="{{$admin_city->city_psgc}}">
+
                                             <div class="list-group-item list-group-item-action ">
                                                 <div class="form-check">
                                                     <input
                                                         class="form-check-input  @error('barangay') is-invalid @enderror checkbox"
-                                                        type="checkbox" value="{{$barangay->id}}" id="{{$barangay->id}}"
-                                                        name="barangay[]">
-                                                    <label class="form-check-label" for="{{$barangay->id}}">
-                                                        {{$barangay->name}}
-                                                    </label>
+                                                        type="checkbox" id="barangay_checkbox" name="barangay[]">
+
 
                                                 </div>
                                             </div>
-                                            @endforeach
+
 
                                         </div>
 
@@ -131,8 +135,20 @@
 @endsection
 
 @section('javascript')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> -->
+<script type="text/javascript" src="https://f001.backblazeb2.com/file/buonzz-assets/jquery.ph-locations.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> -->
 <script type="text/javascript">
+var city_code = $('#city_code').val();
+$(function() {
+
+    $('#barangay_checkbox').ph_locations({
+        'location_type': 'barangays'
+    });
+    $('#barangay_checkbox').ph_locations('fetch_list', [{
+        "city_code": city_code
+    }]);
+});
 $(document).ready(function() {
     $('#all').change(function() {
         $("input:checkbox").prop('checked', $(this).prop("checked"));
@@ -145,6 +161,8 @@ $(document).ready(function() {
             $('#all').prop('checked', false);
         }
     });
+
+
 });
 </script>
 

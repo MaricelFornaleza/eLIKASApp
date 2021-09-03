@@ -82,23 +82,18 @@
                                     </select>
 
                                 </div>
+
                                 <div class="col-sm-6 pr-3" id='barangay'>
+                                    <input type="hidden" name="city_code" id="city_code"
+                                        value="{{$admin_city->city_psgc}}">
+                                    <input type="hidden" name="barangay" id="barangay_name" value="">
                                     <div class="form-group ">
                                         <label for="barangay">Barangay</label>
-                                        <select name="barangay" id="barangay_name"
-                                            class=" form-control @error('barangay') is-invalid @enderror">
-                                            <option value=''>Select Barangay</option>
-                                            @foreach($barangays as $barangay)
-                                            <option value='{{ $barangay->name }}'>
-                                                {{ $barangay->name }}
-                                            </option>
-                                            @endforeach
+                                        <select name="barangay_dropdown" id="barangay_dropdown"
+                                            class=" form-control barangay_option @error('barangay') is-invalid @enderror"
+                                            onChange="change()">
                                         </select>
 
-
-                                        <!-- <input class="form-control @error('barangay') is-invalid @enderror"
-                                            id="barangay" name="barangay" type="text" placeholder="Enter your Barangay"
-                                            value="{{ old('barangay') }}"> -->
                                         @error('barangay')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -183,37 +178,22 @@ function update() {
         document.getElementById('designation').style.display = "block";
     }
 }
-// var my_handlers = {
-//     fill_provinces:  function(){
-//         var region_code = $(this).val();
-//         $('#province').ph_locations('fetch_list', [{"region_code": region_code}]);
-        
-//         },
-//         fill_cities: function(){
-//             var province_code = $(this).val();
-//             $('#city').ph_locations( 'fetch_list', [{"province_code": province_code}]);
-//         },
-//         fill_barangays: function(){
-//             var city_code = $(this).val();
-//             console.log(city_code);
-//             $('#barangay_1').ph_locations('fetch_list', [{"city_code": city_code}]);
-//     }
-// };
 
-// $(function(){
-//     $('#region').on('change', my_handlers.fill_provinces);
-//     $('#province').on('change', my_handlers.fill_cities);
-//     $('#city').on('change', my_handlers.fill_barangays);
+function change() {
+    var myselectedtxt = $('#barangay_dropdown').find("option:selected").text();
+    $('#barangay_name').val(myselectedtxt);
+}
+var city_code = $('#city_code').val();
+$(function() {
 
-//     $('#region').ph_locations({'location_type': 'regions'});
-//     $('#province').ph_locations({'location_type': 'provinces'});
-//     $('#city').ph_locations({'location_type': 'cities'});
-//     $('#barangay_1').ph_locations({'location_type': 'barangays'});
+    $('#barangay_dropdown').ph_locations({
+        'location_type': 'barangays'
+    });
+    $('#barangay_dropdown').ph_locations('fetch_list', [{
+        "city_code": city_code
+    }]);
+});
 
-//     $('#region').ph_locations('fetch_list');
-//     // $('#province').ph_locations('fetch_list', [{"region_code": '01'}]);
-    
-// });
 $(document).ready(function(e) {
     $('#photo').change(function() {
         let reader = new FileReader();
@@ -222,13 +202,7 @@ $(document).ready(function(e) {
         }
         reader.readAsDataURL(this.files[0]);
     });
-
-    $("#region").select2()
-    $("#province").select2();
-    $("#city").select2();
-    $("#barangay_1").select2();
-    $("#barangay_name").select2();
-
+    $("#barangay_dropdown").select2();
 });
 </script>
 @endsection

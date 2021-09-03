@@ -54,7 +54,12 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255', 'alpha_spaces'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'branch' => ['required', 'string', 'max:255'],
+            'region_psgc' => ['required', 'string', 'max:255'],
+            'province_psgc' => ['required', 'string', 'max:255'],
+            'city_psgc' => ['required', 'string', 'max:255'],
+            'region' => ['required', 'string', 'max:255'],
+            'province' => ['required', 'string', 'max:255'],
+            'city' => ['required', 'string', 'max:255'],
             'contact_no' => ['required', 'numeric', 'digits:11', 'unique:users', 'regex:/^(09)\d{9}$/'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
@@ -78,11 +83,14 @@ class RegisterController extends Controller
         ]);
         Admin::create([
             'user_id' => $user->id,
-            'branch' =>  $data['branch'],
+            'region_psgc' =>  $data['region_psgc'],
+            'province_psgc' =>  $data['province_psgc'],
+            'city_psgc' =>  $data['city_psgc'],
+            'address' => $data['city'] . ', ' . $data['province'] . ', ' . $data['region']
         ]);
         Inventory::create([
             'user_id' => $user->id,
-            'name' => $user->branch . ' Inventory'
+            'name' => $data['city'] . ' Inventory'
         ]);
 
         return $user;

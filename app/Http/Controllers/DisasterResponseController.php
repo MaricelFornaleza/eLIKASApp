@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
 use App\Models\AffectedArea;
 use App\Models\Barangay;
 use App\Models\DisasterResponse;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use PDF;
 
@@ -14,8 +16,9 @@ class DisasterResponseController extends Controller
 {
     public function start()
     {
-        $barangays = Barangay::all();
-        return view('admin.disaster-response-resource.start')->with('barangays', $barangays);
+        $user_id = Auth::id();
+        $admin_city = Admin::where('user_id', '=', $user_id)->select('city_psgc')->first();
+        return view('admin.disaster-response-resource.start')->with('admin_city', $admin_city);
     }
     public function archive()
     {

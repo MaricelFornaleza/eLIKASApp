@@ -29,7 +29,10 @@ class CreateUsersTable extends Migration
         Schema::create('admins', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
-            $table->string('branch');
+            $table->string('region_psgc');
+            $table->string('province_psgc');
+            $table->string('city_psgc');
+            $table->string('address');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')
                 ->onUpdate('cascade')->onDelete('cascade');

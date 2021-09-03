@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
 use App\Models\Barangay;
 use App\Models\BarangayCaptain;
 use App\Models\CampManager;
@@ -10,7 +11,7 @@ use App\Models\Location;
 use App\Models\Inventory;
 use Illuminate\Http\Request;
 use App\Models\User;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -54,8 +55,9 @@ class FieldOfficerController extends Controller
      */
     public function create()
     {
-        $barangays = Barangay::all();
-        return view('admin.field_officers_resource.add')->with('barangays', $barangays);
+        $user_id = Auth::id();
+        $admin_city = Admin::where('user_id', '=', $user_id)->select('city_psgc')->first();
+        return view('admin.field_officers_resource.add')->with('admin_city', $admin_city);
     }
 
     /**
