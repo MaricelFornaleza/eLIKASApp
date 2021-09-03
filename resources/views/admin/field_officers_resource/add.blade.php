@@ -223,11 +223,11 @@ $(document).ready(function(e) {
         reader.readAsDataURL(this.files[0]);
     });
 
-    $("#region").select2()
-    $("#province").select2();
-    $("#city").select2();
+    // $("#region").select2()
+    // $("#province").select2();
+    // $("#city").select2();
     $("#barangay_1").select2();
-    $("#barangay_name").select2();
+    // $("#barangay_name").select2();
 
 });
 </script>
