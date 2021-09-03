@@ -28,7 +28,8 @@ class OfficerType
         ) {
             return $next($request);
         } else {
-            abort(403, "Your do not have access to this page or resource for some reasons.");
+            abort(500);
+            // abort(403, "Your do not have access to this page or resource for some reasons.");
         }
     }
 }

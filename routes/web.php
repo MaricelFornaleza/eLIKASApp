@@ -29,10 +29,6 @@ Route::get('/', function () {
         return view('auth.login');
     }
 });
-Route::auth('/register', function () {
-    $count = User::count();
-    return view('auth.register')->with('count', $count);
-});
 
 Auth::routes();
 
@@ -67,7 +63,7 @@ Route::group(['middleware' => ['auth']], function () {
     });
     // Requests
     Route::prefix('requests')->group(function () {
-        Route::get('/',         'DeliveryRequestController@index')->name('request.index');
+        Route::get('/',         'DeliveryRequestController@index')->name('request.index')->middleware('officertype:Administrator');
         Route::get('/refresh',         'DeliveryRequestController@refresh')->name('request.refresh');
         Route::get('/receive',   'DeliveryRequestController@receive_supplies')->name('request.receive_supplies');
         Route::post('/store',   'DeliveryRequestController@store')->name('request.store');

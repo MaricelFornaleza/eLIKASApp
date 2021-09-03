@@ -2,9 +2,10 @@
 
 @section('content')
 
-@if(Route::has('count') )
+@if(\App\Models\User::count() > 0)
 @include('errors.registration_error')
 @else
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-4">
@@ -91,12 +92,36 @@
         </div>
     </div>
 </div>
-
-
 @endif
+
 
 @endsection
 
 @section('javascript')
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
+
+
+<script>
+$(document).ready(function() {
+
+    $.ajax({
+        type: "GET",
+        dataType: "json",
+        headers: {
+            "Accept": "application/json"
+        },
+        url: "http://bkintanar-psgc.herokuapp.com/api/provinces?include=cities,municipalities",
+        success: function(result) {
+            console.log(response);
+        },
+        error: function() {
+            alert("Local error callback.");
+        },
+        complete: function() {
+            alert("Local completion callback.");
+        }
+    });
+})
+</script>
 @endsection
