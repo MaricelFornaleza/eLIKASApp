@@ -189,10 +189,17 @@
                                     <div class="px-3 row justify-content-start">
                                         <div class="col-sm-4">
                                             <div class="form-group row px-3">
+                                                @if($family_member->is_family_head == 'Yes')
                                                 <input
                                                     class="form-check-input @error('is_family_head') is-invalid @enderror"
-                                                    type="radio" name="is_family_head" id="radio_yes" value="Yes"
+                                                    type="radio" name="is_family_head" id="radio_yes" value="Yes" checked
                                                     required autofocus>
+                                                @else
+                                                <input
+                                                    class="form-check-input @error('is_family_head') is-invalid @enderror"
+                                                    type="radio" name="is_family_head" id="radio_yes" value="Yes" 
+                                                    required autofocus>
+                                                @endif
                                                 <label class="form-check-label" for="radio_yes">
                                                     Yes
                                                 </label>
@@ -200,10 +207,18 @@
                                         </div>
                                         <div class="col-sm-4">
                                             <div class="form-group row px-3">
+                                                @if($family_member->is_family_head == 'No')
                                                 <input
                                                     class="form-check-input @error('is_family_head') is-invalid @enderror"
                                                     type="radio" name="is_family_head" id="radio_no" value="No" checked>
                                                 <label class="form-check-label" for="radio_no">
+                                                @else
+                                                <input
+                                                    class="form-check-input @error('is_family_head') is-invalid @enderror"
+                                                    type="radio" name="is_family_head" id="radio_no" value="No">
+                                                @endif
+                                                <label class="form-check-label" for="radio_no">
+                                                    
                                                     No
                                                 </label>
                                             </div>

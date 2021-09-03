@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
 use App\Models\AffectedArea;
 use App\Models\Barangay;
 use App\Models\DisasterResponse;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use PDF;
 
@@ -14,8 +16,9 @@ class DisasterResponseController extends Controller
 {
     public function start()
     {
-        $barangays = Barangay::all();
-        return view('admin.disaster-response-resource.start')->with('barangays', $barangays);
+        $user_id = Auth::id();
+        $admin_city = Admin::where('user_id', '=', $user_id)->select('city_psgc')->first();
+        return view('admin.disaster-response-resource.start')->with('admin_city', $admin_city);
     }
     public function archive()
     {
@@ -37,21 +40,23 @@ class DisasterResponseController extends Controller
             'photo' => $validated['disaster_type'] . ".png"
         ]);
 
+        $data = [];
         foreach ($request->barangay as $index => $barangay) {
-            if ($request->barangay[$index] != null) {
-                AffectedArea::create([
-                    'disaster_response_id' => $disaster_reponse->id,
-                    'barangay_id' => $request->barangay[$index],
-                ]);
-            }
+            $data[] = [
+                'disaster_response_id' => $disaster_reponse->id,
+                'barangay' => $request->barangay[$index],
+            ];
         }
+        AffectedArea::insert($data);
+
         Session::flash('message', 'Disaster Response started.');
         return redirect('home');
     }
     public function show($id)
     {
         $disaster_reponse = DisasterResponse::where('id', '=', $id)->first();
-        $barangays = Barangay::all();
+        $barangays = AffectedArea::where('disaster_response_id', '=', $id)->select('barangay')->first();
+        $barangays = explode(',', $barangays->barangay);
         return view('admin.disaster-response-resource.show', ['disaster_response' => $disaster_reponse, 'barangays' => $barangays]);
     }
     public function stop($id)

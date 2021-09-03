@@ -1,6 +1,11 @@
 @extends('layouts.webBase')
 
 @section('css')
+<!-- Select2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
 @endsection
 
@@ -75,64 +80,84 @@
 
                             <div class="row mt-2">
                                 <div class="col-12">
-                                    <div class="list-group">
+                                    <!-- <div class="list-group">
                                         <div class="list-group-item list-group-item-action ">
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" value="all" id="all">
                                                 <label class="form-check-label" for="all">
                                                     Select All
                                                 </label>
-                                            </div>
                                         </div>
-                                        <div class="result">
-                                            @foreach($barangays as $barangay)
-                                            <div class="list-group-item list-group-item-action ">
-                                                <div class="form-check">
-                                                    <input
-                                                        class="form-check-input  @error('barangay') is-invalid @enderror checkbox"
-                                                        type="checkbox" value="{{$barangay->id}}" id="{{$barangay->id}}"
-                                                        name="barangay[]">
-                                                    <label class="form-check-label" for="{{$barangay->id}}">
-                                                        {{$barangay->name}}
-                                                    </label>
+                                    </div> -->
+                                    <div class="result">
+                                        <input type="hidden" name="city_code" id="city_code"
+                                            value="{{$admin_city->city_psgc}}">
+                                        <input type="hidden" name="barangay[]" id="barangays" value="">
 
-                                                </div>
-                                            </div>
-                                            @endforeach
+                                        <select name="barangay_dropdown[]" multiple="multiple" size="10"
+                                            id="barangay_dropdown" onchange="change()" required
+                                            class=" form-control barangay_option @error('barangay') is-invalid @enderror">
 
-                                        </div>
-
-
+                                        </select>
 
                                     </div>
+
+
+
                                 </div>
                             </div>
-
-                            <div class="row mt-5 center">
-                                <div class="col-4 ">
-                                    <button class="btn btn-primary px-4 " type="submit">{{ __('Add') }}</button>
-                                </div>
-                                <div class="col-4 ">
-                                    <a href="{{url()->previous()}}"
-                                        class="btn btn-outline-primary px-4 ">{{ __('Cancel') }}</a>
-                                </div>
-                            </div>
-                        </form>
-
                     </div>
+
+                    <div class="row my-5  center">
+                        <div class="col-4 ">
+                            <button class="btn btn-primary px-4 " type="submit">{{ __('Add') }}</button>
+                        </div>
+                        <div class="col-4 ">
+                            <a href="{{url()->previous()}}" class="btn btn-outline-primary px-4 ">{{ __('Cancel') }}</a>
+                        </div>
+                    </div>
+                    </form>
+
                 </div>
             </div>
-            <!-- /.col-->
         </div>
-        <!-- /.row-->
+        <!-- /.col-->
     </div>
+    <!-- /.row-->
+</div>
 </div>
 
 @endsection
 
 @section('javascript')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+<script type="text/javascript" src="https://f001.backblazeb2.com/file/buonzz-assets/jquery.ph-locations.js"></script>
 <script type="text/javascript">
+var city_code = $('#city_code').val();
+
+$(function() {
+    $('#barangay_dropdown').ph_locations({
+        'location_type': 'barangays'
+    });
+    $('#barangay_dropdown').ph_locations('fetch_list', [{
+        "city_code": city_code
+    }]);
+});
+
+function change() {
+    var option_array = [];
+    // $('#barangay_dropdown').find(':selected').each(function() {
+    //     option_array.push($(this).text());
+
+    // });
+    $('#barangay_dropdown').find(':selected').each(function() {
+        option_array.push($(this).text());
+
+    });
+    $('#barangays').val(option_array);
+    console.log(option_array);
+
+}
 $(document).ready(function() {
     $('#all').change(function() {
         $("input:checkbox").prop('checked', $(this).prop("checked"));
@@ -145,6 +170,26 @@ $(document).ready(function() {
             $('#all').prop('checked', false);
         }
     });
+    $("#barangay_dropdown").select2({
+        closeOnSelect: false,
+        placeholder: "Select barangay",
+        allowClear: true
+    });
+
+    // $('#barangay_dropdown').on('select2:select', function(e) {
+    //     var data = $(this).select2('data');
+    //     option_array[option_array.length] = data.text;
+    // });
+    // $('#barangay_dropdown').on("select2:select select2:unselecting", function(e) {
+    //     //For selecting the new option
+    //     var currentName = $(this).select2('data')[0].text;
+    //     console.log(currentName); //you can get old name here also
+    // });
+
+
+
+
+
 });
 </script>
 

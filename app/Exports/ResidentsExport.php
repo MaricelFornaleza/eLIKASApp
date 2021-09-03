@@ -16,32 +16,30 @@ class ResidentsExport implements FromCollection, ShouldAutoSize, WithHeadings
     public function collection()
     {
         $residents = DB::table('family_members')
-             ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
-             ->select(
+            ->leftJoin('families', 'family_members.family_code', '=', 'families.family_code')
+            ->select(
                 'family_members.family_code',
                 'name',
                 'gender',
                 'birthdate',
                 'sectoral_classification',
-                'is_representative',
-                'address',
-                'recipient_type'
-             )
-             ->get();
+                'is_family_head',
+                'address'
+            )
+            ->get();
         return $residents;
     }
 
     public function headings(): array
     {
         return [
-            'Family Code',
+            'Family_Code',
             'Name',
             'Gender',
             'Birthdate',
-            'Sectoral Classification',
-            'Family Representative',
-            'Address',
-            'Status'
+            'Sectoral_Classification',
+            'Is_Family_Head',
+            'Address'
         ];
     }
 }

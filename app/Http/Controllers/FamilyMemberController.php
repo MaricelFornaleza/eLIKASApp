@@ -25,11 +25,12 @@ class FamilyMemberController extends Controller
     {
         $residents = DB::table('family_members')
             ->leftJoin('families', 'family_members.family_code', '=', 'families.family_code')
-            ->leftJoin('relief_recipients', function ($join) {
-                $join->on('family_members.family_code', '=', 'relief_recipients.family_code')
-                    ->leftJoin('evacuees', 'evacuees.relief_recipient_id', '=', 'relief_recipients.id')
-                    ->where('evacuees.date_discharged', '!=', null);
-            })
+            // ->leftJoin('relief_recipients', function ($join) {
+            //     $join->on('family_members.family_code', '=', 'relief_recipients.family_code')
+            //         ->leftJoin('evacuees', 'evacuees.relief_recipient_id', '=', 'relief_recipients.id')
+            //         ->where('evacuees.date_discharged', '!=', null);
+            // })
+            ->leftJoin('relief_recipients', 'relief_recipients.family_code', '=', 'families.family_code')
             ->select(
                 'family_members.id as fm_id',
                 'family_members.family_code',
@@ -71,7 +72,7 @@ class FamilyMemberController extends Controller
             'name'              => ['required', 'string', 'max:255', 'alpha_spaces'],
             'gender'            => ['required', 'string', 'max:255', 'regex:/^[A-Za-z]+$/'],
             'birthdate'         => ['required', 'date_format:Y-m-d'],
-            'address'           => ['required', 'string', 'max:255'],
+            'address'           => ['required', 'string', 'max:255', 'alpha_spaces'],
             'family_code'       => ['nullable', 'string', 'max:255', 'exists:families,family_code'],
             'is_family_head'    => ['required', 'string', 'max:255'],
             'sectoral_classification' => ['required', 'string', 'max:255', 'alpha_spaces'],
@@ -82,14 +83,29 @@ class FamilyMemberController extends Controller
         $family_member->gender   = $validated['gender'];
         $family_member->birthdate = $validated['birthdate'];
         $family_member->address = $validated['address'];
-        $family_member->sectoral_classification = $validated['sectoral_classification'];
-        $family_member->is_family_head = $validated['is_family_head'];
         $family_member->family_code = $validated['family_code'];
+        $family_member->is_family_head = $validated['is_family_head'];
+        $family_member->sectoral_classification = $validated['sectoral_classification'];
         $family_member->save();
 
         if ($request['family_code'] != null) {
-            $family = Family::find($family_member->family_code);
-            $family->no_of_members = +1;
+            $findFamily =  DB::table('families')->where('family_code', $family_member->family_code)->first();
+            // if($findFamily == null){
+            //     $family = new Family();
+            //     $family->family_code = $family_member->family_code;
+            //     $family->no_of_members = 1;
+            //     $family->save();
+
+            //     $relief_recipient = new ReliefRecipient();
+            //     $relief_recipient->family_code = $family_member->family_code;
+            //     $relief_recipient->recipient_type = 'Non-Evacuee';
+            //     $relief_recipient->save();}else 
+                
+            if($findFamily != null){
+                $family = Family::find($findFamily->id);
+                $family->no_of_members = $family->no_of_members+1;
+                $family->save();
+            }
         }
         $request->session()->flash('message', 'Resident added successfully!');
         return redirect()->route('residents.index');
@@ -131,7 +147,7 @@ class FamilyMemberController extends Controller
             'name'              => ['required', 'string', 'max:255', 'alpha_spaces'],
             'gender'            => ['required', 'string', 'max:255', 'regex:/^[A-Za-z]+$/'],
             'birthdate'         => ['required', 'date_format:Y-m-d'],
-            'address'           => ['required', 'string', 'max:255'],
+            'address'           => ['required', 'string', 'max:255', 'alpha_spaces'],
             'family_code'       => ['nullable', 'string', 'max:255', 'exists:families,family_code'],
             'is_family_head'    => ['required', 'string', 'max:255'],
             'sectoral_classification' => ['required', 'string', 'max:255', 'alpha_spaces'],
@@ -142,10 +158,63 @@ class FamilyMemberController extends Controller
         $family_member->gender   = $validated['gender'];
         $family_member->birthdate = $validated['birthdate'];
         $family_member->address = $validated['address'];
-        $family_member->sectoral_classification = $validated['sectoral_classification'];
-        $family_member->is_family_head = $validated['is_family_head'];
+        $prev_family_member_family_code = $family_member->family_code;
         $family_member->family_code = $validated['family_code'];
+        $family_member->is_family_head = $validated['is_family_head'];
+        $family_member->sectoral_classification = $validated['sectoral_classification'];
+        
         $family_member->save();
+
+        if ($request['family_code'] != null) {
+            $findFamily =  DB::table('families')->where('family_code', $family_member->family_code)->first();
+            // if($findFamily == null){
+            //     $family = new Family();
+            //     $family->family_code = $family_member->family_code;
+            //     $family->no_of_members = 1;
+            //     $family->save();
+
+            //     $relief_recipient = new ReliefRecipient();
+            //     $relief_recipient->family_code = $family_member->family_code;
+            //     $relief_recipient->recipient_type = 'Non-Evacuee';
+            //     $relief_recipient->save();}else 
+            
+            if($findFamily != null){
+                $family = Family::find($findFamily->id);
+                if($prev_family_member_family_code != null){
+                    if($family->family_code != $prev_family_member_family_code){
+                        $family->no_of_members = $family->no_of_members+1;
+                        $family->save();
+                        
+                        $findAnotherFamily =  DB::table('families')->where('family_code', $prev_family_member_family_code)->first();
+                        $anotherFamily = Family::find($findAnotherFamily->id);
+                        if($findAnotherFamily->no_of_members <= 1){
+                            $anotherFamily->delete();
+                        }else{
+                            $anotherFamily->no_of_members = $anotherFamily->no_of_members-1;
+                            $anotherFamily->save();
+                        }
+                    }
+                }else{
+                    $family->no_of_members = $family->no_of_members+1;
+                    $family->save();
+                }
+            }
+        }else if($request['family_code'] == null){
+            if($prev_family_member_family_code != null){
+                $findFamily =  DB::table('families')->where('family_code', $prev_family_member_family_code)->first();
+                if ($findFamily->no_of_members <= 1) {
+                    $family = Family::find($findFamily->id);
+                    $family->delete();
+                    // $relief_recipient = DB::table('relief_recipients')->where('family_code', $prev_family_member_family_code);
+                    // $relief_recipient->delete();
+                } else {
+                    $family = Family::find($findFamily->id);
+                    $family->no_of_members = $family->no_of_members-1;
+                    $family->save();
+                }
+            } 
+        }
+        
         $request->session()->flash('message', 'Resident updated successfully!');
         return redirect()->route('residents.index');
     }
@@ -159,20 +228,26 @@ class FamilyMemberController extends Controller
     public function destroy($id)
     {
         $family_member = FamilyMember::find($id);
-        $count_members = DB::table('family_members')->where('family_code', $family_member->family_code)->count();
-        if ($count_members == 1) {
-            if ($family_member) {
+        if ($family_member) {
+            $findFamily =  DB::table('families')->where('family_code', $family_member->family_code)->first();
+        //   $count_members = DB::table('families')->where('family_code', $family_member->family_code)->count();
+            if ($findFamily == null) {
                 $family_member->delete();
-                $relief_recipient = DB::table('relief_recipients')->where('family_code', $family_member->family_code);
-                $relief_recipient->delete();
+            }else if ($findFamily->no_of_members <= 1) {
+                    $family_member->delete();
+                    $family = Family::find($findFamily->id);
+                    $family->delete();
+                    // $relief_recipient = DB::table('relief_recipients')->where('family_code', $family_member->family_code);
+                    // $relief_recipient->delete();
+            } else if ($findFamily->no_of_members > 1) {
+                    $family_member->delete();
+                    $family = Family::find($findFamily->id);
+                    $family->no_of_members = $family->no_of_members-1;
+                    $family->save();
             }
-        } else {
-            if ($family_member) {
-                $family_member->delete();
-            }
+            Session::flash('message', 'Resident deleted successfully!');
+            return redirect()->route('residents.index');
         }
-        Session::flash('message', 'Resident deleted successfully!');
-        return redirect()->route('residents.index');
     }
 
     ///////////////////////////////////////// Group Family Members
@@ -186,7 +261,7 @@ class FamilyMemberController extends Controller
         //     ->get();
         // dd($checkedResidents);
 
-        $family_members = DB::table('family_members')->select('id', 'name', 'sectoral_classification')->get();
+        $family_members = DB::table('family_members')->where('family_code', null)->select('id', 'name', 'sectoral_classification')->get();
 
         //$family_members = FamilyMember::all();
         return view('admin.relief-recipients-resource.groupFamilyMembers', ['family_members' => $family_members]);
@@ -194,33 +269,36 @@ class FamilyMemberController extends Controller
 
     public function groupResidents(Request $request)
     {
-
+        
         $validated = $request->validate([
-            'address'              => ['required', 'string', 'max:255']
+            'selectedResidents'              => ['required']
         ]);
-
+        //dd($request->selectedResidents);
         $family_code = 'eLIKAS-' . Str::random(6);
-        $no_of_members = 1;
-        if ($request->selectedResidents) {
-            foreach ($request->selectedResidents as $selectedResident) {
-                $no_of_members = +1;
-                $family_member = FamilyMember::find($selectedResident);
-                $family_member->family_code   = $family_code;
-                $family_member->save();
-            }
+
+        $family = new Family();
+        $family->family_code = $family_code;
+        $family->no_of_members = count($request->selectedResidents);
+        $family->save();
+        
+        foreach ($request->selectedResidents as $selectedResident) {
+            $family_member = FamilyMember::find($selectedResident);
+            $family_member->family_code   = $family_code;
+            $family_member->save();
         }
 
 
-        $family_member_rep = FamilyMember::find($request->selectedRepresentative);
-        $family_member_rep->is_representative = 'Yes';
-        $family_member_rep->save();
+        // $family_member_rep = FamilyMember::find($request->selectedRepresentative);
+        // $family_member_rep->is_representative = 'Yes';
+        
+        // $family_member_rep->save();
 
-        $relief_recipient = new ReliefRecipient();
-        $relief_recipient->family_code     = $family_code;
-        $relief_recipient->no_of_members     = $no_of_members;
-        $relief_recipient->address     = $validated['address'];
-        $relief_recipient->recipient_type     = 'Non-Evacuee';
-        $relief_recipient->save();
+        // $relief_recipient = new ReliefRecipient();
+        // $relief_recipient->family_code     = $family_code;
+        // $relief_recipient->no_of_members     = count($request->checkedResidents);
+        // $relief_recipient->address     = $validated['address'];
+        // $relief_recipient->recipient_type     = 'Non-Evacuee';
+        // $relief_recipient->save();
         $request->session()->flash('message', 'Group Resident successfully!');
         return redirect()->route('residents.index');
     }
