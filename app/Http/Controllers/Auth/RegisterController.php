@@ -87,7 +87,7 @@ class RegisterController extends Controller
             'region_psgc' =>  $data['region_psgc'],
             'province_psgc' =>  $data['province_psgc'],
             'city_psgc' =>  $data['city_psgc'],
-            'address' => $data['city'] . ', ' . $data['province'] . ', ' . $data['region']
+            'address' => $data['city'] . ',' . $data['province'] . ',' . $data['region']
         ]);
         Inventory::create([
             'user_id' => $user->id,

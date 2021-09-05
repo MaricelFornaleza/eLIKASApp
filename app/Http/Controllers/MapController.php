@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Admin;
 use App\Models\AffectedArea;
+use App\Models\DisasterResponse;
 use App\Models\EvacuationCenter;
 use App\Models\StockLevel;
 use App\Models\Courier;
@@ -96,7 +97,6 @@ class MapController extends Controller
     {
         //using this on requests --assign courier
         $evacuation_center = EvacuationCenter::find($id);
-        //$couriers = Courier::all();
         $couriers =  DB::table('couriers')
             ->leftJoin('users', 'couriers.user_id', '=', 'users.id')
             ->leftJoin('locations', 'couriers.user_id', '=', 'locations.courier_id')
@@ -122,13 +122,18 @@ class MapController extends Controller
         $admins = DB::table('admins')->select('address')->first();
         $address = explode(',', $admins->address);
 
-        $barangays = DB::table('affected_areas')->select('barangay')->get();
-        $all_barangays = [];
-        foreach ($barangays as $index) {
-            $temp = explode(',', $index->barangay);
-            $all_barangays = array_merge($all_barangays, $temp);
-        }
-        $all_barangays = array_values(array_unique($all_barangays));
+        // $barangays = DB::table('affected_areas')->select('barangay')->get();
+        // $all_barangays = [];
+        // foreach ($barangays as $index) {
+        //     $temp = explode(',', $index->barangay);
+        //     $all_barangays = array_merge($all_barangays, $temp);
+        // }
+        // $all_barangays = array_values(array_unique($all_barangays));
+        $all_barangays = DisasterResponse::where('date_ended', '=', null)
+            ->leftjoin('affected_areas','affected_areas.disaster_response_id','=','disaster_responses.id')
+            ->select('barangay')
+            ->get();
+        // $barangays = AffectedArea::where('disaster_response_id', '=', $id)->select('barangay')->get();
         return [ 'address' => $address, 'all_barangays' => $all_barangays ];
     }
     

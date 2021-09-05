@@ -191,7 +191,7 @@ class CampManagerController extends Controller
         }
         //dd($total_number_of_evacuees);
         if (empty($evacuation_center)) {
-            abort(403, "You have not been assigned to an evacuation center yet. Contact your adminstrator for further info.");
+            abort(403, "You are not assigned to an evacuation center yet. Contact your adminstrator for further info.");
         } else {
             $stock_level = $evacuation_center->stock_level()->first();
             return view('camp-manager.supply.supplies', ['total_number_of_evacuees' => $total_number_of_evacuees, 'capacity' => $evacuation_center->capacity, 'stock_level' => $stock_level]);

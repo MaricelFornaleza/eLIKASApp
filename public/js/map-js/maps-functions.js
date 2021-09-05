@@ -1,22 +1,20 @@
-function Use_OpenStreetMap(mapname) {
-  L.tileLayer( 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+function Use_OpenStreetMap() {
+  return L.tileLayer( 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       maxZoom: 19,  
       subdomains: ['a','b','c']
-  }).addTo(mapname);
-
-  L.control.scale().addTo(mapname);
+  });
 }
 
-function Use_Mapbox(mapname) {
-  L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+function Use_Mapbox() {
+  return L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
       maxZoom: 18,
       attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
           'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
       id: 'mapbox/streets-v11',
       tileSize: 512,
       zoomOffset: -1
-  }).addTo(mapname);
+  });
 }
 
 function routeControl(mapname, source_lat, source_lng, dest_lat, dest_lng) {
@@ -146,5 +144,77 @@ function get_lng() {
     // console.log(lat,lng);
     clickMarker.setLatLng([lat,lng]).setIcon(evacIcon()).addTo(mymap);
   }
+}
+
+function _affectedAreas() {
+  return new Promise(function (resolve, reject) {
+      $.ajax({
+          method: "GET",
+          url: "/map/affected_areas",
+      }).done(function(data) {
+          resolve(data);
+      }).fail(function (jqXHR, textStatus) {
+          reject(textStatus);
+      });
+  });
+}
+
+function _loadGeoJson() {
+  return new Promise(function (resolve, reject) {
+      $.getJSON("js/map-js/Barangays.json", function(json) {
+          resolve(json);
+      }).fail(function (jqXHR, textStatus) {
+          reject(textStatus);
+      });
+  });
+}
+
+function drawPolygons(data, json) {
+  // console.log(data);
+  // console.log(json);
+  var city = split(data.address[0]);
+  var province = split(data.address[1]);
+  var affected_areas = data.all_barangays;
+  var polyStyle = {
+      "color": "red", //#ff7800
+      "weight": 2.5,
+      "opacity": 0.65
+  };
+  var barangayLayer = new L.layerGroup();
+  $.each(affected_areas, function(key, value) {
+    var geo = geoIndex.buildIndex(["NAME_1","NAME_2","NAME_3"], json);
+    var geoQuery = new geoIndex.Queries();
+    var resByProp = (geoQuery
+        .query("NAME_1", "=" , province)
+        .and("NAME_2", "=", city)
+        .and("NAME_3","=", value.barangay)
+        .get());
+    L.geoJSON(resByProp, {
+      style: polyStyle,
+      onEachFeature: onEachFeature,
+    }).addTo(barangayLayer);
+  });
+
+  // var overlays = {
+  //     "Affected Barangays": barangayLayer
+  // };
+
+  layerControl.addOverlay(barangayLayer, "Affected Barangays");
+  //L.control.layers(null, overlays).addTo(mymap);
+}
+
+function onEachFeature(feature, layer) {
+  options = {
+    'maxWidth': '400',
+    'minWidth': '250',
+  };
+  layer.bindPopup(`<h5 class="font-weight-bold text-center">Barangay ` + feature.properties.NAME_3 + `</h5>`, options);
+}
+
+function split(str) {
+  return str.
+    split(' ').
+    map(w => w[0].toUpperCase() + w.substr(1).toLowerCase()).
+    join(' ');
 }
 
