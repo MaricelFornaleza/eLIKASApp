@@ -32,7 +32,7 @@
 
         <div class="col-md-11">
             <div class="row justify-content-start">
-                @empty($disaster_responses)
+                @if($disaster_responses->count() == 0)
                 No active Disaster Response
                 @else
 

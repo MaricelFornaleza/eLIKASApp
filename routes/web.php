@@ -37,6 +37,7 @@ Auth::routes();
 // the user must be authenticated to access these routes
 Route::group(['middleware' => ['auth']], function () {
     //Home
+
     Route::get('/home', 'HomeController@index')->name('home');
     //User Profile
     Route::prefix('profile')->group(function () {

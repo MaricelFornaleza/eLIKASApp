@@ -95,6 +95,19 @@
                                     @enderror
                                 </div>
                             </div>
+                            <div class="input-group mb-3 ">
+                                <input type="hidden" name="barangays[]" id="barangay_name" value="">
+                                <div class="form-group col-12 m-0 p-0">
+                                    <select name="barangay_psgc" id="barangay_psgc" multiple="multiple"
+                                        class=" form-control @error('barangay') is-invalid @enderror">
+                                    </select>
+                                    @error('barangay')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
 
                             <div class="input-group mb-4">
 
@@ -115,7 +128,8 @@
 
                             <div class="input-group mb-4">
                                 <div class="col-12 center">
-                                    <button class="btn btn-register px-4 " type="submit">{{ __('Register') }}</button>
+                                    <button class="btn btn-register px-4 " onclick="change()"
+                                        type="submit">{{ __('Register') }}</button>
                                 </div>
                             </div>
                         </form>
@@ -145,9 +159,18 @@
 
 <script type="text/javascript">
 $(document).ready(function(e) {
-    $("#region_psgc").select2();
-    $("#province_psgc").select2();
-    $("#city_psgc").select2();
+    $("#region_psgc").select2({
+        placeholder: "Select Region"
+    });
+    $("#province_psgc").select2({
+        placeholder: "Select Province"
+    });
+    $("#city_psgc").select2({
+        placeholder: "Select City/Municipality"
+    });
+    $("#barangay_psgc").select2().next().hide();
+
+
 });
 var my_handlers = {
     fill_provinces: function() {
@@ -170,10 +193,22 @@ var my_handlers = {
         $('#province_name').val(myselectedtxt);
     },
     fill_barangays: function() {
+        var city_psgc = $(this).val();
+        $('#barangay_psgc').ph_locations('fetch_list', [{
+            "city_code": city_psgc
+        }]);
         var myselectedtxt = $('#city_psgc').find(
             "option:selected").text();
         $('#city_name').val(myselectedtxt);
     },
+    change: function() {
+        var option_array = [];
+        $barangay_name = $('#barangay_psgc').find('option').each(function() {
+            option_array.push($(this).text());
+        });
+        $('#barangay_name').val(option_array);
+        console.log(option_array);
+    }
 };
 
 $(function() {
@@ -190,9 +225,23 @@ $(function() {
     $('#city_psgc').ph_locations({
         'location_type': 'cities'
     });
+    $('#barangay_psgc').ph_locations({
+        'location_type': 'barangays'
+    });
     $('#region_psgc').ph_locations('fetch_list');
 
 
 });
+
+function change() {
+    var option_array = [];
+    $barangay_name = $('#barangay_psgc').find('option').each(function() {
+        option_array.push($(this).text());
+    });
+    $('#barangay_name').val(option_array);
+    console.log(option_array);
+
+
+}
 </script>
 @endsection

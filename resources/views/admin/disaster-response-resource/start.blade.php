@@ -147,20 +147,13 @@ $(function() {
 
 function change() {
     var option_array = [];
-    // $('#barangay_dropdown').find(':selected').each(function() {
-    //     option_array.push($(this).text());
 
-    // });
-    // $('#barangay_dropdown').find(':selected').each(function() {
-    //     option_array.push($(this).text());
-
-    // });
     $barangay_name = $('#barangay_dropdown').find(':selected').each(function() {
         option_array.push($(this).text());
 
     });
     $('#barangays').val(option_array);
-    // console.log(option_array);
+
 
     console.log($('#barangays').val());
 
