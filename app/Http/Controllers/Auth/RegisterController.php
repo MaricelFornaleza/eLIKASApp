@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use App\Models\Barangay;
 use App\Models\User;
 use App\Models\Inventory;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -92,6 +93,14 @@ class RegisterController extends Controller
             'user_id' => $user->id,
             'name' => $data['city'] . ' Inventory'
         ]);
+        $barangay = explode(",", $data['barangays'][0]);
+        $data = [];
+        foreach ($barangay as $index => $barangay_name) {
+            $data[] = [
+                'name' => $barangay[$index],
+            ];
+        }
+        Barangay::insert($data);
 
         return $user;
     }

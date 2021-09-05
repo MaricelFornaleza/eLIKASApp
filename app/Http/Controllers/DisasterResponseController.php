@@ -16,9 +16,9 @@ class DisasterResponseController extends Controller
 {
     public function start()
     {
-        $user_id = Auth::id();
-        $admin_city = Admin::where('user_id', '=', $user_id)->select('city_psgc')->first();
-        return view('admin.disaster-response-resource.start')->with('admin_city', $admin_city);
+        $barangays = Barangay::all();
+
+        return view('admin.disaster-response-resource.start')->with('barangays', $barangays);
     }
     public function archive()
     {
@@ -27,6 +27,8 @@ class DisasterResponseController extends Controller
     }
     public function store(Request $request)
     {
+
+
         $validated = $request->validate([
             'disaster_type' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:255'],
@@ -39,12 +41,13 @@ class DisasterResponseController extends Controller
             'description' => $validated['description'],
             'photo' => $validated['disaster_type'] . ".png"
         ]);
+        $barangay = $request['barangay'];
 
         $data = [];
-        foreach ($request->barangay as $index => $barangay) {
+        foreach ($barangay as $index => $barangay_name) {
             $data[] = [
                 'disaster_response_id' => $disaster_reponse->id,
-                'barangay' => $request->barangay[$index],
+                'barangay' => $barangay[$index],
             ];
         }
         AffectedArea::insert($data);
@@ -55,8 +58,8 @@ class DisasterResponseController extends Controller
     public function show($id)
     {
         $disaster_reponse = DisasterResponse::where('id', '=', $id)->first();
-        $barangays = AffectedArea::where('disaster_response_id', '=', $id)->select('barangay')->first();
-        $barangays = explode(',', $barangays->barangay);
+        $barangays = AffectedArea::where('disaster_response_id', '=', $id)->select('barangay')->get();
+        // dd($barangays);
         return view('admin.disaster-response-resource.show', ['disaster_response' => $disaster_reponse, 'barangays' => $barangays]);
     }
     public function stop($id)

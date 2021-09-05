@@ -83,17 +83,18 @@
 
                                 </div>
 
-                                <div class="col-sm-6 pr-3" id='barangay'>
-                                    <input type="hidden" name="city_code" id="city_code"
-                                        value="{{$admin_city->city_psgc}}">
-                                    <input type="hidden" name="barangay" id="barangay_name" value="">
+                                <div class="col-sm-6" id='barangay_div'>
                                     <div class="form-group ">
                                         <label for="barangay">Barangay</label>
-                                        <select name="barangay_dropdown" id="barangay_dropdown"
-                                            class=" form-control barangay_option @error('barangay') is-invalid @enderror"
-                                            onChange="change()">
+                                        <select name="barangay" id="barangay_name"
+                                            class=" form-control @error('barangay') is-invalid @enderror">
+                                            <option value=''>Select Barangay</option>
+                                            @foreach($barangays as $barangay)
+                                            <option value='{{ $barangay->name }}'>
+                                                {{ $barangay->name }}
+                                            </option>
+                                            @endforeach
                                         </select>
-
                                         @error('barangay')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -101,6 +102,7 @@
                                         @enderror
                                     </div>
                                 </div>
+
                                 <div class="col-sm-6" id='designation' style="display: none;">
                                     <div class="form-group">
                                         <label for="designation">Designation</label>
@@ -146,10 +148,7 @@
                                 </div>
                             </div>
 
-                            {{-- <select id="region"><option value=''>Select Region</option></select> <br />
-                            <select id="province"><option value=''>Select Province</option></select> <br />
-                            <select id="city"><option value=''>Select City</option></select> <br /> 
-                            <select id="barangay_1"><option value=''>Select Barangay</option></select> <br />  --}}
+
                         </form>
 
                     </div>
@@ -165,35 +164,8 @@
 
 @section('javascript')
 {{-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> --}}
-<script type="text/javascript" src="https://f001.backblazeb2.com/file/buonzz-assets/jquery.ph-locations.js"></script>
 
 <script type="text/javascript">
-function update() {
-    var select = document.getElementById('officer_type');
-    if (select.value == 'Barangay Captain') {
-        document.getElementById('barangay').style.display = "block";
-        document.getElementById('designation').style.display = "none";
-    } else {
-        document.getElementById('barangay').style.display = "none";
-        document.getElementById('designation').style.display = "block";
-    }
-}
-
-function change() {
-    var myselectedtxt = $('#barangay_dropdown').find("option:selected").text();
-    $('#barangay_name').val(myselectedtxt);
-}
-var city_code = $('#city_code').val();
-$(function() {
-
-    $('#barangay_dropdown').ph_locations({
-        'location_type': 'barangays'
-    });
-    $('#barangay_dropdown').ph_locations('fetch_list', [{
-        "city_code": city_code
-    }]);
-});
-
 $(document).ready(function(e) {
     $('#photo').change(function() {
         let reader = new FileReader();
@@ -202,17 +174,21 @@ $(document).ready(function(e) {
         }
         reader.readAsDataURL(this.files[0]);
     });
-<<<<<<< HEAD
-
-    // $("#region").select2()
-    // $("#province").select2();
-    // $("#city").select2();
-    $("#barangay_1").select2();
-    // $("#barangay_name").select2();
-
-=======
-    $("#barangay_dropdown").select2();
->>>>>>> 5c7a13496cb6a3fcfeed1a6afc82afed67dc989f
+    $("#barangay_name").select2();
 });
+
+function update() {
+    var select = document.getElementById('officer_type');
+    if (select.value == 'Barangay Captain') {
+        $("#barangay").select2().next().show();
+        $("#barangay_div").show();
+        $("#designation").hide();
+
+    } else {
+        $("#barangay").select2().next().hide();
+        $("#barangay_div").hide();
+        $("#designation").show();
+    }
+}
 </script>
 @endsection

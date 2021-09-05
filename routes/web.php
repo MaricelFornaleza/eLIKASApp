@@ -37,6 +37,7 @@ Auth::routes();
 // the user must be authenticated to access these routes
 Route::group(['middleware' => ['auth']], function () {
     //Home
+
     Route::get('/home', 'HomeController@index')->name('home');
     //User Profile
     Route::prefix('profile')->group(function () {
@@ -148,7 +149,8 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/discharge-view', 'CampManagerController@dischargeView');
             Route::post('/discharge', 'CampManagerController@discharge');
             Route::get('/supply-view', 'CampManagerController@supplyView');
-            Route::get('/dispense', 'CampManagerController@dispenseView');
+            Route::get('/dispense-view', 'CampManagerController@dispenseView');
+            Route::post('/dispense', 'CampManagerController@dispense');
             Route::get('/request-supply', 'CampManagerController@requestSupplyView');
             Route::get('/history', 'CampManagerController@historyView')->name('request.camp-manager.history');
             Route::get('/details/{id}', 'CampManagerController@detailsView');

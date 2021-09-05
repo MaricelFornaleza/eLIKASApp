@@ -80,51 +80,62 @@
 
                             <div class="row mt-2">
                                 <div class="col-12">
-                                    <!-- <div class="list-group">
-                                        <div class="list-group-item list-group-item-action ">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="all" id="all">
-                                                <label class="form-check-label" for="all">
-                                                    Select All
-                                                </label>
+                                    <div class="list-group">
+                                        <div class="row my-2">
+                                            <div class="col-md-4">
+                                                <button class="btn btn-primary px-4 " type="button"
+                                                    onclick="selectAll()">Select
+                                                    all Barangay</button>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button class="btn btn-border px-4 " type="button"
+                                                    onclick="deselectAll()">Reset</button>
+                                            </div>
                                         </div>
-                                    </div> -->
-                                    <div class="result">
-                                        <input type="hidden" name="city_code" id="city_code"
-                                            value="{{$admin_city->city_psgc}}">
-                                        <input type="hidden" name="barangay[]" id="barangays" value="">
 
-                                        <select name="barangay_dropdown[]" multiple="multiple" size="10"
-                                            id="barangay_dropdown" onchange="change()" required
-                                            class=" form-control barangay_option @error('barangay') is-invalid @enderror">
 
-                                        </select>
+                                        <div class="result">
+
+
+
+                                            <select name="barangay[]" multiple="multiple" size="10"
+                                                id="barangay_dropdown" required
+                                                class=" form-control barangay_option @error('barangay') is-invalid @enderror">
+
+                                                @foreach($barangays as $barangay)
+                                                <option value='{{ $barangay->name }}'>
+                                                    {{ $barangay->name }}
+                                                </option>
+                                                @endforeach
+
+                                            </select>
+
+                                        </div>
+
+
 
                                     </div>
-
-
-
                                 </div>
                             </div>
-                    </div>
 
-                    <div class="row my-5  center">
-                        <div class="col-4 ">
-                            <button class="btn btn-primary px-4 " type="submit">{{ __('Add') }}</button>
-                        </div>
-                        <div class="col-4 ">
-                            <a href="{{url()->previous()}}" class="btn btn-outline-primary px-4 ">{{ __('Cancel') }}</a>
-                        </div>
-                    </div>
-                    </form>
+                            <div class="row my-5  center">
+                                <div class="col-4 ">
+                                    <button class="btn btn-primary px-4 " type="submit">{{ __('Add') }}</button>
+                                </div>
+                                <div class="col-4 ">
+                                    <a href="{{url()->previous()}}"
+                                        class="btn btn-outline-primary px-4 ">{{ __('Cancel') }}</a>
+                                </div>
+                            </div>
+                        </form>
 
+                    </div>
                 </div>
             </div>
+            <!-- /.col-->
         </div>
-        <!-- /.col-->
+        <!-- /.row-->
     </div>
-    <!-- /.row-->
-</div>
 </div>
 
 @endsection
@@ -133,63 +144,23 @@
 
 <script type="text/javascript" src="https://f001.backblazeb2.com/file/buonzz-assets/jquery.ph-locations.js"></script>
 <script type="text/javascript">
-var city_code = $('#city_code').val();
+function selectAll() {
+    $("#barangay_dropdown > option").prop("selected", true);
+    $("#barangay_dropdown").trigger("change");
 
-$(function() {
-    $('#barangay_dropdown').ph_locations({
-        'location_type': 'barangays'
-    });
-    $('#barangay_dropdown').ph_locations('fetch_list', [{
-        "city_code": city_code
-    }]);
-});
+}
 
-function change() {
-    var option_array = [];
-    // $('#barangay_dropdown').find(':selected').each(function() {
-    //     option_array.push($(this).text());
-
-    // });
-    $('#barangay_dropdown').find(':selected').each(function() {
-        option_array.push($(this).text());
-
-    });
-    $('#barangays').val(option_array);
-    console.log(option_array);
+function deselectAll() {
+    $("#barangay_dropdown > option").prop("selected", false);
+    $("#barangay_dropdown").trigger("change");
 
 }
 $(document).ready(function() {
-    $('#all').change(function() {
-        $("input:checkbox").prop('checked', $(this).prop("checked"));
-    });
-
-    $('.checkbox').on('click', function() {
-        if ($('.checkbox:checked').length == $('.checkbox').length) {
-            $('#all').prop('checked', true);
-        } else {
-            $('#all').prop('checked', false);
-        }
-    });
     $("#barangay_dropdown").select2({
         closeOnSelect: false,
         placeholder: "Select barangay",
         allowClear: true
     });
-
-    // $('#barangay_dropdown').on('select2:select', function(e) {
-    //     var data = $(this).select2('data');
-    //     option_array[option_array.length] = data.text;
-    // });
-    // $('#barangay_dropdown').on("select2:select select2:unselecting", function(e) {
-    //     //For selecting the new option
-    //     var currentName = $(this).select2('data')[0].text;
-    //     console.log(currentName); //you can get old name here also
-    // });
-
-
-
-
-
 });
 </script>
 

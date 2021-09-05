@@ -19,6 +19,9 @@ use Illuminate\Support\Str;
 
 use App\Http\Controllers\Carbon\Carbon;
 
+use App\Models\ReliefGood;
+use App\Models\Family;
+
 class CampManagerController extends Controller
 {
     public function evacuees()
@@ -143,10 +146,14 @@ class CampManagerController extends Controller
     // }
     public function dischargeView()
     {
+        $user = Auth::user();
+        $evacuation_center = DB::table('evacuation_centers')->where('camp_manager_id', $user->id)->first();
         $family_members = DB::table('family_members')
-            ->whereNotNull('family_members.family_code')->where('is_family_head', 'Yes')
             ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
+            ->leftJoin('evacuees', 'relief_recipients.id', '=', 'evacuees.relief_recipient_id')
+            ->whereNotNull('family_members.family_code')->where('is_family_head', 'Yes')
             ->where('relief_recipients.recipient_type', 'Evacuee')
+            ->where('evacuees.evacuation_center_id', $evacuation_center->id)
             ->select('family_members.family_code', 'name')
             ->get();
         return view('camp-manager.evacuees.discharge', ['family_members' => $family_members]);
@@ -175,16 +182,93 @@ class CampManagerController extends Controller
     {
         $id = Auth::id();
         $evacuation_center = EvacuationCenter::where('camp_manager_id', '=', $id)->first();
+        $evacuees = Evacuee::where('evacuation_center_id', $evacuation_center->id)->get();
+        $total_number_of_evacuees = 0;
+        foreach($evacuees as $evacuee){
+            $relief_recipient = ReliefRecipient::where('id', $evacuee->relief_recipient_id)->first();
+            $family = Family::where('family_code', $relief_recipient->family_code)->first();
+            $total_number_of_evacuees = $total_number_of_evacuees + $family->no_of_members;
+        }
+        //dd($total_number_of_evacuees);
         if (empty($evacuation_center)) {
             abort(403, "You have not been assigned to an evacuation center yet. Contact your adminstrator for further info.");
         } else {
             $stock_level = $evacuation_center->stock_level()->first();
-            return view('camp-manager.supply.supplies', ['capacity' => $evacuation_center->capacity, 'stock_level' => $stock_level]);
+            return view('camp-manager.supply.supplies', ['total_number_of_evacuees' => $total_number_of_evacuees, 'capacity' => $evacuation_center->capacity, 'stock_level' => $stock_level]);
         }
-    }
+     }
     public function dispenseView()
     {
-        return view('camp-manager.supply.dispense');
+        $user = Auth::user();
+        $evacuation_center = DB::table('evacuation_centers')->where('camp_manager_id', $user->id)->first();
+        $family_members = DB::table('family_members')
+            ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
+            ->leftJoin('evacuees', 'relief_recipients.id', '=', 'evacuees.relief_recipient_id')
+            ->whereNotNull('family_members.family_code')->where('is_family_head', 'Yes')
+            ->where('relief_recipients.recipient_type', 'Evacuee')
+            ->where('evacuees.evacuation_center_id', $evacuation_center->id)
+            ->select('relief_recipients.id as rr_id', 'name')
+            ->get();
+        $disaster_responses = DisasterResponse::all();
+        $sl_evacuation_center = EvacuationCenter::where('camp_manager_id', '=', $user->id)->first();
+        $stock_level = $sl_evacuation_center->stock_level()->first();
+
+        return view('camp-manager.supply.dispense', ['disaster_responses' => $disaster_responses, 'evacuees' => $family_members, 'stock_level' => $stock_level ]);
+    }
+    public function dispense(Request $request)
+    {
+        $validated = $request->validate([
+            'disaster_response_id'          => ['required', 'numeric'],
+            'relief_recipient_id'           => ['required', 'numeric'],
+            'food_packs'                    => ['numeric', 'min:0', 'max:10000'],
+            'water'                         => ['numeric', 'min:0', 'max:10000'],
+            'clothes'                       => ['numeric', 'min:0', 'max:10000'],
+            'hygiene_kit'                   => ['numeric', 'min:0', 'max:10000'],
+            'medicine'                      => ['numeric', 'min:0', 'max:10000'],
+            'emergency_shelter_assistance'  => ['numeric', 'min:0', 'max:10000'],
+        ]);
+
+        $user = Auth::user();
+
+        $relief_good = new ReliefGood();
+        $relief_good->field_officer_id              = $user->id;
+        $relief_good->disaster_response_id          = $validated['disaster_response_id'];
+        $relief_good->relief_recipient_id           = $validated['relief_recipient_id'];
+        $relief_good->date                          = now();
+        $relief_good->food_packs                    = $validated['food_packs'];
+        $relief_good->water                         = $validated['water'];
+        $relief_good->hygiene_kit                   = $validated['hygiene_kit']; 
+        $relief_good->medicine                      = $validated['medicine'];
+        $relief_good->clothes                       = $validated['clothes'];
+        $relief_good->emergency_shelter_assistance  = $validated['emergency_shelter_assistance'];
+        $relief_good->save();
+
+        $evacuation_center = EvacuationCenter::where('camp_manager_id', '=', $user->id)->first();
+        $prev_stock = $evacuation_center->stock_level()->first();
+        $evacuation_center->stock_level()->update([
+            'food_packs'                    => ($prev_stock->food_packs - $relief_good->food_packs),
+            'water'                         => ($prev_stock->water - $relief_good->water),
+            'hygiene_kit'                   => ($prev_stock->hygiene_kit - $relief_good->hygiene_kit),
+            'medicine'                      => ($prev_stock->medicine - $relief_good->medicine),
+            'clothes'                       => ($prev_stock->clothes - $relief_good->clothes),
+            'emergency_shelter_assistance'  => ($prev_stock->emergency_shelter_assistance - $relief_good->emergency_shelter_assistance),
+        ]);
+
+        $evacuees = Evacuee::where('evacuation_center_id', $evacuation_center->id)->get();
+        $total_number_of_evacuees = 0;
+        foreach($evacuees as $evacuee){
+            $relief_recipient = ReliefRecipient::where('id', $evacuee->relief_recipient_id)->first();
+            $family = Family::where('family_code', $relief_recipient->family_code)->first();
+            $total_number_of_evacuees = $total_number_of_evacuees + $family->no_of_members;
+        }
+        
+        if (empty($evacuation_center)) {
+            abort(403, "You have not been assigned to an evacuation center yet. Contact your adminstrator for further info.");
+        } else {
+            $request->session()->flash('message', 'Dispense Supply successfully!');
+            $stock_level = $evacuation_center->stock_level()->first();
+            return view('camp-manager.supply.supplies', ['total_number_of_evacuees' => $total_number_of_evacuees,'capacity' => $evacuation_center->capacity, 'stock_level' => $stock_level]);
+        }
     }
     public function requestSupplyView()
     {
