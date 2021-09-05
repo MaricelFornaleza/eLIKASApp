@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
+use App\Models\AffectedArea;
 use App\Models\EvacuationCenter;
 use App\Models\StockLevel;
 use App\Models\Courier;
@@ -18,7 +20,6 @@ class MapController extends Controller
      */
     public function index()
     {
-        //$evacuation_centers = EvacuationCenter::all();
         $evacuation_centers = DB::table('evacuation_centers')
             ->join('stock_levels', 'evacuation_centers.id', '=', 'stock_levels.evacuation_center_id')
             ->select('evacuation_centers.*', 'stock_levels.food_packs', 'stock_levels.water', 'stock_levels.hygiene_kit', 'stock_levels.medicine',
@@ -34,8 +35,6 @@ class MapController extends Controller
             ->get();
 
         return view('admin.map')->with(compact('evacuation_centers'))->with(compact('couriers'));
-        //return view('admin.map', $evacuation_centers );
-        //echo json_encode($evacuation_centers);
     }
 
     public function get_evac()
@@ -95,6 +94,7 @@ class MapController extends Controller
 
     public function get_locations($id)
     {
+        //using this on requests --assign courier
         $evacuation_center = EvacuationCenter::find($id);
         //$couriers = Courier::all();
         $couriers =  DB::table('couriers')
@@ -117,69 +117,19 @@ class MapController extends Controller
         return $data;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function affected_areas() 
     {
-        //
-    }
+        $admins = DB::table('admins')->select('address')->first();
+        $address = explode(',', $admins->address);
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        $barangays = DB::table('affected_areas')->select('barangay')->get();
+        $all_barangays = [];
+        foreach ($barangays as $index) {
+            $temp = explode(',', $index->barangay);
+            $all_barangays = array_merge($all_barangays, $temp);
+        }
+        $all_barangays = array_values(array_unique($all_barangays));
+        return [ 'address' => $address, 'all_barangays' => $all_barangays ];
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+    
 }

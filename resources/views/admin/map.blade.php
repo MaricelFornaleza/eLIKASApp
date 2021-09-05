@@ -57,14 +57,14 @@
 
 <script src="{{ asset('js/map-js/maps-functions.js') }}"></script>
 <script src="{{ asset('js/map-js/leaflet-maps-simplified.js') }}"></script>
+<script src="{{ asset('js/app.js') }}"></script>
 
 <script type="text/javascript">
-// var evacOptions = evacOptions();
+
 var evaclocations = '{{ $evacuation_centers }}';
 var courierlocations = '{{ $couriers }}';
 var result1 = JSON.parse(evaclocations.replace(/&quot;/g, '"'));
 var result2 = JSON.parse(courierlocations.replace(/&quot;/g, '"'));
-//console.log(result2);
 var evac_markers = L.layerGroup();
 var courier_markers = L.layerGroup();
 
@@ -332,6 +332,50 @@ $(document).ready(function() {
         })
     });
 
+    
+});
+
+$.ajax({
+    method: "GET",
+    url: "/map/affected_areas",
+}).done(function(data) {
+    // console.log(data);
+    var city = data.address[0];
+    var province = data.address[1].replace(/&quot;/g, '"');
+    var barangays = data.all_barangays;
+    console.log(split(city));
+    $.getJSON("{{ asset('js/map-js/Barangays.json') }}", function(json) {
+        $.each(barangays, function(key, value) {
+            var geo = geoIndex.buildIndex(["NAME_1","NAME_2","NAME_3"], json);
+            var geoQuery = new geoIndex.Queries();
+            var resByProp = (geoQuery
+                .query("NAME_1", "=" ,'Camarines Sur')
+                .and("NAME_2", "=", split(city))
+                .and("NAME_3","=", value)
+                .get());
+            L.geoJSON(resByProp).addTo(mymap);
+        });
+    });
+});
+
+function split(str) {
+  return str.
+    split(' ').
+    map(w => w[0].toUpperCase() + w.substr(1).toLowerCase()).
+    join(' ');
+}
+
+
+
+
+
+
+// import data from "{{ asset('js/map-js/Barangays.json') }}" assert { type: "json" };
+// console.log(data);
+// var geoIndex;
+// var geojs = {"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[123.26497650146484,13.666029930114746],[123.26141357421898,13.665860176086483],[123.2579574584961,13.665369987487793],[123.2511672973634,13.663149833679256],[123.24574279785156,13.662039756774902],[123.24458312988281,13.661829948425407],[123.24183654785168,13.661100387573299],[123.23719024658226,13.659810066223258],[123.23184967041038,13.658370018005371],[123.22580718994152,13.65711975097662],[123.21806335449219,13.655480384826774],[123.2148208618164,13.655090332031364],[123.21016693115246,13.654740333557243],[123.22844696044933,13.64896011352539],[123.23222351074241,13.643070220947266],[123.24571228027344,13.643560409545955],[123.24471282958984,13.63661003112793],[123.27207946777344,13.637920379638672],[123.27108001708984,13.640680313110295],[123.27066802978516,13.643520355224666],[123.26983642578136,13.645910263061637],[123.2689437866211,13.64923954010004],[123.26750946044945,13.656009674072266],[123.2668685913086,13.65814018249506],[123.26612091064453,13.661700248718262],[123.26566314697277,13.663310050964412],[123.2655029296875,13.665140151977539],[123.26497650146484,13.666029930114746]]]},"properties":{"ID_0":177,"ISO":"PHL","NAME_0":"Philippines","ID_1":20,"NAME_1":"Camarines Sur","ID_2":370,"NAME_2":"Naga City","ID_3":8734,"NAME_3":"Pacol","NL_NAME_3":"","VARNAME_3":"","TYPE_3":"Barangay","ENGTYPE_3":"Village","PROVINCE":"Camarines Sur","REGION":"Bicol Region (Region V)"}},
+// ]};
+
     //AJAX IMPLEMENTATION
     /*
     $.ajax({
@@ -477,6 +521,5 @@ $(document).ready(function() {
         });
     });
     */
-});
 </script>
 @endsection
