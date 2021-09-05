@@ -18,7 +18,7 @@
                     <div class="progress-group-header">
                         <div>Food Packs</div>
                         <div class="mfs-auto font-weight-bold mr-2">{{ $stock_level->food_packs }}</div>
-                        <div class="font-weight-bold">( {{ ($stock_level->food_packs/$capacity) * 100 }} %)</div>
+                        <div class="font-weight-bold">( {{ round(($stock_level->food_packs/$total_number_of_evacuees) * 100) }} %)</div>
                     </div>
                     <div class="progress-group-bars">
                         <div class="progress progress-xs">
@@ -31,7 +31,7 @@
                     <div class="progress-group-header">
                         <div>Water</div>
                         <div class="mfs-auto font-weight-bold mr-2">{{ $stock_level->water }}</div>
-                        <div class="font-weight-bold">({{ ($stock_level->water/$capacity) * 100 }}%)</div>
+                        <div class="font-weight-bold">({{ round(($stock_level->water/$total_number_of_evacuees) * 100) }}%)</div>
                     </div>
                     <div class="progress-group-bars">
                         <div class="progress progress-xs">
@@ -44,7 +44,7 @@
                     <div class="progress-group-header">
                         <div>Clothes</div>
                         <div class="mfs-auto font-weight-bold mr-2">{{ $stock_level->clothes }}</div>
-                        <div class="font-weight-bold">({{ ($stock_level->clothes/$capacity) * 100 }}%)</div>
+                        <div class="font-weight-bold">({{ round(($stock_level->clothes/$total_number_of_evacuees) * 100) }}%)</div>
                     </div>
                     <div class="progress-group-bars">
                         <div class="progress progress-xs">
@@ -57,7 +57,7 @@
                     <div class="progress-group-header">
                         <div>Hygiene Kit</div>
                         <div class="mfs-auto font-weight-bold mr-2">{{ $stock_level->hygiene_kit }}</div>
-                        <div class="font-weight-bold">({{ ($stock_level->hygiene_kit/$capacity) * 100 }}%)</div>
+                        <div class="font-weight-bold">({{ round(($stock_level->hygiene_kit/$total_number_of_evacuees) * 100) }}%)</div>
                     </div>
                     <div class="progress-group-bars">
                         <div class="progress progress-xs">
@@ -70,7 +70,7 @@
                     <div class="progress-group-header">
                         <div>Medicine</div>
                         <div class="mfs-auto font-weight-bold mr-2">{{ $stock_level->medicine }}</div>
-                        <div class="font-weight-bold">({{ ($stock_level->medicine/$capacity) * 100 }}%)</div>
+                        <div class="font-weight-bold">({{ round(($stock_level->medicine/$total_number_of_evacuees) * 100) }}%)</div>
                     </div>
                     <div class="progress-group-bars">
                         <div class="progress progress-xs">
@@ -83,7 +83,7 @@
                     <div class="progress-group-header">
                         <div>Emergency Shelter Assistance</div>
                         <div class="mfs-auto font-weight-bold mr-2">{{ $stock_level->emergency_shelter_assistance }}</div>
-                        <div class="font-weight-bold">({{ ($stock_level->emergency_shelter_assistance/$capacity) * 100 }}%)</div>
+                        <div class="font-weight-bold">({{ round(($stock_level->emergency_shelter_assistance/$total_number_of_evacuees) * 100) }}%)</div>
                     </div>
                     <div class="progress-group-bars">
                         <div class="progress progress-xs">
@@ -106,7 +106,7 @@
 
                 <div class="col-12 center mt-4">
                     <div class="col-md-6 mb-4 p-0">
-                        <a href="/camp-manager/dispense">
+                        <a href="/camp-manager/dispense-view">
                             <button class="btn btn-accent-outline  px-4 ">Dispense</button>
                         </a>
                     </div>

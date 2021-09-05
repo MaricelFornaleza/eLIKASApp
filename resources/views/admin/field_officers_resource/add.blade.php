@@ -101,7 +101,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-sm-6" id='designation' style="display: none;">
+                                <div class="col-sm-6" id='designation'>
                                     <div class="form-group">
                                         <label for="designation">Designation</label>
                                         <input class="form-control @error('designation') is-invalid @enderror"
