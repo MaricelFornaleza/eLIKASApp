@@ -16,9 +16,9 @@ class DisasterResponseController extends Controller
 {
     public function start()
     {
-        $user_id = Auth::id();
-        $admin_city = Admin::where('user_id', '=', $user_id)->select('city_psgc')->first();
-        return view('admin.disaster-response-resource.start')->with('admin_city', $admin_city);
+        $barangays = Barangay::all();
+
+        return view('admin.disaster-response-resource.start')->with('barangays', $barangays);
     }
     public function archive()
     {
@@ -32,7 +32,7 @@ class DisasterResponseController extends Controller
         $validated = $request->validate([
             'disaster_type' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:255'],
-            'barangay' => ['required'],
+            'barangay' => ['required_without_all'],
         ]);
 
         $disaster_reponse = DisasterResponse::create([
@@ -41,7 +41,7 @@ class DisasterResponseController extends Controller
             'description' => $validated['description'],
             'photo' => $validated['disaster_type'] . ".png"
         ]);
-        $barangay = explode(",", $request['barangay'][0]);
+        $barangay = $request['barangay'];
 
         $data = [];
         foreach ($barangay as $index => $barangay_name) {
