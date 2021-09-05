@@ -185,11 +185,13 @@ class FieldOfficerController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
-        $barangays = Barangay::all();
+
         $barangay_captain = BarangayCaptain::where('user_id', $user->id)->first();
         $camp_designation = CampManager::where('user_id', $user->id)->first();
         $courier_designation = Courier::where('user_id', $user->id)->first();
-        return view('admin.field_officers_resource.edit')->with(compact(["user", 'barangay_captain', 'courier_designation', 'camp_designation', 'barangays']));
+        $user_id = Auth::id();
+        $admin_city = Admin::where('user_id', '=', $user_id)->select('city_psgc')->first();
+        return view('admin.field_officers_resource.edit')->with(compact(["user", 'barangay_captain', 'courier_designation', 'camp_designation', 'admin_city']));
         // dd($contacts);
     }
 

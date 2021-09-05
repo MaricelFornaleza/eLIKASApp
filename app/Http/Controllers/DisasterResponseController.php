@@ -27,10 +27,12 @@ class DisasterResponseController extends Controller
     }
     public function store(Request $request)
     {
+
+
         $validated = $request->validate([
             'disaster_type' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:255'],
-            'barangay' => ['required_without_all'],
+            'barangay' => ['required'],
         ]);
 
         $disaster_reponse = DisasterResponse::create([
@@ -39,12 +41,13 @@ class DisasterResponseController extends Controller
             'description' => $validated['description'],
             'photo' => $validated['disaster_type'] . ".png"
         ]);
+        $barangay = explode(",", $request['barangay'][0]);
 
         $data = [];
-        foreach ($request->barangay as $index => $barangay) {
+        foreach ($barangay as $index => $barangay_name) {
             $data[] = [
                 'disaster_response_id' => $disaster_reponse->id,
-                'barangay' => $request->barangay[$index],
+                'barangay' => $barangay[$index],
             ];
         }
         AffectedArea::insert($data);
@@ -55,8 +58,8 @@ class DisasterResponseController extends Controller
     public function show($id)
     {
         $disaster_reponse = DisasterResponse::where('id', '=', $id)->first();
-        $barangays = AffectedArea::where('disaster_response_id', '=', $id)->select('barangay')->first();
-        $barangays = explode(',', $barangays->barangay);
+        $barangays = AffectedArea::where('disaster_response_id', '=', $id)->select('barangay')->get();
+        // dd($barangays);
         return view('admin.disaster-response-resource.show', ['disaster_response' => $disaster_reponse, 'barangays' => $barangays]);
     }
     public function stop($id)

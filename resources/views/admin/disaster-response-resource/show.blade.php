@@ -182,7 +182,7 @@
                         </div>
                         @foreach($barangays as $barangay)
                         <div class="pt-1 pb-1">
-                            <div>{{$barangay}}</div>
+                            <div>{{$barangay->barangay}}</div>
                             <div class="progress progress-xs my-2">
                                 <div class="progress-bar bg-danger" role="progressbar" style="width: 25%"
                                     aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>

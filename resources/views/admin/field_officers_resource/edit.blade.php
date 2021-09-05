@@ -1,6 +1,11 @@
 @extends('layouts.webBase')
 
 @section('css')
+<!-- Select2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
 @endsection
 
@@ -76,19 +81,16 @@
 
                                 </div>
                                 @if($user->officer_type == "Barangay Captain")
-                                <div class="col-sm-6" id='barangay'>
-                                    <div class=" form-group">
-                                        <label for="barangay">Barangay</label>
-                                        <select name="barangay" id="barangay"
-                                            class=" form-control @error('barangay') is-invalid @enderror">
-                                            <option value='{{ $barangay_captain->barangay }}' selected>
-                                                {{ $barangay_captain->barangay }}
-                                            </option>
-                                            @foreach($barangays as $barangay)
-                                            <option value='{{ $barangay->name }}'>
-                                                {{ $barangay->name }}
-                                            </option>
-                                            @endforeach
+                                <div class="col-sm-6" id='barangay_div'>
+                                    <input type="hidden" name="city_code" id="city_code"
+                                        value="{{$admin_city->city_psgc}}">
+                                    <input type="hidden" name="barangay" id="barangay_name"
+                                        value="{{$barangay_captain->barangay}}">
+                                    <div class="form-group ">
+                                        <label for="barangay_dropdown">Barangay</label>
+                                        <select name="barangay_dropdown" id="barangay_dropdown"
+                                            class=" form-control barangay_option @error('barangay') is-invalid @enderror"
+                                            onChange="change()">
                                         </select>
 
                                         @error('barangay')
@@ -204,20 +206,39 @@
 @endsection
 
 @section('javascript')
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+{{-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> --}}
+<script type="text/javascript" src="https://f001.backblazeb2.com/file/buonzz-assets/jquery.ph-locations.js"></script>
 
 <script type="text/javascript">
 function update() {
     var select = document.getElementById('officer_type');
     if (select.value == 'Barangay Captain') {
-        document.getElementById('barangay').style.display = "block";
-        document.getElementById('designation').style.display = "none";
+        $('#barangay_div').show();
+        $('#barangay_dropdown').select2().next().show();
+        $('#designation').hide();
 
     } else {
-        document.getElementById('barangay').style.display = "none";
-        document.getElementById('designation').style.display = "block";
+        $('#barangay_div').hide();
+        $('#barangay_dropdown').select2().next().hide();
+        $('#designation').show();
+
     }
 }
+
+function change() {
+    var myselectedtxt = $('#barangay_dropdown').find("option:selected").text();
+    $('#barangay_name').val(myselectedtxt);
+}
+var city_code = $('#city_code').val();
+$(function() {
+
+    $('#barangay_dropdown').ph_locations({
+        'location_type': 'barangays'
+    });
+    $('#barangay_dropdown').ph_locations('fetch_list', [{
+        "city_code": city_code
+    }]);
+});
 
 $(document).ready(function(e) {
     $('#photo').change(function() {
@@ -227,6 +248,9 @@ $(document).ready(function(e) {
         }
         reader.readAsDataURL(this.files[0]);
     });
+    $("#barangay_dropdown").select2();
+
+    console.log();
 });
 </script>
 @endsection

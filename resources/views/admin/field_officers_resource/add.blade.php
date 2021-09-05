@@ -83,12 +83,12 @@
 
                                 </div>
 
-                                <div class="col-sm-6 pr-3" id='barangay'>
+                                <div class="col-sm-6 pr-3" id='barangay_div'>
                                     <input type="hidden" name="city_code" id="city_code"
                                         value="{{$admin_city->city_psgc}}">
                                     <input type="hidden" name="barangay" id="barangay_name" value="">
                                     <div class="form-group ">
-                                        <label for="barangay">Barangay</label>
+                                        <label for="barangay_dropdown">Barangay</label>
                                         <select name="barangay_dropdown" id="barangay_dropdown"
                                             class=" form-control barangay_option @error('barangay') is-invalid @enderror"
                                             onChange="change()">
@@ -146,10 +146,7 @@
                                 </div>
                             </div>
 
-                            {{-- <select id="region"><option value=''>Select Region</option></select> <br />
-                            <select id="province"><option value=''>Select Province</option></select> <br />
-                            <select id="city"><option value=''>Select City</option></select> <br /> 
-                            <select id="barangay_1"><option value=''>Select Barangay</option></select> <br />  --}}
+
                         </form>
 
                     </div>
@@ -171,11 +168,15 @@
 function update() {
     var select = document.getElementById('officer_type');
     if (select.value == 'Barangay Captain') {
-        document.getElementById('barangay').style.display = "block";
-        document.getElementById('designation').style.display = "none";
+        $('#barangay_div').show();
+        $('#barangay_dropdown').select2().next().show();
+        $('#designation').hide();
+
     } else {
-        document.getElementById('barangay').style.display = "none";
-        document.getElementById('designation').style.display = "block";
+        $('#barangay_div').hide();
+        $('#barangay_dropdown').select2().next().hide();
+        $('#designation').show();
+
     }
 }
 

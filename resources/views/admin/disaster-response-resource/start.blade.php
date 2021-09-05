@@ -94,6 +94,7 @@
                                             value="{{$admin_city->city_psgc}}">
                                         <input type="hidden" name="barangay[]" id="barangays" value="">
 
+
                                         <select name="barangay_dropdown[]" multiple="multiple" size="10"
                                             id="barangay_dropdown" onchange="change()" required
                                             class=" form-control barangay_option @error('barangay') is-invalid @enderror">
@@ -150,12 +151,19 @@ function change() {
     //     option_array.push($(this).text());
 
     // });
-    $('#barangay_dropdown').find(':selected').each(function() {
+    // $('#barangay_dropdown').find(':selected').each(function() {
+    //     option_array.push($(this).text());
+
+    // });
+    $barangay_name = $('#barangay_dropdown').find(':selected').each(function() {
         option_array.push($(this).text());
 
     });
     $('#barangays').val(option_array);
-    console.log(option_array);
+    // console.log(option_array);
+
+    console.log($('#barangays').val());
+
 
 }
 $(document).ready(function() {
@@ -185,7 +193,6 @@ $(document).ready(function() {
     //     var currentName = $(this).select2('data')[0].text;
     //     console.log(currentName); //you can get old name here also
     // });
-
 
 
 
