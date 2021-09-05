@@ -112,7 +112,8 @@
                             <div class="input-group mb-4">
 
                                 <input id="password" class="form-control @error('password') is-invalid @enderror"
-                                    type="password" placeholder="{{ __('Password') }}" name="password" required>
+                                    type="password" placeholder="{{ __('Password') }}" name="password" required
+                                    onfocus="change()">
                                 @error('password')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -128,8 +129,7 @@
 
                             <div class="input-group mb-4">
                                 <div class="col-12 center">
-                                    <button class="btn btn-register px-4 " onclick="change()"
-                                        type="submit">{{ __('Register') }}</button>
+                                    <button class="btn btn-register px-4 " type="submit ">{{ __('Register') }}</button>
                                 </div>
                             </div>
                         </form>
@@ -201,14 +201,7 @@ var my_handlers = {
             "option:selected").text();
         $('#city_name').val(myselectedtxt);
     },
-    change: function() {
-        var option_array = [];
-        $barangay_name = $('#barangay_psgc').find('option').each(function() {
-            option_array.push($(this).text());
-        });
-        $('#barangay_name').val(option_array);
-        console.log(option_array);
-    }
+
 };
 
 $(function() {
@@ -239,7 +232,7 @@ function change() {
         option_array.push($(this).text());
     });
     $('#barangay_name').val(option_array);
-    console.log(option_array);
+    // console.log(option_array);
 
 
 }

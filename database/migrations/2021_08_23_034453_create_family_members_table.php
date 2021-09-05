@@ -20,7 +20,8 @@ class CreateFamilyMembersTable extends Migration
             $table->date('birthdate');
             $table->string('sectoral_classification');
             $table->string('is_family_head');
-            $table->string('address');
+            $table->string('street');
+            $table->string('barangay');
             $table->string('family_code')->nullable();
             $table->timestamps();
         });

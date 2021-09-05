@@ -123,7 +123,7 @@
                                         <td>{{ $family_member->birthdate }}</td>
                                         <td>{{ $family_member->sectoral_classification }}</td>
                                         <td>{{ $family_member->is_family_head }}</td>
-                                        <td>{{ $family_member->address }}</td>
+                                        <td>{{ $family_member->street }}, {{ $family_member->barangay }}</td>
                                         @if($family_member->recipient_type == "")
                                         <td>Non-Evacuee</td>
                                         @else

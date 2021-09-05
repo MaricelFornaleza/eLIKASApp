@@ -6,6 +6,8 @@ use App\Models\Admin;
 use App\Models\AffectedArea;
 use App\Models\Barangay;
 use App\Models\DisasterResponse;
+use App\Models\FamilyMember;
+use App\Models\ReliefRecipient;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,15 +29,13 @@ class DisasterResponseController extends Controller
     }
     public function store(Request $request)
     {
-
-
         $validated = $request->validate([
             'disaster_type' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:255'],
             'barangay' => ['required_without_all'],
         ]);
 
-        $disaster_reponse = DisasterResponse::create([
+        $disaster_response = DisasterResponse::create([
             'date_started' => Carbon::now(),
             'disaster_type' => $validated['disaster_type'],
             'description' => $validated['description'],
@@ -44,14 +44,32 @@ class DisasterResponseController extends Controller
         $barangay = $request['barangay'];
 
         $data = [];
-        foreach ($barangay as $index => $barangay_name) {
+        foreach ($barangay as $index) {
             $data[] = [
-                'disaster_response_id' => $disaster_reponse->id,
-                'barangay' => $barangay[$index],
+                'disaster_response_id' => $disaster_response->id,
+                'barangay' => $index,
             ];
         }
         AffectedArea::insert($data);
 
+        // $affectedResidents = FamilyMember::join('affected_areas', function ($join) use ($disaster_response) {
+        //     $join->on('family_members.barangay', '=', 'affected_areas.barangay')
+        //         ->where('affected_areas.disaster_response_id', '=', $disaster_response->id);
+        // })->select('family_members.family_code')->distinct()->get();
+
+        $affectedResidents = FamilyMember::join('affected_areas', 'family_members.barangay', '=', 'affected_areas.barangay')
+            ->where('affected_areas.disaster_response_id', '=', $disaster_response->id)
+            ->select('family_members.family_code')->groupBy('family_members.family_code')->get();
+
+        $data = [];
+        foreach ($affectedResidents as $index) {
+            $data[] = [
+                'disaster_response_id' => $disaster_response->id,
+                'family_code' => $index->family_code,
+                'recipient_type' => 'Non-evacuee',
+            ];
+        }
+        ReliefRecipient::insert($data);
         Session::flash('message', 'Disaster Response started.');
         return redirect('home');
     }

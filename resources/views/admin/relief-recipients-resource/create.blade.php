@@ -49,12 +49,31 @@
 
                             <!-- /.row-->
                             <div class="row">
-                                <div class="col-sm-12">
+                                <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="address">Address<a style="color:red"> *</a></label>
-                                        <input class="form-control @error('address') is-invalid @enderror" type="text"
-                                            placeholder="{{ __('Enter Address') }}" name="address" required autofocus>
-                                        @error('address')
+                                        <label for="street">Street<a style="color:red"> *</a></label>
+                                        <input class="form-control @error('street') is-invalid @enderror" type="text"
+                                            placeholder="{{ __('Enter street') }}" name="street" required autofocus>
+                                        @error('street')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="barangay">Barangay<a style="color:red"> *</a></label>
+                                        <select name="barangay" id="barangay_name"
+                                            class=" form-control @error('barangay') is-invalid @enderror">
+                                            <option value=''>Select Barangay</option>
+                                            @foreach($barangays as $barangay)
+                                            <option value='{{ $barangay->name }}'>
+                                                {{ $barangay->name }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                        @error('barangay')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>

@@ -95,9 +95,9 @@ class RegisterController extends Controller
         ]);
         $barangay = explode(",", $data['barangays'][0]);
         $data = [];
-        foreach ($barangay as $index => $barangay_name) {
+        foreach ($barangay as $index) {
             $data[] = [
-                'name' => $barangay[$index],
+                'name' => $index,
             ];
         }
         Barangay::insert($data);
