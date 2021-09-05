@@ -6,17 +6,6 @@
         <div class="col-md-8 ">
             <form method="POST" action="/camp-manager/admit" onsubmit="return validateForm()">
                 @csrf
-                <!-- Select Disaster Response -->
-                <div class="col-md-6 px-0 pb-2 mx-auto">
-                    <label for="disaster_response"><h5 class="font-weight-bold">Disaster Response</h5></label>
-                    <select name="disaster_response_id" class="form-control" id="disaster_response_id">
-                            <option value="">Select</option>
-                            @foreach($disaster_responses as $disaster_response)
-                            <option value="{{ $disaster_response->id }}">Disaster Response {{ $disaster_response->id }}</option>
-                            @endforeach
-                    </select>
-
-                </div>
                 <!-- Barangay Information  -->
                 <div class="col-md-12 justify-content-center d-flex align-items-baseline p-0">
                     <div class="col-md-6 p-0 m-0">
