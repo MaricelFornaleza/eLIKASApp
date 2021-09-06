@@ -17,7 +17,7 @@
 
                 <a href="{{ route('evacuation-center.file.export') }}" class="btn btn-block export-btn">
                     <svg class="c-icon mr-2">
-                        <use xlink:href="{{ url('/icons/sprites/free.svg#cil-file') }}"></use>
+                        <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-file"></use>
                     </svg>
                     Export to Excel
                 </a>
@@ -74,8 +74,7 @@
                     <div class="card-body">
                         <div>
                             <table id="evacuationCenter"
-                            class="table table-borderless table-hover table-light table-striped " 
-                                >
+                                class="table table-borderless table-hover table-light table-striped ">
                                 <thead>
                                     <tr>
                                         <th>NAME</th>
@@ -92,9 +91,9 @@
                                         <th>CHILDREN</th>
                                         <th>PREGNANT</th>
                                         <th>SOLO PARENT</th>
-                                        
+
                                         <th>ACTIONS</th>
-                                        
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -129,15 +128,15 @@
                                             <a href="{{ route('evacuation-center.delete', ['id' => $evacuation_center->id] ) }}"
                                                 class="btn btn-danger"> <i class="cil-trash"></i></a>
                                         </td> -->
-                                        
+
                                         <td>
                                             <div class="row">
                                                 <div class="col-6 ">
-                                                    <a href="{{ route('evacuation-center.edit', ['id' => $evacuation_center->id] ) }}">
-                                                        <svg
-                                                            class="c-icon ">
+                                                    <a
+                                                        href="{{ route('evacuation-center.edit', ['id' => $evacuation_center->id] ) }}">
+                                                        <svg class="c-icon ">
                                                             <use
-                                                                xlink:href="{{ url('/icons/sprites/free.svg#cil-pencil') }}">
+                                                                xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-pencil">
                                                             </use>
                                                         </svg>
                                                     </a>
@@ -145,7 +144,8 @@
                                                 </div>
 
                                                 <div class="col-6 ">
-                                                    <form action="{{ route('evacuation-center.delete', ['id' => $evacuation_center->id] ) }}"
+                                                    <form
+                                                        action="{{ route('evacuation-center.delete', ['id' => $evacuation_center->id] ) }}"
                                                         method="post">
                                                         @csrf
                                                         @method("DELETE")

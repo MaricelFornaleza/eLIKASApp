@@ -21,7 +21,7 @@
 
                 <a href="{{ url('/export/field_officers') }}" class="btn btn-block export-btn">
                     <svg class="c-icon mr-2">
-                        <use xlink:href="{{ url('/icons/sprites/free.svg#cil-file') }}"></use>
+                        <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-file"></use>
                     </svg>
                     Export to Excel
                 </a>
@@ -50,7 +50,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                
+
                 @endif
             </div>
         </div>
@@ -129,7 +129,7 @@
                                                     <a href="/field_officers/{{$field_officer->user_id}}/edit"><svg
                                                             class="c-icon ">
                                                             <use
-                                                                xlink:href="{{ url('/icons/sprites/free.svg#cil-pencil') }}">
+                                                                xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-pencil">
                                                             </use>
                                                         </svg>
                                                     </a>
