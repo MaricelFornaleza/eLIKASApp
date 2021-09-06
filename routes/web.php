@@ -50,6 +50,7 @@ Route::group(['middleware' => ['auth']], function () {
     // Map
     Route::prefix('map')->group(function () {
         Route::get('/get_locations/{id}', 'MapController@get_locations');
+        Route::get('/affected_areas', 'MapController@affected_areas');
         Route::get('/get_couriers', 'MapController@get_couriers');
         Route::get('/get_evac', 'MapController@get_evac')->name('map.evacs');
         Route::resource('/', 'MapController');

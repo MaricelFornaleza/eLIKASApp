@@ -8,6 +8,7 @@ use App\Models\Barangay;
 use App\Models\DisasterResponse;
 use App\Models\FamilyMember;
 use App\Models\ReliefRecipient;
+use App\CustomClasses\UpdateMarker;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +20,6 @@ class DisasterResponseController extends Controller
     public function start()
     {
         $barangays = Barangay::all();
-
         return view('admin.disaster-response-resource.start')->with('barangays', $barangays);
     }
     public function archive()
@@ -70,6 +70,8 @@ class DisasterResponseController extends Controller
             ];
         }
         ReliefRecipient::insert($data);
+        $update_requests = new UpdateMarker;
+        $update_requests->refreshMap();
         Session::flash('message', 'Disaster Response started.');
         return redirect('home');
     }
@@ -85,6 +87,9 @@ class DisasterResponseController extends Controller
         $disaster_reponse = DisasterResponse::find($id);
         $disaster_reponse->date_ended = Carbon::now();
         $disaster_reponse->save();
+
+        $update_requests = new UpdateMarker;
+        $update_requests->refreshMap();
         Session::flash('message', 'Disaster Response ended');
         return redirect('home');
     }
