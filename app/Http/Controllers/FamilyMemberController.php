@@ -267,7 +267,7 @@ class FamilyMemberController extends Controller
         //     ->get();
         // dd($checkedResidents);
 
-        $family_members = DB::table('family_members')->where('family_code', null)->select('id', 'name', 'sectoral_classification')->get();
+        $family_members = DB::table('family_members')->where('family_code', null)->select('id', 'name', 'sectoral_classification', 'is_family_head', 'street', 'barangay')->get();
 
         //$family_members = FamilyMember::all();
         return view('admin.relief-recipients-resource.groupFamilyMembers', ['family_members' => $family_members]);
@@ -306,6 +306,6 @@ class FamilyMemberController extends Controller
         // $relief_recipient->recipient_type     = 'Non-Evacuee';
         // $relief_recipient->save();
         $request->session()->flash('message', 'Group Resident successfully!');
-        return redirect()->route('residents.index');
+        return redirect()->back();
     }
 }

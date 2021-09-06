@@ -30,7 +30,12 @@ class CampManagerController extends Controller
     }
     public function admitView()
     {
-      //  $disaster_responses = DisasterResponse::all();
+        $id = Auth::id();
+        $evacuation_center = EvacuationCenter::where('camp_manager_id', '=', $id)->first();
+        if (empty($evacuation_center)) {
+            abort(403, "You are not assigned to an evacuation center yet. Contact your adminstrator for further info.");
+        }
+        //  $disaster_responses = DisasterResponse::all();
         $family_members = DB::table('family_members')
             ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
             ->leftJoin('disaster_responses', 'relief_recipients.disaster_response_id', '=', 'disaster_responses.id')
@@ -53,9 +58,9 @@ class CampManagerController extends Controller
 
         foreach ($request->checkedResidents as $checkedResident) {
             $find_checkedResident = DB::table('relief_recipients')->where('family_code', $checkedResident)->get();
-          // dd($find_checkedResident);
+            // dd($find_checkedResident);
             if ($find_checkedResident != null) {
-                foreach($find_checkedResident as $found_relief_recipient){
+                foreach ($find_checkedResident as $found_relief_recipient) {
                     $relief_recipient = ReliefRecipient::find($found_relief_recipient->id);
                     $relief_recipient->recipient_type = 'Evacuee';
                     $relief_recipient->save();
@@ -66,17 +71,20 @@ class CampManagerController extends Controller
                     $evacuee->evacuation_center_id = $evacuation_center->id;
                     $evacuee->save();
                 }
-                
             }
         }
 
         $request->session()->flash('message', 'Admit Resident successfully!');
         return view('camp-manager.evacuees.evacuees');
-     
     }
 
     public function dischargeView()
     {
+        $id = Auth::id();
+        $evacuation_center = EvacuationCenter::where('camp_manager_id', '=', $id)->first();
+        if (empty($evacuation_center)) {
+            abort(403, "You are not assigned to an evacuation center yet. Contact your adminstrator for further info.");
+        }
         $user = Auth::user();
         $evacuation_center = DB::table('evacuation_centers')->where('camp_manager_id', $user->id)->first();
         $family_members = DB::table('family_members')
@@ -98,8 +106,8 @@ class CampManagerController extends Controller
         // dd($request->checkedEvacuees);
         foreach ($request->checkedEvacuees as $checkedEvacuee) {
             $findRelief_recipient = DB::table('relief_recipients')->where('family_code', $checkedEvacuee)->get();
-            if($findRelief_recipient != null){
-                foreach($findRelief_recipient as $found_relief_recipient){
+            if ($findRelief_recipient != null) {
+                foreach ($findRelief_recipient as $found_relief_recipient) {
                     $relief_recipient = ReliefRecipient::find($found_relief_recipient->id);
                     $relief_recipient->recipient_type = 'Non-evacuee';
                     $relief_recipient->save();
@@ -110,7 +118,6 @@ class CampManagerController extends Controller
                     $evacuee->save();
                 }
             }
-            
         }
         $request->session()->flash('message', 'Discharge Evacuee successfully!');
         return view('camp-manager.evacuees.evacuees');
@@ -121,24 +128,24 @@ class CampManagerController extends Controller
         $evacuation_center = EvacuationCenter::where('camp_manager_id', '=', $id)->first();
         if (empty($evacuation_center)) {
             abort(403, "You are not assigned to an evacuation center yet. Contact your adminstrator for further info.");
-        } 
+        }
 
         $evacuees = Evacuee::where('evacuation_center_id', $evacuation_center->id)->get();
         $total_number_of_evacuees = 0;
-        if($evacuees != null){
-            
-            foreach($evacuees as $evacuee){
+        if ($evacuees != null) {
+
+            foreach ($evacuees as $evacuee) {
                 $relief_recipient = ReliefRecipient::where('id', $evacuee->relief_recipient_id)->first();
                 $family = Family::where('family_code', $relief_recipient->family_code)->first();
                 $total_number_of_evacuees = $total_number_of_evacuees + $family->no_of_members;
             }
         }
-        
+
         //dd($total_number_of_evacuees);
 
         $stock_level = $evacuation_center->stock_level()->first();
         return view('camp-manager.supply.supplies', ['total_number_of_evacuees' => $total_number_of_evacuees, 'capacity' => $evacuation_center->capacity, 'stock_level' => $stock_level]);
-     }
+    }
     public function dispenseView()
     {
         $user = Auth::user();
@@ -155,7 +162,7 @@ class CampManagerController extends Controller
         $sl_evacuation_center = EvacuationCenter::where('camp_manager_id', '=', $user->id)->first();
         $stock_level = $sl_evacuation_center->stock_level()->first();
 
-        return view('camp-manager.supply.dispense', ['disaster_responses' => $disaster_responses, 'evacuees' => $family_members, 'stock_level' => $stock_level ]);
+        return view('camp-manager.supply.dispense', ['disaster_responses' => $disaster_responses, 'evacuees' => $family_members, 'stock_level' => $stock_level]);
     }
     public function dispense(Request $request)
     {
@@ -179,7 +186,7 @@ class CampManagerController extends Controller
         $relief_good->date                          = now();
         $relief_good->food_packs                    = $validated['food_packs'];
         $relief_good->water                         = $validated['water'];
-        $relief_good->hygiene_kit                   = $validated['hygiene_kit']; 
+        $relief_good->hygiene_kit                   = $validated['hygiene_kit'];
         $relief_good->medicine                      = $validated['medicine'];
         $relief_good->clothes                       = $validated['clothes'];
         $relief_good->emergency_shelter_assistance  = $validated['emergency_shelter_assistance'];
@@ -198,20 +205,20 @@ class CampManagerController extends Controller
 
         $evacuees = Evacuee::where('evacuation_center_id', $evacuation_center->id)->get();
         $total_number_of_evacuees = 0;
-        if($evacuees != null){
-            foreach($evacuees as $evacuee){
+        if ($evacuees != null) {
+            foreach ($evacuees as $evacuee) {
                 $relief_recipient = ReliefRecipient::where('id', $evacuee->relief_recipient_id)->first();
                 $family = Family::where('family_code', $relief_recipient->family_code)->first();
                 $total_number_of_evacuees = $total_number_of_evacuees + $family->no_of_members;
             }
         }
-        
+
         if (empty($evacuation_center)) {
             abort(403, "You have not been assigned to an evacuation center yet. Contact your adminstrator for further info.");
         } else {
             $request->session()->flash('message', 'Dispense Supply successfully!');
             $stock_level = $evacuation_center->stock_level()->first();
-            return view('camp-manager.supply.supplies', ['total_number_of_evacuees' => $total_number_of_evacuees,'capacity' => $evacuation_center->capacity, 'stock_level' => $stock_level]);
+            return view('camp-manager.supply.supplies', ['total_number_of_evacuees' => $total_number_of_evacuees, 'capacity' => $evacuation_center->capacity, 'stock_level' => $stock_level]);
         }
     }
     public function requestSupplyView()

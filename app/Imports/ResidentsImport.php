@@ -19,8 +19,8 @@ use App\Models\ReliefRecipient;
 class ResidentsImport implements ToCollection, WithHeadingRow
 {
     /**
-    * @param Collection $collection
-    */
+     * @param Collection $collection
+     */
     public function collection(Collection $collection)
     {
         $validator = Validator::make($collection->toArray(), [
@@ -29,7 +29,8 @@ class ResidentsImport implements ToCollection, WithHeadingRow
             '*.birthdate'         => ['required', 'date_format:Y-m-d'],
             '*.sectoral_classification' => ['required', 'string', 'max:255', 'alpha_spaces'],
             '*.is_family_head'    => ['required', 'string', 'max:255'],
-            '*.address'           => ['required', 'string', 'max:255', 'alpha_spaces'],
+            '*.street'           => ['required', 'string', 'max:255', 'alpha_spaces'],
+            '*.barangay'           => ['required', 'string', 'max:255'],
         ])->validate();
 
         foreach ($collection as $row) {
@@ -40,7 +41,8 @@ class ResidentsImport implements ToCollection, WithHeadingRow
                 $family_member->birthdate = $row['birthdate'];
                 $family_member->sectoral_classification = $row['sectoral_classification'];
                 $family_member->is_family_head = $row['is_family_head'];
-                $family_member->address   = $row['address'];
+                $family_member->street = $row['street'];
+                $family_member->barangay = $row['barangay'];
                 $family_member->save();
 
                 // if ($row['family_code'] != null) {
@@ -62,7 +64,7 @@ class ResidentsImport implements ToCollection, WithHeadingRow
                 //     }
                 // }
 
-                
+
             }
         }
     }

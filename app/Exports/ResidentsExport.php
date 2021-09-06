@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Exports;
+
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Illuminate\Support\Facades\Auth;
@@ -11,8 +12,8 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 class ResidentsExport implements FromCollection, ShouldAutoSize, WithHeadings
 {
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function collection()
     {
         $residents = DB::table('family_members')
@@ -24,7 +25,8 @@ class ResidentsExport implements FromCollection, ShouldAutoSize, WithHeadings
                 'birthdate',
                 'sectoral_classification',
                 'is_family_head',
-                'address'
+                'street',
+                'barangay'
             )
             ->get();
         return $residents;
@@ -39,7 +41,8 @@ class ResidentsExport implements FromCollection, ShouldAutoSize, WithHeadings
             'Birthdate',
             'Sectoral_Classification',
             'Is_Family_Head',
-            'Address'
+            'Street',
+            'Barangay'
         ];
     }
 }
