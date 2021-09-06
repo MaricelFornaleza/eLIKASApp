@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
 use App\Models\Barangay;
 use App\Models\BarangayCaptain;
 use App\Models\CampManager;
@@ -10,7 +11,7 @@ use App\Models\Location;
 use App\Models\Inventory;
 use Illuminate\Http\Request;
 use App\Models\User;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -43,7 +44,6 @@ class FieldOfficerController extends Controller
             )
             ->get();
         // dd($field_officers);
-
         return view('admin.field_officers_resource.field_officers')->with('field_officers', $field_officers);
     }
 
@@ -183,10 +183,12 @@ class FieldOfficerController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
-        $barangays = Barangay::all();
+
         $barangay_captain = BarangayCaptain::where('user_id', $user->id)->first();
         $camp_designation = CampManager::where('user_id', $user->id)->first();
         $courier_designation = Courier::where('user_id', $user->id)->first();
+        $barangays = Barangay::all();
+
         return view('admin.field_officers_resource.edit')->with(compact(["user", 'barangay_captain', 'courier_designation', 'camp_designation', 'barangays']));
         // dd($contacts);
     }

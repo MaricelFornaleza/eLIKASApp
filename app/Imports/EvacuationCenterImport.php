@@ -18,7 +18,7 @@ class EvacuationCenterImport implements ToCollection, WithHeadingRow
     public function collection(Collection $collection)
     {
         $validator = Validator::make($collection->toArray(), [
-            '*.evacuation_center_name' => 'required|unique:evacuation_centers,name|min:1|max:128',
+            '*.evacuation_center_name' => 'required|min:1|max:128',
             '*.address'         => 'required|min:1|max:256',
             '*.latitude'        => 'required',
             '*.longitude'       => 'required',

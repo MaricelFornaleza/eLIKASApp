@@ -1,6 +1,11 @@
 @extends('layouts.webBase')
 
 @section('css')
+<!-- Select2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
 @endsection
 
@@ -76,29 +81,34 @@
                             <div class="row mt-2">
                                 <div class="col-12">
                                     <div class="list-group">
-                                        <div class="list-group-item list-group-item-action ">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="all" id="all">
-                                                <label class="form-check-label" for="all">
-                                                    Select All
-                                                </label>
+                                        <div class="row my-2">
+                                            <div class="col-md-4">
+                                                <button class="btn btn-primary px-4 " type="button"
+                                                    onclick="selectAll()">Select
+                                                    all Barangay</button>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button class="btn btn-border px-4 " type="button"
+                                                    onclick="deselectAll()">Reset</button>
                                             </div>
                                         </div>
-                                        <div class="result">
-                                            @foreach($barangays as $barangay)
-                                            <div class="list-group-item list-group-item-action ">
-                                                <div class="form-check">
-                                                    <input
-                                                        class="form-check-input  @error('barangay') is-invalid @enderror checkbox"
-                                                        type="checkbox" value="{{$barangay->id}}" id="{{$barangay->id}}"
-                                                        name="barangay[]">
-                                                    <label class="form-check-label" for="{{$barangay->id}}">
-                                                        {{$barangay->name}}
-                                                    </label>
 
-                                                </div>
-                                            </div>
-                                            @endforeach
+
+                                        <div class="result">
+
+
+
+                                            <select name="barangay[]" multiple="multiple" size="10"
+                                                id="barangay_dropdown" required
+                                                class=" form-control barangay_option @error('barangay') is-invalid @enderror">
+
+                                                @foreach($barangays as $barangay)
+                                                <option value='{{ $barangay->name }}'>
+                                                    {{ $barangay->name }}
+                                                </option>
+                                                @endforeach
+
+                                            </select>
 
                                         </div>
 
@@ -108,7 +118,7 @@
                                 </div>
                             </div>
 
-                            <div class="row mt-5 center">
+                            <div class="row my-5  center">
                                 <div class="col-4 ">
                                     <button class="btn btn-primary px-4 " type="submit">{{ __('Add') }}</button>
                                 </div>
@@ -131,19 +141,25 @@
 @endsection
 
 @section('javascript')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function() {
-    $('#all').change(function() {
-        $("input:checkbox").prop('checked', $(this).prop("checked"));
-    });
 
-    $('.checkbox').on('click', function() {
-        if ($('.checkbox:checked').length == $('.checkbox').length) {
-            $('#all').prop('checked', true);
-        } else {
-            $('#all').prop('checked', false);
-        }
+<script type="text/javascript" src="https://f001.backblazeb2.com/file/buonzz-assets/jquery.ph-locations.js"></script>
+<script type="text/javascript">
+function selectAll() {
+    $("#barangay_dropdown > option").prop("selected", true);
+    $("#barangay_dropdown").trigger("change");
+
+}
+
+function deselectAll() {
+    $("#barangay_dropdown > option").prop("selected", false);
+    $("#barangay_dropdown").trigger("change");
+
+}
+$(document).ready(function() {
+    $("#barangay_dropdown").select2({
+        closeOnSelect: false,
+        placeholder: "Select barangay",
+        allowClear: true
     });
 });
 </script>

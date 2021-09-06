@@ -1,6 +1,11 @@
 @extends('layouts.webBase')
 
 @section('css')
+<!-- Select2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
 @endsection
 
@@ -76,12 +81,15 @@
 
                                 </div>
                                 @if($user->officer_type == "Barangay Captain")
-                                <div class="col-sm-6" id='barangay'>
-                                    <div class=" form-group">
+                                <div class="col-sm-6" id='barangay_div'>
+
+
+                                    <div class="form-group ">
                                         <label for="barangay">Barangay</label>
-                                        <select name="barangay" id="barangay"
-                                            class=" form-control @error('barangay') is-invalid @enderror">
-                                            <option value='{{ $barangay_captain->barangay }}' selected>
+
+                                        <select name="barangay" id="barangay_name"
+                                            class=" form-control barangay_option @error('barangay') is-invalid @enderror">
+                                            <option value='{{ $barangay_captain->barangay }}'>
                                                 {{ $barangay_captain->barangay }}
                                             </option>
                                             @foreach($barangays as $barangay)
@@ -204,21 +212,10 @@
 @endsection
 
 @section('javascript')
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+{{-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> --}}
+<script type="text/javascript" src="https://f001.backblazeb2.com/file/buonzz-assets/jquery.ph-locations.js"></script>
 
 <script type="text/javascript">
-function update() {
-    var select = document.getElementById('officer_type');
-    if (select.value == 'Barangay Captain') {
-        document.getElementById('barangay').style.display = "block";
-        document.getElementById('designation').style.display = "none";
-
-    } else {
-        document.getElementById('barangay').style.display = "none";
-        document.getElementById('designation').style.display = "block";
-    }
-}
-
 $(document).ready(function(e) {
     $('#photo').change(function() {
         let reader = new FileReader();
@@ -227,6 +224,23 @@ $(document).ready(function(e) {
         }
         reader.readAsDataURL(this.files[0]);
     });
+    $("#barangay_name").select2();
+
+
 });
+
+function update() {
+    var select = document.getElementById('officer_type');
+    if (select.value == 'Barangay Captain') {
+        $("#barangay").select2().next().show();
+        $("#barangay_div").show();
+        $("#designation").hide();
+
+    } else {
+        $("#barangay").select2().next().hide();
+        $("#barangay_div").hide();
+        $("#designation").show();
+    }
+}
 </script>
 @endsection

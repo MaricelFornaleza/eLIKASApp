@@ -18,7 +18,7 @@
 
                 <a href="{{ url('/export/residents') }}" class="btn btn-block export-btn">
                     <svg class="c-icon mr-2">
-                        <use xlink:href="{{ url('/icons/sprites/free.svg#cil-file') }}"></use>
+                        <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-file"></use>
                     </svg>
                     Export to Excel
                 </a>
@@ -103,7 +103,7 @@
                                         <th>GENDER</th>
                                         <th>BIRTHDATE</th>
                                         <th>SECTORAL CLASSIFICATION</th>
-                                        <th>FAMILY REPRESENTATIVE</th>
+                                        <th>FAMILY HEAD</th>
                                         <th>ADDRESS</th>
                                         <th>STATUS</th>
                                         <th>ACTION</th>
@@ -122,25 +122,22 @@
                                         <td>{{ $family_member->gender }}</td>
                                         <td>{{ $family_member->birthdate }}</td>
                                         <td>{{ $family_member->sectoral_classification }}</td>
-                                        <td>{{ $family_member->is_representative }}</td>
-                                        @if($family_member->address == "")
-                                        <td class="text-danger"><strong>{{ __('N/A') }}</strong></td>
-                                        @else
-                                        <td>{{ $family_member->address }}</td>
-                                        @endif
+                                        <td>{{ $family_member->is_family_head }}</td>
+                                        <td>{{ $family_member->street }}, {{ $family_member->barangay }}</td>
                                         @if($family_member->recipient_type == "")
-                                        <td class="text-danger"><strong>{{ __('N/A') }}</strong></td>
+                                        <td>Non-Evacuee</td>
                                         @else
                                         <td>{{ $family_member->recipient_type }}</td>
                                         @endif
-                                        
+
                                         <td>
                                             <div class="row">
                                                 <div class="col-6 ">
-                                                    <a href="{{ url('/residents/' . $family_member->fm_id . '/edit') }}"><svg
+                                                    <a
+                                                        href="{{ url('/residents/' . $family_member->fm_id . '/edit') }}"><svg
                                                             class="c-icon ">
                                                             <use
-                                                                xlink:href="{{ url('/icons/sprites/free.svg#cil-pencil') }}">
+                                                                xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-pencil">
                                                             </use>
                                                         </svg>
                                                     </a>
@@ -148,7 +145,8 @@
                                                 </div>
 
                                                 <div class="col-6 ">
-                                                    <form action="{{ route('residents.destroy', $family_member->fm_id ) }}"
+                                                    <form
+                                                        action="{{ route('residents.destroy', $family_member->fm_id ) }}"
                                                         method="post">
                                                         @csrf
                                                         @method("DELETE")

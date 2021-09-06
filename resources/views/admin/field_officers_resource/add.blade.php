@@ -82,10 +82,11 @@
                                     </select>
 
                                 </div>
-                                <div class="col-sm-6" id='barangay'>
+
+                                <div class="col-sm-6" id='barangay_div'>
                                     <div class="form-group ">
                                         <label for="barangay">Barangay</label>
-                                        <select name="barangay" id="barangay"
+                                        <select name="barangay" id="barangay_name"
                                             class=" form-control @error('barangay') is-invalid @enderror">
                                             <option value=''>Select Barangay</option>
                                             @foreach($barangays as $barangay)
@@ -94,11 +95,6 @@
                                             </option>
                                             @endforeach
                                         </select>
-
-
-                                        <!-- <input class="form-control @error('barangay') is-invalid @enderror"
-                                            id="barangay" name="barangay" type="text" placeholder="Enter your Barangay"
-                                            value="{{ old('barangay') }}"> -->
                                         @error('barangay')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -106,6 +102,7 @@
                                         @enderror
                                     </div>
                                 </div>
+
                                 <div class="col-sm-6" id='designation' style="display: none;">
                                     <div class="form-group">
                                         <label for="designation">Designation</label>
@@ -137,8 +134,6 @@
                                         </span>
                                         @enderror
                                     </div>
-
-
                                 </div>
 
 
@@ -152,6 +147,8 @@
                                         class="btn btn-outline-primary px-4 ">{{ __('Cancel') }}</a>
                                 </div>
                             </div>
+
+
                         </form>
 
                     </div>
@@ -166,20 +163,9 @@
 @endsection
 
 @section('javascript')
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+{{-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> --}}
 
 <script type="text/javascript">
-function update() {
-    var select = document.getElementById('officer_type');
-    if (select.value == 'Barangay Captain') {
-        document.getElementById('barangay').style.display = "block";
-        document.getElementById('designation').style.display = "none";
-    } else {
-        document.getElementById('barangay').style.display = "none";
-        document.getElementById('designation').style.display = "block";
-    }
-}
-
 $(document).ready(function(e) {
     $('#photo').change(function() {
         let reader = new FileReader();
@@ -188,8 +174,21 @@ $(document).ready(function(e) {
         }
         reader.readAsDataURL(this.files[0]);
     });
-    $("#barangay").select2();
-
+    $("#barangay_name").select2();
 });
+
+function update() {
+    var select = document.getElementById('officer_type');
+    if (select.value == 'Barangay Captain') {
+        $("#barangay").select2().next().show();
+        $("#barangay_div").show();
+        $("#designation").hide();
+
+    } else {
+        $("#barangay").select2().next().hide();
+        $("#barangay_div").hide();
+        $("#designation").show();
+    }
+}
 </script>
 @endsection

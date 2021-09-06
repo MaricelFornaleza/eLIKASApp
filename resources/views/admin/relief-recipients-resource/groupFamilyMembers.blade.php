@@ -15,44 +15,46 @@
                     Group Family Members
                 </h1>
             </div>
-           
-            </div>
+
         </div>
-        <div class="row">
-            @if(count($errors) > 0)
-            <div class="alert alert-danger col-12">
-                <h6>
-                    Upload Validation error
-                </h6>
-                <ul>
-                    @foreach($errors as $error)
-                    <li>{{$error}}</li>
-                    @endforeach
-                </ul>
-            </div>
+    </div>
+    <div class="row">
+        @if(count($errors) > 0)
+        <div class="alert alert-danger col-12">
+            <h6>
+                Input Error
+            </h6>
+            <ul>
+                @foreach($errors as $error)
+                <li>{{$error}}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+
+    </div>
+    <div class="row">
+        <div class="col-12">
+            @if(Session::has('message'))
+            <div class="alert alert-success">{{ Session::get('message') }}</div>
             @endif
-
         </div>
-        <div class="row">
-            <div class="col-12">
-                @if(Session::has('message'))
-                <div class="alert alert-success">{{ Session::get('message') }}</div>
-                @endif
-            </div>
-        </div>
+    </div>
 
-        <!-- /.row-->
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="col-sm-6 mr-auto">
-                            <h4 class="title">
-                                List of Residents
-                            </h4>
-                        </div>
+    <!-- /.row-->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="col-sm-6 mr-auto">
+                        <h4 class="title">
+                            List of Residents
+                        </h4>
                     </div>
-                    <div class="card-body ">
+                </div>
+                <div class="card-body ">
+                    <form method="POST" action="residents.groupResidents">
+                        @csrf
                         <div>
                             <table id="residentsTable"
                                 class="table table-borderless table-hover table-light table-striped "
@@ -61,24 +63,42 @@
                                     <tr>
                                         <th>NAME</th>
                                         <th>SECTORAL CLASSIFICATION</th>
+                                        <th>FAMILY HEAD</th>
+                                        <th>ADDRESS</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="tableBody" name="tableBody">
                                     @foreach($family_members as $family_member)
-
+                                    <!-- //     value="<tr><td><input class='col-sm-2 align-middle' type='radio' value='{{ $family_member->id }}' id='selectedRepresentative' name='selectedRepresentative'>{{ $family_member->name }}</td><td>{{ $family_member->sectoral_classification  }}</td></tr> <input type='hidden' value='{{ $family_member->id }}' name='selectedResidents[]'>"  -->
                                     <tr>
-                                        <td><input class="col-sm-2 align-middle" type="checkbox" name= "{{ $family_member->id  }}" value="<tr><td><input class='col-sm-2 align-middle' type='radio' value='{{ $family_member->id }}' id='selectedRepresentative' name='selectedRepresentative'>{{ $family_member->name }}</td><td>{{ $family_member->sectoral_classification  }}</td></tr> <input type='hidden' value='{{ $family_member->id }}' name='selectedResidents[]'>" >{{ $family_member->name }}</td>
+                                        <td><input class="col-sm-2 align-middle" type="checkbox"
+                                                name="selectedResidents[]"
+                                                value='{{$family_member->id}}'>{{ $family_member->name }}</td>
                                         <td>{{ $family_member->sectoral_classification }}</td>
+                                        <td>{{ $family_member->is_family_head }}</td>
+                                        <td>{{ $family_member->street }}, {{ $family_member->barangay }}</td>
                                     </tr>
                                     @endforeach
 
                                 </tbody>
                             </table>
+                            <div class="row mt-5 center">
+                                <div class="col-4 ">
+                                    <button class="btn btn-primary px-4 " type="submit">{{ __('Submit') }}</button>
+                                </div>
+                                <div class="col-4 ">
+                                    <a href="{{ route('residents.index') }}"
+                                        class="btn btn-outline-primary px-4 ">{{ __('Cancel') }}</a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
-
+        </div>
+    </div>
+    <!-- /.row-->
+    <!-- 
             <div class="col-sm-6">
                 <div class="card">
                     <div class="card-header">
@@ -136,11 +156,10 @@
                         </form>
                     </div>
                 </div>
-            </div>
-            <!-- /.col-->
-        </div>
-        <!-- /.row-->
-    </div>
+            </div> -->
+    <!-- /.col-->
+
+</div>
 </div>
 
 
@@ -165,35 +184,30 @@ $(document).ready(function() {
         "scrollX": true,
     });
 
-    var checkedResidents = new Array();
+    // var checkedResidents = new Array();
 
-    $('#residentsTable :checkbox').change(function() 
-    {
-        
-        checkedResidents = new Array();
-        $('#residentsTable :checkbox').each(function(i, item){
-            if($(item).is(':checked'))
-            {
-                var resident = $(item).val();
-                
-                checkedResidents.push(resident); 
-            }
-        });
-        
-    console.log("checkedResidents:", checkedResidents);
-    let textHtml = "";
-    for (let i=0; i < checkedResidents.length; i++) {
-        textHtml += checkedResidents[i];
-    }
-    
-    $('#selectedResident').html(textHtml);  
-         
-        // checkedResidents.forEach(function(value) {
-        //     $('#thiswan').append('<tr><td>'value'</td></tr>');    
-        // });
-        
-    });
+    // $('#residentsTable :checkbox').change(function() 
+    // {
+
+    //     checkedResidents = new Array();
+    //     $('#residentsTable :checkbox').each(function(i, item){
+    //         if($(item).is(':checked'))
+    //         {
+    //             var resident = $(item).val();
+
+    //             checkedResidents.push(resident); 
+    //         }
+    //     });
+
+    // console.log("checkedResidents:", checkedResidents);
+    // let textHtml = "";
+    // for (let i=0; i < checkedResidents.length; i++) {
+    //     textHtml += checkedResidents[i];
+    // }
+
+    // $('#selectedResident').html(textHtml);  
+
+    // });
 });
-
 </script>
 @endsection

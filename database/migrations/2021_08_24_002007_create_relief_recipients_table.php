@@ -15,9 +15,8 @@ class CreateReliefRecipientsTable extends Migration
     {
         Schema::create('relief_recipients', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('family_code')->nullable();
-            $table->integer('no_of_members');
-            $table->string('address');
+            $table->string('family_code');
+            $table->unsignedBigInteger('disaster_response_id');
             $table->string('recipient_type');
             $table->timestamps();
         });

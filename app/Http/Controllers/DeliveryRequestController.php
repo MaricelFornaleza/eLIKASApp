@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\CampManager;
 use App\Models\DeliveryRequest;
 use App\Models\EvacuationCenter;
+use App\CustomClasses\UpdateRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Carbon\Carbon;
+use Pusher\Pusher;
 
 class DeliveryRequestController extends Controller
 {
@@ -28,7 +31,13 @@ class DeliveryRequestController extends Controller
                 'evacuation_centers.name as evacuation_center_name',
                 'evacuation_centers.id as evacuation_center_id',
                 'requests.*')
-            ->orderByRaw('updated_at DESC')
+            //->orderByRaw('updated_at DESC')
+            ->orderByRaw("CASE WHEN requests.status = 'pending' THEN '1'
+                            WHEN requests.status = 'preparing' THEN '2'
+                            WHEN requests.status = 'in-transit' THEN '3'
+                            WHEN requests.status = 'delivered' THEN '4'
+                            WHEN requests.status = 'cancelled' THEN '5'
+                            WHEN requests.status = 'decline' THEN '6' END ASC, requests.updated_at DESC")
             ->paginate(20);
 
         // SELECT users.name as camp_manager_name, evacuation_centers.name as evacuation_center_name, requests.*
@@ -42,36 +51,90 @@ class DeliveryRequestController extends Controller
         return view('admin.request_resource.requestList', ['delivery_requests' => $delivery_requests] );
     }
 
+    public function refresh()
+    {
+        $delivery_requests = DB::table('requests')
+            ->leftJoin('users', 'requests.camp_manager_id', '=', 'users.id')
+            ->leftJoin('evacuation_centers', 'evacuation_centers.camp_manager_id', '=', 'requests.camp_manager_id')
+            ->select(
+                'users.name as camp_manager_name',
+                'evacuation_centers.name as evacuation_center_name',
+                'evacuation_centers.id as evacuation_center_id',
+                'requests.*')
+           ->orderByRaw("CASE WHEN requests.status = 'pending' THEN '1'
+                WHEN requests.status = 'preparing' THEN '2'
+                WHEN requests.status = 'in-transit' THEN '3'
+                WHEN requests.status = 'delivered' THEN '4'
+                WHEN requests.status = 'cancelled' THEN '5'
+                WHEN requests.status = 'decline' THEN '6' END ASC, requests.updated_at DESC")
+            ->paginate(20);
+            
+        return view('admin.request_resource.body', ['delivery_requests' => $delivery_requests] );
+    }
+
     public function approve(Request $request)
     {
         $id = $request->input('id');
-        $delivery_requests = DeliveryRequest::where('id', '=', $id)->first();
-        $delivery_requests->status = "preparing";
-        $delivery_requests->save();
+        $delivery_request = DeliveryRequest::where('id', '=', $id)->first();
+        $delivery_request->status = "preparing";
+        $delivery_request->save();
+
+        $update_requests = new UpdateRequests;
+        $update_requests->refreshHistory($delivery_request->camp_manager_id);
 
         return redirect()->back()->with('message', 'You have approved Request ID ' . $id);
     }
 
-    public function admin_cancel(Request $request)
-    {
-        $id = $request->input('id');
-        DeliveryRequest::where('id', $id)->update([
-            'status' => 'cancelled'
-        ]);
-
-        return redirect()->back()->with('message', 'You have cancelled Request ID ' . $id);
-
-    }
-    
     public function admin_decline(Request $request)
     {
         $id = $request->input('id');
-        DeliveryRequest::where('id', $id)->update([
-            'status' => 'declined'
-        ]);
+        $delivery_request = DeliveryRequest::where('id', '=', $id)->first();
+        $delivery_request->status = 'declined';
+        $delivery_request->save();
 
+        $update_requests = new UpdateRequests;
+        $update_requests->refreshHistory($delivery_request->camp_manager_id);
+        $update_requests->refreshDeliveries($delivery_request->courier_id);
+        
         return redirect()->back()->with('message', 'You have declined Request ID ' . $id);
 
+    }
+
+    public function cancel(Request $request)
+    {
+        $role = Auth::user()->officer_type;
+        $id = $request->input('id');
+
+        // DeliveryRequest::where('id', $id)->update([
+        //     'status' => 'cancelled'
+        // ])
+        $delivery_request = DeliveryRequest::where('id', '=', $id)->first();
+        $delivery_request->status = 'cancelled';
+        $delivery_request->save();
+
+        $request->session()->flash('message', 'You have cancelled Request ID ' . $id );
+
+        $update_requests = new UpdateRequests;
+        if ($role == 'Administrator') {
+            $update_requests->refreshHistory($delivery_request->camp_manager_id);
+            if(!empty($delivery_request->courier_id))
+                $update_requests->refreshDeliveries($delivery_request->courier_id);
+
+            return redirect()->back();
+        }
+        else if ($role == 'Camp Manager') {
+            $update_requests->refreshList();
+            $update_requests->refreshDeliveries($delivery_request->courier_id);
+
+            return redirect()->route('request.camp-manager.history');
+        }
+        else if ($role == 'Courier') {
+            $update_requests->refreshList();
+            $update_requests->refreshHistory($delivery_request->camp_manager_id);
+
+            return redirect()->route('home');
+        }
+            
     }
 
     public function assign_courier(Request $request)
@@ -82,48 +145,80 @@ class DeliveryRequestController extends Controller
             'courier_id' => $request->input('courier_id')
         ]);
 
-        $delivery_requests = DeliveryRequest::where('requests.id', '=', $id)
+        $delivery_request = DeliveryRequest::where('requests.id', '=', $id)
             ->leftJoin('users', 'requests.courier_id', '=', 'users.id')
             ->leftJoin('evacuation_centers', 'evacuation_centers.camp_manager_id', '=', 'requests.camp_manager_id')
-            ->select('users.name as courier_name','evacuation_centers.name as evacuation_center_name')
+            ->select('users.id', 'users.name as courier_name','evacuation_centers.name as evacuation_center_name')
             ->first();
+
+        $update_requests = new UpdateRequests;
+        $update_requests->refreshDeliveries($request->input('courier_id'));
+
         //dd($delivery_requests->courier_name);
         return redirect()->back()->with('message', 'You have assigned ' 
-            . $delivery_requests->courier_name 
+            . $delivery_request->courier_name 
             . ' to ' 
-            . $delivery_requests->evacuation_center_name);
+            . $delivery_request->evacuation_center_name);
     }
 
-    public function courier_accept(Request $request)
+    public function receive_supplies(Request $request)
     {
         $id = $request->input('id');
-        DeliveryRequest::where('id', $id)->update([
-            'status' => 'in-transit'
+        $delivery_request = DeliveryRequest::where('id', '=', $id)->first();
+        
+        // $user = CampManager::where('user_id', '=', $delivery_request->camp_manager_id)->first();
+        $evacuation_center = EvacuationCenter::where('camp_manager_id', '=', $delivery_request->camp_manager_id)->first();
+        $prev_stock = $evacuation_center->stock_level()->first();
+        $evacuation_center->stock_level()->update([
+            'food_packs'                    => ($prev_stock->food_packs + $delivery_request->food_packs),
+            'water'                         => ($prev_stock->water + $delivery_request->water),
+            'hygiene_kit'                   => ($prev_stock->hygiene_kit + $delivery_request->hygiene_kit),
+            'medicine'                      => ($prev_stock->medicine + $delivery_request->medicine),
+            'clothes'                       => ($prev_stock->clothes + $delivery_request->clothes),
+            'emergency_shelter_assistance'  => ($prev_stock->emergency_shelter_assistance + $delivery_request->emergency_shelter_assistance),
         ]);
+        $delivery_request->status = "delivered";
+        $delivery_request->save();
+
+        $update_requests = new UpdateRequests;
+        $update_requests->refreshList();
+        $update_requests->refreshDeliveries($delivery_request->courier_id);
+        
+        return redirect()->route('request.camp-manager.history')->with('message', 'Request ID ' . $id . ' has been delivered! Check your supply inventory to confirm.');
+    }
+
+    public function courier_accept($id)
+    {
+        // DeliveryRequest::where('id', $id)->update([
+        //     'status' => 'in-transit'
+        // ]);
+        $delivery_request = DeliveryRequest::where('id', '=', $id)->first();
+        $delivery_request->status = 'in-transit';
+        $delivery_request->save();
+
+        $update_requests = new UpdateRequests;
+        $update_requests->refreshList();
+        $update_requests->refreshHistory($delivery_request->camp_manager_id);
 
         return redirect()->route('home')->with('message', 'You have accepted Request ID ' . $id);
 
     }
-
-    public function courier_cancel(Request $request)
-    {
-        $id = $request->input('id');
-        DeliveryRequest::where('id', $id)->update([
-            'status' => 'cancelled'
-        ]);
-
-        return redirect()->route('home')->with('message', 'You have cancelled Request ID ' . $id);
-
-    }
-
+    
     public function courier_decline(Request $request)
     {
         $id = $request->input('id');
-        DeliveryRequest::where('id', $id)->update([
-            'status' => 'declined'
-        ]);
+        // DeliveryRequest::where('id', $id)->update([
+        //     'status' => 'declined'
+        // ]);
+        $delivery_request = DeliveryRequest::where('id', '=', $id)->first();
+        $delivery_request->status = 'declined';
+        $delivery_request->save();
 
-        return redirect()->back()->with('message', 'You have declined Request ID ' . $id);
+        $update_requests = new UpdateRequests;
+        $update_requests->refreshList();
+        $update_requests->refreshHistory($delivery_request->camp_manager_id);
+        
+        return redirect()->route('home')->with('message', 'You have declined Request ID ' . $id);
 
     }
 
@@ -148,14 +243,15 @@ class DeliveryRequestController extends Controller
         $user = Auth::user();
         $validated = $request->validate([
             'disaster_response_id'          => ['required', 'numeric'],
-            'food_packs'                    => ['required', 'numeric', 'min:0', 'max:10000'],
-            'water'                         => ['required', 'numeric', 'min:0', 'max:10000'],
-            'clothes'                       => ['required', 'numeric', 'min:0', 'max:10000'],
-            'hygiene_kit'                   => ['required', 'numeric', 'min:0', 'max:10000'],
-            'medicine'                      => ['required', 'numeric', 'min:0', 'max:10000'],
-            'emergency_shelter_assistance'  => ['required', 'numeric', 'min:0', 'max:10000'],
-            'note'                          => ['required'],
+            'food_packs'                    => ['numeric', 'min:0', 'max:10000'],
+            'water'                         => ['numeric', 'min:0', 'max:10000'],
+            'clothes'                       => ['numeric', 'min:0', 'max:10000'],
+            'hygiene_kit'                   => ['numeric', 'min:0', 'max:10000'],
+            'medicine'                      => ['numeric', 'min:0', 'max:10000'],
+            'emergency_shelter_assistance'  => ['numeric', 'min:0', 'max:10000'],
+            'note'                          => ['nullable'],
         ]);
+        
         $evacuation_center = EvacuationCenter::where('camp_manager_id', '=', $user->id)->first();
         //dd($evacuation_center);
         if(empty($evacuation_center)){
@@ -177,7 +273,10 @@ class DeliveryRequestController extends Controller
             'status'                        => "pending"
         ]);
         
-        $request->session()->flash('message', 'Successfully sent a request');
+        $update_requests = new UpdateRequests;
+        $update_requests->refreshList();
+
+        $request->session()->flash('message', 'Successfully sent a request!');
 
         //TO-DO: put here dynamic updating
 

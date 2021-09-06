@@ -1,5 +1,6 @@
-@extends('errors::minimal')
-
+@extends('errors::errorbase')
 @section('title', __('Too Many Requests'))
+@section('heading', __("Oops...") )
 @section('code', '429')
-@section('message', __('Too Many Requests'))
+@section('message', __('Too Many Requests.'))
+@section('image', url('/assets/error/419.png') )

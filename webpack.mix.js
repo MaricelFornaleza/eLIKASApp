@@ -11,7 +11,10 @@ const mix = require('laravel-mix');
  |
  */
 
-//mix.js('resources/js/app.js', 'public/js')
+//  mix.scripts([
+//         'node_modules/geojson-lookup/geojson-lookup.js'
+//     ],  'public/js/app.js');
+mix.js('resources/js/app.js', 'public/js/app.js')
 //mix.sass('resources/sass/app.scss', 'public/css');
 
 //**************** CSS ******************** 

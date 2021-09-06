@@ -13,11 +13,26 @@
             <div class="col-lg-8 ">
                 <div class="card">
                     <div class="card-header">
-                        <h5>Import Excel to add Supplies</h5>
+                        <h5>Import Excel to add Residents</h5>
 
                     </div>
                     <div class="card-body ">
-                        <h6>To add more than one supply, you can upload an excel file.</h6>
+                        <h6>To add more than one resident, you can upload an excel file.</h6>
+                        <div class="row">
+                            @if(count($errors) > 0)
+                            <div class="alert alert-danger col-12">
+                                <h6>
+                                    Upload Validation error
+                                </h6>
+                                <ul>
+                                    @foreach($errors->all() as $error)
+                                    <li>{{$error}}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            @endif
+
+                        </div>
                         <code>Important note: The file must contain the folowing format.</code>
 
                         <form action="{{ url('/import/residents/store') }}" method="post" enctype="multipart/form-data">

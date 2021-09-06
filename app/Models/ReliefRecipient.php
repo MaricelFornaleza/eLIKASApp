@@ -9,4 +9,9 @@ class ReliefRecipient extends Model
 {
     use HasFactory;
     protected $table = 'relief_recipients';
+
+    public function evacuee()
+    {
+        return $this->hasOne('App\Models\Evacuee');
+    }
 }

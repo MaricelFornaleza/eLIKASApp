@@ -11,6 +11,9 @@
     crossorigin=""></script>
 <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
 
+<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
 <link href="{{ asset('css/map.css') }}" rel="stylesheet">
 <style>
 #mapid {
@@ -57,19 +60,20 @@
 
 <script src="{{ asset('js/map-js/maps-functions.js') }}"></script>
 <script src="{{ asset('js/map-js/leaflet-maps-simplified.js') }}"></script>
+<script src="{{ asset('js/app.js') }}"></script>
 
 <script type="text/javascript">
-// var evacOptions = evacOptions();
+
 var evaclocations = '{{ $evacuation_centers }}';
 var courierlocations = '{{ $couriers }}';
 var result1 = JSON.parse(evaclocations.replace(/&quot;/g, '"'));
 var result2 = JSON.parse(courierlocations.replace(/&quot;/g, '"'));
-//console.log(result2);
 var evac_markers = L.layerGroup();
 var courier_markers = L.layerGroup();
+layerControl.addOverlay(evac_markers, "Evacuation Centers");
+layerControl.addOverlay(courier_markers, "Couriers");
 
 $.each(result1, function(key, value) {
-    //console.log(value.latitude);
     if(value.latitude !== null && value.longitude !== null) {
         var marker = new L.marker([value.latitude, value.longitude], {icon: evacIcon()})
             .bindPopup('<div class="font-weight-bold">' + value.name + '</div>' +
@@ -79,14 +83,14 @@ $.each(result1, function(key, value) {
                     '<div>Food</div>' +
                     '<div class="ml-auto font-weight-bold mr-2">' + value.food_packs +
                     '</div>' +
-                    '<div class="text-muted small">(' + (value.food_packs / 100 * 100) +
+                    '<div class="text-muted small">(' + (value.food_packs / value.capacity * 100) +
                     '%)</div>' +
                     '</div>' +
                     '<div class="progress-group-bars">' +
                     '<div class="progress progress-xs">' +
                     '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                    (value.food_packs / 100 * 100) +
-                    '%" aria-valuenow="56" aria-valuemin="0" aria-valuemax="100"></div>' +
+                    (value.food_packs / value.capacity * 100) +
+                    '%" aria-valuenow="56" aria-valuemin="0" aria-valuemax="' + value.capacity + '"></div>' +
                     '</div>' +
                     '</div>' +
                     '</div>' +
@@ -95,14 +99,14 @@ $.each(result1, function(key, value) {
                     '<div>Water</div>' +
                     '<div class="ml-auto font-weight-bold mr-2">' + value.water +
                     '</div>' +
-                    '<div class="text-muted small">(' + (value.water / 100 * 100) +
+                    '<div class="text-muted small">(' + (value.water / value.capacity * 100) +
                     '%)</div>' +
                     '</div>' +
                     '<div class="progress-group-bars">' +
                     '<div class="progress progress-xs">' +
                     '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                    (value.water / 100 * 100) +
-                    '%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>' +
+                    (value.water / value.capacity * 100) +
+                    '%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="' + value.capacity + '"></div>' +
                     '</div>' +
                     '</div>' +
                     '</div>' +
@@ -111,14 +115,14 @@ $.each(result1, function(key, value) {
                     '<div>Clothes</div>' +
                     '<div class="ml-auto font-weight-bold mr-2">' + value.clothes +
                     '</div>' +
-                    '<div class="text-muted small">(' + (value.clothes / 100 * 100) +
+                    '<div class="text-muted small">(' + (value.clothes / value.capacity * 100) +
                     '%)</div>' +
                     '</div>' +
                     '<div class="progress-group-bars">' +
                     '<div class="progress progress-xs">' +
                     '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                    (value.clothes / 100 * 100) +
-                    '%" aria-valuenow="11" aria-valuemin="0" aria-valuemax="100"></div>' +
+                    (value.clothes / value.capacity * 100) +
+                    '%" aria-valuenow="11" aria-valuemin="0" aria-valuemax="' + value.capacity + '"></div>' +
                     '</div>' +
                     '</div>' +
                     '</div>' +
@@ -127,14 +131,14 @@ $.each(result1, function(key, value) {
                     '<div>Hygiene Kit</div>' +
                     '<div class="ml-auto font-weight-bold mr-2">' + value.hygiene_kit +
                     '</div>' +
-                    '<div class="text-muted small">(' + (value.hygiene_kit / 100 * 100) +
+                    '<div class="text-muted small">(' + (value.hygiene_kit / value.capacity * 100) +
                     '%)</div>' +
                     '</div>' +
                     '<div class="progress-group-bars">' +
                     '<div class="progress progress-xs">' +
                     '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                    (value.hygiene_kit / 100 * 100) +
-                    '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="100"></div>' +
+                    (value.hygiene_kit / value.capacity * 100) +
+                    '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="' + value.capacity + '"></div>' +
                     '</div>' +
                     '</div>' +
                     '</div>' +
@@ -143,14 +147,14 @@ $.each(result1, function(key, value) {
                     '<div>Medicine</div>' +
                     '<div class="ml-auto font-weight-bold mr-2">' + value.medicine +
                     '</div>' +
-                    '<div class="text-muted small">(' + (value.medicine / 100 * 100) +
+                    '<div class="text-muted small">(' + (value.medicine / value.capacity * 100) +
                     '%)</div>' +
                     '</div>' +
                     '<div class="progress-group-bars">' +
                     '<div class="progress progress-xs">' +
                     '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                    (value.medicine / 100 * 100) +
-                    '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="100"></div>' +
+                    (value.medicine / value.capacity * 100) +
+                    '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="' + value.capacity + '"></div>' +
                     '</div>' +
                     '</div>' +
                     '</div>' +
@@ -160,13 +164,13 @@ $.each(result1, function(key, value) {
                     '<div class="ml-auto font-weight-bold mr-2">' + value 
                     .emergency_shelter_assistance + '</div>' +
                     '<div class="text-muted small">(' + (value 
-                        .emergency_shelter_assistance / 100 * 100) + '%)</div>' +
+                        .emergency_shelter_assistance / value.capacity * 100) + '%)</div>' +
                     '</div>' +
                     '<div class="progress-group-bars">' +
                     '<div class="progress progress-xs">' +
                     '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                    (value.emergency_shelter_assistance / 100 * 100) +
-                    '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="100"></div>' +
+                    (value.emergency_shelter_assistance / value.capacity * 100) +
+                    '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="' + value.capacity + '"></div>' +
                     '</div>' +
                     '</div>' +
                     '</div>' +
@@ -175,7 +179,6 @@ $.each(result1, function(key, value) {
 
         evac_markers.addTo(mymap);
     }
-   
 });
 
 $.each(result2, function(key, value) {
@@ -217,14 +220,14 @@ $(document).ready(function() {
                                     '<div>Food</div>' +
                                     '<div class="ml-auto font-weight-bold mr-2">' + value[i].food_packs +
                                     '</div>' +
-                                    '<div class="text-muted small">(' + (value[i].food_packs / 100 * 100) +
+                                    '<div class="text-muted small">(' + (value[i].food_packs / value[i].capacity * 100) +
                                     '%)</div>' +
                                     '</div>' +
                                     '<div class="progress-group-bars">' +
                                     '<div class="progress progress-xs">' +
                                     '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                                    (value[i].food_packs / 100 * 100) +
-                                    '%" aria-valuenow="56" aria-valuemin="0" aria-valuemax="100"></div>' +
+                                    (value[i].food_packs / value[i].capacity * 100) +
+                                    '%" aria-valuenow="56" aria-valuemin="0" aria-valuemax="' + value[i].capacity + '"></div>' +
                                     '</div>' +
                                     '</div>' +
                                     '</div>' +
@@ -233,14 +236,14 @@ $(document).ready(function() {
                                     '<div>Water</div>' +
                                     '<div class="ml-auto font-weight-bold mr-2">' + value[i].water +
                                     '</div>' +
-                                    '<div class="text-muted small">(' + (value[i].water / 100 * 100) +
+                                    '<div class="text-muted small">(' + (value[i].water / value[i].capacity * 100) +
                                     '%)</div>' +
                                     '</div>' +
                                     '<div class="progress-group-bars">' +
                                     '<div class="progress progress-xs">' +
                                     '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                                    (value[i].water / 100 * 100) +
-                                    '%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>' +
+                                    (value[i].water / value[i].capacity * 100) +
+                                    '%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="' + value[i].capacity + '"></div>' +
                                     '</div>' +
                                     '</div>' +
                                     '</div>' +
@@ -249,14 +252,14 @@ $(document).ready(function() {
                                     '<div>Clothes</div>' +
                                     '<div class="ml-auto font-weight-bold mr-2">' + value[i].clothes +
                                     '</div>' +
-                                    '<div class="text-muted small">(' + (value[i].clothes / 100 * 100) +
+                                    '<div class="text-muted small">(' + (value[i].clothes / value[i].capacity * 100) +
                                     '%)</div>' +
                                     '</div>' +
                                     '<div class="progress-group-bars">' +
                                     '<div class="progress progress-xs">' +
                                     '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                                    (value[i].clothes / 100 * 100) +
-                                    '%" aria-valuenow="11" aria-valuemin="0" aria-valuemax="100"></div>' +
+                                    (value[i].clothes / value[i].capacity * 100) +
+                                    '%" aria-valuenow="11" aria-valuemin="0" aria-valuemax="' + value[i].capacity + '"></div>' +
                                     '</div>' +
                                     '</div>' +
                                     '</div>' +
@@ -265,14 +268,14 @@ $(document).ready(function() {
                                     '<div>Hygiene Kit</div>' +
                                     '<div class="ml-auto font-weight-bold mr-2">' + value[i].hygiene_kit +
                                     '</div>' +
-                                    '<div class="text-muted small">(' + (value[i].hygiene_kit / 100 * 100) +
+                                    '<div class="text-muted small">(' + (value[i].hygiene_kit / value[i].capacity * 100) +
                                     '%)</div>' +
                                     '</div>' +
                                     '<div class="progress-group-bars">' +
                                     '<div class="progress progress-xs">' +
                                     '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                                    (value[i].hygiene_kit / 100 * 100) +
-                                    '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="100"></div>' +
+                                    (value[i].hygiene_kit / value[i].capacity * 100) +
+                                    '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="' + value[i].capacity + '"></div>' +
                                     '</div>' +
                                     '</div>' +
                                     '</div>' +
@@ -281,30 +284,30 @@ $(document).ready(function() {
                                     '<div>Medicine</div>' +
                                     '<div class="ml-auto font-weight-bold mr-2">' + value[i].medicine +
                                     '</div>' +
-                                    '<div class="text-muted small">(' + (value[i].medicine / 100 * 100) +
+                                    '<div class="text-muted small">(' + (value[i].medicine / value[i].capacity * 100) +
                                     '%)</div>' +
                                     '</div>' +
                                     '<div class="progress-group-bars">' +
                                     '<div class="progress progress-xs">' +
                                     '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                                    (value[i].medicine / 100 * 100) +
-                                    '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="100"></div>' +
+                                    (value[i].medicine / value[i].capacity * 100) +
+                                    '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="' + value[i].capacity + '"></div>' +
                                     '</div>' +
                                     '</div>' +
                                     '</div>' +
                                     '<div class="progress-group">' +
                                     '<div class="progress-group-header align-items-end">' +
                                     '<div>ESA</div>' +
-                                    '<div class="ml-auto font-weight-bold mr-2">' + value[i] 
-                                    .emergency_shelter_assistance + '</div>' +
-                                    '<div class="text-muted small">(' + (value[i] 
-                                        .emergency_shelter_assistance / 100 * 100) + '%)</div>' +
+                                    '<div class="ml-auto font-weight-bold mr-2">' + 
+                                    value[i].emergency_shelter_assistance + '</div>' +
+                                    '<div class="text-muted small">(' + 
+                                    (value[i].emergency_shelter_assistance / value[i].capacity * 100) + '%)</div>' +
                                     '</div>' +
                                     '<div class="progress-group-bars">' +
                                     '<div class="progress progress-xs">' +
                                     '<div class="progress-bar bg-warning" role="progressbar" style="width: ' +
-                                    (value[i].emergency_shelter_assistance / 100 * 100) +
-                                    '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="100"></div>' +
+                                    (value[i].emergency_shelter_assistance / value[i].capacity * 100) +
+                                    '%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="' + value[i].capacity + '"></div>' +
                                     '</div>' +
                                     '</div>' +
                                     '</div>' +
@@ -331,6 +334,25 @@ $(document).ready(function() {
             }
         })
     });
+
+    channel.bind('disaster_response-event', function(data) {
+        setTimeout(function () {
+            window.location.reload(true)
+        }, 1000);
+    });
+
+    //display the affected barangays
+    Promise.all([_affectedAreas(),_loadGeoJson(),])
+    .then(([data, json]) => {
+        drawPolygons(data, json);
+    }).catch(error => {
+        console.log(error);  // rejectReason of any first rejected promise
+    });
+});
+
+// import data from "{{ asset('js/map-js/Barangays.json') }}" assert { type: "json" };
+// var geojs = {"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[123.26497650146484,13.666029930114746],[123.26141357421898,13.665860176086483],[123.2579574584961,13.665369987487793],[123.2511672973634,13.663149833679256],[123.24574279785156,13.662039756774902],[123.24458312988281,13.661829948425407],[123.24183654785168,13.661100387573299],[123.23719024658226,13.659810066223258],[123.23184967041038,13.658370018005371],[123.22580718994152,13.65711975097662],[123.21806335449219,13.655480384826774],[123.2148208618164,13.655090332031364],[123.21016693115246,13.654740333557243],[123.22844696044933,13.64896011352539],[123.23222351074241,13.643070220947266],[123.24571228027344,13.643560409545955],[123.24471282958984,13.63661003112793],[123.27207946777344,13.637920379638672],[123.27108001708984,13.640680313110295],[123.27066802978516,13.643520355224666],[123.26983642578136,13.645910263061637],[123.2689437866211,13.64923954010004],[123.26750946044945,13.656009674072266],[123.2668685913086,13.65814018249506],[123.26612091064453,13.661700248718262],[123.26566314697277,13.663310050964412],[123.2655029296875,13.665140151977539],[123.26497650146484,13.666029930114746]]]},"properties":{"ID_0":177,"ISO":"PHL","NAME_0":"Philippines","ID_1":20,"NAME_1":"Camarines Sur","ID_2":370,"NAME_2":"Naga City","ID_3":8734,"NAME_3":"Pacol","NL_NAME_3":"","VARNAME_3":"","TYPE_3":"Barangay","ENGTYPE_3":"Village","PROVINCE":"Camarines Sur","REGION":"Bicol Region (Region V)"}},
+// ]};
 
     //AJAX IMPLEMENTATION
     /*
@@ -477,6 +499,5 @@ $(document).ready(function() {
         });
     });
     */
-});
 </script>
 @endsection

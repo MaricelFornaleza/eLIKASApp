@@ -22,10 +22,31 @@
         </div>
         <div class="row center">
             <div class="col-md-8">
-
+                <div class="col-md-12 justify-content-between d-flex align-items-baseline p-0">
+                    <div class="col-7">
+                        <h5 class="font-weight-bold">Delivery Details</h5>
+                    </div>
+                    <div class="col-5 text-right ">
+                        <span class="float-right ">
+                            @if( $delivery_request->status == 'pending' )
+                            <div class="badge-pill bg-secondary-accent text-center text-white" style="height: 20px; width:100px;">
+                            @elseif( $delivery_request->status == 'preparing' )
+                            <div class="badge-pill bg-accent text-center text-white" style="height: 20px; width:100px;">
+                            @elseif( $delivery_request->status == 'in-transit' )
+                            <div class="badge-pill bg-secondary text-center text-white" style="height: 20px; width:100px;">
+                            @elseif( $delivery_request->status == 'delivered' )
+                            <div class="badge-pill badge-primary text-center text-white" style="height: 20px; width:100px;">
+                            @elseif( $delivery_request->status == 'declined' || $delivery_request->status == 'cancelled' )
+                            <div class="badge-pill badge-danger text-center text-white" style="height: 20px; width:100px;">
+                            @endif
+                            {{ strtoupper($delivery_request->status) }}</div>
+                        </span>
+                    </div>
+    
+                </div>
                 <!-- request info -->
 
-                <div class="form-group row px-3 mt-3">
+                <div class="form-group row px-3 mt-1">
                     <div class="col-4 font-weight-bold">
                         Recipient:
                     </div>
@@ -44,7 +65,7 @@
                     </div>
                 </div>
                 <!-- Supply Info Form -->
-                <div class="supply-info mt-5 mb-2">
+                <div class="supply-info mt-4 mb-2">
                     <!-- title -->
                     <div class="row title px-3 mb-2 font-weight-bold ">
                         <div class="col-7">
@@ -107,9 +128,9 @@
                     </div>
                     <!-- Note text Area -->
                     <div class="col-12">
-                        <label for="note" class="my-1">Note</label>
-                        <textarea id="note" name="note" placeholder="Write something.."
-                            style="width:100%; height:100px;" disabled>  {{ $delivery_request->note }}
+                        <label for="note">Note</label>
+                        <textarea class="form-control" id="note" name="note" placeholder="Write something.."
+                        rows="5" disabled>{{ $delivery_request->note }}
                         </textarea>
                     </div>
 
@@ -139,11 +160,14 @@
                     @elseif( $delivery_request->status == "in-transit")
                     <div class="col-12 center mt-4">
                         <div class="col-md-6 mt-4 mb-4 p-0">
-                            <a href="{{ route('request.courier_cancel', [ 'id' => $delivery_request->id ]) }}"
+                            <a href="{{ route('request.cancel', [ 'id' => $delivery_request->id ]) }}"
                                 onclick="return confirm('Are you sure to cancel the request?')"> 
-                                <button class="btn btn-accent-outline  px-4 ">Cancel</button>
+                                <button class="btn btn-accent-outline  px-4 ">Cancel Request</button>
                             </a>
                         </div>
+                    </div>
+                    @else
+                    <div class="col-md-6 mt-4 mb-4 p-0">
                     </div>
                     @endif
                 </div>
