@@ -10,10 +10,10 @@ class Admin extends Model
     use HasFactory;
     protected $fillable = [
         'user_id',
-        'region_psgc',
-        'province_psgc',
-        'city_psgc',
-        'address',
+        'region',
+        'province',
+        'city',
+
 
     ];
     public function admin()

@@ -67,7 +67,7 @@ class FieldOfficerController extends Controller
     public function store(Request $request)
     {
         //A generated temporary password for field officers
-        $temp_pass = Str::random(8);
+        $temp_pass = Str::random(12);
 
         //this validation checks the officer type first
         //if barangay captain, the barangay field must be required

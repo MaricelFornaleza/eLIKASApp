@@ -42,7 +42,7 @@ class FieldOfficerImport implements ToCollection, WithHeadingRow
                     'email' => $row['email'],
                     'officer_type' => $row['officer_type'],
                     'contact_no' => $row['contact_no'],
-                    'password' => Hash::make(Str::random(8)),
+                    'password' => Hash::make(Str::random(12)),
                 ]);
 
                 if ($user->officer_type == "Barangay Captain") {

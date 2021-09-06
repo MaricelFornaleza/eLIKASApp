@@ -23,21 +23,15 @@ use App\Http\Controllers\FamilyMemberController;
 
 //login and register 
 Route::get('/', function () {
-    $count = User::count();
-    if ($count == 0) {
-        return view('auth.register');
-    } else {
-        return view('auth.login');
-    }
+    return view('auth.login');
 });
 
-Auth::routes();
+Auth::routes(['register' => false]);
 
 
 // the user must be authenticated to access these routes
 Route::group(['middleware' => ['auth']], function () {
     //Home
-
     Route::get('/home', 'HomeController@index')->name('home');
     //User Profile
     Route::prefix('profile')->group(function () {
@@ -45,15 +39,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/{id}/edit', 'ProfileController@edit');
         Route::put('/{id}', 'ProfileController@update');
         Route::put('/field-officer/{id}', 'ProfileController@updateFO');
-    });
-
-    // Map
-    Route::prefix('map')->group(function () {
-        Route::get('/get_locations/{id}', 'MapController@get_locations');
-        Route::get('/affected_areas', 'MapController@affected_areas');
-        Route::get('/get_couriers', 'MapController@get_couriers');
-        Route::get('/get_evac', 'MapController@get_evac')->name('map.evacs');
-        Route::resource('/', 'MapController');
     });
     // Evacuation Center
     Route::prefix('evacuation_centers')->group(function () {
@@ -78,7 +63,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/courier/decline',   'DeliveryRequestController@courier_decline')->name('request.courier_decline')->middleware('officertype:Courier');
     });
 
-    Route::group(['middleware' => ['officertype:Admin&BC']], function () {
+    Route::group(['middleware' => ['officertype:Admin&BC', 'adminconfig']], function () {
         // Supply
         Route::resource('supplies', 'SupplyController');
         // Inventory
@@ -91,7 +76,18 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('chat', 'ChatController@sendMessage');
     Route::get('/search', 'ChatController@search');
 
-    Route::group(['middleware' => ['officertype:Administrator']], function () {
+    Route::post('config', 'AdminController@adminConfig');
+
+
+    Route::group(['middleware' => ['officertype:Administrator', 'adminconfig']], function () {
+        // Map
+        Route::prefix('map')->group(function () {
+            Route::get('/get_locations/{id}', 'MapController@get_locations');
+            Route::get('/affected_areas', 'MapController@affected_areas');
+            Route::get('/get_couriers', 'MapController@get_couriers');
+            Route::get('/get_evac', 'MapController@get_evac')->name('map.evacs');
+            Route::resource('/', 'MapController');
+        });
         // Field Officer
         Route::resource('/field_officers', 'FieldOfficerController');
         // Residents
