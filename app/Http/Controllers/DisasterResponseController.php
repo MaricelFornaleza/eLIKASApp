@@ -19,7 +19,10 @@ class DisasterResponseController extends Controller
 {
     public function start()
     {
-        $barangays = Barangay::all();
+        $barangays = Barangay::join('family_members', 'family_members.barangay', '=', 'barangays.name')
+            ->where('family_members.family_code', '!=', null)
+            ->select('barangays.name')
+            ->groupBy('barangays.name')->get();
         return view('admin.disaster-response-resource.start')->with('barangays', $barangays);
     }
     public function archive()
@@ -52,11 +55,6 @@ class DisasterResponseController extends Controller
         }
         AffectedArea::insert($data);
 
-        // $affectedResidents = FamilyMember::join('affected_areas', function ($join) use ($disaster_response) {
-        //     $join->on('family_members.barangay', '=', 'affected_areas.barangay')
-        //         ->where('affected_areas.disaster_response_id', '=', $disaster_response->id);
-        // })->select('family_members.family_code')->distinct()->get();
-
         $affectedResidents = FamilyMember::join('affected_areas', 'family_members.barangay', '=', 'affected_areas.barangay')
             ->where('affected_areas.disaster_response_id', '=', $disaster_response->id)
             ->select('family_members.family_code')->groupBy('family_members.family_code')->get();
@@ -74,6 +72,7 @@ class DisasterResponseController extends Controller
         $update_requests->refreshMap();
         Session::flash('message', 'Disaster Response started.');
         return redirect('home');
+        // dd(ReliefRecipient::all());
     }
     public function show($id)
     {
