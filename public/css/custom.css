@@ -2,8 +2,8 @@ body {
     background-color: #f4f7fc !important;
     font-family: "Poppins" !important;
 }
-body:not(.modal-open){
-  padding-right: 0px !important;
+body:not(.modal-open) {
+    padding-right: 0px !important;
 }
 .bg-accent {
     background-color: #fb8500 !important;
@@ -127,4 +127,10 @@ body:not(.modal-open){
 
 div.dataTables_wrapper div.dataTables_length select {
     width: 50px !important;
+}
+
+.fileUpload {
+    padding: 10px;
+    border: 2px solid var(--primary);
+    border-radius: 5px;
 }
