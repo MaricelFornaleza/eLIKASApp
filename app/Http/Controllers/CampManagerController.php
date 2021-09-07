@@ -26,7 +26,58 @@ class CampManagerController extends Controller
 {
     public function evacuees()
     {
-        return view('camp-manager.evacuees.evacuees');
+        $id = Auth::id();
+        $evacuation_center = EvacuationCenter::where('camp_manager_id', '=', $id)->first();
+        if (empty($evacuation_center)) {
+            abort(403, "You are not assigned to an evacuation center yet. Contact your adminstrator for further info.");
+        }
+        $evacuees = Evacuee::where('evacuation_center_id', $evacuation_center->id)->whereNull('date_discharged')->get();
+        $total_number_of_evacuees = 0;
+        if ($evacuees != null) {
+            $family_codes =  Array();
+            $female =0 ;
+            $male = 0;
+            $children = 0;
+            $lactating = 0;
+            $pwd = 0;
+            $pregnant = 0;
+            $senior_citizen  = 0;
+            $solo_parent = 0;
+                
+            foreach ($evacuees as $evacuee) {
+                $relief_recipient = ReliefRecipient::where('id', $evacuee->relief_recipient_id)->first();
+                if(!in_array($relief_recipient->family_code, $family_codes)){
+                    array_push($family_codes, $relief_recipient->family_code);
+                    $family = Family::where('family_code', $relief_recipient->family_code)->first();
+                    $total_number_of_evacuees = $total_number_of_evacuees + $family->no_of_members;
+                    
+                    $family_members = FamilyMember::where('family_code', $family->family_code)->get();
+                    
+                    $female = $female + $family_members->where('gender', 'Female')->count();
+                    $male = $male + $family_members->where('gender', 'Male')->count();
+                    $children = $children + $family_members->where('sectoral_classification', 'Children')->count();
+                    $lactating = $lactating + $family_members->where('sectoral_classification', 'Lactating')->count();
+                    $pwd = $pwd + $family_members->where('sectoral_classification', 'Person with Disability')->count();
+                    $pregnant = $pregnant + $family_members->where('sectoral_classification', 'Pregnant')->count();
+                    $senior_citizen  = $senior_citizen + $family_members->where('sectoral_classification', 'Senior Citizen')->count();
+                    $solo_parent = $solo_parent + $family_members->where('sectoral_classification', 'Solo Parent')->count();
+                }
+                
+            }
+        }
+        
+        return view('camp-manager.evacuees.evacuees',
+        ['total_number_of_evacuees' => $total_number_of_evacuees,
+        'evacuation_center_name' => $evacuation_center->name,
+        'capacity' => $evacuation_center->capacity,
+        'female' => $female,
+        'male' => $male,
+        'children' => $children,
+        'lactating' => $lactating,
+        'pwd' => $pwd,
+        'pregnant' => $pregnant,
+        'senior_citizen' => $senior_citizen,
+        'solo_parent' => $solo_parent,]);
     }
     public function admitView()
     {

@@ -118,10 +118,10 @@
                                             @else
                                             <option value="Lactating">Lactating</option>
                                             @endif
-                                            @if($family_member->sectoral_classification == 'PWD')
-                                            <option value="PWD" selected>PWD</option>
+                                            @if($family_member->sectoral_classification == 'Person with Disability')
+                                            <option value="Person with Disability" selected>Person with Disability</option>
                                             @else
-                                            <option value="PWD">PWD</option>
+                                            <option value="Person with Disability">Person with Disability</option>
                                             @endif
                                             @if($family_member->sectoral_classification == 'Senior Citizen')
                                             <option value="Senior Citizen" selected>Senior Citizen</option>
