@@ -35,7 +35,7 @@
 
                 <a href="{{ route('request.file.export') }}" class="btn btn-block export-btn">
                     <svg class="c-icon mr-2">
-                        <use xlink:href="{{ url('/icons/sprites/free.svg#cil-file') }}"></use>
+                        <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-file"></use>
                     </svg>
                     Export to Excel
                 </a>
@@ -68,7 +68,7 @@
                 @endif
             </div>
         </div>
-        
+
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                 <div class="card">
@@ -76,8 +76,7 @@
                     </div> --}}
                     <div class="card-body">
                         <div id="requestList">
-                            <table id="requesTable"
-                                class="table table-borderless table-hover table-light table-striped" 
+                            <table id="requesTable" class="table table-borderless table-hover table-light table-striped"
                                 style="width: 100%;">
                                 <thead>
                                     <tr>
@@ -93,9 +92,9 @@
                                         <th>EMERGENCY SHELTER ASSISTANCE</th>
                                         <th>NOTE</th>
                                         <th>STATUS</th>
-                                        
+
                                         <th>ACTIONS</th>
-                                        
+
                                     </tr>
                                 </thead>
                                 <tbody id="request-tbody">
@@ -122,10 +121,15 @@
                                             <td>
                                                 <div class="row">
                                                     <div class="col-6 ">
-                                                        <a href="{{ route('request.approve', ['id' => $delivery_request->id] ) }}" onclick="return confirm('Are you sure to approve the request?')">
-                                                            {{-- <img class="c-icon" src="{{ url('icons/sprites/accept-request.svg') }}" /> --}}
-                                                            <svg width="25" height="25" xmlns="http://www.w3.org/2000/svg">
-                                                                <image href="{{ url('icons/sprites/approve-request.svg') }}" height="25" width="25"/>
+                                                        <a href="{{ route('request.approve', ['id' => $delivery_request->id] ) }}"
+                                                            onclick="return confirm('Are you sure to approve the request?')">
+                                                            {{-- <img class="c-icon" src="{{ url('icons/sprites/accept-request.svg') }}"
+                                                            /> --}}
+                                                            <svg width="25" height="25"
+                                                                xmlns="http://www.w3.org/2000/svg">
+                                                                <image
+                                                                    href="{{ url('icons/sprites/approve-request.svg') }}"
+                                                                    height="25" width="25" />
                                                             </svg>
                                                         </a>
                                                     </div>
@@ -135,19 +139,25 @@
                                                             @method("DELETE")
                                                             <button type="submit" value="Delete" name="submit" class="btn-borderless" onclick="return confirm('Are you sure to delete?')">
                                                                 <svg width="25" height="25" xmlns="http://www.w3.org/2000/svg">
-                                                                    <image href="{{ url('icons/sprites/decline-request.svg') }}" height="25" width="25"/>
-                                                                </svg>
-                                                            </button>
+                                                                    <image href="{{ url('icons/sprites/decline-request.svg') }}"
+                                                        height="25" width="25"/>
+                                                        </svg>
+                                                        </button>
                                                         </form> --}}
-                                                        <a href="{{ route('request.admin_decline', ['id' => $delivery_request->id] ) }}" onclick="return confirm('Are you sure to decline the request?')">
-                                                            <svg width="25" height="25" xmlns="http://www.w3.org/2000/svg">
-                                                                <image href="{{ url('icons/sprites/decline-request.svg') }}" height="25" width="25"/>
+                                                        <a href="{{ route('request.admin_decline', ['id' => $delivery_request->id] ) }}"
+                                                            onclick="return confirm('Are you sure to decline the request?')">
+                                                            <svg width="25" height="25"
+                                                                xmlns="http://www.w3.org/2000/svg">
+                                                                <image
+                                                                    href="{{ url('icons/sprites/decline-request.svg') }}"
+                                                                    height="25" width="25" />
                                                             </svg>
                                                         </a>
                                                     </div>
                                                 </div>
                                             </td>
-                                            @elseif( $delivery_request->status == 'preparing' && empty($delivery_request->courier_id))
+                                            @elseif( $delivery_request->status == 'preparing' &&
+                                            empty($delivery_request->courier_id))
                                             <td>
                                                 <span class="badge badge-pill bg-accent text-white">
                                                     {{ strtoupper($delivery_request->status) }}
@@ -156,67 +166,88 @@
                                             <td>
                                                 <div class="row">
                                                     <div class="col-6 ">
-                                                        <a href="" data-toggle="modal" data-target="#assignModal" data-evac-id="{{ $delivery_request->evacuation_center_id }}">
-                                                            {{-- <img class="c-icon" src="{{ url('icons/sprites/accept-request.svg') }}" /> --}}
-                                                            <svg width="25" height="25" xmlns="http://www.w3.org/2000/svg">
-                                                                <image href="{{ url('icons/sprites/assign-courier.svg') }}" height="25" width="25"/>
+                                                        <a href="" data-toggle="modal" data-target="#assignModal"
+                                                            data-evac-id="{{ $delivery_request->evacuation_center_id }}">
+                                                            {{-- <img class="c-icon" src="{{ url('icons/sprites/accept-request.svg') }}"
+                                                            /> --}}
+                                                            <svg width="25" height="25"
+                                                                xmlns="http://www.w3.org/2000/svg">
+                                                                <image
+                                                                    href="{{ url('icons/sprites/assign-courier.svg') }}"
+                                                                    height="25" width="25" />
                                                             </svg>
                                                         </a>
                                                         <!-- Button trigger modal -->
                                                         {{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                                                             Launch demo modal
                                                         </button> --}}
-                                                        
+
                                                         <!-- Modal -->
-                                                        <div class="modal fade" id="assignModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
-                                                            data-backdrop="static" data-keyboard="false">
+                                                        <div class="modal fade" id="assignModal" tabindex="-1"
+                                                            role="dialog" aria-labelledby="exampleModalLabel"
+                                                            aria-hidden="true" data-backdrop="static"
+                                                            data-keyboard="false">
                                                             <div class="modal-dialog modal-lg" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    {{-- <h5 class="modal-title" id="exampleModalLabel">Assign Courier</h5> --}}
-                                                                    <form method="POST" action="{{ route('request.assign_courier', ['id' => $delivery_request->id] ) }}">
-                                                                        @csrf
-                                                                        <label for="courier_id" class="mr-3 lead modal-title" id="exampleModalLabel">Assign Courier</label>
-                                                                        <select name="courier_id" id='courier_id' class="w-100 form-control" required>
-                                                                            {{-- <option value=''>Select User</option> --}}
-                                                                            {{-- @foreach($couriers as $courier)
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        {{-- <h5 class="modal-title" id="exampleModalLabel">Assign Courier</h5> --}}
+                                                                        <form method="POST"
+                                                                            action="{{ route('request.assign_courier', ['id' => $delivery_request->id] ) }}">
+                                                                            @csrf
+                                                                            <label for="courier_id"
+                                                                                class="mr-3 lead modal-title"
+                                                                                id="exampleModalLabel">Assign
+                                                                                Courier</label>
+                                                                            <select name="courier_id" id='courier_id'
+                                                                                class="w-100 form-control" required>
+                                                                                {{-- <option value=''>Select User</option> --}}
+                                                                                {{-- @foreach($couriers as $courier)
                                                                             <option value='{{ $courier->id }}'>
                                                                                 {{ $courier->name }}
-                                                                            </option>
-                                                                            @endforeach --}}
-                                                                        </select>
+                                                                                </option>
+                                                                                @endforeach --}}
+                                                                            </select>
 
-                                                                        <input type="submit" id="submit-form" class="hidden d-none" />
-                                                                    </form>
+                                                                            <input type="submit" id="submit-form"
+                                                                                class="hidden d-none" />
+                                                                        </form>
 
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>   
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <div class="row">
-                                                                        <div class="w-100" id="mapid"></div>
+                                                                        <button type="button" class="close"
+                                                                            data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <div class="row">
+                                                                            <div class="w-100" id="mapid"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-dismiss="modal">Close</button>
+                                                                        {{-- <button type="button" class="btn btn-warning">Assign</button> --}}
+                                                                        <label for="submit-form" class="btn btn-warning"
+                                                                            tabindex="0">Assign</label>
                                                                     </div>
                                                                 </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                    {{-- <button type="button" class="btn btn-warning">Assign</button> --}}
-                                                                    <label for="submit-form" class="btn btn-warning" tabindex="0">Assign</label>
-                                                                </div>
-                                                            </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
-                                                        <a href="{{ route('request.cancel', ['id' => $delivery_request->id] ) }}" onclick="return confirm('Are you sure to cancel the request?')">
-                                                            <svg width="25" height="25" xmlns="http://www.w3.org/2000/svg">
-                                                                <image href="{{ url('icons/sprites/decline-request.svg') }}" height="25" width="25"/>
+                                                        <a href="{{ route('request.cancel', ['id' => $delivery_request->id] ) }}"
+                                                            onclick="return confirm('Are you sure to cancel the request?')">
+                                                            <svg width="25" height="25"
+                                                                xmlns="http://www.w3.org/2000/svg">
+                                                                <image
+                                                                    href="{{ url('icons/sprites/decline-request.svg') }}"
+                                                                    height="25" width="25" />
                                                             </svg>
                                                         </a>
                                                     </div>
                                                 </div>
                                             </td>
-                                            @elseif( $delivery_request->status == 'preparing' && !empty($delivery_request->courier_id) )
+                                            @elseif( $delivery_request->status == 'preparing' &&
+                                            !empty($delivery_request->courier_id) )
                                             <td>
                                                 <span class="badge badge-pill bg-accent text-white">
                                                     {{-- {{ strtoupper($delivery_request->status) }} --}}
@@ -228,9 +259,13 @@
                                                     <div class="col-6 ">
                                                     </div>
                                                     <div class="col-6">
-                                                        <a href="{{ route('request.cancel', ['id' => $delivery_request->id] ) }}" onclick="return confirm('Are you sure to cancel the request?')">
-                                                            <svg width="25" height="25" xmlns="http://www.w3.org/2000/svg">
-                                                                <image href="{{ url('icons/sprites/decline-request.svg') }}" height="25" width="25"/>
+                                                        <a href="{{ route('request.cancel', ['id' => $delivery_request->id] ) }}"
+                                                            onclick="return confirm('Are you sure to cancel the request?')">
+                                                            <svg width="25" height="25"
+                                                                xmlns="http://www.w3.org/2000/svg">
+                                                                <image
+                                                                    href="{{ url('icons/sprites/decline-request.svg') }}"
+                                                                    height="25" width="25" />
                                                             </svg>
                                                         </a>
                                                     </div>
@@ -252,7 +287,8 @@
                                             </td>
                                             <td>
                                             </td>
-                                            @elseif( $delivery_request->status == 'declined' || $delivery_request->status == 'cancelled')
+                                            @elseif( $delivery_request->status == 'declined' ||
+                                            $delivery_request->status == 'cancelled')
                                             <td>
                                                 <span class="badge badge-pill badge-danger text-white">
                                                     {{ strtoupper($delivery_request->status) }}
@@ -287,7 +323,6 @@
 <script src="{{ asset('js/map-js/maps-functions.js') }}"></script>
 <script src="{{ asset('js/map-js/leaflet-maps-simplified.js') }}"></script>
 <script>
-
 var markers = L.layerGroup();
 var ajax_request;
 $(document).ready(function() {
@@ -318,7 +353,7 @@ $(document).ready(function() {
 
     // $("#courier_id").select2();
 
-    $("#assignModal").on('shown.coreui.modal', function (e) {
+    $("#assignModal").on('shown.coreui.modal', function(e) {
         $("#courier_id").select2();
         $("#courier_id").prop('disabled', true);
         $('#courier_id').append('<option value=' + '>Select Courier</option>');
@@ -339,18 +374,22 @@ $(document).ready(function() {
             var result = data.couriers;
             $.each(result, function(key, value) {
                 //console.log(value.latitude);
-                $('#courier_id').append('<option value=' + value.id +'>' + value.name + '</option>');
-                if(value.latitude && value.longitude) {
-                    var courier = L.marker([value.latitude, value.longitude], {icon: truckIcon()})
-                    .bindPopup('<div class="font-weight-bold text-center">' + value.name + '</div>', truckOptions())
-                    .addTo(markers);
+                $('#courier_id').append('<option value=' + value.id + '>' + value.name +
+                    '</option>');
+                if (value.latitude && value.longitude) {
+                    var courier = L.marker([value.latitude, value.longitude], {
+                            icon: truckIcon()
+                        })
+                        .bindPopup('<div class="font-weight-bold text-center">' + value
+                            .name + '</div>', truckOptions())
+                        .addTo(markers);
                     markers.addTo(mymap);
                     courier.openPopup();
                 }
-                
+
             });
-            L.marker([evacuation.latitude, evacuation.longitude], 
-                    {icon: L.icon({
+            L.marker([evacuation.latitude, evacuation.longitude], {
+                    icon: L.icon({
                         iconUrl: '/././assets/img/pins/orange-pin.png',
                         iconSize: [61, 52],
                         iconAnchor: [9, 48],
@@ -358,25 +397,26 @@ $(document).ready(function() {
                     }),
                     title: evacuation.name
                 })
-                .bindPopup('<div class="font-weight-bold text-center">' + evacuation.name + '</div>', truckOptions())
+                .bindPopup('<div class="font-weight-bold text-center">' + evacuation.name +
+                    '</div>', truckOptions())
                 .addTo(markers);
             markers.addTo(mymap);
-            mymap.setView([evacuation.latitude, evacuation.longitude], 13); 
-            
+            mymap.setView([evacuation.latitude, evacuation.longitude], 13);
+
             $("#courier_id").prop('disabled', false);
         });
     });
 
-    $("#assignModal").on('hidden.coreui.modal', function (e) {
+    $("#assignModal").on('hidden.coreui.modal', function(e) {
         markers.clearLayers();
         $('#courier_id').empty();
-     
+
         ajax_request.abort();
         //$(".modal.fade.in").removeClass("modal fade in");
     });
 
 
-    
+
     //remove on production
     Pusher.logToConsole = true;
 
@@ -387,10 +427,10 @@ $(document).ready(function() {
     var channel = pusher.subscribe('requests-admin-channel');
     channel.bind('deliver-event', function(data0) {
         if ($.fn.dataTable.isDataTable('#requestTable')) {
-                $('#requestTable').DataTable().clear();
-                $('#requestTable').DataTable().destroy();
+            $('#requestTable').DataTable().clear();
+            $('#requestTable').DataTable().destroy();
         }
-            //2nd empty html
+        //2nd empty html
         // $("requestTable tbody").empty();
         // $("requestTable thead").empty();
         //$('#requestList').empty();
@@ -577,19 +617,18 @@ $(document).ready(function() {
             });
             html += `</table>`;
             */
-            
+
             //this is the shortcut implementation
-           $('#requestList').html(data);
+            $('#requestList').html(data);
             var table = $('#requestTable').DataTable({
                 "scrollX": true,
                 "order": [],
             });
-            
+
         });
     });
 
 });
-
 </script>
 
 @endsection

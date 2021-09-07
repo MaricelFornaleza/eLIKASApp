@@ -32,12 +32,12 @@
 
                     <a class="dropdown-item" href="/profile">
                         <svg class="c-icon mr-2">
-                            <use xlink:href="{{ url('/icons/sprites/free.svg#cil-user') }}"></use>
+                            <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-user"></use>
                         </svg> Profile
                     </a>
                     <a class="dropdown-item" href="">
                         <svg class="c-icon mr-2">
-                            <use xlink:href="{{ url('/icons/sprites/free.svg#cil-settings') }}"></use>
+                            <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-settings"></use>
                         </svg> Settings
                     </a>
 
@@ -45,7 +45,7 @@
                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
 
                         <svg class="c-icon mr-2">
-                            <use xlink:href="{{ url('/icons/sprites/free.svg#cil-account-logout') }}"></use>
+                            <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-account-logout"></use>
                         </svg>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST"> @csrf <button type="submit"
                                 class="btn btn-ghost-dark btn-block">Logout</button></form>

@@ -20,6 +20,12 @@ class UpdateMarker {
             $this->options
         );
     }
+
+    public function refreshMap()
+    {
+        $data = "dummyData";
+        $this->pusher->trigger('location-channel', 'disaster_response-event', $data);
+    }
     
     public function get_evac()
     {
@@ -29,23 +35,19 @@ class UpdateMarker {
                 'stock_levels.clothes', 'stock_levels.emergency_shelter_assistance')
             ->orderByRaw('evacuation_centers.id ASC')
             ->get();
-
-        //$type = "evacuation_center";
         $data = [ 'evacuation_centers' => $evacuation_centers ];
         $this->pusher->trigger('location-channel', 'evac-event', $data);
     }
 
     public function get_couriers()
     {
-        //$couriers = Courier::all();
         $couriers =  DB::table('couriers')
             ->join('locations', 'couriers.id', '=', 'locations.courier_id')
             ->select('couriers.*', 'locations.latitude', 'locations.longitude', 'locations.updated_at')
             ->orderByRaw('couriers.id ASC')
             ->get();
-
-        //$type = "courier";
         $data = [ 'couriers' => $couriers ];
         $this->pusher->trigger('location-channel', 'courier-event', $data);
     }
+    
 }

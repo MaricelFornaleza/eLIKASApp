@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
 use App\Models\DeliveryRequest;
 use App\Models\DisasterResponse;
 use Illuminate\Http\Request;
@@ -14,8 +15,13 @@ class HomeController extends Controller
         $role = Auth::user()->officer_type;
 
         if ($role == 'Administrator') {
-            $disaster_responses = DisasterResponse::where('date_ended', '=', null)->get();
-            return view('admin.home')->with('disaster_responses', $disaster_responses);
+            if (Admin::count() == 0) {
+                return view('admin.admin_resource.config-body');
+            } else {
+                $disaster_responses = DisasterResponse::where('date_ended', '=', null)->get();
+                return view('admin.home')->with('disaster_responses', $disaster_responses);
+            }
+
             // dd($disaster_responses);
         } elseif ($role == 'Barangay Captain') {
             $disaster_responses = DisasterResponse::where('date_ended', '=', null)->get();
@@ -35,7 +41,7 @@ class HomeController extends Controller
                             WHEN requests.status = 'cancelled' THEN '5'
                             WHEN requests.status = 'decline' THEN '6' END ASC, requests.updated_at DESC")
                 ->get();
-            
+
             $is_empty = DeliveryRequest::where('courier_id', '=', $id)->first();
             /*
             SELECT evacuation_centers.name, requests.*
@@ -44,7 +50,7 @@ class HomeController extends Controller
                 ON evacuation_centers.camp_manager_id = requests.camp_manager_id
                 ORDER BY updated_at DESC 
             */
-            return view('courier.home', ['delivery_requests' => $delivery_requests, 'is_empty' => $is_empty] );
+            return view('courier.home', ['delivery_requests' => $delivery_requests, 'is_empty' => $is_empty]);
         }
     }
 }
