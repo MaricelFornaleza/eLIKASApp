@@ -136,8 +136,9 @@ class FamilyMemberController extends Controller
      */
     public function edit($id)
     {
+        $barangays = Barangay::all();
         $family_member = FamilyMember::find($id);
-        return view('admin.relief-recipients-resource.edit', ['family_member' => $family_member]);
+        return view('admin.relief-recipients-resource.edit', ['family_member' => $family_member, 'barangays' => $barangays]);
     }
 
     /**
@@ -153,7 +154,8 @@ class FamilyMemberController extends Controller
             'name'              => ['required', 'string', 'max:255', 'alpha_spaces'],
             'gender'            => ['required', 'string', 'max:255', 'regex:/^[A-Za-z]+$/'],
             'birthdate'         => ['required', 'date_format:Y-m-d'],
-            'address'           => ['required', 'string', 'max:255', 'alpha_spaces'],
+            'street'           => ['required', 'string', 'max:255', 'alpha_spaces'],
+            'barangay'           => ['required', 'string', 'max:255', 'alpha_spaces'],
             'family_code'       => ['nullable', 'string', 'max:255', 'exists:families,family_code'],
             'is_family_head'    => ['required', 'string', 'max:255'],
             'sectoral_classification' => ['required', 'string', 'max:255', 'alpha_spaces'],
@@ -163,7 +165,8 @@ class FamilyMemberController extends Controller
         $family_member->name     = $validated['name'];
         $family_member->gender   = $validated['gender'];
         $family_member->birthdate = $validated['birthdate'];
-        $family_member->address = $validated['address'];
+        $family_member->street = $validated['street'];
+        $family_member->barangay = $validated['barangay'];
         $prev_family_member_family_code = $family_member->family_code;
         $family_member->family_code = $validated['family_code'];
         $family_member->is_family_head = $validated['is_family_head'];
