@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('photo')->default('Avatar-default.png');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->bigInteger('contact_no')->unique();
+            $table->bigInteger('contact_no')->unique()->nullable();
             $table->string('password');
             $table->string('officer_type');
             $table->rememberToken();

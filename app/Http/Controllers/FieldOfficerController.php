@@ -11,6 +11,7 @@ use App\Models\Location;
 use App\Models\Inventory;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
@@ -112,6 +113,7 @@ class FieldOfficerController extends Controller
             'officer_type' => $validated['officer_type'],
             'contact_no' => $validated['contact_no'],
             'password' => Hash::make($temp_pass),
+            'remember_token' => Str::random(25),
         ]);
 
         //checks if the user is a barangay captain
@@ -143,25 +145,63 @@ class FieldOfficerController extends Controller
             ]);
         }
 
-
-
         //send an email to the newly registered field officer
         //this will contain the temporary password of the user
         $to_name = $user->name;
         $to_email = $user->email;
         $data = [
             'name' => $user->name,
-            'body' => $temp_pass
+            'email' => $user->email,
+            'remember_token' => $user->remember_token,
         ];
-        Mail::send('emails.mail', $data, function ($message) use ($to_name, $to_email) {
+
+        Mail::send('emails.verify-user', $data, function ($message) use ($to_name, $to_email) {
             $message->to($to_email, $to_name)
-                ->subject('eLIKAS Account Details');
+                ->subject('Verify your Email Address');
             $message->from('elikasph@gmail.com', 'eLIKAS Philippines');
         });
 
         Session::flash('message', 'Field Officer added successfully!');
         return redirect('field_officers');
     }
+
+
+
+    public function verifyUser($remember_token)
+    {
+        $temp_pass = Str::random(12);
+
+        $user = User::where('remember_token', $remember_token)->first();
+        if (isset($user)) {
+            if ($user->email_verified_at == null) {
+                $user->email_verified_at = Carbon::now();
+                $user->save();
+                $temp_pass = Str::random(12);
+                $user->password = Hash::make($temp_pass);
+                $user->save();
+
+
+                //send an email to the newly registered field officer
+                //this will contain the temporary password of the user
+                $to_name = $user->name;
+                $to_email = $user->email;
+                $data = [
+                    'name' => $user->name,
+                    'body' => $temp_pass
+                ];
+                Mail::send('emails.mail', $data, function ($message) use ($to_name, $to_email) {
+                    $message->to($to_email, $to_name)
+                        ->subject('eLIKAS Account Details');
+                    $message->from('elikasph@gmail.com', 'eLIKAS Philippines');
+                });
+            }
+        } else {
+            abort('403', "Sorry your email cannot be identified.");
+        }
+        Session::flash('message', 'Your account was succesfully verified!');
+        return view('auth.verified-body');
+    }
+
 
     /**
      * Display the specified resource.

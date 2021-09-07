@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
 
     use Notifiable;
@@ -24,7 +24,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'photo', 'email', 'officer_type', 'password', 'contact_no'
+        'name', 'photo', 'email',  'officer_type', 'password', 'contact_no', 'remember_token'
     ];
 
     /**

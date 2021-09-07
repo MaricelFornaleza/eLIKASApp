@@ -19,6 +19,9 @@ use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ImportExcelController;
 use App\Http\Controllers\ExportExcelController;
 use App\Http\Controllers\FamilyMemberController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 
 //login and register 
@@ -26,11 +29,15 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Auth::routes(['register' => false]);
+Auth::routes(['register' => false, 'verify' => true]);
+
+//email verification
+
+Route::get('/user/verify/{remember_token}', 'FieldOfficerController@verifyUser');
 
 
 // the user must be authenticated to access these routes
-Route::group(['middleware' => ['auth']], function () {
+Route::group(['middleware' => ['auth', 'verified']], function () {
     //Home
     Route::get('/home', 'HomeController@index')->name('home');
     //User Profile
@@ -161,7 +168,3 @@ Route::group(['middleware' => ['auth']], function () {
         });
     });
 });
-
-// Route::fallback(function () {
-//     return 'Hm, why did you land here somehow?';
-// });
