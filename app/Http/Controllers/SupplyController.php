@@ -52,6 +52,32 @@ class SupplyController extends Controller
         $user = Auth::user();
 
         $user_inventory_id = User::find($user->id)->user_inventory->id;
+        $user_inventory_prev_stock = $user->user_inventory()->first();
+        if($validated['supply_type'] == 'Food Packs'){
+            $user->user_inventory()->update([
+                'total_no_of_food_packs'                    => ($user_inventory_prev_stock->total_no_of_food_packs + $validated['quantity']),
+            ]);
+        }else if($validated['supply_type'] == 'Water'){
+            $user->user_inventory()->update([
+                'total_no_of_water'                         => ($user_inventory_prev_stock->total_no_of_water + $validated['quantity']),
+            ]);
+        }else if($validated['supply_type'] == 'Hygiene Kit'){
+            $user->user_inventory()->update([
+                'total_no_of_hygiene_kit'                   => ($user_inventory_prev_stock->total_no_of_hygiene_kit + $validated['quantity']),
+            ]);
+        }else if($validated['supply_type'] == 'Medicine'){
+            $user->user_inventory()->update([
+                'total_no_of_medicine'                      => ($user_inventory_prev_stock->total_no_of_medicine + $validated['quantity']),
+            ]);
+        }else if($validated['supply_type'] == 'Clothes'){
+            $user->user_inventory()->update([
+                'total_no_of_clothes'                       => ($user_inventory_prev_stock->total_no_of_clothes + $validated['quantity']),
+            ]);
+        }else if($validated['supply_type'] == 'ESA'){
+            $user->user_inventory()->update([
+                'total_no_of_emergency_shelter_assistance'  => ($user_inventory_prev_stock->total_no_of_emergency_shelter_assistance + $validated['quantity']),
+            ]);
+        }
 
         $supply = new Supply();
         $supply->inventory_id     = $user_inventory_id;
@@ -96,10 +122,87 @@ class SupplyController extends Controller
     public function update(Request $request, $id)
     {
         $supply = Supply::find($id);
-        $supply->supply_type   = $request->input('supply_type');
-        $supply->quantity = $request->input('quantity');
-        $supply->source = $request->input('source');
-        $supply->save();
+
+        $user = Auth::user();
+        $user_inventory_prev_stock = $user->user_inventory()->first();
+            if($supply->supply_type == 'Food Packs'){
+                if($supply->quantity < $request->input('quantity')){
+                    $difference = $request->input('quantity') - $supply->quantity;
+                    $user->user_inventory()->update([
+                        'total_no_of_food_packs'                    => ($user_inventory_prev_stock->total_no_of_food_packs + $difference),
+                    ]);
+                }else if($supply->quantity > $request->input('quantity')){
+                    $difference =  $supply->quantity - $request->input('quantity');
+                    $user->user_inventory()->update([
+                        'total_no_of_food_packs'                    => ($user_inventory_prev_stock->total_no_of_food_packs - $difference),
+                    ]);
+                }
+            }else if($supply->supply_type == 'Water'){
+                if($supply->quantity < $request->input('quantity')){
+                    $difference = $request->input('quantity') - $supply->quantity;
+                    $user->user_inventory()->update([
+                        'total_no_of_water'                    => ($user_inventory_prev_stock->total_no_of_water + $difference),
+                    ]);
+                }else if($supply->quantity > $request->input('quantity')){
+                    $difference =  $supply->quantity - $request->input('quantity');
+                    $user->user_inventory()->update([
+                        'total_no_of_water'                    => ($user_inventory_prev_stock->total_no_of_water - $difference),
+                    ]);
+                }
+            }else if($supply->supply_type == 'Hygiene Kit'){
+                if($supply->quantity < $request->input('quantity')){
+                    $difference = $request->input('quantity') - $supply->quantity;
+                    $user->user_inventory()->update([
+                        'total_no_of_hygiene_kit'                    => ($user_inventory_prev_stock->total_no_of_hygiene_kit + $difference),
+                    ]);
+                }else if($supply->quantity > $request->input('quantity')){
+                    $difference =  $supply->quantity - $request->input('quantity');
+                    $user->user_inventory()->update([
+                        'total_no_of_hygiene_kit'                    => ($user_inventory_prev_stock->total_no_of_hygiene_kit - $difference),
+                    ]);
+                }
+            }else if($supply->supply_type == 'Medicine'){
+                if($supply->quantity < $request->input('quantity')){
+                    $difference = $request->input('quantity') - $supply->quantity;
+                    $user->user_inventory()->update([
+                        'total_no_of_medicine'                    => ($user_inventory_prev_stock->total_no_of_medicine + $difference),
+                    ]);
+                }else if($supply->quantity > $request->input('quantity')){
+                    $difference =  $supply->quantity - $request->input('quantity');
+                    $user->user_inventory()->update([
+                        'total_no_of_medicine'                    => ($user_inventory_prev_stock->total_no_of_medicine - $difference),
+                    ]);
+                }
+            }else if($supply->supply_type == 'Clothes'){
+                if($supply->quantity < $request->input('quantity')){
+                    $difference = $request->input('quantity') - $supply->quantity;
+                    $user->user_inventory()->update([
+                        'total_no_of_clothes'                    => ($user_inventory_prev_stock->total_no_of_clothes + $difference),
+                    ]);
+                }else if($supply->quantity > $request->input('quantity')){
+                    $difference =  $supply->quantity - $request->input('quantity');
+                    $user->user_inventory()->update([
+                        'total_no_of_clothes'                    => ($user_inventory_prev_stock->total_no_of_clothes - $difference),
+                    ]);
+                }
+            }else if($supply->supply_type == 'ESA'){
+                if($supply->quantity < $request->input('quantity')){
+                    $difference = $request->input('quantity') - $supply->quantity;
+                    $user->user_inventory()->update([
+                        'total_no_of_emergency_shelter_assistance'                    => ($user_inventory_prev_stock->total_no_of_emergency_shelter_assistance + $difference),
+                    ]);
+                }else if($supply->quantity > $request->input('quantity')){
+                    $difference =  $supply->quantity - $request->input('quantity');
+                    $user->user_inventory()->update([
+                        'total_no_of_emergency_shelter_assistance'                    => ($user_inventory_prev_stock->total_no_of_emergency_shelter_assistance - $difference),
+                    ]);
+                }
+            }
+            $supply->supply_type   = $request->input('supply_type');
+            $supply->quantity = $request->input('quantity');
+            $supply->source = $request->input('source');
+            $supply->save();
+
         $request->session()->flash('message', 'Supply updated successfully!');
         return redirect()->route('inventory.index');
     }
@@ -114,6 +217,33 @@ class SupplyController extends Controller
     {
         $supply = Supply::find($id);
         if ($supply) {
+            $user = Auth::user();
+            $user_inventory_prev_stock = $user->user_inventory()->first();
+            if($supply->supply_type == 'Food Packs'){
+                $user->user_inventory()->update([
+                    'total_no_of_food_packs'                    => ($user_inventory_prev_stock->total_no_of_food_packs - $supply->quantity),
+                ]);
+            }else if($supply->supply_type == 'Water'){
+                $user->user_inventory()->update([
+                    'total_no_of_water'                         => ($user_inventory_prev_stock->total_no_of_water - $supply->quantity),
+                ]);
+            }else if($supply->supply_type == 'Hygiene Kit'){
+                $user->user_inventory()->update([
+                    'total_no_of_hygiene_kit'                   => ($user_inventory_prev_stock->total_no_of_hygiene_kit - $supply->quantity),
+                ]);
+            }else if($supply->supply_type == 'Medicine'){
+                $user->user_inventory()->update([
+                    'total_no_of_medicine'                      => ($user_inventory_prev_stock->total_no_of_medicine - $supply->quantity),
+                ]);
+            }else if($supply->supply_type == 'Clothes'){
+                $user->user_inventory()->update([
+                    'total_no_of_clothes'                       => ($user_inventory_prev_stock->total_no_of_clothes - $supply->quantity),
+                ]);
+            }else if($supply->supply_type == 'ESA'){
+                $user->user_inventory()->update([
+                    'total_no_of_emergency_shelter_assistance'  => ($user_inventory_prev_stock->total_no_of_emergency_shelter_assistance - $supply->quantity),
+                ]);
+            }
             $supply->delete();
         }
         Session::flash('message', 'Supply deleted successfully!');

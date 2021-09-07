@@ -25,9 +25,10 @@
                                       <label class="lead">Supply Type</label>
                                       <select class="form-control @error('supply_type') is-invalid @enderror" aria-label=".form-select-lg example" name="supply_type" required autofocus>
                                         <option value="" selected disabled>Select</option>
-                                        <option value="Food Pack">Food Pack</option>
+                                        <option value="Food Packs">Food Packs</option>
                                         <option value="Water">Water</option>
                                         <option value="Hygiene Kit">Hygiene Kit</option>
+                                        <option value="Medicine">Medicine</option>
                                         <option value="Clothes">Clothes</option>
                                         <option value="ESA">ESA</option>
                                       </select>

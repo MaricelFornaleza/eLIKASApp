@@ -29,9 +29,9 @@
                                       <select class="form-control" aria-label=".form-select-lg example" name="supply_type"  required autofocus>
                                         <option value="" disabled>Select</option>
                                         @if($supply->supply_type == 'Food Pack')
-                                        <option value="Food Pack" selected>Food Pack</option>
+                                        <option value="Food Packs" selected>Food Packs</option>
                                         @else
-                                        <option value="Food Pack">Food Pack</option>
+                                        <option value="Food Packs">Food Packs</option>
                                         @endif
                                         @if($supply->supply_type == 'Water')
                                         <option value="Water" selected>Water</option>
@@ -42,6 +42,11 @@
                                         <option value="Hygiene Kit" selected>Hygiene Kit</option>
                                         @else
                                         <option value="Hygiene Kit">Hygiene Kit</option>
+                                        @endif
+                                        @if($supply->supply_type == 'Medicine')
+                                        <option value="Medicine" selected>Medicine</option>
+                                        @else
+                                        <option value="Medicine">Medicine</option>
                                         @endif
                                         @if($supply->supply_type == 'Clothes')
                                         <option value="Clothes" selected>Clothes</option>
