@@ -105,9 +105,12 @@ class CampManagerController extends Controller
                     $relief_recipient->save();
 
                     $findEvacuee = DB::table('evacuees')->where('relief_recipient_id', $relief_recipient->id)->where('date_discharged', null)->first();
-                    $evacuee = Evacuee::find($findEvacuee->id);
-                    $evacuee->date_discharged = now();
-                    $evacuee->save();
+                    if($findEvacuee != null){
+                        $evacuee = Evacuee::find($findEvacuee->id);
+                        $evacuee->date_discharged = now();
+                        $evacuee->save();
+                    }
+                    
                 }
             }
             
