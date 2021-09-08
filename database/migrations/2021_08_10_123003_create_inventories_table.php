@@ -17,6 +17,12 @@ class CreateInventoriesTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->string('name');
+            $table->integer('total_no_of_food_packs');
+            $table->integer('total_no_of_water');
+            $table->integer('total_no_of_hygiene_kit');
+            $table->integer('total_no_of_medicine');
+            $table->integer('total_no_of_clothes');
+            $table->integer('total_no_of_emergency_shelter_assistance');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')

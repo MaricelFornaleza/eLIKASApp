@@ -91,7 +91,13 @@ class RegisterController extends Controller
         ]);
         Inventory::create([
             'user_id' => $user->id,
-            'name' => $data['city'] . ' Inventory'
+            'name' => $data['city'] . ' Inventory',
+            'total_no_of_food_packs' => 0,
+            'total_no_of_water' => 0,
+            'total_no_of_hygiene_kit' => 0,
+            'total_no_of_medicine' => 0,
+            'total_no_of_clothes' => 0,
+            'total_no_of_emergency_shelter_assistance' => 0,
         ]);
         $barangay = explode(",", $data['barangays'][0]);
         $data = [];

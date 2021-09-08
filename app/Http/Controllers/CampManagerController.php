@@ -26,7 +26,58 @@ class CampManagerController extends Controller
 {
     public function evacuees()
     {
-        return view('camp-manager.evacuees.evacuees');
+        $id = Auth::id();
+        $evacuation_center = EvacuationCenter::where('camp_manager_id', '=', $id)->first();
+        if (empty($evacuation_center)) {
+            abort(403, "You are not assigned to an evacuation center yet. Contact your adminstrator for further info.");
+        }
+        $evacuees = Evacuee::where('evacuation_center_id', $evacuation_center->id)->whereNull('date_discharged')->get();
+        $total_number_of_evacuees = 0;
+        if ($evacuees != null) {
+            $family_codes =  Array();
+            $female =0 ;
+            $male = 0;
+            $children = 0;
+            $lactating = 0;
+            $pwd = 0;
+            $pregnant = 0;
+            $senior_citizen  = 0;
+            $solo_parent = 0;
+                
+            foreach ($evacuees as $evacuee) {
+                $relief_recipient = ReliefRecipient::where('id', $evacuee->relief_recipient_id)->first();
+                if(!in_array($relief_recipient->family_code, $family_codes)){
+                    array_push($family_codes, $relief_recipient->family_code);
+                    $family = Family::where('family_code', $relief_recipient->family_code)->first();
+                    $total_number_of_evacuees = $total_number_of_evacuees + $family->no_of_members;
+                    
+                    $family_members = FamilyMember::where('family_code', $family->family_code)->get();
+                    
+                    $female = $female + $family_members->where('gender', 'Female')->count();
+                    $male = $male + $family_members->where('gender', 'Male')->count();
+                    $children = $children + $family_members->where('sectoral_classification', 'Children')->count();
+                    $lactating = $lactating + $family_members->where('sectoral_classification', 'Lactating')->count();
+                    $pwd = $pwd + $family_members->where('sectoral_classification', 'Person with Disability')->count();
+                    $pregnant = $pregnant + $family_members->where('sectoral_classification', 'Pregnant')->count();
+                    $senior_citizen  = $senior_citizen + $family_members->where('sectoral_classification', 'Senior Citizen')->count();
+                    $solo_parent = $solo_parent + $family_members->where('sectoral_classification', 'Solo Parent')->count();
+                }
+                
+            }
+        }
+        
+        return view('camp-manager.evacuees.evacuees',
+        ['total_number_of_evacuees' => $total_number_of_evacuees,
+        'evacuation_center_name' => $evacuation_center->name,
+        'capacity' => $evacuation_center->capacity,
+        'female' => $female,
+        'male' => $male,
+        'children' => $children,
+        'lactating' => $lactating,
+        'pwd' => $pwd,
+        'pregnant' => $pregnant,
+        'senior_citizen' => $senior_citizen,
+        'solo_parent' => $solo_parent,]);
     }
     public function admitView()
     {
@@ -89,11 +140,13 @@ class CampManagerController extends Controller
         $evacuation_center = DB::table('evacuation_centers')->where('camp_manager_id', $user->id)->first();
         $family_members = DB::table('family_members')
             ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
+            ->leftJoin('disaster_responses', 'relief_recipients.disaster_response_id', '=', 'disaster_responses.id')
             ->leftJoin('evacuees', 'relief_recipients.id', '=', 'evacuees.relief_recipient_id')
             ->whereNotNull('family_members.family_code')->where('is_family_head', 'Yes')
             ->where('relief_recipients.recipient_type', 'Evacuee')
             ->where('evacuees.evacuation_center_id', $evacuation_center->id)
             ->whereNull('evacuees.date_discharged')
+            ->whereNull('disaster_responses.date_ended')
             ->select('family_members.family_code', 'name')
             ->get();
         return view('camp-manager.evacuees.discharge', ['family_members' => $family_members]);
@@ -113,9 +166,12 @@ class CampManagerController extends Controller
                     $relief_recipient->save();
 
                     $findEvacuee = DB::table('evacuees')->where('relief_recipient_id', $relief_recipient->id)->where('date_discharged', null)->first();
-                    $evacuee = Evacuee::find($findEvacuee->id);
-                    $evacuee->date_discharged = now();
-                    $evacuee->save();
+                    if($findEvacuee != null){
+                        $evacuee = Evacuee::find($findEvacuee->id);
+                        $evacuee->date_discharged = now();
+                        $evacuee->save();
+                    }
+                    
                 }
             }
         }
@@ -152,13 +208,15 @@ class CampManagerController extends Controller
         $evacuation_center = DB::table('evacuation_centers')->where('camp_manager_id', $user->id)->first();
         $family_members = DB::table('family_members')
             ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
+            ->leftJoin('disaster_responses', 'relief_recipients.disaster_response_id', '=', 'disaster_responses.id')
             ->leftJoin('evacuees', 'relief_recipients.id', '=', 'evacuees.relief_recipient_id')
             ->whereNotNull('family_members.family_code')->where('is_family_head', 'Yes')
             ->where('relief_recipients.recipient_type', 'Evacuee')
             ->where('evacuees.evacuation_center_id', $evacuation_center->id)
-            ->select('relief_recipients.id as rr_id', 'name')
+            ->whereNull('disaster_responses.date_ended')
+            ->select('relief_recipients.family_code as rr_fc', 'name')
             ->get();
-        $disaster_responses = DisasterResponse::all();
+        $disaster_responses = DisasterResponse::where('date_ended', null)->get();
         $sl_evacuation_center = EvacuationCenter::where('camp_manager_id', '=', $user->id)->first();
         $stock_level = $sl_evacuation_center->stock_level()->first();
 
@@ -168,7 +226,7 @@ class CampManagerController extends Controller
     {
         $validated = $request->validate([
             'disaster_response_id'          => ['required', 'numeric'],
-            'relief_recipient_id'           => ['required', 'numeric'],
+            'relief_recipient_family_code'           => ['required', 'string'],
             'food_packs'                    => ['numeric', 'min:0', 'max:10000'],
             'water'                         => ['numeric', 'min:0', 'max:10000'],
             'clothes'                       => ['numeric', 'min:0', 'max:10000'],
@@ -176,13 +234,16 @@ class CampManagerController extends Controller
             'medicine'                      => ['numeric', 'min:0', 'max:10000'],
             'emergency_shelter_assistance'  => ['numeric', 'min:0', 'max:10000'],
         ]);
-
+        $this_rr = DB::table('relief_recipients')
+        ->where('family_code',$validated['relief_recipient_family_code'])
+        ->where('disaster_response_id',$validated['disaster_response_id'])->first();
+    //  dd($this_rr->id);
         $user = Auth::user();
 
         $relief_good = new ReliefGood();
         $relief_good->field_officer_id              = $user->id;
         $relief_good->disaster_response_id          = $validated['disaster_response_id'];
-        $relief_good->relief_recipient_id           = $validated['relief_recipient_id'];
+        $relief_good->relief_recipient_id           = $this_rr->id;
         $relief_good->date                          = now();
         $relief_good->food_packs                    = $validated['food_packs'];
         $relief_good->water                         = $validated['water'];
@@ -223,7 +284,7 @@ class CampManagerController extends Controller
     }
     public function requestSupplyView()
     {
-        $disaster_responses = DisasterResponse::all();
+        $disaster_responses = DisasterResponse::where('date_ended', null)->get();
         return view('camp-manager.supply.request')->with('disaster_responses', $disaster_responses);
     }
     public function historyView(Request $request)

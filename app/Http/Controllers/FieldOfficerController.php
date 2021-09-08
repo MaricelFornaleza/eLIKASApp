@@ -126,7 +126,13 @@ class FieldOfficerController extends Controller
             ]);
             Inventory::create([
                 'user_id' => $user->id,
-                'name' => $validated['barangay'] . ' Inventory'
+                'name' => $validated['barangay'] . ' Inventory',
+                'total_no_of_food_packs' => 0,
+                'total_no_of_water' => 0,
+                'total_no_of_hygiene_kit' => 0,
+                'total_no_of_medicine' => 0,
+                'total_no_of_clothes' => 0,
+                'total_no_of_emergency_shelter_assistance' => 0,
             ]);
         } else if ($user->officer_type == "Camp Manager") {
             CampManager::create([

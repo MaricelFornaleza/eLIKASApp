@@ -50,15 +50,33 @@
                                 </div>
                             </div>
 
-                            <!-- /.row-->
-                            <div class="row">
-                                <div class="col-sm-12">
+                             <!-- /.row-->
+                             <div class="row">
+                                <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label>Address<a style="color:red"> *</a></label>
-                                        <input class="form-control @error('address') is-invalid @enderror" type="text"
-                                            placeholder="{{ __('Enter Address') }}" name="address" required
-                                            value="{{ $family_member->address }}" autofocus>
-                                        @error('address')
+                                        <label for="street">Street<a style="color:red"> *</a></label>
+                                        <input class="form-control @error('street') is-invalid @enderror" type="text"
+                                            placeholder="{{ __('Enter street') }}" name="street" value="{{ $family_member->street }}" required autofocus>
+                                        @error('street')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="barangay">Barangay<a style="color:red"> *</a></label>
+                                        <select name="barangay" id="barangay_name"
+                                            class=" form-control @error('barangay') is-invalid @enderror">
+                                            <option value="{{ $family_member->barangay }}">{{ $family_member->barangay }}</option>
+                                            @foreach($barangays as $barangay)
+                                            <option value='{{ $barangay->name }}'>
+                                                {{ $barangay->name }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                        @error('barangay')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -100,10 +118,10 @@
                                             @else
                                             <option value="Lactating">Lactating</option>
                                             @endif
-                                            @if($family_member->sectoral_classification == 'PWD')
-                                            <option value="PWD" selected>PWD</option>
+                                            @if($family_member->sectoral_classification == 'Person with Disability')
+                                            <option value="Person with Disability" selected>Person with Disability</option>
                                             @else
-                                            <option value="PWD">PWD</option>
+                                            <option value="Person with Disability">Person with Disability</option>
                                             @endif
                                             @if($family_member->sectoral_classification == 'Senior Citizen')
                                             <option value="Senior Citizen" selected>Senior Citizen</option>
