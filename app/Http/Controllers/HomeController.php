@@ -18,7 +18,9 @@ class HomeController extends Controller
             if (Admin::count() == 0) {
                 return view('admin.admin_resource.config-body');
             } else {
-                $disaster_responses = DisasterResponse::where('date_ended', '=', null)->get();
+                $disaster_responses = DisasterResponse::where('date_ended', '=', null)
+                    ->orderBy('created_at', 'DESC')
+                    ->get();
                 return view('admin.home')->with('disaster_responses', $disaster_responses);
             }
 

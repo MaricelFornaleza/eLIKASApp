@@ -134,3 +134,24 @@ div.dataTables_wrapper div.dataTables_length select {
     border: 2px solid var(--primary);
     border-radius: 5px;
 }
+.c-callout-first,
+.c-callout-first .text-value-lg {
+    border-left-color: #ffb703 !important;
+    color: #ffb703 !important;
+}
+
+.c-callout-second,
+.c-callout-second .text-value-lg {
+    border-left-color: #fb8500 !important;
+    color: #fb8500 !important;
+}
+.c-callout-third,
+.c-callout-third .text-value-lg {
+    border-left-color: #219ebc !important;
+    color: #219ebc !important;
+}
+.c-callout-fourth,
+.c-callout-fourth .text-value-lg {
+    border-left-color: var(--primary) !important;
+    color: var(--primary) !important;
+}

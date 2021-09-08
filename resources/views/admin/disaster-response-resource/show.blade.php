@@ -50,150 +50,67 @@
 
         <div class="col-md-11">
             <div class="row">
-                <!-- left panel  -->
-                <div class="col-md-8">
-                    <h5 class="pt-3 pb-3 title">Total Number of Evacuees</h5>
-                    <div class="row">
-                        <div class="col-6 col-lg-4">
-                            <div class="card">
-                                <div class="card-body p-2 d-flex align-items-center">
-                                    <div class=" p-3 mfe-3" style="background-color: #D7E37D;">
-                                        <svg class="c-icon c-icon-xl">
-                                            <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-bell"></use>
-                                        </svg>
-                                    </div>
-                                    <div>
-                                        <div class="text-value" style="color: #D7E37D;">
-                                            <h1 class="p-0 m-0"><strong>80</strong></h1>
-                                        </div>
-                                        <div class="text-muted text-uppercase font-weight-bold small">Children</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6 col-lg-4">
-                            <div class="card">
-                                <div class="card-body p-2 d-flex align-items-center">
-                                    <div class=" p-3 mfe-3" style="background-color: #FFB703;">
-                                        <svg class="c-icon c-icon-xl">
-                                            <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-bell"></use>
-                                        </svg>
-                                    </div>
-                                    <div>
-                                        <div class="text-value" style="color: #FFB703;">
-                                            <h1 class="p-0 m-0"><strong>80</strong></h1>
-                                        </div>
-                                        <div class="text-muted text-uppercase font-weight-bold small">Lactating</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6 col-lg-4">
-                            <div class="card">
-                                <div class="card-body p-2 d-flex align-items-center">
-                                    <div class=" p-3 mfe-3" style="background-color: #FB8500;">
-                                        <svg class="c-icon c-icon-xl">
-                                            <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-bell"></use>
-                                        </svg>
-                                    </div>
-                                    <div>
-                                        <div class="text-value" style="color: #FB8500;">
-                                            <h1 class="p-0 m-0"><strong>80</strong></h1>
-                                        </div>
-                                        <div class="text-muted text-uppercase font-weight-bold small">PWD</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6 col-lg-4">
-                            <div class="card">
-                                <div class="card-body p-2 d-flex align-items-center">
-                                    <div class=" p-3 mfe-3" style="background-color: #219EBC;">
-                                        <svg class="c-icon c-icon-xl">
-                                            <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-bell"></use>
-                                        </svg>
-                                    </div>
-                                    <div>
-                                        <div class="text-value" style="color: #219EBC;">
-                                            <h1 class="p-0 m-0"><strong>80</strong></h1>
-                                        </div>
-                                        <div class="text-muted text-uppercase font-weight-bold small">Pregnant</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6 col-lg-4">
-                            <div class="card">
-                                <div class="card-body p-2 d-flex align-items-center">
-                                    <div class=" p-3 mfe-3" style="background-color: #5464AF;">
-                                        <svg class="c-icon c-icon-xl">
-                                            <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-bell"></use>
-                                        </svg>
-                                    </div>
-                                    <div>
-                                        <div class="text-value" style="color: #5464AF;">
-                                            <h1 class="p-0 m-0"><strong>80</strong></h1>
-                                        </div>
-                                        <div class="text-muted text-uppercase font-weight-bold small">Senior Citizen
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6 col-lg-4">
-                            <div class="card">
-                                <div class="card-body p-2 d-flex align-items-center">
-                                    <div class=" p-3 mfe-3" style="background-color: #023047;">
-                                        <svg class="c-icon c-icon-xl">
-                                            <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-bell"></use>
-                                        </svg>
-                                    </div>
-                                    <div>
-                                        <div class="text-value" style="color: #023047;">
-                                            <h1 class="p-0 m-0"><strong>80</strong></h1>
-                                        </div>
-                                        <div class="text-muted text-uppercase font-weight-bold small">Solo Parent</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+                <div class="col-md-12">
+
+                    @include('admin.disaster-response-resource.details.section1')
+
+                    <!-- Affected Residents Chart -->
                     <div class="card">
-                        <div class="card-header">
-                            <h5 class=" title">Requested Resources Weekly Report</h5>
-                        </div>
                         <div class="card-body">
-                            <div class="c-chart-wrapper">
-                                <canvas id="canvas-1"></canvas>
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <h4 class="card-title mb-0">Affected Residents</h4>
+                                    <div class="small text-muted">
+                                        {{ date('F Y', strtotime($disaster_response->date_started)) }}
+                                    </div>
+                                </div>
+                                <!-- /.col-->
+
+                            </div>
+                            <!-- /.row-->
+                            <div class="c-chart-wrapper" style="height:300px;margin-top:40px;">
+                                <canvas class="chart" id="main-chart" height="300"></canvas>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="row text-center justify-content-center">
+                                <div class="col-sm-12 col-md-4 mb-sm-2 mb-0">
+                                    <div class="text-muted">Evacuees</div><strong>29.703 Users (40%)</strong>
+                                    <div class="progress progress-xs mt-2">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 40%"
+                                            aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4 mb-sm-2 mb-0">
+                                    <div class="text-muted">Non-evacuees</div><strong>24.093 Users (20%)</strong>
+                                    <div class="progress progress-xs mt-2">
+                                        <div class="progress-bar bg-info" role="progressbar" style="width: 20%"
+                                            aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
-                </div>
+                    <!-- end Affected Residents Chart -->
+                    <!-- section 3 -->
+                    <div class="row">
+                        <!-- Dispense Relief Goods -->
+                        @include('admin.disaster-response-resource.details.dispensed-relief-goods')
 
-                <!-- right pannel  -->
-                <div class="col-md-4 pb-4 ">
-                    <div class="col-12 bg-white ">
-                        <h5 class="pt-4 center title">Total Number of Evacuees</h5>
-                        <div class="col-12 mt-4 mb-4">
-                            <div class="c-chart-wrapper">
-                                <canvas id="canvas-3" height="400px"></canvas>
-
-                            </div>
-                        </div>
-                        @foreach($barangays as $barangay)
-                        <div class="pt-1 pb-1">
-                            <div>{{$barangay->barangay}}</div>
-                            <div class="progress progress-xs my-2">
-                                <div class="progress-bar bg-danger" role="progressbar" style="width: 25%"
-                                    aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                        @endforeach
-
+                        <!-- Sectoral Classification -->
+                        @include('admin.disaster-response-resource.details.sectoral-breakdown')
 
                     </div>
-
+                    <!-- end section 3 -->
                 </div>
+
+                <!-- affected Areas -->
+                @include('admin.disaster-response-resource.details.affected-areas')
+
+                <!-- end affected areas -->
+
             </div>
 
         </div>
@@ -207,4 +124,6 @@
 <script src="{{ asset('js/coreui-chartjs.bundle.js') }}"></script>
 <script src="{{ asset('js/reports-js/donut.js') }}"></script>
 <script src="{{ asset('js/reports-js/line.js') }}"></script>
+<script src="{{ asset('js/reports-js/main.js') }}" defer></script>
+
 @endsection
