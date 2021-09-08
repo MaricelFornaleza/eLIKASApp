@@ -8,19 +8,19 @@
             <div class="col-md-12 justify-content-between d-flex align-items-middle p-0">
                 <div class="col-6">
                     <h6><b>Evacuation Center</b></h6>
-                    <h6>Del Rosario Elementary School</h6>
+                    <h6>{{ $evacuation_center_name }}</h6>
                 </div>
                 <div class="col-6 text-right ">
-                    <h1 class="mb-0 pb-0 "><b>123</b></h1>
+                    <h1 class="mb-0 pb-0 "><b>{{ $total_number_of_evacuees }}</b></h1>
                     <small>TOTAL EVACUEES</small>
                 </div>
 
             </div>
             <div class="col-12 text-center mt-5  ">
                 <!-- Progress Bar -->
-                <h5 class="progress-title"><b>100 Evacuees</b> (80%) </h5>
+                <h5 class="progress-title"><b>{{ $total_number_of_evacuees }} Evacuees</b> ({{ round(($total_number_of_evacuees/$capacity)*100) }}%) </h5>
                 <div class="progress">
-                    <div class="progress-bar bg-secondary" role="progressbar" style="width: 75%" aria-valuenow="75"
+                    <div class="progress-bar bg-secondary" role="progressbar" style="width: {{ round(($total_number_of_evacuees/$capacity)*100) }}%" aria-valuenow="0"
                         aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
 

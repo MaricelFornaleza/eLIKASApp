@@ -36,13 +36,13 @@ class FieldOfficerImport implements ToCollection, WithHeadingRow
 
         foreach ($collection as $row) {
             if ($row->filter()->isNotEmpty()) {
-                $temp_pass = Str::random(8);
+                $temp_pass = Str::random(12);
                 $user =  User::create([
                     'name' => $row['name'],
                     'email' => $row['email'],
                     'officer_type' => $row['officer_type'],
                     'contact_no' => $row['contact_no'],
-                    'password' => Hash::make(Str::random(8)),
+                    'password' => Hash::make($temp_pass),
                 ]);
 
                 if ($user->officer_type == "Barangay Captain") {
@@ -52,7 +52,13 @@ class FieldOfficerImport implements ToCollection, WithHeadingRow
                     ]);
                     Inventory::create([
                         'user_id' => $user->id,
-                        'name' => $row['barangay'] . ' Inventory'
+                        'name' => $row['barangay'] . ' Inventory',
+                        'total_no_of_food_packs' => 0,
+                        'total_no_of_water' => 0,
+                        'total_no_of_hygiene_kit' => 0,
+                        'total_no_of_medicine' => 0,
+                        'total_no_of_clothes' => 0,
+                        'total_no_of_emergency_shelter_assistance' => 0,
                     ]);
                 } else if ($user->officer_type == "Camp Manager") {
                     CampManager::create([
@@ -77,11 +83,13 @@ class FieldOfficerImport implements ToCollection, WithHeadingRow
                 $to_email = $user->email;
                 $data = [
                     'name' => $user->name,
-                    'body' => $temp_pass
+                    'email' => $user->email,
+                    'remember_token' => $user->remember_token,
                 ];
-                Mail::send('emails.mail', $data, function ($message) use ($to_name, $to_email) {
+
+                Mail::send('emails.verify-user', $data, function ($message) use ($to_name, $to_email) {
                     $message->to($to_email, $to_name)
-                        ->subject('eLIKAS Account Details');
+                        ->subject('Verify your Email Address');
                     $message->from('elikasph@gmail.com', 'eLIKAS Philippines');
                 });
             }

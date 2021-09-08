@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('photo')->default('Avatar-default.png');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->bigInteger('contact_no')->unique();
+            $table->bigInteger('contact_no')->unique()->nullable();
             $table->string('password');
             $table->string('officer_type');
             $table->rememberToken();
@@ -29,10 +29,9 @@ class CreateUsersTable extends Migration
         Schema::create('admins', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
-            $table->string('region_psgc');
-            $table->string('province_psgc');
-            $table->string('city_psgc');
-            $table->string('address');
+            $table->string('region');
+            $table->string('province');
+            $table->string('city');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')
                 ->onUpdate('cascade')->onDelete('cascade');

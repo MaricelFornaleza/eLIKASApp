@@ -29,10 +29,10 @@
                 <!-- Select Relief Recipient -->
                 <div class="form-group col-sm-6">
                     <label for="relief_recipient">Relief Recipient</label>
-                    <select name="relief_recipient_id" class="form-control" id="relief_recipient">
+                    <select name="relief_recipient_family_code" class="form-control" id="relief_recipient">
                         <option value="">Select</option>
                         @foreach($evacuees as $evacuee)
-                        <option value="{{$evacuee->rr_id}}">{{$evacuee->name}}</option>
+                        <option value="{{$evacuee->rr_fc}}">{{$evacuee->name}}</option>
                         @endforeach
 
                     </select>

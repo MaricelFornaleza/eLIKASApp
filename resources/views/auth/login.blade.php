@@ -9,8 +9,10 @@
                 <div class="card p-4">
                     <div class="card-body">
 
+
                         <h2 class="title">Welcome Back!</h2>
                         <p class="text-muted ">Log In to your account</p>
+
                         <form method="POST" action="{{ route('login') }}">
                             @csrf
                             <div class="input-group mb-3 mt-5">

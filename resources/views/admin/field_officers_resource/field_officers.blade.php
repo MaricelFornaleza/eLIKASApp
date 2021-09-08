@@ -31,13 +31,13 @@
             @if(count($errors) > 0)
             <div class="alert alert-danger col-12">
                 <h6>
-                    Upload Validation error
+                    Upload Error
                 </h6>
-                <ul>
+                <!-- <ul>
                     @foreach($errors as $error)
                     <li>{{$error}}</li>
                     @endforeach
-                </ul>
+                </ul> -->
             </div>
             @endif
 

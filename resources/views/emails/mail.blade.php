@@ -1,7 +1,7 @@
 Greetings from <strong style="color: #023047;">eLIKAS Philippines!</strong>
 <br>
 Hello <strong>{{ $name }}</strong>,
-<p>You are now registered as a field officer in eLIKAS.
+<p>Your account was successfully verified!.
     Download the eLIKAS mobile appllication and
     login using your email address and the temporary password provided.</p>
 <p>Here is your temporary password: <strong> {{$body}}</strong></p>

@@ -33,8 +33,9 @@ class AppServiceProvider extends ServiceProvider
             // If you want to accept hyphens use: /^[\pL\s-]+$/u.
             return preg_match('/^[\pL\s]+$/u', $value);
         });
-        if($this->app->environment('production')) {
+        if ($this->app->environment('production')) {
             \URL::forceScheme('https');
         }
+        Schema::defaultStringLength(191);
     }
 }

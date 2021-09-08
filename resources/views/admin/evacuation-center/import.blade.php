@@ -22,30 +22,38 @@
                             @if(count($errors) > 0)
                             <div class="alert alert-danger col-12">
                                 <h6>
-                                    Upload Validation error
+                                    Upload error
                                 </h6>
-                                <ul>
-                                    @foreach($errors->all() as $error)
-                                    <li>{{$error}}</li>
-                                    @endforeach
-                                </ul>
+
                             </div>
-                            <div class="mx-4">
-                                <code>Important note: The file must contain the following format.</code>
-                            </div>
+
                             @endif
 
                         </div>
-                        
+                        <code>Important note: The file must contain the following column name.</code>
+                        <ul>
+
+                            <li><strong>evacuation_center_name</strong><code>*</code></li>
+                            <li><strong>address</strong><code>*</code></li>
+                            <li><strong>latitude</strong><code>*</code></li>
+                            <li><strong>longitude</strong><code>*</code></li>
+                            <li><strong>capacity</strong><code>*</code></li>
+                            <li><strong>characteristics</strong></li>
+
+                        </ul>
+
                         <form action="{{ route('evacuation-center.file.store') }}" method="post"
                             enctype="multipart/form-data">
                             @csrf
-                            <div class="row mx-1 mt-5 mb-5">
-                                <input type="file" name="import_file" id="">
+                            <div class="row  center mt-5">
+                                <div class="col-md-6 fileUpload">
+                                    <input type="file" name="import_file" id="">
+
+                                </div>
                             </div>
-                            <div class="row">
-                                <div class="col-4">
-                                    <button class="btn btn-primary" type="submit">{{ __('Import') }}</button>
+                            <div class="row mt-5 center">
+                                <div class="col-4 ">
+                                    <button class="btn btn-primary  " type="submit">{{ __('Import') }}</button>
                                 </div>
                             </div>
                         </form>
@@ -62,28 +70,5 @@
 @endsection
 
 @section('javascript')
-<script type="text/javascript">
-function update() {
-    var select = document.getElementById('officer_type');
-    if (select.value == 'Barangay Captain') {
-        document.getElementById('barangay').style.display = "block";
-        document.getElementById('designation').style.display = "none";
-    } else {
-        document.getElementById('barangay').style.display = "none";
-        document.getElementById('designation').style.display = "block";
-    }
-}
 
-
-
-$(document).ready(function(e) {
-    $('#photo').change(function() {
-        let reader = new FileReader();
-        reader.onload = (e) => {
-            $('#preview-image-before-upload').attr('src', e.target.result);
-        }
-        reader.readAsDataURL(this.files[0]);
-    });
-});
-</script>
 @endsection

@@ -136,8 +136,9 @@ class FamilyMemberController extends Controller
      */
     public function edit($id)
     {
+        $barangays = Barangay::all();
         $family_member = FamilyMember::find($id);
-        return view('admin.relief-recipients-resource.edit', ['family_member' => $family_member]);
+        return view('admin.relief-recipients-resource.edit', ['family_member' => $family_member, 'barangays' => $barangays]);
     }
 
     /**
@@ -153,7 +154,8 @@ class FamilyMemberController extends Controller
             'name'              => ['required', 'string', 'max:255', 'alpha_spaces'],
             'gender'            => ['required', 'string', 'max:255', 'regex:/^[A-Za-z]+$/'],
             'birthdate'         => ['required', 'date_format:Y-m-d'],
-            'address'           => ['required', 'string', 'max:255', 'alpha_spaces'],
+            'street'           => ['required', 'string', 'max:255', 'alpha_spaces'],
+            'barangay'           => ['required', 'string', 'max:255', 'alpha_spaces'],
             'family_code'       => ['nullable', 'string', 'max:255', 'exists:families,family_code'],
             'is_family_head'    => ['required', 'string', 'max:255'],
             'sectoral_classification' => ['required', 'string', 'max:255', 'alpha_spaces'],
@@ -163,7 +165,8 @@ class FamilyMemberController extends Controller
         $family_member->name     = $validated['name'];
         $family_member->gender   = $validated['gender'];
         $family_member->birthdate = $validated['birthdate'];
-        $family_member->address = $validated['address'];
+        $family_member->street = $validated['street'];
+        $family_member->barangay = $validated['barangay'];
         $prev_family_member_family_code = $family_member->family_code;
         $family_member->family_code = $validated['family_code'];
         $family_member->is_family_head = $validated['is_family_head'];
@@ -279,33 +282,50 @@ class FamilyMemberController extends Controller
         $validated = $request->validate([
             'selectedResidents'              => ['required']
         ]);
-        //dd($request->selectedResidents);
-        $family_code = 'eLIKAS-' . Str::random(6);
+        $ids = $request->selectedResidents;
 
-        $family = new Family();
-        $family->family_code = $family_code;
-        $family->no_of_members = count($request->selectedResidents);
-        $family->save();
+        $family_head = FamilyMember::select('id', 'is_family_head')
+            ->whereIn('id', $ids)
+            ->where('is_family_head', '=', 'Yes')
+            ->get();
+        $count = $family_head->count();
 
-        foreach ($request->selectedResidents as $selectedResident) {
-            $family_member = FamilyMember::find($selectedResident);
-            $family_member->family_code   = $family_code;
-            $family_member->save();
+
+        if ($count == 1) {
+            //dd($request->selectedResidents);
+            $family_code = 'eLIKAS-' . Str::random(6);
+
+            $family = new Family();
+            $family->family_code = $family_code;
+            $family->no_of_members = count($request->selectedResidents);
+            $family->save();
+
+            foreach ($request->selectedResidents as $selectedResident) {
+                $family_member = FamilyMember::find($selectedResident);
+                $family_member->family_code   = $family_code;
+                $family_member->save();
+            }
+
+
+            // $family_member_rep = FamilyMember::find($request->selectedRepresentative);
+            // $family_member_rep->is_representative = 'Yes';
+
+            // $family_member_rep->save();
+
+            // $relief_recipient = new ReliefRecipient();
+            // $relief_recipient->family_code     = $family_code;
+            // $relief_recipient->no_of_members     = count($request->checkedResidents);
+            // $relief_recipient->address     = $validated['address'];
+            // $relief_recipient->recipient_type     = 'Non-Evacuee';
+            // $relief_recipient->save();
+            $request->session()->flash('message', 'Group Resident successfully!');
+            return redirect()->back();
+        } else if ($count == 0) {
+            Session::flash('error', 'Select one family head');
+            return redirect()->back();
+        } else if ($count > 1) {
+            Session::flash('error', 'Only one family head is allowed');
+            return redirect()->back();
         }
-
-
-        // $family_member_rep = FamilyMember::find($request->selectedRepresentative);
-        // $family_member_rep->is_representative = 'Yes';
-
-        // $family_member_rep->save();
-
-        // $relief_recipient = new ReliefRecipient();
-        // $relief_recipient->family_code     = $family_code;
-        // $relief_recipient->no_of_members     = count($request->checkedResidents);
-        // $relief_recipient->address     = $validated['address'];
-        // $relief_recipient->recipient_type     = 'Non-Evacuee';
-        // $relief_recipient->save();
-        $request->session()->flash('message', 'Group Resident successfully!');
-        return redirect()->back();
     }
 }

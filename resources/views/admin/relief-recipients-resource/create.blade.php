@@ -107,7 +107,7 @@
                                             <option value="" selected disabled>Select</option>
                                             <option value="None">None</option>
                                             <option value="Lactating">Lactating</option>
-                                            <option value="PWD">PWD</option>
+                                            <option value="Person with Disability">Person with Disability</option>
                                             <option value="Senior Citizen">Senior Citizen</option>
                                             <option value="Children">Children</option>
                                             <option value="Pregnant">Pregnant</option>
