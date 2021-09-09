@@ -16,26 +16,25 @@
             <!-- Select Disaster Response -->
             <div class="form-group col-sm-6">
                 <label for="disaster_response">Disaster Response</label>
-                <select name="disaster_response" class="form-control" id="disaster_response">
+                <select name="disaster_response_id" class="form-control" id="disaster_response_id" required>
                     <option value="">Select</option>
-                    <option value="dr-1">Disaster Response 1</option>
-                    <option value="dr-2">Disaster Response 2</option>
-                    <option value="dr-3">Disaster Response 3</option>
-
+                    @foreach($disaster_responses as $disaster_response)
+                    <option value="{{ $disaster_response->id }}">Disaster Response
+                        {{ $disaster_response->disaster_type }}</option>
+                    @endforeach
                 </select>
-
             </div>
             <!-- Select Relief Recipient -->
             <div class="form-group col-sm-6">
-                <label for="relief_recipient">Relief Recipient</label>
-                <select name="relief_recipient" class="form-control" id="relief_recipient">
-                    <option value="">Select</option>
-                    <option value="dr-1">Relief Recipient 1</option>
-                    <option value="dr-2">Relief Recipient 2</option>
-                    <option value="dr-3">Relief Recipient 3</option>
+                    <label for="relief_recipient">Relief Recipient</label>
+                    <select name="relief_recipient_family_code" class="form-control" id="relief_recipient">
+                        <option value="">Select</option>
+                        @foreach($non_evacuees as $non_evacuee)
+                        <option value="{{$non_evacuee->rr_fc}}">{{$non_evacuee->name}}</option>
+                        @endforeach
 
-                </select>
-            </div>
+                    </select>
+                </div>
 
             <!-- Supply Info Form -->
             <div class="supply-info mt-5">

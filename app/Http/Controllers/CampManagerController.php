@@ -115,18 +115,24 @@ class CampManagerController extends Controller
                     $relief_recipient = ReliefRecipient::find($found_relief_recipient->id);
                     $relief_recipient->recipient_type = 'Evacuee';
                     $relief_recipient->save();
-
-                    $evacuee = new Evacuee();
-                    $evacuee->relief_recipient_id = $relief_recipient->id;
-                    $evacuee->date_admitted = now();
-                    $evacuee->evacuation_center_id = $evacuation_center->id;
-                    $evacuee->save();
+                    
+                    $checkIf_DR_IsEnded = DB::table('disaster_responses')->where('id', $relief_recipient->disaster_response_id)->first();
+                    
+                    if($checkIf_DR_IsEnded->date_ended == null){
+                        $evacuee = new Evacuee();
+                        $evacuee->relief_recipient_id = $relief_recipient->id;
+                        $evacuee->date_admitted = now();
+                        $evacuee->evacuation_center_id = $evacuation_center->id;
+                        $evacuee->save(); 
+                    }
+                    
                 }
             }
         }
 
+
         $request->session()->flash('message', 'Admit Resident successfully!');
-        return view('camp-manager.evacuees.evacuees');
+        return $this->evacuees();
     }
 
     public function dischargeView()
@@ -176,7 +182,7 @@ class CampManagerController extends Controller
             }
         }
         $request->session()->flash('message', 'Discharge Evacuee successfully!');
-        return view('camp-manager.evacuees.evacuees');
+        return $this->evacuees();
     }
     public function supplyView()
     {
@@ -264,23 +270,7 @@ class CampManagerController extends Controller
             'emergency_shelter_assistance'  => ($prev_stock->emergency_shelter_assistance - $relief_good->emergency_shelter_assistance),
         ]);
 
-        $evacuees = Evacuee::where('evacuation_center_id', $evacuation_center->id)->get();
-        $total_number_of_evacuees = 0;
-        if ($evacuees != null) {
-            foreach ($evacuees as $evacuee) {
-                $relief_recipient = ReliefRecipient::where('id', $evacuee->relief_recipient_id)->first();
-                $family = Family::where('family_code', $relief_recipient->family_code)->first();
-                $total_number_of_evacuees = $total_number_of_evacuees + $family->no_of_members;
-            }
-        }
-
-        if (empty($evacuation_center)) {
-            abort(403, "You have not been assigned to an evacuation center yet. Contact your adminstrator for further info.");
-        } else {
-            $request->session()->flash('message', 'Dispense Supply successfully!');
-            $stock_level = $evacuation_center->stock_level()->first();
-            return view('camp-manager.supply.supplies', ['total_number_of_evacuees' => $total_number_of_evacuees, 'capacity' => $evacuation_center->capacity, 'stock_level' => $stock_level]);
-        }
+       return $this->supplyView();
     }
     public function requestSupplyView()
     {

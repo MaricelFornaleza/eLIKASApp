@@ -32,6 +32,8 @@ class FamilyMemberController extends Controller
             //         ->where('evacuees.date_discharged', '!=', null);
             // })
             ->leftJoin('relief_recipients', 'relief_recipients.family_code', '=', 'families.family_code')
+            ->leftJoin('disaster_responses', 'relief_recipients.disaster_response_id', '=', 'disaster_responses.id')
+            ->whereNull('disaster_responses.date_ended')
             ->select(
                 'family_members.id as fm_id',
                 'family_members.family_code',
