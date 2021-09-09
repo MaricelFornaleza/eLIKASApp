@@ -132,7 +132,7 @@ class CampManagerController extends Controller
 
 
         $request->session()->flash('message', 'Admit Resident successfully!');
-        return $this->evacuees();
+        return redirect()->route('cm_evacuees');
     }
 
     public function dischargeView()
@@ -182,7 +182,7 @@ class CampManagerController extends Controller
             }
         }
         $request->session()->flash('message', 'Discharge Evacuee successfully!');
-        return $this->evacuees();
+        return redirect()->route('cm_evacuees');
     }
     public function supplyView()
     {
@@ -219,6 +219,7 @@ class CampManagerController extends Controller
             ->whereNotNull('family_members.family_code')->where('is_family_head', 'Yes')
             ->where('relief_recipients.recipient_type', 'Evacuee')
             ->where('evacuees.evacuation_center_id', $evacuation_center->id)
+            ->whereNull('evacuees.date_discharged')
             ->whereNull('disaster_responses.date_ended')
             ->select('relief_recipients.family_code as rr_fc', 'name')
             ->get();
@@ -269,8 +270,8 @@ class CampManagerController extends Controller
             'clothes'                       => ($prev_stock->clothes - $relief_good->clothes),
             'emergency_shelter_assistance'  => ($prev_stock->emergency_shelter_assistance - $relief_good->emergency_shelter_assistance),
         ]);
-
-       return $this->supplyView();
+        $request->session()->flash('message', 'Dispense Supply successfully!');
+        return redirect()->route('cm_supply_view');
     }
     public function requestSupplyView()
     {
