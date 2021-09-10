@@ -139,7 +139,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::group(['middleware' => ['officertype:Barangay Captain']], function () {
         Route::prefix('barangay-captain')->group(function () {
             Route::get('/add-supply', 'BarangayCaptainController@addSupply');
-            Route::get('/dispense', 'BarangayCaptainController@dispenseView');
+            Route::get('/dispense-view', 'BarangayCaptainController@dispenseView');
+            Route::post('/dispense', 'BarangayCaptainController@dispense');
             Route::get('/details/{id}', 'BarangayCaptainController@detailsView');
             Route::get('/list', 'BarangayCaptainController@listView');
         });
@@ -148,12 +149,12 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     // Camp Manager
     Route::group(['middleware' => ['officertype:Camp Manager']], function () {
         Route::prefix('camp-manager')->group(function () {
-            Route::get('/evacuees', 'CampManagerController@evacuees');
+            Route::get('/evacuees', 'CampManagerController@evacuees')->name('cm_evacuees');
             Route::get('/admit-view', 'CampManagerController@admitView');
             Route::post('/admit', 'CampManagerController@admit');
             Route::get('/discharge-view', 'CampManagerController@dischargeView');
             Route::post('/discharge', 'CampManagerController@discharge');
-            Route::get('/supply-view', 'CampManagerController@supplyView');
+            Route::get('/supply-view', 'CampManagerController@supplyView')->name('cm_supply_view');
             Route::get('/dispense-view', 'CampManagerController@dispenseView');
             Route::post('/dispense', 'CampManagerController@dispense');
             Route::get('/request-supply', 'CampManagerController@requestSupplyView');
