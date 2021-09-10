@@ -71,7 +71,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::get('/courier/decline',   'DeliveryRequestController@courier_decline')->name('request.courier_decline')->middleware('officertype:Courier');
     });
 
-    Route::group(['middleware' => ['officertype:Admin&BC', 'adminconfig']], function () {
+    Route::group(['middleware' => ['officertype:Admin&BC']], function () {
         // Supply
         Route::resource('supplies', 'SupplyController');
         // Inventory
