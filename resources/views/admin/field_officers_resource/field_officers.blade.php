@@ -25,7 +25,7 @@
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item" href="{{ url('/export/field_officers') }}">Excel</a>
-                    <a class="dropdown-item" href="{{ url('/export/field_officers/pdf') }}">PDF</a>
+                    <a class="dropdown-item" href="{{ url('/export/field_officers/pdf') }}" target="_blank">PDF</a>
                 </div>
             </div>
 
@@ -65,22 +65,22 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="row">
-                            <div class=" ml-auto ">
-                                <a href="{{ url('/field_officers/create') }}">
-                                    <button class="btn btn-secondary secondary-button">
-                                        Add Field Officer
+                            <div class="ml-auto">
+                                <div class="dropdown mr-4 ">
+                                    <button class="btn btn-secondary secondary-button dropdown-toggle" type="button"
+                                        id="dropdownMenuButton1" data-toggle="dropdown" aria-expanded="false">
+                                        Action
                                     </button>
-                                </a>
-
-                            </div>
-                            <div class=" ml-3 mr-4">
-                                <a href="{{ url('/import/field_officers') }}">
-                                    <button class="btn btn-outline-primary ">
-                                        Upload Excel File
-                                    </button>
-                                </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <a class="dropdown-item" href="{{ url('/field_officers/create') }}">Add Field
+                                            Officer</a>
+                                        <a class="dropdown-item" href="{{ url('/import/field_officers') }}">Upload
+                                            Excel File</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
                     </div>
                     <div class="card-body ">
                         <div>

@@ -129,9 +129,13 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
             Route::get('/field_officers', 'ExportController@exportFieldOfficer');
             Route::get('/field_officers/pdf', 'ExportController@exportFieldOfficerPDF');
             Route::get('/supplies', 'ExportController@exportSupplies');
-            Route::get('/evacuation_centers', 'ExportController@exportEvacuationCenters')->name('evacuation-center.file.export');
-            Route::get('/requests', 'ExportController@exportDeliveryRequests')->name('request.file.export');
+            Route::get('/supplies/pdf', 'ExportController@exportSuppliesPDF');
+            Route::get('/evacuation_centers', 'ExportController@exportEvacuationCenters');
+            Route::get('/evacuation_centers/pdf', 'ExportController@exportEvacuationCentersPDF');
+            Route::get('/requests', 'ExportController@exportDeliveryRequests');
+            Route::get('/requests/pdf', 'ExportController@exportDeliveryRequestsPDF');
             Route::get('/residents', 'ExportController@exportResidents');
+            Route::get('/residents/pdf', 'ExportController@exportResidentsPDF');
         });
     });
 

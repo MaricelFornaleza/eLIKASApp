@@ -8,22 +8,29 @@
 
 <div class="container-fluid">
     <div class="fade-in">
-        <div class="row">
-            <div class="col-lg-6 mr-auto mb-2">
+
+        <div class="row justify-content-between d-flex">
+            <div class="col-lg-6 ">
                 <h1 class="title">
                     Inventory
                 </h1>
             </div>
-            <div class="col-lg-3 ml-auto">
 
-                <a href="{{ url('/export/supplies') }}" class="btn btn-block export-btn">
-                    <svg class="c-icon mr-2">
-                        <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-file"></use>
-                    </svg>
-                    Export to Excel
-                </a>
+            <div class="dropdown mr-4">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-expanded="false">
+                    Export to
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="{{ url('/export/supplies') }}">Excel</a>
+                    <a class="dropdown-item" href="{{ url('/export/supplies/pdf') }}" target="_blank">PDF</a>
+                </div>
             </div>
+
+
         </div>
+
+
         <div class="row">
             @if(count($errors) > 0)
             <div class="alert alert-danger col-12">
@@ -42,7 +49,11 @@
         <div class="row">
             <div class="col-12">
                 @if(Session::has('message'))
-                <div class="alert alert-success">{{ Session::get('message') }}</div>
+                <div class="alert alert-success">{{ Session::get('message') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
                 @endif
             </div>
         </div>
@@ -53,34 +64,22 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="row">
-                            <div class=" ml-auto ">
-                                <a href="{{ route('supplies.create') }}">
-                                    <button class="btn btn-secondary secondary-button">
-                                        Add Supply
+                            <div class="ml-auto">
+                                <div class="dropdown mr-4 ">
+                                    <button class="btn btn-secondary secondary-button dropdown-toggle" type="button"
+                                        id="dropdownMenuButton1" data-toggle="dropdown" aria-expanded="false">
+                                        Action
                                     </button>
-                                </a>
-
-                            </div>
-                            <div class=" ml-3 mr-4">
-                                <a href="{{ url('/import/supplies') }}">
-                                    <button class="btn btn-outline-primary ">
-                                        Upload Excel File
-                                    </button>
-                                </a>
-
-                            </div>
-                            <!-- <form method="POST" enctype="multipart/form-data"
-                                action="{{ url('/import_excel_supplies') }}">
-                                @csrf
-                                <div class="ml-4 mr-4">
-                                    <input type="file" name="select_file">
-
-                                    <input type="submit" name="upload" class="btn btn-outline-primary" value="Upload">
-                                    </input>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <a class="dropdown-item" href="{{ route('supplies.create') }}">Add Supply</a>
+                                        <a class="dropdown-item" href="{{ url('/import/supplies') }}">Upload Excel
+                                            File</a>
+                                    </div>
                                 </div>
-                            </form> -->
-
+                            </div>
                         </div>
+
+
 
                     </div>
                     <div class="card-body ">

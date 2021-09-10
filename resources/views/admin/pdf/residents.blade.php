@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Field Officers</title>
+    <title>Residents</title>
     <style type="text/css">
     #data {
         font-family: Arial, Helvetica, sans-serif;
@@ -61,7 +61,7 @@
     }
 
     .heading p span {
-        width: 50%;
+        width: 60%;
         display: inline-block;
     }
 
@@ -126,43 +126,38 @@
         <div class="intro">
             <p>This is a generated report from the application <b>eLIKAS</b> as of
                 <u>{{ (Carbon\Carbon::now())->toDayDateTimeString();}}</u>,
-                which includes necessary information about the <u>List of Field Officers in {{$admin->city}}.</u>
+                which includes necessary information about the <u>List of Residents in {{$admin->city}}.</u>
             </p>
         </div>
         <div class="table-container">
             <table id="data">
                 <thead>
                     <tr>
-
+                        <th>FAMILY CODE</th>
                         <th>NAME</th>
-                        <th>OFFICER TYPE</th>
-                        <th>EMAIL ADDRESS</th>
-                        <th>CONTACT NUMBER</th>
-                        <th>BARANGAY</th>
-                        <th>DESIGNATION</th>
+                        <th>GENDER</th>
+                        <th>BIRTHDATE</th>
+                        <th>SECTORAL CLASSIFICATION</th>
+                        <th>FAMILY HEAD</th>
+                        <th>ADDRESS</th>
+
+
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($field_officers as $field_officer)
+                    @foreach($residents as $resident)
                     <tr>
-                        <td>{{ $field_officer -> name }}</td>
-                        <td>{{ $field_officer -> officer_type}}</td>
-                        <td>{{ $field_officer -> email }}</td>
-                        <td>0{{$field_officer -> contact_no}}</td>
-                        <td>@empty($field_officer -> barangay )
-                            NA
-                            @endempty
-                            {{ $field_officer -> barangay}}
-                        </td>
-                        <td>
-                            @if($field_officer -> camp_designation == null && $field_officer ->
-                            designation == null)
-                            NA
-                            @else
-                            {{ $field_officer -> camp_designation }}
-                            {{ $field_officer -> designation }}
-                            @endif
-                        </td>
+                        @if($resident->family_code == "")
+                        <td class="text-danger"><strong>{{ __('N/A') }}</strong></td>
+                        @else
+                        <td>{{ $resident->family_code }}</td>
+                        @endif
+                        <td>{{ $resident->name }}</td>
+                        <td>{{ $resident->gender }}</td>
+                        <td>{{ $resident->birthdate }}</td>
+                        <td>{{ $resident->sectoral_classification }}</td>
+                        <td>{{ $resident->is_family_head }}</td>
+                        <td>{{ $resident->street }}, {{ $resident->barangay }}</td>
 
                     </tr>
                     @endforeach

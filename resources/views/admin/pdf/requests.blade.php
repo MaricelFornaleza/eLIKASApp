@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Field Officers</title>
+    <title>Requests</title>
     <style type="text/css">
     #data {
         font-family: Arial, Helvetica, sans-serif;
@@ -126,43 +126,46 @@
         <div class="intro">
             <p>This is a generated report from the application <b>eLIKAS</b> as of
                 <u>{{ (Carbon\Carbon::now())->toDayDateTimeString();}}</u>,
-                which includes necessary information about the <u>List of Field Officers in {{$admin->city}}.</u>
+                which includes necessary information about the <u>List of Requests received by in {{$admin->city}}
+                    LDDRRMO.</u>
             </p>
         </div>
         <div class="table-container">
             <table id="data">
                 <thead>
                     <tr>
+                        <th>TIME RECEIVED</th>
+                        <th>REQUEST ID</th>
+                        <th>CAMP MANAGER NAME</th>
+                        <th>EVACUATION CENTER</th>
+                        <th>FOOD PACKS</th>
+                        <th>WATER</th>
+                        <th>HYGIENE KIT</th>
+                        <th>CLOTHES</th>
+                        <th>MEDICINE</th>
+                        <th>EMERGENCY SHELTER ASSISTANCE</th>
+                        <th>NOTE</th>
+                        <th>STATUS</th>
 
-                        <th>NAME</th>
-                        <th>OFFICER TYPE</th>
-                        <th>EMAIL ADDRESS</th>
-                        <th>CONTACT NUMBER</th>
-                        <th>BARANGAY</th>
-                        <th>DESIGNATION</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($field_officers as $field_officer)
+                    @foreach($delivery_requests as $delivery_request)
                     <tr>
-                        <td>{{ $field_officer -> name }}</td>
-                        <td>{{ $field_officer -> officer_type}}</td>
-                        <td>{{ $field_officer -> email }}</td>
-                        <td>0{{$field_officer -> contact_no}}</td>
-                        <td>@empty($field_officer -> barangay )
-                            NA
-                            @endempty
-                            {{ $field_officer -> barangay}}
-                        </td>
-                        <td>
-                            @if($field_officer -> camp_designation == null && $field_officer ->
-                            designation == null)
-                            NA
-                            @else
-                            {{ $field_officer -> camp_designation }}
-                            {{ $field_officer -> designation }}
-                            @endif
-                        </td>
+                        <td>{{date('g:i a m/d/Y', strtotime($delivery_request->updated_at)) }}</td>
+                        <td>{{ $delivery_request->id }}</td>
+                        <td>{{ $delivery_request->camp_manager_name }}</td>
+                        <td>{{ $delivery_request->evacuation_center_name }}</td>
+                        <td>{{ $delivery_request->food_packs }}</td>
+                        <td>{{ $delivery_request->water }}</td>
+                        <td>{{ $delivery_request->hygiene_kit }}</td>
+                        <td>{{ $delivery_request->clothes }}</td>
+                        <td>{{ $delivery_request->medicine }}</td>
+                        <td>{{ $delivery_request->emergency_shelter_assistance }}</td>
+                        <td>{{ $delivery_request->note }}</td>
+                        <td>{{ strtoupper($delivery_request->status) }}</td>
+
+
 
                     </tr>
                     @endforeach

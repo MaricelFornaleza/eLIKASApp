@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Field Officers</title>
+    <title>Supplies</title>
     <style type="text/css">
     #data {
         font-family: Arial, Helvetica, sans-serif;
@@ -126,43 +126,28 @@
         <div class="intro">
             <p>This is a generated report from the application <b>eLIKAS</b> as of
                 <u>{{ (Carbon\Carbon::now())->toDayDateTimeString();}}</u>,
-                which includes necessary information about the <u>List of Field Officers in {{$admin->city}}.</u>
+                which includes necessary information about the <u>List of Supplies in {{$admin->city}} Inventory.</u>
             </p>
         </div>
         <div class="table-container">
             <table id="data">
                 <thead>
                     <tr>
+                        <th>DATE</th>
+                        <th>SUPPLY TYPE</th>
+                        <th>QUANTITY</th>
+                        <th>SOURCE</th>
 
-                        <th>NAME</th>
-                        <th>OFFICER TYPE</th>
-                        <th>EMAIL ADDRESS</th>
-                        <th>CONTACT NUMBER</th>
-                        <th>BARANGAY</th>
-                        <th>DESIGNATION</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($field_officers as $field_officer)
+                    @foreach($supplies as $supply)
                     <tr>
-                        <td>{{ $field_officer -> name }}</td>
-                        <td>{{ $field_officer -> officer_type}}</td>
-                        <td>{{ $field_officer -> email }}</td>
-                        <td>0{{$field_officer -> contact_no}}</td>
-                        <td>@empty($field_officer -> barangay )
-                            NA
-                            @endempty
-                            {{ $field_officer -> barangay}}
-                        </td>
-                        <td>
-                            @if($field_officer -> camp_designation == null && $field_officer ->
-                            designation == null)
-                            NA
-                            @else
-                            {{ $field_officer -> camp_designation }}
-                            {{ $field_officer -> designation }}
-                            @endif
-                        </td>
+                        <td>{{ date('F j, Y', strtotime($supply->created_at)) }}</td>
+                        <td>{{ $supply -> supply_type}}</td>
+                        <td>{{ $supply -> quantity }}</td>
+                        <td>{{ $supply -> source}}</td>
+
 
                     </tr>
                     @endforeach
