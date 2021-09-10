@@ -40,8 +40,6 @@ class HomeController extends Controller
             $disaster_responses = DisasterResponse::where('date_ended', '=', null)->get();
 
             $relief_recipients = DB::table('relief_recipients')
-            ->join('disaster_responses', 'relief_recipients.disaster_response_id', '=', 'disaster_responses.id')
-            ->whereNull('disaster_responses.date_ended')
             ->where('relief_recipients.recipient_type', 'Non-evacuee')
             ->select('relief_recipients.family_code')
             ->groupBy('relief_recipients.family_code')
