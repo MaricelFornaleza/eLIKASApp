@@ -74,12 +74,19 @@ class HomeController extends Controller
 
 
             $non_evacuees = DB::table('family_members')
-                ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
-                ->leftJoin('disaster_responses', 'relief_recipients.disaster_response_id', '=', 'disaster_responses.id')
+                ->leftJoin('relief_recipients', function ($join) {
+                    $join->on('family_members.family_code', '=', 'relief_recipients.family_code')
+                        ->where('relief_recipient.recipient_type', '=', 'Non-evacuee')
+                        ->leftJoin(
+                            'disaster_responses',
+                            function ($join) {
+                                $join->on('relief_recipients.disaster_response_id', '=', 'disaster_responses.id')
+                                    ->whereNotNull('disaster_responses.date_eneded');
+                            }
+                        );
+                })
                 ->whereNotNull('family_members.family_code')
                 ->where('family_members.barangay', $barangay_captain->barangay)
-                ->where('relief_recipients.recipient_type', 'Non-evacuee')
-                ->whereNull('disaster_responses.date_ended')
                 ->select('name')
                 ->get();
 
@@ -99,7 +106,8 @@ class HomeController extends Controller
                     'pregnant' => $pregnant,
                     'senior_citizen' => $senior_citizen,
                     'solo_parent' => $solo_parent,
-                    'bc_inventory' => $bc_inventory
+                    'bc_inventory' => $bc_inventory,
+                    'non_evacuees' => $non_evacuees,
                 ]
             );
         } elseif ($role == 'Camp Manager') {
