@@ -39,11 +39,11 @@ class HomeController extends Controller
             $barangay_captain = DB::table('barangay_captains')->where('user_id', $user->id)->first();
             $disaster_responses = DisasterResponse::where('date_ended', '=', null)->get();
 
-            $relief_recipients = DB::table('relief_recipients')
-            ->where('relief_recipients.recipient_type', 'Non-evacuee')
-            ->select('relief_recipients.family_code')
-            ->groupBy('relief_recipients.family_code')
-            ->get();
+            // $relief_recipients = DB::table('relief_recipients')
+            // ->where('relief_recipients.recipient_type', 'Non-evacuee')
+            // ->select('relief_recipients.family_code')
+            // ->groupBy('relief_recipients.family_code')
+            // ->get();
 
             $residents = 0;
             $female =0 ;
@@ -54,23 +54,22 @@ class HomeController extends Controller
             $pregnant = 0;
             $senior_citizen  = 0;
             $solo_parent = 0;
-            foreach($relief_recipients as $relief_recipient){
-                $family_members = FamilyMember::where('family_code', $relief_recipient->family_code)
-                ->where('barangay', $barangay_captain->barangay)->get();
-                if($family_members != null){
-                    $female = $female + $family_members->where('gender', 'Female')->count();
-                    $male = $male + $family_members->where('gender', 'Male')->count();
-                    $children = $children + $family_members->where('sectoral_classification', 'Children')->count();
-                    $lactating = $lactating + $family_members->where('sectoral_classification', 'Lactating')->count();
-                    $pwd = $pwd + $family_members->where('sectoral_classification', 'Person with Disability')->count();
-                    $pregnant = $pregnant + $family_members->where('sectoral_classification', 'Pregnant')->count();
-                    $senior_citizen  = $senior_citizen + $family_members->where('sectoral_classification', 'Senior Citizen')->count();
-                    $solo_parent = $solo_parent + $family_members->where('sectoral_classification', 'Solo Parent')->count();
+            
+            $family_members = FamilyMember::where('barangay', $barangay_captain->barangay)->get();
+            if($family_members != null){
+                $female = $female + $family_members->where('gender', 'Female')->count();
+                $male = $male + $family_members->where('gender', 'Male')->count();
+                $children = $children + $family_members->where('sectoral_classification', 'Children')->count();
+                $lactating = $lactating + $family_members->where('sectoral_classification', 'Lactating')->count();
+                $pwd = $pwd + $family_members->where('sectoral_classification', 'Person with Disability')->count();
+                $pregnant = $pregnant + $family_members->where('sectoral_classification', 'Pregnant')->count();
+                $senior_citizen  = $senior_citizen + $family_members->where('sectoral_classification', 'Senior Citizen')->count();
+                $solo_parent = $solo_parent + $family_members->where('sectoral_classification', 'Solo Parent')->count();
                 
-                    $residents = $residents + $family_members->count();
-                }
-                
+                $residents = $residents + $family_members->count();
             }
+                
+            
 
             $non_evacuees = DB::table('family_members')
                 ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
