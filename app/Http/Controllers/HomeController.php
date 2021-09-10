@@ -81,7 +81,7 @@ class HomeController extends Controller
                             'disaster_responses',
                             function ($join) {
                                 $join->on('relief_recipients.disaster_response_id', '=', 'disaster_responses.id')
-                                    ->whereNotNull('disaster_responses.date_eneded');
+                                    ->whereNotNull('disaster_responses.date_ended');
                             }
                         );
                 })
