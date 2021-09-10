@@ -42,15 +42,15 @@ class HomeController extends Controller
             $disaster_responses = DisasterResponse::where('date_ended', '=', null)->get();
 
             $relief_recipients = DB::table('relief_recipients')
-            ->join('disaster_responses', 'relief_recipients.disaster_response_id', '=', 'disaster_responses.id')
-            ->whereNull('disaster_responses.date_ended')
-            ->where('relief_recipients.recipient_type', 'Non-evacuee')
-            ->select('relief_recipients.family_code')
-            ->groupBy('relief_recipients.family_code')
-            ->get();
+                ->join('disaster_responses', 'relief_recipients.disaster_response_id', '=', 'disaster_responses.id')
+                ->whereNull('disaster_responses.date_ended')
+                ->where('relief_recipients.recipient_type', 'Non-evacuee')
+                ->select('relief_recipients.family_code')
+                ->groupBy('relief_recipients.family_code')
+                ->get();
 
             $residents = 0;
-            $female =0 ;
+            $female = 0;
             $male = 0;
             $children = 0;
             $lactating = 0;
@@ -58,10 +58,10 @@ class HomeController extends Controller
             $pregnant = 0;
             $senior_citizen  = 0;
             $solo_parent = 0;
-            foreach($relief_recipients as $relief_recipient){
+            foreach ($relief_recipients as $relief_recipient) {
                 $family_members = FamilyMember::where('family_code', $relief_recipient->family_code)
-                ->where('barangay', $barangay_captain->barangay)->get();
-                if($family_members != null){
+                    ->where('barangay', $barangay_captain->barangay)->get();
+                if ($family_members != null) {
                     $female = $female + $family_members->where('gender', 'Female')->count();
                     $male = $male + $family_members->where('gender', 'Male')->count();
                     $children = $children + $family_members->where('sectoral_classification', 'Children')->count();
@@ -70,10 +70,9 @@ class HomeController extends Controller
                     $pregnant = $pregnant + $family_members->where('sectoral_classification', 'Pregnant')->count();
                     $senior_citizen  = $senior_citizen + $family_members->where('sectoral_classification', 'Senior Citizen')->count();
                     $solo_parent = $solo_parent + $family_members->where('sectoral_classification', 'Solo Parent')->count();
-                
+
                     $residents = $residents + $family_members->count();
                 }
-                
             }
 
             $non_evacuees = DB::table('family_members')
@@ -88,20 +87,23 @@ class HomeController extends Controller
 
             $bc_inventory = Inventory::where('user_id', '=', $user->id)->first();
 
-            return view('barangay-captain.home',
-            ['disaster_responses', $disaster_responses,
-            'barangay_captain' => $barangay_captain,
-            'residents' => $residents,
-            'female' => $female,
-            'male' => $male,
-            'children' => $children,
-            'lactating' => $lactating,
-            'pwd' => $pwd,
-            'pregnant' => $pregnant,
-            'senior_citizen' => $senior_citizen,
-            'solo_parent' => $solo_parent,
-            'bc_inventory' => $bc_inventory]);
-        
+            return view(
+                'barangay-captain.home',
+                [
+                    'disaster_responses', $disaster_responses,
+                    'barangay_captain' => $barangay_captain,
+                    'residents' => $residents,
+                    'female' => $female,
+                    'male' => $male,
+                    'children' => $children,
+                    'lactating' => $lactating,
+                    'pwd' => $pwd,
+                    'pregnant' => $pregnant,
+                    'senior_citizen' => $senior_citizen,
+                    'solo_parent' => $solo_parent,
+                    'bc_inventory' => $bc_inventory
+                ]
+            );
         } elseif ($role == 'Camp Manager') {
 
             $id = Auth::id();
@@ -112,23 +114,23 @@ class HomeController extends Controller
             $evacuees = Evacuee::where('evacuation_center_id', $evacuation_center->id)->where('date_discharged', null)->get();
             $total_number_of_evacuees = 0;
             if ($evacuees != null) {
-                $family_codes =  Array();
+                $family_codes =  array();
                 foreach ($evacuees as $evacuee) {
                     $relief_recipient = ReliefRecipient::where('id', $evacuee->relief_recipient_id)->first();
-                    if(!in_array($relief_recipient->family_code, $family_codes)){
+                    if (!in_array($relief_recipient->family_code, $family_codes)) {
                         array_push($family_codes, $relief_recipient->family_code);
                         $family = Family::where('family_code', $relief_recipient->family_code)->first();
                         $total_number_of_evacuees = $total_number_of_evacuees + $family->no_of_members;
                     }
-                    
                 }
             }
             $disaster_responses = DisasterResponse::where('date_ended', '=', null)->get();
-            return view('camp-manager.home', ['disaster_responses' => $disaster_responses,
-            'total_number_of_evacuees' => $total_number_of_evacuees,
-            'evacuation_center_name' => $evacuation_center->name,
-            'capacity' => $evacuation_center->capacity]);
-        
+            return view('camp-manager.home', [
+                'disaster_responses' => $disaster_responses,
+                'total_number_of_evacuees' => $total_number_of_evacuees,
+                'evacuation_center_name' => $evacuation_center->name,
+                'capacity' => $evacuation_center->capacity
+            ]);
         } elseif ($role == 'Courier') {
             $id = Auth::id();
             $delivery_requests = DeliveryRequest::where('courier_id', '=', $id)
