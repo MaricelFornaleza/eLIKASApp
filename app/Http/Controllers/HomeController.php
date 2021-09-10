@@ -76,7 +76,7 @@ class HomeController extends Controller
             $non_evacuees = DB::table('family_members')
                 ->leftJoin('relief_recipients', function ($join) {
                     $join->on('family_members.family_code', '=', 'relief_recipients.family_code')
-                        ->where('relief_recipient.recipient_type', '=', 'Non-evacuee')
+                        ->where('relief_recipients.recipient_type', '=', 'Non-evacuee')
                         ->leftJoin(
                             'disaster_responses',
                             function ($join) {
