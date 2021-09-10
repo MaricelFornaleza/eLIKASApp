@@ -53,62 +53,18 @@
 
                 <div class="col-md-6 px-0 pt-4 ">
                     <ul class="list-group list-group-hover list-group-striped">
+                        @foreach($non_evacuees as $non_evacuee)
                         <li class="list-group-item list-group-item-action ">
                             <div class="form-check">
-
                                 <label class="form-check-label" for="name0">
-                                    Name
+                                    {{$non_evacuee->name}}
                                 </label>
                                 <span class="float-right my-2">
                                     <div class="rounded-circle bg-secondary" style="height: 10px; width:10px;"></div>
                                 </span>
                             </div>
                         </li>
-                        <li class="list-group-item list-group-item-action ">
-                            <div class="form-check">
-
-                                <label class="form-check-label" for="name1">
-                                    Name
-                                </label>
-                                <span class="float-right my-2">
-                                    <div class="rounded-circle bg-accent" style="height: 10px; width:10px;"></div>
-                                </span>
-                            </div>
-                        </li>
-                        <li class="list-group-item list-group-item-action ">
-                            <div class="form-check">
-
-                                <label class="form-check-label" for="name2">
-                                    Name
-                                </label>
-                                <span class="float-right my-2">
-                                    <div class="rounded-circle bg-primary" style="height: 10px; width:10px;"></div>
-                                </span>
-                            </div>
-                        </li>
-                        <li class="list-group-item list-group-item-action ">
-                            <div class="form-check">
-
-                                <label class="form-check-label" for="name3">
-                                    Name
-                                </label>
-                                <span class="float-right my-2">
-                                    <div class="rounded-circle bg-success" style="height: 10px; width:10px;"></div>
-                                </span>
-                            </div>
-                        </li>
-                        <li class="list-group-item list-group-item-action ">
-                            <div class="form-check">
-
-                                <label class="form-check-label" for="name4">
-                                    Name
-                                </label>
-                                <span class="float-right my-2">
-                                    <div class="rounded-circle bg-danger" style="height: 10px; width:10px;"></div>
-                                </span>
-
-                            </div>
-                        </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>

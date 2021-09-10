@@ -8,6 +8,8 @@ use App\Models\CampManager;
 use App\Models\Courier;
 use App\Models\Inventory;
 use App\Models\User;
+use Illuminate\Validation\Rule;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -108,15 +110,15 @@ class ProfileController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $user = User::find($id);
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255', 'alpha_spaces'],
-            'email' => ['required', 'string', 'email', 'max:255',],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'photo' => ['image', 'mimes:jpg,png,jpeg'],
-            'contact_no' => ['required', 'numeric', 'digits:11',  'regex:/^(09)\d{9}$/'],
-            'branch' => ['required'],
+            'contact_no' => ['nullable', 'numeric', 'digits:11',  'regex:/^(09)\d{9}$/'],
             'password' => ['nullable', 'string', 'min:8', 'confirmed'],
         ]);
-        $user = User::find($id);
+
         if ($request->hasFile('photo')) {
             $filename = $request->photo->getClientOriginalName();
             $request->photo->storeAs('images', $filename, 'public');
@@ -131,9 +133,7 @@ class ProfileController extends Controller
             $user->password = Hash::make($request['password']);
         }
         $user->save();
-        Admin::where('user_id', $user->id)->update([
-            'branch' => $validated['branch'],
-        ]);
+
         Session::flash('message', 'Profile updated successfully!');
         return redirect('profile');
     }

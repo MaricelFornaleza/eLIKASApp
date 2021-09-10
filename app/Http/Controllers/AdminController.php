@@ -8,6 +8,7 @@ use App\Models\Inventory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -20,11 +21,14 @@ class AdminController extends Controller
             'barangays' => ['required']
         ]);
         $user = Auth::id();
+        $region =  Str::title($data['region']);
+        $province =  Str::title($data['province']);
+        $city =  Str::title($data['city']);
         Admin::create([
             'user_id' => $user,
-            'region' =>  $data['region'],
-            'province' =>  $data['province'],
-            'city' =>  $data['city'],
+            'region' => $region,
+            'province' =>  $province,
+            'city' =>  $city,
         ]);
         Inventory::create([
             'user_id' => $user,

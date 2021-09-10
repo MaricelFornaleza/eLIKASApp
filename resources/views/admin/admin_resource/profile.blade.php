@@ -36,8 +36,12 @@
                                 <h3 class="title"> {{$user -> name}}</h3>
                                 <h6>{{ $user->officer_type}}</h6>
                                 <h6>{{ $user->email}}</h6>
+                                @empty($user -> contact_no)
+                                @else
                                 <h6>0{{$user -> contact_no}}</h6>
-                                <h6>{{ $user ->branch}}</h6>
+                                @endempty
+                                <h6>{{ $user ->city}}, {{ $user ->province}}</h6>
+                                <h6>{{ $user ->region}} </h6>
                             </div>
                         </div>
                     </div>

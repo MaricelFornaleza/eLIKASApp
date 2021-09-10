@@ -51,7 +51,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="input-group mb-3 ">
+                            <div class="input-group  ">
                                 <div class="form-group col-12 m-0 p-0">
                                     <label for="city_psgc">City / Municipality</label>
                                     <select name="city_psgc" id="city_psgc"
@@ -82,10 +82,10 @@
 
                             </div>
                     </div>
-                    <div class="row mt-5 center">
+                    <div class="row my-4 center">
                         <div class="col-4 ">
                             <button class="btn btn-primary px-4 " type="submit"
-                                onclick="change()">{{ __('Add') }}</button>
+                                onclick="change()">{{ __('Submit') }}</button>
                         </div>
 
                     </div>
