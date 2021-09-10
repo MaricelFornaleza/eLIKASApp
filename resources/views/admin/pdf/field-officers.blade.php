@@ -84,8 +84,7 @@
     h3,
     h4,
     h5,
-    h6,
-        {
+    h6 {
         margin: 0px;
         font-weight: 400;
     }
