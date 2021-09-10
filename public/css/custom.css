@@ -154,4 +154,5 @@ div.dataTables_wrapper div.dataTables_length select {
 .c-callout-fourth .text-value-lg {
     border-left-color: var(--primary) !important;
     color: var(--primary) !important;
+    
 }

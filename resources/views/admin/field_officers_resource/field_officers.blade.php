@@ -11,21 +11,25 @@
 
 <div class="container-fluid">
     <div class="fade-in">
-        <div class="row">
-            <div class="col-lg-6 mr-auto mb-2">
+        <div class="row justify-content-between d-flex">
+            <div class="col-lg-6 ">
                 <h1 class="title">
                     Field Officers
                 </h1>
             </div>
-            <div class="col-lg-3 ml-auto">
 
-                <a href="{{ url('/export/field_officers') }}" class="btn btn-block export-btn">
-                    <svg class="c-icon mr-2">
-                        <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-file"></use>
-                    </svg>
-                    Export to Excel
-                </a>
+            <div class="dropdown mr-4">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-expanded="false">
+                    Export to
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="{{ url('/export/field_officers') }}">Excel</a>
+                    <a class="dropdown-item" href="{{ url('/export/field_officers/pdf') }}">PDF</a>
+                </div>
             </div>
+
+
         </div>
         <div class="row">
             @if(count($errors) > 0)

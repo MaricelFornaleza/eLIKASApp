@@ -37,7 +37,7 @@
                             </div>
                             <!-- /.row-->
                             <div class="row">
-                                <div class="col-sm-12">
+                                <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="email">Email Address</label>
                                         <input class="form-control @error('email') is-invalid @enderror"
@@ -50,13 +50,23 @@
                                         @enderror
                                     </div>
                                 </div>
-                            </div>
-                            <!-- /.row-->
-                            <div class="row">
                                 <div class="col-sm-6">
+                                    @empty($user->contact_no)
                                     <div class="form-group">
                                         <label for="contact_no">Contact Number</label>
-                                        <input class="form-control @error('contact_no') is-invalid @enderror" required
+                                        <input class="form-control @error('contact_no') is-invalid @enderror"
+                                            id="contact_no" name="contact_no" type="number"
+                                            placeholder="e.g. 09xxxxxxxxx">
+                                        @error('contact_no')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    @else
+                                    <div class="form-group">
+                                        <label for="contact_no">Contact Number</label>
+                                        <input class="form-control @error('contact_no') is-invalid @enderror"
                                             id="contact_no" name="contact_no" type="number"
                                             value="0{{$user->contact_no}}" placeholder="e.g. 09xxxxxxxxx">
                                         @error('contact_no')
@@ -65,24 +75,10 @@
                                         </span>
                                         @enderror
                                     </div>
+                                    @endempty
                                 </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label for="branch">Branch</label>
-                                        <input class="form-control" value="{{ $admin->branch }}" autocomplete="branch"
-                                            id="branch" name="branch" type="text">
-                                        @error('branch')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-                                </div>
-
                             </div>
 
-
-                            <!-- /.row-->
                             <div class="form-group">
 
                                 <div class="row">

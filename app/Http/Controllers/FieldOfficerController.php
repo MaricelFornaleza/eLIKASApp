@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\VerifyEmail;
 use App\Models\Admin;
 use App\Models\Barangay;
 use App\Models\BarangayCaptain;
@@ -153,13 +154,17 @@ class FieldOfficerController extends Controller
 
         //send an email to the newly registered field officer
         //this will contain the temporary password of the user
+
+
         $to_name = $user->name;
         $to_email = $user->email;
         $data = [
             'name' => $user->name,
             'email' => $user->email,
             'remember_token' => $user->remember_token,
+
         ];
+
 
         Mail::send('emails.verify-user', $data, function ($message) use ($to_name, $to_email) {
             $message->to($to_email, $to_name)
@@ -176,6 +181,8 @@ class FieldOfficerController extends Controller
     public function verifyUser($remember_token)
     {
         $temp_pass = Str::random(12);
+        $admin = Auth::user();
+        $admin_city = $admin->city;
 
         $user = User::where('remember_token', $remember_token)->first();
         if (isset($user)) {
@@ -193,7 +200,9 @@ class FieldOfficerController extends Controller
                 $to_email = $user->email;
                 $data = [
                     'name' => $user->name,
-                    'body' => $temp_pass
+                    'body' => $temp_pass,
+                    'admin' => $admin_city . "LDRRMO"
+
                 ];
                 Mail::send('emails.mail', $data, function ($message) use ($to_name, $to_email) {
                     $message->to($to_email, $to_name)

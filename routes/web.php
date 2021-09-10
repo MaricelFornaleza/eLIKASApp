@@ -36,6 +36,7 @@ Auth::routes(['register' => false, 'verify' => true]);
 Route::get('/user/verify/{remember_token}', 'FieldOfficerController@verifyUser');
 
 
+
 // the user must be authenticated to access these routes
 Route::group(['middleware' => ['auth', 'verified']], function () {
     //Home
@@ -126,6 +127,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         // Export
         Route::prefix('export')->group(function () {
             Route::get('/field_officers', 'ExportController@exportFieldOfficer');
+            Route::get('/field_officers/pdf', 'ExportController@exportFieldOfficerPDF');
             Route::get('/supplies', 'ExportController@exportSupplies');
             Route::get('/evacuation_centers', 'ExportController@exportEvacuationCenters')->name('evacuation-center.file.export');
             Route::get('/requests', 'ExportController@exportDeliveryRequests')->name('request.file.export');
