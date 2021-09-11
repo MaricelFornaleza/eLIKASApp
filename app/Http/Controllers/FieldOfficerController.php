@@ -173,8 +173,6 @@ class FieldOfficerController extends Controller
         return redirect('field_officers');
     }
 
-
-
     public function verifyUser($remember_token)
     {
         $temp_pass = Str::random(12);
@@ -208,6 +206,21 @@ class FieldOfficerController extends Controller
         }
 
         return view('auth.verified-body');
+    }
+    public function resendVerification($remember_token)
+    {
+        $user = User::where('remember_token', $remember_token)->first();
+        $to_name = $user->name;
+        $to_email = $user->email;
+        $data = [
+            'name' => $user->name,
+            'email' => $user->email,
+            'remember_token' => $user->remember_token,
+
+        ];
+        Mail::to($data['email'])->send(new VerifyEmail($data));
+        Session::flash('message', 'Email Verification was successfully sent!');
+        return redirect()->back();
     }
 
 

@@ -109,6 +109,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         });
         // Field Officer
         Route::resource('/field_officers', 'FieldOfficerController');
+        Route::get('/resend-verification/{remember_token}', 'FieldOfficerController@resendVerification');
         // Residents
         Route::resource('relief-recipient', 'ReliefRecipientController');
         Route::resource('residents', 'FamilyMemberController');

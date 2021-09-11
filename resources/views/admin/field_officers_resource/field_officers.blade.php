@@ -86,7 +86,7 @@
                         <div>
                             <table id="fieldOfficers"
                                 class="table table-borderless table-hover table-light table-striped "
-                                style="width: 130%;">
+                                style="width: 150%;">
                                 <thead>
                                     <tr>
                                         <th>PHOTO</th>
@@ -96,6 +96,7 @@
                                         <th>CONTACT NUMBER</th>
                                         <th>BARANGAY</th>
                                         <th>DESIGNATION</th>
+                                        <th>EMAIL VERIFICATION</th>
                                         <th>ACTION</th>
 
 
@@ -111,7 +112,17 @@
                                                 style="height: 40px; width: 40px; object-fit: cover;"></td>
                                         <td>{{ $field_officer -> name }}</td>
                                         <td>{{ $field_officer -> officer_type}}</td>
-                                        <td>{{ $field_officer -> email }}</td>
+                                        <td>{{ $field_officer -> email }}
+                                            @empty($field_officer->email_verified_at)
+                                            <span class="badge badge-pill bg-accent text-white">
+                                                Unverified
+                                            </span>
+                                            @else
+                                            <span class="badge badge-pill bg-primary text-white">
+                                                Verified
+                                            </span>
+                                            @endempty
+                                        </td>
                                         <td>0{{$field_officer -> contact_no}}</td>
                                         <td>@empty($field_officer -> barangay )
                                             NA
@@ -126,6 +137,15 @@
                                             {{ $field_officer -> camp_designation }}
                                             {{ $field_officer -> designation }}
                                             @endif
+                                        </td>
+                                        <td>
+                                            @empty($field_officer->email_verified_at)
+                                            <a href="/resend-verification/{{$field_officer->remember_token}}"
+                                                class="btn bg-secondary-accent text-white ">Resend</a>
+                                            @else
+                                            N/A
+                                            @endempty
+
                                         </td>
                                         <td>
                                             <div class="row">
