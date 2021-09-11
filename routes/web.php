@@ -19,6 +19,7 @@ use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ImportExcelController;
 use App\Http\Controllers\ExportExcelController;
 use App\Http\Controllers\FamilyMemberController;
+use App\Mail\VerifyEmail;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -30,6 +31,16 @@ Route::get('/', function () {
 });
 
 Auth::routes(['register' => false, 'verify' => true]);
+
+Route::get('/send-mail', function () {
+    $data = [
+        'name' => 'Maricel',
+        'remember_token' => Str::random(25),
+        'email' => 'maformaleza@gbox.adnu.edu.ph',
+    ];
+
+    Mail::to($data['email'])->send(new VerifyEmail($data));
+});
 
 //email verification
 

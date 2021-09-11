@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class VerifyEmail extends Mailable
+class Credentials extends Mailable
 {
     use Queueable, SerializesModels;
     public $data;
@@ -28,7 +28,8 @@ class VerifyEmail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.verify-email')->with('data', $this->data)
-            ->subject('Verify Email Address')->from('elikasph@gmail.com', 'eLIKAS Philippines');
+        return $this->markdown('emails.credentials')->with('data', $this->data)
+            ->subject('Account Credentials')
+            ->from('elikasph@gmail.com', 'eLIKAS Philippines');
     }
 }

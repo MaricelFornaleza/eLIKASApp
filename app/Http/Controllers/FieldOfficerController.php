@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\Credentials;
 use App\Mail\VerifyEmail;
 use App\Models\Admin;
 use App\Models\Barangay;
@@ -166,11 +167,7 @@ class FieldOfficerController extends Controller
         ];
 
 
-        Mail::send('emails.verify-user', $data, function ($message) use ($to_name, $to_email) {
-            $message->to($to_email, $to_name)
-                ->subject('Verify your Email Address');
-            $message->from('elikasph@gmail.com', 'eLIKAS Philippines');
-        });
+        Mail::to($data['email'])->send(new VerifyEmail($data));
 
         Session::flash('message', 'Field Officer added successfully!');
         return redirect('field_officers');
@@ -201,19 +198,15 @@ class FieldOfficerController extends Controller
                 $data = [
                     'name' => $user->name,
                     'body' => $temp_pass,
-                    'admin' => $admin_city . "LDRRMO"
+
 
                 ];
-                Mail::send('emails.mail', $data, function ($message) use ($to_name, $to_email) {
-                    $message->to($to_email, $to_name)
-                        ->subject('eLIKAS Account Details');
-                    $message->from('elikasph@gmail.com', 'eLIKAS Philippines');
-                });
+                Mail::to($to_email)->send(new Credentials($data));
             }
         } else {
             abort('403', "Sorry your email cannot be identified.");
         }
-        Session::flash('message', 'Your account was succesfully verified!');
+
         return view('auth.verified-body');
     }
 

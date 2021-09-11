@@ -3,6 +3,7 @@
 
 <head>
     <title>Field Officers</title>
+
     <style type="text/css">
     #data {
         font-family: Arial, Helvetica, sans-serif;
@@ -106,6 +107,7 @@
 </head>
 
 <body>
+
     <div class="main-container">
 
         <div class="heading">
