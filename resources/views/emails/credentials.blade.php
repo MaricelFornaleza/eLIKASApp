@@ -1,7 +1,7 @@
 @component('mail::message')
 # Hello {{$data['name']}},
 
-<p>Your account was successfully verified!.
+<p>Your account was successfully verified!
     Download the eLIKAS mobile appllication and
     login using your email address and the temporary password provided.</p>
 <p>Here is your temporary password: <strong> {{$data['body']}}</strong></p>

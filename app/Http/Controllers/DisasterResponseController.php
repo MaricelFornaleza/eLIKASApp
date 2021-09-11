@@ -10,6 +10,7 @@ use App\Models\FamilyMember;
 use App\Models\ReliefRecipient;
 use App\CustomClasses\UpdateMarker;
 use App\Models\Family;
+use App\Models\ReliefGood;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -106,36 +107,43 @@ class DisasterResponseController extends Controller
                 ->where('disaster_response_id', '=', $id);
         })->select('family_members.*', 'relief_recipients.recipient_type')->get();
         $families = ReliefRecipient::where('disaster_response_id', '=', $id)->get();
-        $evacuees = $affected_residents->where('recipient_type', '=', 'Evacuee')->count();
-        $non_evacuees = $affected_residents->where('recipient_type', '=', 'Non-evacuee')->count();
-        $children = $affected_residents->where('sectoral_classification', '=', 'Children')->count();
-        $lactating = $affected_residents->where('sectoral_classification', '=', 'Lactating')->count();
-        $PWD = $affected_residents->where('sectoral_classification', '=', 'Person with Disability')->count();
-        $pregnant = $affected_residents->where('sectoral_classification', '=', 'Pregnant')->count();
-        $senior = $affected_residents->where('sectoral_classification', '=', 'Senior Citizen')->count();
-        $solo = $affected_residents->where('sectoral_classification', '=', 'Solo Parent')->count();
-        $female = $affected_residents->where('gender', '=', 'Female')->count();
-        $male = $affected_residents->where('gender', '=', 'Male')->count();
+        $dispensed_relief_goods = ReliefGood::where('disaster_response_id', '=', $id)->get();
+
+        $relief_goods = [
+            'count' => $dispensed_relief_goods->count(),
+            'clothes' => $dispensed_relief_goods->sum('clothes'),
+            'emergency_shelter_assistance' => $dispensed_relief_goods->sum('emergency_shelter_assistance'),
+            'medicine' => $dispensed_relief_goods->sum('medicine'),
+            'hygiene_kit' => $dispensed_relief_goods->sum('hygiene_kit'),
+            'water' => $dispensed_relief_goods->sum('water'),
+            'food_packs' => $dispensed_relief_goods->sum('food_packs'),
+        ];
+        $sectors = [
+            'children' => $affected_residents->where('sectoral_classification', '=', 'Children')->count(),
+            'pregnant' => $affected_residents->where('sectoral_classification', '=', 'Pregnant')->count(),
+            'lactating' => $affected_residents->where('sectoral_classification', '=', 'Lactating')->count(),
+            'PWD' => $affected_residents->where('sectoral_classification', '=', 'Person with Disability')->count(),
+            'pregnant' => $affected_residents->where('sectoral_classification', '=', 'Pregnant')->count(),
+            'senior' => $affected_residents->where('sectoral_classification', '=', 'Senior Citizen')->count(),
+            'solo' => $affected_residents->where('sectoral_classification', '=', 'Solo Parent')->count(),
+        ];
         $data = [
-            'children' => $children,
-            'pregnant' => $pregnant,
-            'lactating' => $lactating,
-            'PWD' => $PWD,
-            'pregnant' => $pregnant,
-            'senior' => $senior,
-            'solo' => $solo,
+            'sectors' => $sectors,
             'affected_residents' => $affected_residents->count(),
             'families' => $families->count(),
-            'evacuees' => $evacuees,
-            'non-evacuees' => $non_evacuees,
-            'female' => $female,
-            'male' => $male,
+            'evacuees' => $affected_residents->where('recipient_type', '=', 'Evacuee')->count(),
+            'non-evacuees' => $affected_residents->where('recipient_type', '=', 'Non-evacuee')->count(),
+            'female' => $affected_residents->where('gender', '=', 'Female')->count(),
+            'male' => $affected_residents->where('gender', '=', 'Male')->count(),
+            'relief_goods' => $relief_goods,
 
         ];
+        $chart = [10, 20, 30];
+        $chartData = json_encode($chart, JSON_NUMERIC_CHECK);
 
-        // dd($data);
+        // dd($relief_goods);
         return view('admin.disaster-response-resource.show')
-            ->with(compact('disaster_response', 'barangays', 'data'));
+            ->with(compact('disaster_response', 'barangays', 'data', 'chartData'));
     }
     public function stop($id)
     {

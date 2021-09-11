@@ -176,9 +176,6 @@ class FieldOfficerController extends Controller
     public function verifyUser($remember_token)
     {
         $temp_pass = Str::random(12);
-        $admin = Auth::user();
-        $admin_city = $admin->city;
-
         $user = User::where('remember_token', $remember_token)->first();
         if (isset($user)) {
             if ($user->email_verified_at == null) {
@@ -187,8 +184,6 @@ class FieldOfficerController extends Controller
                 $temp_pass = Str::random(12);
                 $user->password = Hash::make($temp_pass);
                 $user->save();
-
-
                 //send an email to the newly registered field officer
                 //this will contain the temporary password of the user
                 $to_name = $user->name;
@@ -196,8 +191,6 @@ class FieldOfficerController extends Controller
                 $data = [
                     'name' => $user->name,
                     'body' => $temp_pass,
-
-
                 ];
                 Mail::to($to_email)->send(new Credentials($data));
             }

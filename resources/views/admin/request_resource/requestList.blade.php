@@ -81,7 +81,7 @@
                     <div class="card-body">
                         <div id="requestList">
                             <table id="requesTable" class="table table-borderless table-hover table-light table-striped"
-                                style="width: 100%;">
+                                style="width: 200%;">
                                 <thead>
                                     <tr>
                                         <th>TIME RECEIVED</th>
@@ -95,7 +95,9 @@
                                         <th>MEDICINE</th>
                                         <th>EMERGENCY SHELTER ASSISTANCE</th>
                                         <th>NOTE</th>
+                                        <th>SUGGESTION</th>
                                         <th>STATUS</th>
+
 
                                         <th>ACTIONS</th>
 
@@ -116,6 +118,7 @@
                                             <td>{{ $delivery_request->medicine }}</td>
                                             <td>{{ $delivery_request->emergency_shelter_assistance }}</td>
                                             <td>{{ $delivery_request->note }}</td>
+                                            <td><a href="/requests/suggestion/{{$delivery_request->id}}">View</a></td>
                                             @if( $delivery_request->status == 'pending' )
                                             <td>
                                                 <div class="badge badge-pill bg-secondary-accent text-white">
