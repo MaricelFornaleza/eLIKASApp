@@ -159,6 +159,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
             Route::get('/dispense-view', 'BarangayCaptainController@dispenseView');
             Route::post('/dispense', 'BarangayCaptainController@dispense');
             Route::get('/details/{id}', 'BarangayCaptainController@detailsView');
+            Route::get('/edit/{id}', 'BarangayCaptainController@editSupply');
             Route::get('/list', 'BarangayCaptainController@listView');
         });
     });

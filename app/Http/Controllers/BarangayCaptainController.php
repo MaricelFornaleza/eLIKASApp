@@ -90,6 +90,11 @@ class BarangayCaptainController extends Controller
         $supply = Supply::find($id);
         return view('barangay-captain.supply.details')->with('supply', $supply);
     }
+    public function editSupply($id)
+    {
+        $supply = Supply::find($id);
+        return view('barangay-captain.supply.edit')->with('supply', $supply);
+    }
     public function listView()
     {
         $user = Auth::user();
