@@ -26,7 +26,7 @@ class DisasterResponseController extends Controller
             ->select('barangays.name')
             ->groupBy('barangays.name')
             ->get();
-        return view('admin.disaster-response-resource.start')->with(compact('disaster_responses'));
+        return view('admin.disaster-response-resource.start')->with(compact('barangays'));
     }
     public function archive()
     {
