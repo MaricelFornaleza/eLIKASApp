@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\Credentials;
+use App\Mail\VerifyEmail;
 use App\Models\Admin;
 use App\Models\Barangay;
 use App\Models\BarangayCaptain;
@@ -153,30 +155,27 @@ class FieldOfficerController extends Controller
 
         //send an email to the newly registered field officer
         //this will contain the temporary password of the user
+
+
         $to_name = $user->name;
         $to_email = $user->email;
         $data = [
             'name' => $user->name,
             'email' => $user->email,
             'remember_token' => $user->remember_token,
+
         ];
 
-        Mail::send('emails.verify-user', $data, function ($message) use ($to_name, $to_email) {
-            $message->to($to_email, $to_name)
-                ->subject('Verify your Email Address');
-            $message->from('elikasph@gmail.com', 'eLIKAS Philippines');
-        });
+
+        Mail::to($data['email'])->send(new VerifyEmail($data));
 
         Session::flash('message', 'Field Officer added successfully!');
         return redirect('field_officers');
     }
 
-
-
     public function verifyUser($remember_token)
     {
         $temp_pass = Str::random(12);
-
         $user = User::where('remember_token', $remember_token)->first();
         if (isset($user)) {
             if ($user->email_verified_at == null) {
@@ -185,27 +184,36 @@ class FieldOfficerController extends Controller
                 $temp_pass = Str::random(12);
                 $user->password = Hash::make($temp_pass);
                 $user->save();
-
-
                 //send an email to the newly registered field officer
                 //this will contain the temporary password of the user
                 $to_name = $user->name;
                 $to_email = $user->email;
                 $data = [
                     'name' => $user->name,
-                    'body' => $temp_pass
+                    'body' => $temp_pass,
                 ];
-                Mail::send('emails.mail', $data, function ($message) use ($to_name, $to_email) {
-                    $message->to($to_email, $to_name)
-                        ->subject('eLIKAS Account Details');
-                    $message->from('elikasph@gmail.com', 'eLIKAS Philippines');
-                });
+                Mail::to($to_email)->send(new Credentials($data));
             }
         } else {
             abort('403', "Sorry your email cannot be identified.");
         }
-        Session::flash('message', 'Your account was succesfully verified!');
+
         return view('auth.verified-body');
+    }
+    public function resendVerification($remember_token)
+    {
+        $user = User::where('remember_token', $remember_token)->first();
+        $to_name = $user->name;
+        $to_email = $user->email;
+        $data = [
+            'name' => $user->name,
+            'email' => $user->email,
+            'remember_token' => $user->remember_token,
+
+        ];
+        Mail::to($data['email'])->send(new VerifyEmail($data));
+        Session::flash('message', 'Email Verification was successfully sent!');
+        return redirect()->back();
     }
 
 

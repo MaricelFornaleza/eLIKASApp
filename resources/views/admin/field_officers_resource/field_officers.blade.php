@@ -11,21 +11,25 @@
 
 <div class="container-fluid">
     <div class="fade-in">
-        <div class="row">
-            <div class="col-lg-6 mr-auto mb-2">
+        <div class="row justify-content-between d-flex">
+            <div class="col-lg-6 ">
                 <h1 class="title">
                     Field Officers
                 </h1>
             </div>
-            <div class="col-lg-3 ml-auto">
 
-                <a href="{{ url('/export/field_officers') }}" class="btn btn-block export-btn">
-                    <svg class="c-icon mr-2">
-                        <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-file"></use>
-                    </svg>
-                    Export to Excel
-                </a>
+            <div class="dropdown mr-4">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-expanded="false">
+                    Export to
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="{{ url('/export/field_officers') }}">Excel</a>
+                    <a class="dropdown-item" href="{{ url('/export/field_officers/pdf') }}" target="_blank">PDF</a>
+                </div>
             </div>
+
+
         </div>
         <div class="row">
             @if(count($errors) > 0)
@@ -61,28 +65,28 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="row">
-                            <div class=" ml-auto ">
-                                <a href="{{ url('/field_officers/create') }}">
-                                    <button class="btn btn-secondary secondary-button">
-                                        Add Field Officer
+                            <div class="ml-auto">
+                                <div class="dropdown mr-4 ">
+                                    <button class="btn btn-secondary secondary-button dropdown-toggle" type="button"
+                                        id="dropdownMenuButton1" data-toggle="dropdown" aria-expanded="false">
+                                        Action
                                     </button>
-                                </a>
-
-                            </div>
-                            <div class=" ml-3 mr-4">
-                                <a href="{{ url('/import/field_officers') }}">
-                                    <button class="btn btn-outline-primary ">
-                                        Upload Excel File
-                                    </button>
-                                </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <a class="dropdown-item" href="{{ url('/field_officers/create') }}">Add Field
+                                            Officer</a>
+                                        <a class="dropdown-item" href="{{ url('/import/field_officers') }}">Upload
+                                            Excel File</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
                     </div>
                     <div class="card-body ">
                         <div>
                             <table id="fieldOfficers"
                                 class="table table-borderless table-hover table-light table-striped "
-                                style="width: 130%;">
+                                style="width: 150%;">
                                 <thead>
                                     <tr>
                                         <th>PHOTO</th>
@@ -92,6 +96,7 @@
                                         <th>CONTACT NUMBER</th>
                                         <th>BARANGAY</th>
                                         <th>DESIGNATION</th>
+                                        <th>EMAIL VERIFICATION</th>
                                         <th>ACTION</th>
 
 
@@ -107,7 +112,17 @@
                                                 style="height: 40px; width: 40px; object-fit: cover;"></td>
                                         <td>{{ $field_officer -> name }}</td>
                                         <td>{{ $field_officer -> officer_type}}</td>
-                                        <td>{{ $field_officer -> email }}</td>
+                                        <td>{{ $field_officer -> email }}
+                                            @empty($field_officer->email_verified_at)
+                                            <span class="badge badge-pill bg-accent text-white">
+                                                Unverified
+                                            </span>
+                                            @else
+                                            <span class="badge badge-pill bg-primary text-white">
+                                                Verified
+                                            </span>
+                                            @endempty
+                                        </td>
                                         <td>0{{$field_officer -> contact_no}}</td>
                                         <td>@empty($field_officer -> barangay )
                                             NA
@@ -122,6 +137,15 @@
                                             {{ $field_officer -> camp_designation }}
                                             {{ $field_officer -> designation }}
                                             @endif
+                                        </td>
+                                        <td>
+                                            @empty($field_officer->email_verified_at)
+                                            <a href="/resend-verification/{{$field_officer->remember_token}}"
+                                                class="btn bg-secondary-accent text-white ">Resend</a>
+                                            @else
+                                            N/A
+                                            @endempty
+
                                         </td>
                                         <td>
                                             <div class="row">

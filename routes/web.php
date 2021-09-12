@@ -19,6 +19,7 @@ use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ImportExcelController;
 use App\Http\Controllers\ExportExcelController;
 use App\Http\Controllers\FamilyMemberController;
+use App\Mail\VerifyEmail;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -31,9 +32,20 @@ Route::get('/', function () {
 
 Auth::routes(['register' => false, 'verify' => true]);
 
+Route::get('/send-mail', function () {
+    $data = [
+        'name' => 'Maricel',
+        'remember_token' => Str::random(25),
+        'email' => 'maformaleza@gbox.adnu.edu.ph',
+    ];
+
+    Mail::to($data['email'])->send(new VerifyEmail($data));
+});
+
 //email verification
 
 Route::get('/user/verify/{remember_token}', 'FieldOfficerController@verifyUser');
+
 
 
 // the user must be authenticated to access these routes
@@ -64,6 +76,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::post('/store',   'DeliveryRequestController@store')->name('request.store')->middleware('officertype:Camp Manager');
         Route::get('/cancel',   'DeliveryRequestController@cancel')->name('request.cancel');    //all users can access this
         Route::get('/admin/approve',   'DeliveryRequestController@approve')->name('request.approve')->middleware('officertype:Administrator');
+        Route::get('/suggestion/{id}',   'DeliveryRequestController@viewSuggestion')->middleware('officertype:Administrator');
         Route::get('/admin/decline',   'DeliveryRequestController@admin_decline')->name('request.admin_decline')->middleware('officertype:Administrator');
         Route::post('/admin/assign',   'DeliveryRequestController@assign_courier')->name('request.assign_courier')->middleware('officertype:Administrator');
         Route::get('/courier/accept/{id}',   'DeliveryRequestController@courier_accept')->name('request.courier_accept')->middleware('officertype:Courier');
@@ -97,6 +110,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         });
         // Field Officer
         Route::resource('/field_officers', 'FieldOfficerController');
+        Route::get('/resend-verification/{remember_token}', 'FieldOfficerController@resendVerification');
         // Residents
         Route::resource('relief-recipient', 'ReliefRecipientController');
         Route::resource('residents', 'FamilyMemberController');
@@ -126,10 +140,15 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         // Export
         Route::prefix('export')->group(function () {
             Route::get('/field_officers', 'ExportController@exportFieldOfficer');
+            Route::get('/field_officers/pdf', 'ExportController@exportFieldOfficerPDF');
             Route::get('/supplies', 'ExportController@exportSupplies');
-            Route::get('/evacuation_centers', 'ExportController@exportEvacuationCenters')->name('evacuation-center.file.export');
-            Route::get('/requests', 'ExportController@exportDeliveryRequests')->name('request.file.export');
+            Route::get('/supplies/pdf', 'ExportController@exportSuppliesPDF');
+            Route::get('/evacuation_centers', 'ExportController@exportEvacuationCenters');
+            Route::get('/evacuation_centers/pdf', 'ExportController@exportEvacuationCentersPDF');
+            Route::get('/requests', 'ExportController@exportDeliveryRequests');
+            Route::get('/requests/pdf', 'ExportController@exportDeliveryRequestsPDF');
             Route::get('/residents', 'ExportController@exportResidents');
+            Route::get('/residents/pdf', 'ExportController@exportResidentsPDF');
         });
     });
 
@@ -137,7 +156,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::group(['middleware' => ['officertype:Barangay Captain']], function () {
         Route::prefix('barangay-captain')->group(function () {
             Route::get('/add-supply', 'BarangayCaptainController@addSupply');
-            Route::get('/dispense', 'BarangayCaptainController@dispenseView');
+            Route::get('/dispense-view', 'BarangayCaptainController@dispenseView');
+            Route::post('/dispense', 'BarangayCaptainController@dispense');
             Route::get('/details/{id}', 'BarangayCaptainController@detailsView');
             Route::get('/list', 'BarangayCaptainController@listView');
         });
@@ -146,12 +166,12 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     // Camp Manager
     Route::group(['middleware' => ['officertype:Camp Manager']], function () {
         Route::prefix('camp-manager')->group(function () {
-            Route::get('/evacuees', 'CampManagerController@evacuees');
+            Route::get('/evacuees', 'CampManagerController@evacuees')->name('cm_evacuees');
             Route::get('/admit-view', 'CampManagerController@admitView');
             Route::post('/admit', 'CampManagerController@admit');
             Route::get('/discharge-view', 'CampManagerController@dischargeView');
             Route::post('/discharge', 'CampManagerController@discharge');
-            Route::get('/supply-view', 'CampManagerController@supplyView');
+            Route::get('/supply-view', 'CampManagerController@supplyView')->name('cm_supply_view');
             Route::get('/dispense-view', 'CampManagerController@dispenseView');
             Route::post('/dispense', 'CampManagerController@dispense');
             Route::get('/request-supply', 'CampManagerController@requestSupplyView');

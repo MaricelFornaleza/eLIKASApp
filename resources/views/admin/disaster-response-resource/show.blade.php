@@ -76,17 +76,25 @@
                         <div class="card-footer">
                             <div class="row text-center justify-content-center">
                                 <div class="col-sm-12 col-md-4 mb-sm-2 mb-0">
-                                    <div class="text-muted">Evacuees</div><strong>29.703 Users (40%)</strong>
+                                    <div class="text-muted">Evacuees</div><strong>{{$data['evacuees']}}
+                                        ({{($data['evacuees'] / $data['affected_residents']) *100}}%)</strong>
+
                                     <div class="progress progress-xs mt-2">
-                                        <div class="progress-bar bg-success" role="progressbar" style="width: 40%"
-                                            aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+
+                                        <div class="progress-bar bg-success" role="progressbar"
+                                            style="width: {{($data['evacuees'] / $data['affected_residents']) *100}}%"
+                                            aria-valuenow="{{$data['evacuees']}}"
+                                            aria-valuemin="{{$data['affected_residents']}}" aria-valuemax="100"></div>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-4 mb-sm-2 mb-0">
-                                    <div class="text-muted">Non-evacuees</div><strong>24.093 Users (20%)</strong>
+                                    <div class="text-muted">Non-evacuees</div><strong>{{$data['non-evacuees']}}
+                                        ({{($data['non-evacuees'] / $data['affected_residents']) *100}}%)</strong>
                                     <div class="progress progress-xs mt-2">
-                                        <div class="progress-bar bg-info" role="progressbar" style="width: 20%"
-                                            aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div class="progress-bar bg-info" role="progressbar"
+                                            style="width: {{($data['non-evacuees'] / $data['affected_residents']) *100}}%"
+                                            aria-valuenow="{{$data['non-evacuees']}}" aria-valuemin="0"
+                                            aria-valuemax="{{$data['affected_residents']}}"></div>
                                     </div>
                                 </div>
 
@@ -125,5 +133,7 @@
 <script src="{{ asset('js/reports-js/donut.js') }}"></script>
 <script src="{{ asset('js/reports-js/line.js') }}"></script>
 <script src="{{ asset('js/reports-js/main.js') }}" defer></script>
-
+<script>
+var chartData = <?php echo $chartData; ?>;
+</script>
 @endsection

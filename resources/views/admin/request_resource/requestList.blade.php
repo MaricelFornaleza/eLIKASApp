@@ -25,21 +25,25 @@
 
 <div class="container-fluid">
     <div class="animated fadeIn">
-        <div class="row">
-            <div class="col-lg-6 mr-auto mb-2">
+        <div class="row justify-content-between d-flex">
+            <div class="col-lg-6 ">
                 <h1 class="title">
                     Requests
                 </h1>
             </div>
-            <div class="col-lg-3 ml-auto">
 
-                <a href="{{ route('request.file.export') }}" class="btn btn-block export-btn">
-                    <svg class="c-icon mr-2">
-                        <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-file"></use>
-                    </svg>
-                    Export to Excel
-                </a>
+            <div class="dropdown mr-4">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-expanded="false">
+                    Export to
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="{{ url('/export/requests') }}">Excel</a>
+                    <a class="dropdown-item" href="{{ url('/export/requests/pdf') }}" target="_blank">PDF</a>
+                </div>
             </div>
+
+
         </div>
         <div class="row">
             @if(count($errors) > 0)
@@ -77,7 +81,7 @@
                     <div class="card-body">
                         <div id="requestList">
                             <table id="requesTable" class="table table-borderless table-hover table-light table-striped"
-                                style="width: 100%;">
+                                style="width: 200%;">
                                 <thead>
                                     <tr>
                                         <th>TIME RECEIVED</th>
@@ -91,7 +95,9 @@
                                         <th>MEDICINE</th>
                                         <th>EMERGENCY SHELTER ASSISTANCE</th>
                                         <th>NOTE</th>
+                                        <th>SUGGESTION</th>
                                         <th>STATUS</th>
+
 
                                         <th>ACTIONS</th>
 
@@ -112,6 +118,7 @@
                                             <td>{{ $delivery_request->medicine }}</td>
                                             <td>{{ $delivery_request->emergency_shelter_assistance }}</td>
                                             <td>{{ $delivery_request->note }}</td>
+                                            <td><a href="/requests/suggestion/{{$delivery_request->id}}">View</a></td>
                                             @if( $delivery_request->status == 'pending' )
                                             <td>
                                                 <div class="badge badge-pill bg-secondary-accent text-white">

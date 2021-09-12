@@ -10,6 +10,8 @@ use App\Models\Inventory;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+
 
 class RegisterController extends Controller
 {
@@ -82,12 +84,15 @@ class RegisterController extends Controller
             'contact_no' => $data['contact_no'],
             'password' => Hash::make($data['password']),
         ]);
+        $region =  Str::title($data['region_psgc']);
+        $province =  Str::title($data['province_psgc']);
+        $city =  Str::title($data['city_psgc']);
         Admin::create([
             'user_id' => $user->id,
-            'region_psgc' =>  $data['region_psgc'],
-            'province_psgc' =>  $data['province_psgc'],
-            'city_psgc' =>  $data['city_psgc'],
-            'address' => $data['city'] . ',' . $data['province'] . ',' . $data['region']
+            'region_psgc' => $region,
+            'province_psgc' =>  $province,
+            'city_psgc' =>  $city,
+            'address' => $city . ',' . $province . ',' . $region
         ]);
         Inventory::create([
             'user_id' => $user->id,
