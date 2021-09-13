@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
+use App\Models\Supply;
+
 class InventoryController extends Controller
 {
     /**
@@ -24,7 +26,9 @@ class InventoryController extends Controller
         if ($user->officer_type == "Administrator") {
             return view('admin.inventory-resource.supplyList', ['inventory_supplies' => $inventory_supplies]);
         } else if ($user->officer_type == "Barangay Captain") {
-            return view('barangay-captain.inventory-resource.supplyList', ['inventory_supplies' => $inventory_supplies]);
+            $bc_inventory = Inventory::where('user_id', '=', $user->id)->first();
+            $is_empty = Supply::where('inventory_id', $bc_inventory->id)->first();
+            return view('barangay-captain.inventory-resource.supplyList', ['inventory_supplies' => $inventory_supplies, 'is_empty' => $is_empty]);
         }
     }
 

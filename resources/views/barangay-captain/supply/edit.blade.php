@@ -1,7 +1,8 @@
-@extends('layouts.webBase')
+@extends('layouts.mobileBase')
+
 
 @section('css')
-
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
 @endsection
 
 @section('content')
@@ -29,7 +30,7 @@
                                       <select class="form-control" aria-label=".form-select-lg example" name="supply_type"  required autofocus>
                                         <option value="" disabled>Select</option>
                                         @if($supply->supply_type == 'Food Packs')
-                                        <option value="Food Packs" selected>Food Pack</option>
+                                        <option value="Food Packs" selected>Food Packs</option>
                                         @else
                                         <option value="Food Packs">Food Packs</option>
                                         @endif

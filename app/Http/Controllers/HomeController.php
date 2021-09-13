@@ -19,6 +19,8 @@ use App\Models\Inventory;
 
 use Illuminate\Support\Facades\DB;
 
+use App\Models\Supply;
+
 class HomeController extends Controller
 {
     public function index()
@@ -84,6 +86,7 @@ class HomeController extends Controller
                 ->get();
 
             $bc_inventory = Inventory::where('user_id', '=', $user->id)->first();
+            
 
             return view('barangay-captain.home',
             ['disaster_responses', $disaster_responses,

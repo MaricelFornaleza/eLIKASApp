@@ -28,7 +28,7 @@
                                       <label class="lead">Supply Type</label>
                                       <select class="form-control" aria-label=".form-select-lg example" name="supply_type"  required autofocus>
                                         <option value="" disabled>Select</option>
-                                        @if($supply->supply_type == 'Food Pack')
+                                        @if($supply->supply_type == 'Food Packs')
                                         <option value="Food Packs" selected>Food Packs</option>
                                         @else
                                         <option value="Food Packs">Food Packs</option>
