@@ -23,7 +23,7 @@ $(document).ready(function() {
     });
     // Enable pusher logging - don't include this in production
 
-    Pusher.logToConsole = true;
+    // Pusher.logToConsole = true;
     var pusher = new Pusher('ab82b7896a919c5e39dd', {
         cluster: 'ap1'
     });
@@ -167,8 +167,13 @@ function scrollToBottom() {
 }
 
 function showInbox() {
-    $('.inbox').show();
-    $('.convo').hide();
+    if ($(window).width() >= 767.98) {
+        $('.convo').show();
+        $('.inbox').show();
+    } else {
+        $('.inbox').show();
+        $('.convo').hide();
+    }
 }
 
 function showConvo() {
@@ -180,14 +185,14 @@ function showConvo() {
         $('.inbox').hide();
     }
 }
-$(window).resize(function() {
-    if ($(window).width() >= 767.98) {
-        $('.convo').show();
-        $('.inbox').show();
-    } else {
-        showInbox();
-    }
-});
+// $(window).resize(function() {
+//     if ($(window).width() >= 767.98) {
+//         $('.convo').show();
+//         $('.inbox').show();
+//     } else {
+//         showInbox();
+//     }
+// });
 </script>
 
 @endsection
