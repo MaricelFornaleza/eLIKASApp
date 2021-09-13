@@ -166,9 +166,13 @@ $(document).ready(function() {
 
 
 function showInbox() {
-    $('.inbox').show();
-    $('.convo').hide();
-
+    if ($(window).width() >= 767.98) {
+        $('.convo').show();
+        $('.inbox').show();
+    } else {
+        $('.inbox').show();
+        $('.convo').hide();
+    }
 }
 
 function showConvo() {

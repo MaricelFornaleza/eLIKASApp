@@ -64,16 +64,22 @@
                 <div class="fixed-bottom px-2">
                     <div class="col-12 center mt-5 ">
                         <div class="col-md-6 p-0 ">
-                            <a href="">
+                            <a href="/barangay-captain/edit/{{ $supply->id }}">
                                 <button class="btn btn-accent  px-4 ">Edit</button>
                             </a>
                         </div>
                     </div>
                     <div class="col-12 center mt-4">
                         <div class="col-md-6 mb-4 p-0">
-                            <a href="">
-                                <button class="btn btn-accent-outline  px-4 ">Delete</button>
-                            </a>
+                            <form action="{{ route('supplies.destroy', $supply->id ) }}" method="post">
+                                @csrf
+                                @method("DELETE")
+                                <button type="submit" value="Delete" name="submit"
+                                    class="btn btn-accent-outline  px-4 "
+                                    onclick="return confirm('Are you sure to delete?')">
+                                    Delete
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
