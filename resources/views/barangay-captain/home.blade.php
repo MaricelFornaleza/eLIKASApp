@@ -18,7 +18,7 @@
             </div>
             <div class="col-12 text-center mt-4">
                 <!-- Progress Bar -->
-                <h5 class="progress-title"><b>{{$residents}} Non Evacuees</b></h5>
+                <h5 class="progress-title"><b>{{$non_evacuees->count()}} Non Evacuees</b></h5>
                 <!-- <div class="progress">
                     <div class="progress-bar bg-accent" role="progressbar" style="width: 75%" aria-valuenow="75"
                         aria-valuemin="0" aria-valuemax="100"></div>
@@ -83,7 +83,7 @@
                 <div class="col-md-12 justify-content-between d-flex align-items-baseline mt-5 mb-4 p-0">
                     <h5><b>Supply</b></h5>
                     <a href="{{ route('inventory.index') }}">
-                    <h6>View Inventory</h6>
+                        <h6>View Inventory</h6>
                     </a>
                 </div>
                 <!-- Progress bars -->
@@ -95,8 +95,9 @@
                         </div>
                         <div class="progress-group-bars">
                             <div class="progress progress-xs">
-                                <div class="progress-bar bg-accent" role="progressbar" style="width: {{$bc_inventory->total_no_of_food_packs}}%"
-                                    aria-valuenow="43" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar bg-accent" role="progressbar"
+                                    style="width: {{$bc_inventory->total_no_of_food_packs}}%" aria-valuenow="43"
+                                    aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         </div>
                     </div>
@@ -107,8 +108,9 @@
                         </div>
                         <div class="progress-group-bars">
                             <div class="progress progress-xs">
-                                <div class="progress-bar bg-accent" role="progressbar" style="width: {{$bc_inventory->total_no_of_water}}%"
-                                    aria-valuenow="43" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar bg-accent" role="progressbar"
+                                    style="width: {{$bc_inventory->total_no_of_water}}%" aria-valuenow="43"
+                                    aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         </div>
                     </div>
@@ -119,8 +121,9 @@
                         </div>
                         <div class="progress-group-bars">
                             <div class="progress progress-xs">
-                                <div class="progress-bar bg-accent" role="progressbar" style="width: {{$bc_inventory->total_no_of_clothes}}%"
-                                    aria-valuenow="43" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar bg-accent" role="progressbar"
+                                    style="width: {{$bc_inventory->total_no_of_clothes}}%" aria-valuenow="43"
+                                    aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         </div>
                     </div>
@@ -131,8 +134,9 @@
                         </div>
                         <div class="progress-group-bars">
                             <div class="progress progress-xs">
-                                <div class="progress-bar bg-accent" role="progressbar" style="width: {{$bc_inventory->total_no_of_hygiene_kit}}%"
-                                    aria-valuenow="43" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar bg-accent" role="progressbar"
+                                    style="width: {{$bc_inventory->total_no_of_hygiene_kit}}%" aria-valuenow="43"
+                                    aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         </div>
                     </div>
@@ -143,19 +147,23 @@
                         </div>
                         <div class="progress-group-bars">
                             <div class="progress progress-xs">
-                                <div class="progress-bar bg-accent" role="progressbar" style="width: {{$bc_inventory->total_no_of_medicine}}%"
-                                    aria-valuenow="43" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar bg-accent" role="progressbar"
+                                    style="width: {{$bc_inventory->total_no_of_medicine}}%" aria-valuenow="43"
+                                    aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         </div>
                     </div>
                     <div class="progress-group">
                         <div class="progress-group-header">
                             <div>Emergency Shelter Assistance</div>
-                            <div class="mfs-auto font-weight-bold">{{$bc_inventory->total_no_of_emergency_shelter_assistance}}</div>
+                            <div class="mfs-auto font-weight-bold">
+                                {{$bc_inventory->total_no_of_emergency_shelter_assistance}}
+                            </div>
                         </div>
                         <div class="progress-group-bars">
                             <div class="progress progress-xs">
-                                <div class="progress-bar bg-accent" role="progressbar" style="width: {{$bc_inventory->total_no_of_emergency_shelter_assistance}}%"
+                                <div class="progress-bar bg-accent" role="progressbar"
+                                    style="width: {{$bc_inventory->total_no_of_emergency_shelter_assistance}}%"
                                     aria-valuenow="43" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         </div>
