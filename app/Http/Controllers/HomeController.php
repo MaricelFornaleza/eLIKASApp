@@ -19,6 +19,8 @@ use App\Models\Inventory;
 
 use Illuminate\Support\Facades\DB;
 
+use App\Models\Supply;
+
 class HomeController extends Controller
 {
     public function index()
@@ -57,39 +59,35 @@ class HomeController extends Controller
             $senior_citizen  = 0;
             $solo_parent = 0;
 
-            $family_members = FamilyMember::where('barangay', $barangay_captain->barangay)->get();
-            if ($family_members != null) {
-                $female = $female + $family_members->where('gender', 'Female')->count();
-                $male = $male + $family_members->where('gender', 'Male')->count();
-                $children = $children + $family_members->where('sectoral_classification', 'Children')->count();
-                $lactating = $lactating + $family_members->where('sectoral_classification', 'Lactating')->count();
-                $pwd = $pwd + $family_members->where('sectoral_classification', 'Person with Disability')->count();
-                $pregnant = $pregnant + $family_members->where('sectoral_classification', 'Pregnant')->count();
-                $senior_citizen  = $senior_citizen + $family_members->where('sectoral_classification', 'Senior Citizen')->count();
-                $solo_parent = $solo_parent + $family_members->where('sectoral_classification', 'Solo Parent')->count();
-
-                $residents = $residents + $family_members->count();
-            }
-
-
-
-            $non_evacuees = DB::table('family_members')
-                ->leftJoin('relief_recipients', function ($join) {
-                    $join->on('family_members.family_code', '=', 'relief_recipients.family_code')
-                        ->where('relief_recipients.recipient_type', '=', 'Non-evacuee')
-                        ->leftJoin(
-                            'disaster_responses',
-                            function ($join) {
-                                $join->on('relief_recipients.disaster_response_id', '=', 'disaster_responses.id')
-                                    ->whereNotNull('disaster_responses.date_ended');
-                            }
-                        );
-                })
+            $evacuees = DB::table('family_members')
+                ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
+                ->leftJoin('disaster_responses', 'relief_recipients.disaster_response_id', '=', 'disaster_responses.id')
                 ->whereNotNull('family_members.family_code')
                 ->where('family_members.barangay', $barangay_captain->barangay)
+                ->where('relief_recipients.recipient_type', 'Evacuee')
+                ->whereNull('disaster_responses.date_ended')
                 ->select('name')
                 ->get();
+            $evac_names = [];
+            foreach ($evacuees as $name) {
+                $evac_names[] = array_push($evac_names, $name->name);
+            }
+            $non_evacuees = FamilyMember::where('barangay', $barangay_captain->barangay)
+                ->whereNotIn('name', $evac_names)
+                ->get();
 
+            $family_members = FamilyMember::where('barangay', $barangay_captain->barangay)->get();
+            if ($non_evacuees != null) {
+                $female = $female + $non_evacuees->where('gender', 'Female')->count();
+                $male = $male + $non_evacuees->where('gender', 'Male')->count();
+                $children = $children + $non_evacuees->where('sectoral_classification', 'Children')->count();
+                $lactating = $lactating + $non_evacuees->where('sectoral_classification', 'Lactating')->count();
+                $pwd = $pwd + $non_evacuees->where('sectoral_classification', 'Person with Disability')->count();
+                $pregnant = $pregnant + $non_evacuees->where('sectoral_classification', 'Pregnant')->count();
+                $senior_citizen  = $senior_citizen + $non_evacuees->where('sectoral_classification', 'Senior Citizen')->count();
+                $solo_parent = $solo_parent + $non_evacuees->where('sectoral_classification', 'Solo Parent')->count();
+            }
+            // dd($non_evacuees);
             $bc_inventory = Inventory::where('user_id', '=', $user->id)->first();
 
             return view(
@@ -97,7 +95,7 @@ class HomeController extends Controller
                 [
                     'disaster_responses', $disaster_responses,
                     'barangay_captain' => $barangay_captain,
-                    'residents' => $residents,
+                    'residents' => $family_members->count(),
                     'female' => $female,
                     'male' => $male,
                     'children' => $children,

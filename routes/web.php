@@ -19,6 +19,7 @@ use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ImportExcelController;
 use App\Http\Controllers\ExportExcelController;
 use App\Http\Controllers\FamilyMemberController;
+use App\Mail\VerifyEmail;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -30,6 +31,16 @@ Route::get('/', function () {
 });
 
 Auth::routes(['register' => false, 'verify' => true]);
+
+Route::get('/send-mail', function () {
+    $data = [
+        'name' => 'Maricel',
+        'remember_token' => Str::random(25),
+        'email' => 'maformaleza@gbox.adnu.edu.ph',
+    ];
+
+    Mail::to($data['email'])->send(new VerifyEmail($data));
+});
 
 //email verification
 
@@ -65,6 +76,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::post('/store',   'DeliveryRequestController@store')->name('request.store')->middleware('officertype:Camp Manager');
         Route::get('/cancel',   'DeliveryRequestController@cancel')->name('request.cancel');    //all users can access this
         Route::get('/admin/approve',   'DeliveryRequestController@approve')->name('request.approve')->middleware('officertype:Administrator');
+        Route::get('/suggestion/{id}',   'DeliveryRequestController@viewSuggestion')->middleware('officertype:Administrator');
         Route::get('/admin/decline',   'DeliveryRequestController@admin_decline')->name('request.admin_decline')->middleware('officertype:Administrator');
         Route::post('/admin/assign',   'DeliveryRequestController@assign_courier')->name('request.assign_courier')->middleware('officertype:Administrator');
         Route::get('/courier/accept/{id}',   'DeliveryRequestController@courier_accept')->name('request.courier_accept')->middleware('officertype:Courier');
@@ -98,6 +110,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         });
         // Field Officer
         Route::resource('/field_officers', 'FieldOfficerController');
+        Route::get('/resend-verification/{remember_token}', 'FieldOfficerController@resendVerification');
         // Residents
         Route::resource('relief-recipient', 'ReliefRecipientController');
         Route::resource('residents', 'FamilyMemberController');
@@ -146,6 +159,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
             Route::get('/dispense-view', 'BarangayCaptainController@dispenseView');
             Route::post('/dispense', 'BarangayCaptainController@dispense');
             Route::get('/details/{id}', 'BarangayCaptainController@detailsView');
+            Route::get('/edit/{id}', 'BarangayCaptainController@editSupply');
             Route::get('/list', 'BarangayCaptainController@listView');
         });
     });

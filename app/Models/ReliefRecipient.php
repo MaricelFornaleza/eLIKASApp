@@ -9,6 +9,9 @@ class ReliefRecipient extends Model
 {
     use HasFactory;
     protected $table = 'relief_recipients';
+    protected $fillable = [
+        'disaster_response_id'
+    ];
 
     public function evacuee()
     {

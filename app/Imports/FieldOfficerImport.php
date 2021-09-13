@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Mail\VerifyEmail;
 use App\Models\BarangayCaptain;
 use App\Models\CampManager;
 
@@ -44,7 +45,6 @@ class FieldOfficerImport implements ToCollection, WithHeadingRow
                     'contact_no' => $row['contact_no'],
                     'password' => Hash::make($temp_pass),
                     'remember_token' => Str::random(25),
-
                 ]);
 
                 if ($user->officer_type == "Barangay Captain") {
@@ -89,11 +89,7 @@ class FieldOfficerImport implements ToCollection, WithHeadingRow
                     'remember_token' => $user->remember_token,
                 ];
 
-                Mail::send('emails.verify-user', $data, function ($message) use ($to_name, $to_email) {
-                    $message->to($to_email, $to_name)
-                        ->subject('Verify your Email Address');
-                    $message->from('elikasph@gmail.com', 'eLIKAS Philippines');
-                });
+                Mail::to($to_email)->send(new VerifyEmail($data));
             }
         }
     }

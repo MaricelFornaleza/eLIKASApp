@@ -41,7 +41,7 @@
                 <div class="c-callout c-callout-fourth my-0 py-2">
                     <small class="text-muted ">Dispensed Relief Goods</small>
                     <div class="text-value-lg ">
-                        <h1 class="p-0 m-0"><strong>9,123</strong> </h1>
+                        <h1 class="p-0 m-0"><strong>{{$data['relief_goods']['count']}}</strong> </h1>
                     </div>
                 </div>
             </div>

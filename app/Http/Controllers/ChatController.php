@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Pusher\Pusher;
+use Illuminate\Support\Facades\Log;
 
 
 class ChatController extends Controller
@@ -30,6 +31,10 @@ class ChatController extends Controller
             ->groupBy('users.id', 'users.name', 'users.photo', 'users.email')
             ->get();
 
+        // $users = Chat::all();
+
+
+        // dd($users);
         $role = Auth::user()->officer_type;
 
         if ($role == "Administrator") {
@@ -51,6 +56,21 @@ class ChatController extends Controller
         // dd($messages);
         return view('common.chat.index', ['messages' => $messages]);
     }
+    public function getAllMessages()
+    {
+        $users = User::leftJoin('chats', function ($join) {
+            $join->on('users.id', '=', 'chats.sender')
+                ->where('chats.is_read', '=', '0')
+                ->where('chats.recipient', '=', Auth::id());
+        })
+            ->where('users.id', '!=', Auth::id())
+            ->select('users.id', 'users.name', 'users.photo', 'users.email', DB::raw("COUNT(chats.is_read) as unread"))
+            ->groupBy('users.id', 'users.name', 'users.photo', 'users.email')
+            ->get();
+        return view('common.chat.body', ['users' => $users]);
+    }
+
+
 
     public function sendMessage(Request $request)
     {
@@ -78,6 +98,7 @@ class ChatController extends Controller
 
         $data = ['sender' => $sender, 'recipient' => $recipient];
         $pusher->trigger('my-channel', 'my-event', $data);
+        Log::channel('chatlog')->info($message, ['id' => $chat->id, 'sender' => $sender, 'recipient' => $recipient]);
     }
 
     public function search(Request $request)

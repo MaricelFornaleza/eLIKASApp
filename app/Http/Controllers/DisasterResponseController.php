@@ -9,7 +9,9 @@ use App\Models\DisasterResponse;
 use App\Models\FamilyMember;
 use App\Models\ReliefRecipient;
 use App\CustomClasses\UpdateMarker;
+use App\Models\Evacuee;
 use App\Models\Family;
+use App\Models\ReliefGood;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,12 +19,13 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use PDF;
 
+
 class DisasterResponseController extends Controller
 {
     public function start()
     {
-        $barangays = Barangay::join('family_members', 'family_members.barangay', '=', 'barangays.name')
-            ->where('family_members.family_code', '!=', null)
+        $barangays = Barangay::join('family_members', 'family_members.barangay', 'barangays.name')
+            ->whereNotNull('family_members.family_code')
             ->select('barangays.name')
             ->groupBy('barangays.name')
             ->get();
@@ -30,7 +33,7 @@ class DisasterResponseController extends Controller
     }
     public function archive()
     {
-        $disaster_responses = DisasterResponse::where('date_ended', '!=', null)->get();
+        $disaster_responses = DisasterResponse::whereNotNull('date_ended')->get();
         return view('admin.disaster-response-resource.archive')
             ->with(compact('disaster_responses'));
     }
@@ -59,38 +62,63 @@ class DisasterResponseController extends Controller
         }
         AffectedArea::insert($data);
         $affectedFamilies = Family::join('family_members', function ($join) use ($disaster_response) {
-            $join->on('family_members.family_code', '=', 'families.family_code')
-                ->where('family_members.family_code', '!=', null)
-                ->join('affected_areas', 'family_members.barangay', '=', 'affected_areas.barangay')
-                ->where('affected_areas.disaster_response_id', '=', $disaster_response->id);
+            $join->on('family_members.family_code', 'families.family_code')
+                ->whereNotNull('family_members.family_code')
+                ->join('affected_areas', 'family_members.barangay', 'affected_areas.barangay')
+                ->where('affected_areas.disaster_response_id', $disaster_response->id);
         })
             ->leftJoin('relief_recipients', function ($join) {
-                $join->on('relief_recipients.family_code', '=', 'families.family_code')
-                    ->join('disaster_responses', 'disaster_responses.id', '=', 'relief_recipients.disaster_response_id')
-                    ->where('disaster_responses.date_ended', '=', null);
+                $join->on('relief_recipients.family_code', 'families.family_code')
+                    ->join('disaster_responses', 'disaster_responses.id', 'relief_recipients.disaster_response_id')
+                    ->whereNull('disaster_responses.date_ended');
             })
-            ->select('families.family_code', 'relief_recipients.recipient_type')
-            ->groupBy('families.family_code', 'relief_recipients.recipient_type')
+            ->leftJoin('evacuees', 'evacuees.relief_recipient_id', 'relief_recipients.id')
+            ->select('families.family_code', 'relief_recipients.recipient_type', 'evacuees.evacuation_center_id', 'evacuees.date_admitted')
+            ->groupBy('families.family_code', 'relief_recipients.recipient_type', 'evacuees.evacuation_center_id', 'evacuees.date_admitted')
             ->get();
+
+        // $affectedFamilies = Family::leftJoin('relief_recipients', function ($join) {
+        //     $join->on('relief_recipients.family_code', 'families.family_code')
+        //         ->join('disaster_responses', 'disaster_responses.id', 'relief_recipients.disaster_response_id')
+        //         ->whereNull('disaster_responses.date_ended');
+        // })
+        //     ->leftJoin('evacuees', 'evacuees.relief_recipient_id', 'relief_recipients.id')
+        //     ->select('families.family_code', 'relief_recipients.recipient_type', 'evacuees.evacuation_center_id', 'evacuees.date_admitted')
+        //     ->groupBy('families.family_code', 'relief_recipients.recipient_type', 'evacuees.evacuation_center_id', 'evacuees.date_admitted')
+        //     ->get();
 
 
         $data = [];
+        $families = [];
         foreach ($affectedFamilies as $index) {
-            if ($index->recipient_type == "Evacuee") {
-                $data[] = [
-                    'disaster_response_id' => $disaster_response->id,
-                    'family_code' => $index->family_code,
-                    'recipient_type' =>  $index->recipient_type,
-                ];
-            } else {
-                $data[] = [
-                    'disaster_response_id' => $disaster_response->id,
-                    'family_code' => $index->family_code,
-                    'recipient_type' => 'Non-evacuee',
-                ];
+            if (!in_array($index->family_code, $families)) {
+                $families[] = array_push($families, $index->family_code);
+                if ($index->recipient_type == "Evacuee") {
+                    $data[] = [
+                        'disaster_response_id' => $disaster_response->id,
+                        'family_code' => $index->family_code,
+                        'recipient_type' =>  $index->recipient_type,
+                    ];
+                    $relief_recipient = new ReliefRecipient();
+                    $relief_recipient->disaster_response_id = $disaster_response->id;
+                    $relief_recipient->family_code = $index->family_code;
+                    $relief_recipient->recipient_type = $index->recipient_type;
+                    $relief_recipient->save();
+                    $evacuee = new Evacuee();
+                    $evacuee->relief_recipient_id = $relief_recipient->id;
+                    $evacuee->date_admitted = now();
+                    $evacuee->evacuation_center_id = $index->evacuation_center_id;
+                    $evacuee->save();
+                } else {
+                    $relief_recipient = new ReliefRecipient();
+                    $relief_recipient->disaster_response_id = $disaster_response->id;
+                    $relief_recipient->family_code = $index->family_code;
+                    $relief_recipient->recipient_type = 'Non-evacuee';
+                    $relief_recipient->save();
+                }
             }
         }
-        ReliefRecipient::insert($data);
+
         $update_requests = new UpdateMarker;
         $update_requests->refreshMap();
         Session::flash('message', 'Disaster Response started.');
@@ -99,43 +127,56 @@ class DisasterResponseController extends Controller
     }
     public function show($id)
     {
-        $disaster_response = DisasterResponse::where('id', '=', $id)->first();
-        $barangays = AffectedArea::where('disaster_response_id', '=', $id)->select('barangay')->get();
+        $disaster_response = DisasterResponse::where('id', $id)->first();
+        $barangays = AffectedArea::where('disaster_response_id', $id)->select('barangay')->get();
         $affected_residents = FamilyMember::join('relief_recipients', function ($join) use ($id) {
-            $join->on('relief_recipients.family_code', '=', 'family_members.family_code')
-                ->where('disaster_response_id', '=', $id);
-        })->select('family_members.*', 'relief_recipients.recipient_type')->get();
-        $families = ReliefRecipient::where('disaster_response_id', '=', $id)->get();
-        $evacuees = $affected_residents->where('recipient_type', '=', 'Evacuee')->count();
-        $non_evacuees = $affected_residents->where('recipient_type', '=', 'Non-evacuee')->count();
-        $children = $affected_residents->where('sectoral_classification', '=', 'Children')->count();
-        $lactating = $affected_residents->where('sectoral_classification', '=', 'Lactating')->count();
-        $PWD = $affected_residents->where('sectoral_classification', '=', 'Person with Disability')->count();
-        $pregnant = $affected_residents->where('sectoral_classification', '=', 'Pregnant')->count();
-        $senior = $affected_residents->where('sectoral_classification', '=', 'Senior Citizen')->count();
-        $solo = $affected_residents->where('sectoral_classification', '=', 'Solo Parent')->count();
-        $female = $affected_residents->where('gender', '=', 'Female')->count();
-        $male = $affected_residents->where('gender', '=', 'Male')->count();
+            $join->on('relief_recipients.family_code', 'family_members.family_code')
+                ->where('disaster_response_id', $id)
+                ->leftJoin('evacuees', 'evacuees.relief_recipient_id', 'relief_recipients.id')
+                ->select('evacuees.date_admitted', 'evacuees.date_discharged');
+        })->select('family_members.*', 'relief_recipients.recipient_type', 'evacuees.date_admitted', 'evacuees.date_discharged')->get();
+        $families = ReliefRecipient::where('disaster_response_id', $id)->get();
+        $dispensed_relief_goods = ReliefGood::where('disaster_response_id', $id)->get();
+        $evacuees = $affected_residents->where('recipient_type', 'Evacuee');
+        $evac = Evacuee::join('relief_recipients', 'relief_recipients.id', 'evacuees.relief_recipient_id')
+            ->where('relief_recipients.disaster_response_id', $id)
+            ->get();
+
+        $relief_goods = [
+            'count' => $dispensed_relief_goods->count(),
+            'clothes' => $dispensed_relief_goods->sum('clothes'),
+            'emergency_shelter_assistance' => $dispensed_relief_goods->sum('emergency_shelter_assistance'),
+            'medicine' => $dispensed_relief_goods->sum('medicine'),
+            'hygiene_kit' => $dispensed_relief_goods->sum('hygiene_kit'),
+            'water' => $dispensed_relief_goods->sum('water'),
+            'food_packs' => $dispensed_relief_goods->sum('food_packs'),
+        ];
+        $sectors = [
+            'children' => $affected_residents->where('sectoral_classification', 'Children')->count(),
+            'pregnant' => $affected_residents->where('sectoral_classification', 'Pregnant')->count(),
+            'lactating' => $affected_residents->where('sectoral_classification', 'Lactating')->count(),
+            'PWD' => $affected_residents->where('sectoral_classification', 'Person with Disability')->count(),
+            'pregnant' => $affected_residents->where('sectoral_classification', 'Pregnant')->count(),
+            'senior' => $affected_residents->where('sectoral_classification', 'Senior Citizen')->count(),
+            'solo' => $affected_residents->where('sectoral_classification', 'Solo Parent')->count(),
+        ];
         $data = [
-            'children' => $children,
-            'pregnant' => $pregnant,
-            'lactating' => $lactating,
-            'PWD' => $PWD,
-            'pregnant' => $pregnant,
-            'senior' => $senior,
-            'solo' => $solo,
+            'sectors' => $sectors,
             'affected_residents' => $affected_residents->count(),
             'families' => $families->count(),
-            'evacuees' => $evacuees,
-            'non-evacuees' => $non_evacuees,
-            'female' => $female,
-            'male' => $male,
+            'evacuees' => $affected_residents->where('recipient_type', 'Evacuee')->count(),
+            'non-evacuees' => $affected_residents->where('recipient_type', 'Non-evacuee')->count(),
+            'female' => $affected_residents->where('gender', 'Female')->count(),
+            'male' => $affected_residents->where('gender', 'Male')->count(),
+            'relief_goods' => $relief_goods,
 
         ];
+        $chart = [10, 20, 30];
+        $chartData = json_encode($chart, JSON_NUMERIC_CHECK);
 
-        // dd($data);
+        // dd($evac);
         return view('admin.disaster-response-resource.show')
-            ->with(compact('disaster_response', 'barangays', 'data'));
+            ->with(compact('disaster_response', 'barangays', 'data', 'chartData'));
     }
     public function stop($id)
     {
