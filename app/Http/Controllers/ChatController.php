@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Pusher\Pusher;
+use Illuminate\Support\Facades\Log;
 
 
 class ChatController extends Controller
@@ -78,6 +79,7 @@ class ChatController extends Controller
 
         $data = ['sender' => $sender, 'recipient' => $recipient];
         $pusher->trigger('my-channel', 'my-event', $data);
+        Log::channel('chatlog')->info($message, ['id' => $chat->id, 'sender' => $sender, 'recipient' => $recipient]);
     }
 
     public function search(Request $request)

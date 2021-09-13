@@ -88,6 +88,11 @@ return [
             'driver' => 'errorlog',
             'level' => 'debug',
         ],
+        'chatlog' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/chat/chat.log'),
+            'level' => 'info',
+        ]
     ],
 
 ];
