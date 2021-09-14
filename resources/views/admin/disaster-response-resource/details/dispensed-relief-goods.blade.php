@@ -21,7 +21,7 @@
                         <div class="progress-group-bars">
                             <div class="clearfix">
                                 <div class="float-right"><strong>{{$data['relief_goods']['clothes']}}</strong> <small
-                                        class="text-muted">({{($data['relief_goods']['clothes'] / $data['affected_residents']) *100}}%)</small>
+                                        class="text-muted">({{round((($data['relief_goods']['clothes'] / $data['affected_residents']) *100),2)}}%)</small>
                                 </div>
                             </div>
                             <div class="progress progress-xs">
@@ -40,7 +40,7 @@
                             <div class="clearfix">
                                 <div class="float-right">
                                     <strong>{{$data['relief_goods']['emergency_shelter_assistance']}}</strong> <small
-                                        class="text-muted">({{($data['relief_goods']['emergency_shelter_assistance'] / $data['affected_residents']) *100}}%)</small>
+                                        class="text-muted">({{round((($data['relief_goods']['emergency_shelter_assistance'] / $data['affected_residents']) *100),2)}}%)</small>
                                 </div>
                             </div>
                             <div class="progress progress-xs">
@@ -57,7 +57,7 @@
                         <div class="progress-group-bars">
                             <div class="clearfix">
                                 <div class="float-right"><strong>{{$data['relief_goods']['food_packs']}}</strong> <small
-                                        class="text-muted">({{($data['relief_goods']['food_packs'] / $data['affected_residents']) *100}}%)</small>
+                                        class="text-muted">({{round((($data['relief_goods']['food_packs'] / $data['affected_residents']) *100),2)}}%)</small>
                                 </div>
                             </div>
                             <div class="progress progress-xs">
@@ -74,7 +74,7 @@
                             <div class="clearfix">
                                 <div class="float-right"><strong>{{$data['relief_goods']['hygiene_kit']}}</strong>
                                     <small
-                                        class="text-muted">({{($data['relief_goods']['hygiene_kit'] / $data['affected_residents']) *100}}%)</small>
+                                        class="text-muted">({{round((($data['relief_goods']['hygiene_kit'] / $data['affected_residents']) *100),2)}}%)</small>
                                 </div>
                             </div>
                             <div class="progress progress-xs">
@@ -90,7 +90,7 @@
                         <div class="progress-group-bars">
                             <div class="clearfix">
                                 <div class="float-right"><strong>{{$data['relief_goods']['medicine']}}</strong> <small
-                                        class="text-muted">({{($data['relief_goods']['medicine'] / $data['affected_residents']) *100}}%)</small>
+                                        class="text-muted">({{round((($data['relief_goods']['medicine'] / $data['affected_residents']) *100),2)}}%)</small>
                                 </div>
                             </div>
                             <div class="progress progress-xs">
@@ -107,7 +107,7 @@
                         <div class="progress-group-bars">
                             <div class="clearfix">
                                 <div class="float-right"><strong>{{$data['relief_goods']['water']}}</strong> <small
-                                        class="text-muted">({{($data['relief_goods']['water'] / $data['affected_residents']) *100}}%)</small>
+                                        class="text-muted">({{round((($data['relief_goods']['water'] / $data['affected_residents']) *100),2)}}%)</small>
                                 </div>
                             </div>
                             <div class="progress progress-xs">

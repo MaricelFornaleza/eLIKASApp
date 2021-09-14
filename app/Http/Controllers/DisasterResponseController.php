@@ -92,7 +92,7 @@ class DisasterResponseController extends Controller
         $families = [];
         foreach ($affectedFamilies as $index) {
             if (!in_array($index->family_code, $families)) {
-                $families[] = array_push($families, $index->family_code);
+                $families[] = $index->family_code;
                 if ($index->recipient_type == "Evacuee") {
                     $data[] = [
                         'disaster_response_id' => $disaster_response->id,
@@ -106,7 +106,7 @@ class DisasterResponseController extends Controller
                     $relief_recipient->save();
                     $evacuee = new Evacuee();
                     $evacuee->relief_recipient_id = $relief_recipient->id;
-                    $evacuee->date_admitted = now();
+                    $evacuee->date_admitted = $index->date_admitted;
                     $evacuee->evacuation_center_id = $index->evacuation_center_id;
                     $evacuee->save();
                 } else {
@@ -171,12 +171,52 @@ class DisasterResponseController extends Controller
             'relief_goods' => $relief_goods,
 
         ];
-        $chart = [10, 20, 30];
-        $chartData = json_encode($chart, JSON_NUMERIC_CHECK);
+        $admitted = FamilyMember::join('relief_recipients', function ($join) use ($id) {
+            $join->on('relief_recipients.family_code', 'family_members.family_code')
+                ->where('disaster_response_id', $id)
+                ->rightJoin('evacuees', 'evacuees.relief_recipient_id', 'relief_recipients.id')
+                ->select('evacuees.date_admitted', 'evacuees.date_discharged');
+        })
+            ->select(
+                'relief_recipients.recipient_type',
+                'evacuees.date_admitted',
+                'evacuees.date_discharged',
+                DB::raw('DATE(evacuees.date_admitted) as admitted_date'),
+                DB::raw('DATE(evacuees.date_discharged) as discharged_date'),
+                DB::raw('COUNT(evacuees.date_admitted) as admitted'),
+                DB::raw('COUNT(family_members.family_code) as non_evac'),
+                DB::raw('COUNT(evacuees.date_discharged) as discharged')
+            )->groupBy(
+                'relief_recipients.recipient_type',
+                'evacuees.date_admitted',
+                'evacuees.date_discharged',
+                'admitted_date'
+            )
+            ->get();
 
-        // dd($evac);
+        $evac = [];
+        $non_evac = [];
+        $dates = [];
+        foreach ($admitted as $person) {
+            if (!in_array($person->admitted_date, $dates)) {
+                $dates[] = $person->admitted_date;
+            }
+        }
+        foreach ($dates as $date) {
+            $evac[] = $admitted->where('admitted_date', '<=', $date)->whereNotIn('discharged_date', $date)->sum('admitted');
+            $ne =  $admitted->where('admitted_date', '>', $date)->sum('non_evac');
+            $discharge = $admitted->where('discharged_date', $date)->sum('non_evac');
+            $non_evac[] = $ne + $discharge;
+        }
+
+
+
+        $chartData = json_encode($evac, JSON_NUMERIC_CHECK);
+        $chartData2 = json_encode($non_evac, JSON_NUMERIC_CHECK);
+        $dates = json_encode($dates);
+
         return view('admin.disaster-response-resource.show')
-            ->with(compact('disaster_response', 'barangays', 'data', 'chartData'));
+            ->with(compact('disaster_response', 'barangays', 'data', 'chartData', 'chartData2', 'dates'));
     }
     public function stop($id)
     {
