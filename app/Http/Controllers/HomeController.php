@@ -73,10 +73,12 @@ class HomeController extends Controller
                 $evac_names[] = array_push($evac_names, $name->name);
             }
             $non_evacuees = FamilyMember::where('barangay', $barangay_captain->barangay)
+                ->whereNotNull('family_members.family_code')
                 ->whereNotIn('name', $evac_names)
                 ->get();
 
-            $family_members = FamilyMember::where('barangay', $barangay_captain->barangay)->get();
+            $family_members = FamilyMember::where('barangay', $barangay_captain->barangay)
+                ->whereNotNull('family_members.family_code')->get();
             if ($non_evacuees != null) {
                 $female = $female + $non_evacuees->where('gender', 'Female')->count();
                 $male = $male + $non_evacuees->where('gender', 'Male')->count();

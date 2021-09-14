@@ -25,7 +25,7 @@
                         <div class="progress-group-bars">
                             <div class="clearfix">
                                 <div class="float-right"><strong>{{$data['sectors']['children']}}</strong> <small
-                                        class="text-muted">({{($data['sectors']['children'] / $data['affected_residents']) *100}}%)</small>
+                                        class="text-muted">({{round((($data['sectors']['children'] / $data['affected_residents']) *100), 2)}}%)</small>
                                 </div>
                             </div>
                             <div class="progress progress-xs">
@@ -42,7 +42,7 @@
                         <div class="progress-group-bars">
                             <div class="clearfix">
                                 <div class="float-right"><strong>{{$data['sectors']['lactating']}}</strong> <small
-                                        class="text-muted">({{($data['sectors']['lactating'] / $data['affected_residents']) *100}}%)</small>
+                                        class="text-muted">({{round((($data['sectors']['lactating'] / $data['affected_residents']) *100), 2)}}%)</small>
                                 </div>
                             </div>
                             <div class="progress progress-xs">
@@ -58,7 +58,7 @@
                         <div class="progress-group-bars">
                             <div class="clearfix">
                                 <div class="float-right"><strong>{{$data['sectors']['PWD']}}</strong> <small
-                                        class="text-muted">({{($data['sectors']['PWD'] / $data['affected_residents']) *100}}%)</small>
+                                        class="text-muted">({{round((($data['sectors']['PWD'] / $data['affected_residents']) *100),2)}}%)</small>
                                 </div>
                             </div>
                             <div class="progress progress-xs">
@@ -74,7 +74,7 @@
                         <div class="progress-group-bars">
                             <div class="clearfix">
                                 <div class="float-right"><strong>{{$data['sectors']['pregnant']}}</strong> <small
-                                        class="text-muted">({{($data['sectors']['pregnant'] / $data['affected_residents']) *100}}%)</small>
+                                        class="text-muted">({{round((($data['sectors']['pregnant'] / $data['affected_residents']) *100), 2)}}%)</small>
                                 </div>
                             </div>
                             <div class="progress progress-xs">
@@ -91,7 +91,7 @@
                         <div class="progress-group-bars">
                             <div class="clearfix">
                                 <div class="float-right"><strong>{{$data['sectors']['senior']}}</strong> <small
-                                        class="text-muted">({{($data['sectors']['senior'] / $data['affected_residents']) *100}}%)</small>
+                                        class="text-muted">({{round((($data['sectors']['senior'] / $data['affected_residents']) *100),2)}}%)</small>
                                 </div>
                             </div>
                             <div class="progress progress-xs">
@@ -108,7 +108,7 @@
                         <div class="progress-group-bars">
                             <div class="clearfix">
                                 <div class="float-right"><strong>{{$data['sectors']['solo']}}</strong> <small
-                                        class="text-muted">({{($data['sectors']['solo'] / $data['affected_residents']) *100}}%)</small>
+                                        class="text-muted">({{round((($data['sectors']['solo'] / $data['affected_residents']) *100),2)}}%)</small>
                                 </div>
                             </div>
                             <div class="progress progress-xs">

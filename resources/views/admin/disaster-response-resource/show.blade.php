@@ -77,7 +77,7 @@
                             <div class="row text-center justify-content-center">
                                 <div class="col-sm-12 col-md-4 mb-sm-2 mb-0">
                                     <div class="text-muted">Evacuees</div><strong>{{$data['evacuees']}}
-                                        ({{($data['evacuees'] / $data['affected_residents']) *100}}%)</strong>
+                                        ({{round((($data['evacuees'] / $data['affected_residents']) *100), 2)}}%)</strong>
 
                                     <div class="progress progress-xs mt-2">
 
@@ -89,7 +89,7 @@
                                 </div>
                                 <div class="col-sm-12 col-md-4 mb-sm-2 mb-0">
                                     <div class="text-muted">Non-evacuees</div><strong>{{$data['non-evacuees']}}
-                                        ({{($data['non-evacuees'] / $data['affected_residents']) *100}}%)</strong>
+                                        ({{round((($data['non-evacuees'] / $data['affected_residents']) *100),2)}}%)</strong>
                                     <div class="progress progress-xs mt-2">
                                         <div class="progress-bar bg-info" role="progressbar"
                                             style="width: {{($data['non-evacuees'] / $data['affected_residents']) *100}}%"
@@ -135,5 +135,7 @@
 <script src="{{ asset('js/reports-js/main.js') }}" defer></script>
 <script>
 var chartData = <?php echo $chartData; ?>;
+var chartData2 = <?php echo $chartData2; ?>;
+var dates = <?php echo $dates; ?>;
 </script>
 @endsection

@@ -27,7 +27,12 @@ use Illuminate\Support\Str;
 
 //login and register 
 Route::get('/', function () {
-    return view('auth.login');
+    if (auth()->user()) {
+        return redirect(route('home'));
+    } else {
+        return redirect(route('login'));
+    }
+    // return view('auth.login');
 });
 
 Auth::routes(['register' => false, 'verify' => true]);

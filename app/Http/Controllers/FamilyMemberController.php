@@ -46,6 +46,7 @@ class FamilyMemberController extends Controller
                 'barangay',
                 'relief_recipients.recipient_type'
             )
+            ->distinct()
             ->get();
         // dd($residents);
         // $family_member = DB::table('family_members')->select('id', 'name','sectoral_classification')->get();
