@@ -90,7 +90,7 @@ class CampManagerController extends Controller
         $family_members = DB::table('family_members')
             ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
             ->leftJoin('disaster_responses', 'relief_recipients.disaster_response_id', '=', 'disaster_responses.id')
-            ->whereNotNull('family_members.family_code')->where('family_members.is_family_head', 'Yes')
+            ->whereNotNull('family_members.family_code')
             ->whereNotNull('relief_recipients.id')->where('relief_recipients.recipient_type', 'Non-evacuee')
             ->whereNull('disaster_responses.date_ended')
             ->select('family_members.family_code', 'name')
@@ -106,26 +106,28 @@ class CampManagerController extends Controller
         $validated = $request->validate([
             'checkedResidents'              => ['required'],
         ]);
-
+        $family_codes =  Array();
         foreach ($request->checkedResidents as $checkedResident) {
-            $find_checkedResident = DB::table('relief_recipients')->where('family_code', $checkedResident)->get();
-            // dd($find_checkedResident);
-            if ($find_checkedResident != null) {
-                foreach ($find_checkedResident as $found_relief_recipient) {
-                    $relief_recipient = ReliefRecipient::find($found_relief_recipient->id);
-                    $relief_recipient->recipient_type = 'Evacuee';
-                    $relief_recipient->save();
-                    
-                    $checkIf_DR_IsEnded = DB::table('disaster_responses')->where('id', $relief_recipient->disaster_response_id)->first();
-                    
-                    if($checkIf_DR_IsEnded->date_ended == null){
-                        $evacuee = new Evacuee();
-                        $evacuee->relief_recipient_id = $relief_recipient->id;
-                        $evacuee->date_admitted = now();
-                        $evacuee->evacuation_center_id = $evacuation_center->id;
-                        $evacuee->save(); 
+            if(!in_array($checkedResident, $family_codes)){
+                $find_checkedResident = DB::table('relief_recipients')->where('family_code', $checkedResident)->get();
+                array_push($family_codes, $checkedResident);
+                if ($find_checkedResident != null) {
+                    foreach ($find_checkedResident as $found_relief_recipient) {
+                        $relief_recipient = ReliefRecipient::find($found_relief_recipient->id);
+                        $relief_recipient->recipient_type = 'Evacuee';
+                        $relief_recipient->save();
+                        
+                        $checkIf_DR_IsEnded = DB::table('disaster_responses')->where('id', $relief_recipient->disaster_response_id)->first();
+                        
+                        if($checkIf_DR_IsEnded->date_ended == null){
+                            $evacuee = new Evacuee();
+                            $evacuee->relief_recipient_id = $relief_recipient->id;
+                            $evacuee->date_admitted = now();
+                            $evacuee->evacuation_center_id = $evacuation_center->id;
+                            $evacuee->save(); 
+                        }
+                        
                     }
-                    
                 }
             }
         }
@@ -148,7 +150,7 @@ class CampManagerController extends Controller
             ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
             ->leftJoin('disaster_responses', 'relief_recipients.disaster_response_id', '=', 'disaster_responses.id')
             ->leftJoin('evacuees', 'relief_recipients.id', '=', 'evacuees.relief_recipient_id')
-            ->whereNotNull('family_members.family_code')->where('is_family_head', 'Yes')
+            ->whereNotNull('family_members.family_code')
             ->where('relief_recipients.recipient_type', 'Evacuee')
             ->where('evacuees.evacuation_center_id', $evacuation_center->id)
             ->whereNull('evacuees.date_discharged')
@@ -162,22 +164,25 @@ class CampManagerController extends Controller
         $validated = $request->validate([
             'checkedEvacuees'              => ['required'],
         ]);
-        // dd($request->checkedEvacuees);
+        $family_codes =  Array();
         foreach ($request->checkedEvacuees as $checkedEvacuee) {
+            if(!in_array($checkedEvacuee, $family_codes)){
+            array_push($family_codes, $checkedEvacuee);
             $findRelief_recipient = DB::table('relief_recipients')->where('family_code', $checkedEvacuee)->get();
-            if ($findRelief_recipient != null) {
-                foreach ($findRelief_recipient as $found_relief_recipient) {
-                    $relief_recipient = ReliefRecipient::find($found_relief_recipient->id);
-                    $relief_recipient->recipient_type = 'Non-evacuee';
-                    $relief_recipient->save();
+                if ($findRelief_recipient != null) {
+                    foreach ($findRelief_recipient as $found_relief_recipient) {
+                        $relief_recipient = ReliefRecipient::find($found_relief_recipient->id);
+                        $relief_recipient->recipient_type = 'Non-evacuee';
+                        $relief_recipient->save();
 
-                    $findEvacuee = DB::table('evacuees')->where('relief_recipient_id', $relief_recipient->id)->where('date_discharged', null)->first();
-                    if($findEvacuee != null){
-                        $evacuee = Evacuee::find($findEvacuee->id);
-                        $evacuee->date_discharged = now();
-                        $evacuee->save();
+                        $findEvacuee = DB::table('evacuees')->where('relief_recipient_id', $relief_recipient->id)->where('date_discharged', null)->first();
+                        if($findEvacuee != null){
+                            $evacuee = Evacuee::find($findEvacuee->id);
+                            $evacuee->date_discharged = now();
+                            $evacuee->save();
+                        }
+                        
                     }
-                    
                 }
             }
         }
