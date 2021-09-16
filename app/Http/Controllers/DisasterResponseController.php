@@ -226,8 +226,8 @@ class DisasterResponseController extends Controller
 
         // Lopp in each date and get number of evacuees and non-evacuees
         foreach ($dates as $date) {
-            $evacuees = $admitted->where('admitted_date', '<=', $date)->where('discharged_date', '!=', $date)
-                ->where('discharged_date', '<', $date)
+            $evacuees = $admitted->where('admitted_date', '<=', $date)
+                ->where('discharged_date', '!=', $date)
                 ->sum('admitted');
             $evac[] = $evacuees;
             $ne =  $affected_residents->count();
