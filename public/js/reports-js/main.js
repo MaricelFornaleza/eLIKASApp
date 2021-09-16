@@ -6,20 +6,20 @@ const mainChart = new Chart(document.getElementById('main-chart'), {
     labels: dates,
     datasets: [
       {
-        label: 'Evacuees',
+        label: 'Non-evacuees',
         backgroundColor: coreui.Utils.hexToRgba(coreui.Utils.getStyle('--info'), 10),
         borderColor: coreui.Utils.getStyle('--info'),
         pointHoverBackgroundColor: '#fff',
         borderWidth: 2,
-        data: chartData,
+        data: chartData2,
       },
       {
-        label: 'Non-evacuees',
+        label: 'Evacuees',
         backgroundColor: 'transparent',
         borderColor: coreui.Utils.getStyle('--success'),
         pointHoverBackgroundColor: '#fff',
         borderWidth: 2,
-        data: chartData2,
+        data: chartData,
       },
 
     ]

@@ -24,8 +24,8 @@
                     @foreach($family_members as $family_member)
                             <li class="list-group-item list-group-item-action ">
                                 <div class="form-check">
-                                    <input class="form-check-input  @error('name') is-invalid @enderror checkbox"
-                                        type="checkbox" value='{{$family_member->family_code}}' id="name0"
+                                    <input onchange="selected('{{$family_member->family_code}}',this);" class="form-check-input  @error('name') is-invalid @enderror checkbox {{$family_member->family_code}}"
+                                        type="checkbox" value='{{$family_member->family_code}}' id="{{$family_member->family_code}}"
                                         name="checkedEvacuees[]">
                                     <label class="form-check-label" for="name0">
                                         {{$family_member->name}}
@@ -57,4 +57,11 @@
         </div>
     </div>
 </div>
+@endsection
+@section('javascript')
+<script>
+function selected(family_code, t) {
+        $('input.'+family_code).prop('checked',t.checked);
+}
+</script>
 @endsection
