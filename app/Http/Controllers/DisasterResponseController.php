@@ -128,20 +128,10 @@ class DisasterResponseController extends Controller
     public function show($id)
     {
         $disaster_response = DisasterResponse::where('id', $id)->first();
-        $barangays = AffectedArea::where('disaster_response_id', $id)->select('barangay')->get();
-        $affected_residents = FamilyMember::join('relief_recipients', function ($join) use ($id) {
-            $join->on('relief_recipients.family_code', 'family_members.family_code')
-                ->where('disaster_response_id', $id)
-                ->leftJoin('evacuees', 'evacuees.relief_recipient_id', 'relief_recipients.id')
-                ->select('evacuees.date_admitted', 'evacuees.date_discharged');
-        })->select('family_members.*', 'relief_recipients.recipient_type', 'evacuees.date_admitted', 'evacuees.date_discharged')->get();
-        $families = ReliefRecipient::where('disaster_response_id', $id)->get();
-        $dispensed_relief_goods = ReliefGood::where('disaster_response_id', $id)->get();
-        $evacuees = $affected_residents->where('recipient_type', 'Evacuee');
-        $evac = Evacuee::join('relief_recipients', 'relief_recipients.id', 'evacuees.relief_recipient_id')
-            ->where('relief_recipients.disaster_response_id', $id)
-            ->get();
 
+
+        // About Relief Goods
+        $dispensed_relief_goods = ReliefGood::where('disaster_response_id', $id)->get();
         $relief_goods = [
             'count' => $dispensed_relief_goods->count(),
             'clothes' => $dispensed_relief_goods->sum('clothes'),
@@ -151,6 +141,16 @@ class DisasterResponseController extends Controller
             'water' => $dispensed_relief_goods->sum('water'),
             'food_packs' => $dispensed_relief_goods->sum('food_packs'),
         ];
+
+        // About Residents
+        $affected_residents = FamilyMember::join('relief_recipients', function ($join) use ($id) {
+            $join->on('relief_recipients.family_code', 'family_members.family_code')
+                ->where('disaster_response_id', $id);
+        })
+            ->select(
+                'family_members.*',
+                'relief_recipients.recipient_type',
+            )->get();
         $sectors = [
             'children' => $affected_residents->where('sectoral_classification', 'Children')->count(),
             'pregnant' => $affected_residents->where('sectoral_classification', 'Pregnant')->count(),
@@ -160,24 +160,41 @@ class DisasterResponseController extends Controller
             'senior' => $affected_residents->where('sectoral_classification', 'Senior Citizen')->count(),
             'solo' => $affected_residents->where('sectoral_classification', 'Solo Parent')->count(),
         ];
+
+        // About Affected Barangays
+        $barangays = AffectedArea::where('disaster_response_id', $id)->select('barangay')->get();
+        $barangayData = [];
+        foreach ($barangays as $barangay) {
+            $barangayData[] = [
+                'barangay' => $barangay->barangay,
+                'total_residents' => $affected_residents->where('barangay', $barangay->barangay)->count(),
+                'evacuees' => $affected_residents->where('barangay', $barangay->barangay)->where('recipient_type', 'Evacuee')->count(),
+                'non_evacuees' => $affected_residents->where('barangay', $barangay->barangay)->where('recipient_type', 'Non-evacuee')->count(),
+
+            ];
+        }
+        // Compiled Data
         $data = [
             'sectors' => $sectors,
             'affected_residents' => $affected_residents->count(),
-            'families' => $families->count(),
+            'families' => ReliefRecipient::where('disaster_response_id', $id)->count(),
             'evacuees' => $affected_residents->where('recipient_type', 'Evacuee')->count(),
             'non-evacuees' => $affected_residents->where('recipient_type', 'Non-evacuee')->count(),
             'female' => $affected_residents->where('gender', 'Female')->count(),
             'male' => $affected_residents->where('gender', 'Male')->count(),
             'relief_goods' => $relief_goods,
+            'barangayData' => $barangayData,
 
         ];
+        // About evacuees
         $admitted = FamilyMember::join('relief_recipients', function ($join) use ($id) {
             $join->on('relief_recipients.family_code', 'family_members.family_code')
                 ->where('disaster_response_id', $id)
-                ->rightJoin('evacuees', 'evacuees.relief_recipient_id', 'relief_recipients.id')
+                ->join('evacuees', 'evacuees.relief_recipient_id', 'relief_recipients.id')
                 ->select('evacuees.date_admitted', 'evacuees.date_discharged');
         })
             ->select(
+                'relief_recipients.family_code',
                 'relief_recipients.recipient_type',
                 'evacuees.date_admitted',
                 'evacuees.date_discharged',
@@ -187,6 +204,7 @@ class DisasterResponseController extends Controller
                 DB::raw('COUNT(family_members.family_code) as non_evac'),
                 DB::raw('COUNT(evacuees.date_discharged) as discharged')
             )->groupBy(
+                'relief_recipients.family_code',
                 'relief_recipients.recipient_type',
                 'evacuees.date_admitted',
                 'evacuees.date_discharged',
@@ -194,23 +212,29 @@ class DisasterResponseController extends Controller
             )
             ->get();
 
+        // Initialize arrays
         $evac = [];
         $non_evac = [];
         $dates = [];
+        // Put dates in dates array. This is for chart label
         foreach ($admitted as $person) {
             if (!in_array($person->admitted_date, $dates)) {
                 $dates[] = $person->admitted_date;
             }
         }
+        sort($dates);
+
+        // Lopp in each date and get number of evacuees and non-evacuees
         foreach ($dates as $date) {
-            $evac[] = $admitted->where('admitted_date', '<=', $date)->whereNotIn('discharged_date', $date)->sum('admitted');
-            $ne =  $admitted->where('admitted_date', '>', $date)->sum('non_evac');
-            $discharge = $admitted->where('discharged_date', $date)->sum('non_evac');
-            $non_evac[] = $ne + $discharge;
+            $evacuees = $admitted->where('admitted_date', '<=', $date)->where('discharged_date', '!=', $date)
+                ->where('discharged_date', '<', $date)
+                ->sum('admitted');
+            $evac[] = $evacuees;
+            $ne =  $affected_residents->count();
+            $non_evac[] = $ne - $evacuees;
         }
 
-
-
+        // These are the data for main chart
         $chartData = json_encode($evac, JSON_NUMERIC_CHECK);
         $chartData2 = json_encode($non_evac, JSON_NUMERIC_CHECK);
         $dates = json_encode($dates);

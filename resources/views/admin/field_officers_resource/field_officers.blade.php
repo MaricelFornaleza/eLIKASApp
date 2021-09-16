@@ -208,6 +208,7 @@
 $(document).ready(function() {
     $('#fieldOfficers').DataTable({
         "scrollX": true,
+
     });
 });
 </script>

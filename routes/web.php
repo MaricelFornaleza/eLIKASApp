@@ -20,10 +20,11 @@ use App\Http\Controllers\ImportExcelController;
 use App\Http\Controllers\ExportExcelController;
 use App\Http\Controllers\FamilyMemberController;
 use App\Mail\VerifyEmail;
+use Barryvdh\DomPDF\PDF as DomPDFPDF;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
-
+use Barryvdh\DomPDF\Facade\PDF;
 
 //login and register 
 Route::get('/', function () {
@@ -194,3 +195,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         });
     });
 });
+
+Route::get('preview', function () {
+    return view('chart');
+});
+Route::get('download', 'ExportController@download')->name('download');
