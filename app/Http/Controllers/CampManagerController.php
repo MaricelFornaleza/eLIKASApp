@@ -335,8 +335,15 @@ class CampManagerController extends Controller
         $evacuation_center = EvacuationCenter::where('camp_manager_id', '=', $id)->first();
         //  $disaster_responses = DisasterResponse::all();
         if (strlen($text) > 0) {
+            $matches = DB::table('family_members')
+                ->where('name', 'ILIKE', "%{$text}%")
+                ->select('name', 'family_code')->get();
+            $family_codes = [];
+            foreach ($matches as $person) {
+                $family_codes[] = $person->family_code;
+            }
             $family = DB::table('family_members')
-                ->where('family_members.name', 'ILIKE', "%{$text}%")
+                ->whereIn('family_members.family_code', $family_codes)
                 ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
                 ->leftJoin('disaster_responses', 'relief_recipients.disaster_response_id', '=', 'disaster_responses.id')
                 ->whereNotNull('family_members.family_code')
