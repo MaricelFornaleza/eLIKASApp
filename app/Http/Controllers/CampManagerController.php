@@ -311,4 +311,44 @@ class CampManagerController extends Controller
         $delivery_request = DeliveryRequest::find($id);
         return view('camp-manager.request.details')->with('delivery_request', $delivery_request);
     }
+
+    public function searchEvacuees(Request $data){
+        $text = $data->text;
+
+        $id = Auth::id();
+        $evacuation_center = EvacuationCenter::where('camp_manager_id', '=', $id)->first();
+        //  $disaster_responses = DisasterResponse::all();
+        if (strlen($text) > 0) {
+            $matches = DB::table('family_members')
+                ->where('name', 'ILIKE', "%{$text}%")
+                ->select('name', 'family_code')->get();
+            $family_codes = [];
+            foreach ($matches as $person) {
+                $family_codes[] = $person->family_code;
+            }
+            $family = DB::table('family_members')
+                ->whereIn('family_members.family_code', $family_codes)
+                ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
+                ->leftJoin('disaster_responses', 'relief_recipients.disaster_response_id', '=', 'disaster_responses.id')
+                ->whereNotNull('family_members.family_code')
+                ->whereNotNull('relief_recipients.id')->where('relief_recipients.recipient_type', 'Non-evacuee')
+                ->whereNull('disaster_responses.date_ended')
+                ->select('family_members.family_code', 'family_members.name')
+                ->distinct()
+                ->get();
+        } else {
+            $family = DB::table('family_members')
+                ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
+                ->leftJoin('disaster_responses', 'relief_recipients.disaster_response_id', '=', 'disaster_responses.id')
+                ->whereNotNull('family_members.family_code')
+                ->whereNotNull('relief_recipients.id')->where('relief_recipients.recipient_type', 'Non-evacuee')
+                ->whereNull('disaster_responses.date_ended')
+                ->select('family_members.family_code', 'family_members.name')
+                ->distinct()
+                ->get();
+        }
+
+
+        return Response($family);
+    }
 }
