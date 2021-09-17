@@ -96,7 +96,7 @@ class CampManagerController extends Controller
             ->whereNotNull('family_members.family_code')
             ->whereNotNull('relief_recipients.id')->where('relief_recipients.recipient_type', 'Non-evacuee')
             ->whereNull('disaster_responses.date_ended')
-            ->select('family_members.family_code', 'name')
+            ->select('family_members.family_code', 'family_members.sectoral_classification','name')
             ->distinct()
             ->get();
         return view('camp-manager.evacuees.admit', ['family_members' => $family_members]);
@@ -164,7 +164,7 @@ class CampManagerController extends Controller
             ->where('evacuees.evacuation_center_id', $evacuation_center->id)
             ->whereNull('evacuees.date_discharged')
             ->whereNull('disaster_responses.date_ended')
-            ->select('family_members.family_code', 'name')
+            ->select('family_members.family_code','family_members.sectoral_classification', 'name')
             ->distinct()
             ->get();
         return view('camp-manager.evacuees.discharge', ['family_members' => $family_members]);
