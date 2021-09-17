@@ -184,7 +184,7 @@ $.each(result1, function(key, value) {
 $.each(result2, function(key, value) {
     if(value.latitude !== null && value.longitude !== null) {
         var marker = L.marker([value.latitude, value.longitude], {icon: truckIcon()})
-            .bindPopup('<div class="font-weight-bold">' + value.name + '</div>', truckOptions())
+            .bindPopup('<div class="font-weight-bold text-center">' + value.name + '</div>', truckOptions())
             .addTo(courier_markers);
         courier_markers.addTo(mymap);
     }

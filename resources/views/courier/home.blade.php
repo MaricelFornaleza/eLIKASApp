@@ -50,7 +50,7 @@
                 <div class="col-md-12 col-sm-12 col-lg-12 col-xl-12 px-0 pt-4 ">
                     <ul class="list-group list-group-hover list-group-striped mb-4" id="ul-parent">
                         @if(empty($is_empty->id))
-                        <li class="list-group-item list-group-item-action preparing in-transit cancelled decline delivered"
+                        <li class="list-group-item list-group-item-action preparing in-transit cancelled declined delivered"
                             id="default">
                             <div class="row">
                                 <div class="col-12">
@@ -272,6 +272,11 @@ $(document).ready(function() {
             $('#ul-parent').html(html);
         }
     });
+
+    
+    // This is for android interface
+    Android.startSendingLocations(my_id, "Courier");
 });
+
 </script>
 @endsection
