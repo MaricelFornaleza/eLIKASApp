@@ -168,6 +168,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
             Route::get('/details/{id}', 'BarangayCaptainController@detailsView');
             Route::get('/edit/{id}', 'BarangayCaptainController@editSupply');
             Route::get('/list', 'BarangayCaptainController@listView');
+            Route::get('/search/non-evacuees', 'BarangayCaptainController@searchNonEvacuees');
+            Route::get('/search/bc-supplies', 'BarangayCaptainController@searchSupplies');
         });
     });
 
@@ -185,7 +187,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
             Route::get('/request-supply', 'CampManagerController@requestSupplyView');
             Route::get('/history', 'CampManagerController@historyView')->name('request.camp-manager.history');
             Route::get('/details/{id}', 'CampManagerController@detailsView');
-            Route::get('/search/evacuees', 'CampManagerController@searchEvacuees');
+            Route::get('/search/admit-evacuees', 'CampManagerController@searchAdmitEvacuees');
+            Route::get('/search/discharge-evacuees', 'CampManagerController@searchDischargeEvacuees');
+            
         });
     });
 

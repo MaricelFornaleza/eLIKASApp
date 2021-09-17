@@ -312,7 +312,7 @@ class CampManagerController extends Controller
         return view('camp-manager.request.details')->with('delivery_request', $delivery_request);
     }
 
-    public function searchEvacuees(Request $data){
+    public function searchAdmitEvacuees(Request $data){
         $text = $data->text;
 
         $id = Auth::id();
@@ -333,7 +333,7 @@ class CampManagerController extends Controller
                 ->whereNotNull('family_members.family_code')
                 ->whereNotNull('relief_recipients.id')->where('relief_recipients.recipient_type', 'Non-evacuee')
                 ->whereNull('disaster_responses.date_ended')
-                ->select('family_members.family_code', 'family_members.name')
+                ->select('family_members.family_code', 'family_members.sectoral_classification', 'family_members.name')
                 ->distinct()
                 ->get();
         } else {
@@ -343,7 +343,52 @@ class CampManagerController extends Controller
                 ->whereNotNull('family_members.family_code')
                 ->whereNotNull('relief_recipients.id')->where('relief_recipients.recipient_type', 'Non-evacuee')
                 ->whereNull('disaster_responses.date_ended')
-                ->select('family_members.family_code', 'family_members.name')
+                ->select('family_members.family_code','family_members.sectoral_classification',  'family_members.name')
+                ->distinct()
+                ->get();
+        }
+
+
+        return Response($family);
+    }
+    public function searchDischargeEvacuees(Request $data){
+        $text = $data->text;
+
+        $id = Auth::id();
+        $evacuation_center = EvacuationCenter::where('camp_manager_id', '=', $id)->first();
+        //  $disaster_responses = DisasterResponse::all();
+        if (strlen($text) > 0) {
+            $matches = DB::table('family_members')
+                ->where('name', 'ILIKE', "%{$text}%")
+                ->select('name', 'family_code')->get();
+            $family_codes = [];
+            foreach ($matches as $person) {
+                $family_codes[] = $person->family_code;
+            }
+            $family = DB::table('family_members')
+                ->whereIn('family_members.family_code', $family_codes)
+                ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
+                ->leftJoin('disaster_responses', 'relief_recipients.disaster_response_id', '=', 'disaster_responses.id')
+                ->leftJoin('evacuees', 'relief_recipients.id', '=', 'evacuees.relief_recipient_id')
+                ->whereNotNull('family_members.family_code')
+                ->where('relief_recipients.recipient_type', 'Evacuee')
+                ->where('evacuees.evacuation_center_id', $evacuation_center->id)
+                ->whereNull('evacuees.date_discharged')
+                ->whereNull('disaster_responses.date_ended')
+                ->select('family_members.family_code','family_members.sectoral_classification', 'name')
+                ->distinct()
+                ->get();
+        } else {
+            $family = DB::table('family_members')
+                ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
+                ->leftJoin('disaster_responses', 'relief_recipients.disaster_response_id', '=', 'disaster_responses.id')
+                ->leftJoin('evacuees', 'relief_recipients.id', '=', 'evacuees.relief_recipient_id')
+                ->whereNotNull('family_members.family_code')
+                ->where('relief_recipients.recipient_type', 'Evacuee')
+                ->where('evacuees.evacuation_center_id', $evacuation_center->id)
+                ->whereNull('evacuees.date_discharged')
+                ->whereNull('disaster_responses.date_ended')
+                ->select('family_members.family_code','family_members.sectoral_classification', 'name')
                 ->distinct()
                 ->get();
         }

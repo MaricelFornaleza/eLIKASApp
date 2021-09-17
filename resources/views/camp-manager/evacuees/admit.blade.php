@@ -33,7 +33,7 @@
                 </div>
                     <div>
                         <div class="col-md-6 px-0 pt-4 mx-auto">
-                            <ul class="list-group list-group-hover list-group-striped">
+                            <ul id="result" class="list-group list-group-hover list-group-striped">
                                 @foreach($family_members as $family_member)
                                 <li class="list-group-item list-group-item-action ">
                                     <div class="form-check">
@@ -99,7 +99,7 @@ $(document).ready(function() {
     $('#search-text').keyup(function() {
         var text = $(this).val();
         $.ajax({
-            url: "search/evacuees",
+            url: "search/admit-evacuees",
             data: {
                 text: text
             },
@@ -112,7 +112,7 @@ $(document).ready(function() {
                 console.log(res);
                 var _html = '';
                 $.each(res, function(index, data) {
-                    _html +=
+                        _html +=
                         '<li class="list-group-item list-group-item-action ">' +
                         '<div class="form-check">' +
                         ' <input onchange="selected(\'' + data.family_code +
@@ -124,8 +124,22 @@ $(document).ready(function() {
                         '<label class="form-check-label" for="name0">' +
                         data.name +
                         '</label>' +
-                        '<span class="float-right my-2"> <div class="rounded-circle bg-secondary" style="height: 10px; width:10px;"> </div>  </span>' +
-                        '</div> </li>';
+                        '<span class="float-right my-2">';
+                        if(data.sectoral_classification == 'Children')
+                        _html += '<div class="rounded-circle children" style="height: 10px; width:10px;"></div>';
+                        else if(data.sectoral_classification == 'Lactating')
+                        _html += '<div class="rounded-circle lactating" style="height: 10px; width:10px;"></div>';
+                        else if(data.sectoral_classification == 'Person with Disability')
+                        _html += '<div class="rounded-circle pwd" style="height: 10px; width:10px;"></div>';
+                        else if(data.sectoral_classification == 'Pregnant')
+                        _html += '<div class="rounded-circle pregnant" style="height: 10px; width:10px;"></div>';
+                        else if(data.sectoral_classification == 'Senior Citizen')
+                        _html += '<div class="rounded-circle senior" style="height: 10px; width:10px;"></div>';
+                        else if(data.sectoral_classification == 'Solo Parent')
+                        _html += '<div class="rounded-circle solo_parent" style="height: 10px; width:10px;"></div>';
+                        else
+                        _html += '<div class="rounded-circle none" style="height: 10px; width:10px;"></div>';
+                        _html +='</span>' + '</div> </li>';
                 });
                 $('#result').html(_html);
             }

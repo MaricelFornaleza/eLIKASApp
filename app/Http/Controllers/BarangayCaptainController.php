@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Carbon\Carbon;
 use App\Models\ReliefGood;
 use App\Models\Inventory;
+use App\Models\User;
 class BarangayCaptainController extends Controller
 {
     public function addSupply()
@@ -106,8 +107,66 @@ class BarangayCaptainController extends Controller
                 ->where('family_members.barangay', $barangay_captain->barangay)
                 ->where('relief_recipients.recipient_type', 'Non-evacuee')
                 ->whereNull('disaster_responses.date_ended')
-                ->select('name')
+                ->select('family_members.is_family_head','family_members.sectoral_classification','name')
                 ->get();
         return view('barangay-captain.non-evacuees.list', ['non_evacuees' => $non_evacuees]);
+    }
+
+    public function searchNonEvacuees(Request $data){
+        $text = $data->text;
+
+        $user = Auth::user();
+        $barangay_captain = DB::table('barangay_captains')->where('user_id', $user->id)->first();
+     
+        if (strlen($text) > 0) {
+            $matches = DB::table('family_members')
+                ->where('name', 'ILIKE', "%{$text}%")
+                ->select('name', 'family_code')->get();
+            $family_codes = [];
+            foreach ($matches as $person) {
+                $family_codes[] = $person->family_code;
+            }
+            $family = DB::table('family_members')
+                ->whereIn('family_members.family_code', $family_codes)
+                ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
+                ->leftJoin('disaster_responses', 'relief_recipients.disaster_response_id', '=', 'disaster_responses.id')
+                ->whereNotNull('family_members.family_code')
+                ->where('family_members.barangay', $barangay_captain->barangay)
+                ->where('relief_recipients.recipient_type', 'Non-evacuee')
+                ->whereNull('disaster_responses.date_ended')
+                ->select('family_members.is_family_head','family_members.sectoral_classification','name')
+                ->get();
+        } else {
+            $family = DB::table('family_members')
+                ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
+                ->leftJoin('disaster_responses', 'relief_recipients.disaster_response_id', '=', 'disaster_responses.id')
+                ->whereNotNull('family_members.family_code')
+                ->where('family_members.barangay', $barangay_captain->barangay)
+                ->where('relief_recipients.recipient_type', 'Non-evacuee')
+                ->whereNull('disaster_responses.date_ended')
+                ->select('family_members.is_family_head','family_members.sectoral_classification', 'name')
+                ->get();
+        }
+
+
+        return Response($family);
+    }
+
+    public function searchSupplies(Request $data){
+        $text = $data->text;
+
+        $user = Auth::user();
+        $bc_inventory = DB::table('inventories')->where('user_id', '=', $user->id)->first();
+        if (strlen($text) > 0) {
+        $inventory_supplies = DB::table('supplies')
+            ->where('inventory_id', $bc_inventory->id)
+            ->where('name', 'ILIKE', "%{$text}%")
+            ->select('supply_type','id', 'quantity', 'source', 'created_at')->get();
+        }else{
+            $inventory_supplies = DB::table('supplies')
+            ->where('inventory_id', $bc_inventory->id)
+            ->select('supply_type','id', 'quantity', 'source', 'created_at')->get();
+        }
+        return Response($inventory_supplies);
     }
 }
