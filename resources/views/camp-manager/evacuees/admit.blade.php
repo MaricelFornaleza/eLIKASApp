@@ -1,4 +1,7 @@
 @extends('layouts.mobileBase')
+@section('css')
+<link href="{{ asset('css/sectoral-class.css') }}" rel="stylesheet">
+@endsection
 
 @section('content')
 <div class="container">
@@ -42,8 +45,21 @@
                                         {{$family_member->name}}
                                     </label>
                                     <span class="float-right my-2">
-                                        <div class="rounded-circle bg-secondary" style="height: 10px; width:10px;">
-                                        </div>
+                                        @if($family_member->sectoral_classification == 'Children')
+                                        <div class="rounded-circle children" style="height: 10px; width:10px;"></div>
+                                        @elseif($family_member->sectoral_classification == 'Lactating')
+                                        <div class="rounded-circle lactating" style="height: 10px; width:10px;"></div>
+                                        @elseif($family_member->sectoral_classification == 'Person with Disability')
+                                        <div class="rounded-circle pwd" style="height: 10px; width:10px;"></div>
+                                        @elseif($family_member->sectoral_classification == 'Pregnant')
+                                        <div class="rounded-circle pregnant" style="height: 10px; width:10px;"></div>
+                                        @elseif($family_member->sectoral_classification == 'Senior Citizen')
+                                        <div class="rounded-circle senior" style="height: 10px; width:10px;"></div>
+                                        @elseif($family_member->sectoral_classification == 'Solo Parent')
+                                        <div class="rounded-circle solo_parent" style="height: 10px; width:10px;"></div>
+                                        @else
+                                        <div class="rounded-circle none" style="height: 10px; width:10px;"></div>
+                                        @endif
                                     </span>
                                 </div>
                             </li>
@@ -60,17 +76,18 @@
                             <button class="btn  btn-accent  px-4" type="submit">{{ __('Admit') }}</button>
                         </div>
                     </div>
-                    <div class="col-12 center mt-4">
-                        <div class="col-md-6 mb-4 p-0">
-                            <a href="/camp-manager/evacuees" class="btn btn-accent-outline  px-4">
-                                {{ __('Cancel') }}
-                            </a>
-                        </div>
+                </div>
+                <div class="col-12 center mt-4">
+                    <div class="col-md-6 mb-4 p-0">
+                        <a href="/camp-manager/evacuees" class="btn btn-accent-outline  px-4">
+                            {{ __('Cancel') }}
+                        </a>
                     </div>
                 </div>
-            </form>
         </div>
+        </form>
     </div>
+</div>
 </div>
 @endsection
 
