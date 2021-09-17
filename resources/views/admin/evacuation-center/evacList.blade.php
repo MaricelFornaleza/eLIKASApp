@@ -104,41 +104,35 @@
                                 <tbody>
                                     @foreach($evacuation_centers as $evacuation_center)
                                     <tr>
-                                        <td>{{ $evacuation_center->name }}</td>
-                                        <td>{{ $evacuation_center->address }}</td>
-                                        @if($evacuation_center->characteristics == null)
+                                        <td>{{ $evacuation_center['name'] }}</td>
+                                        <td>{{ $evacuation_center['address'] }}</td>
+                                        @if($evacuation_center['characteristics'] == null)
                                         <td class="font-italic">No description added.</td>
                                         @else
-                                        <td>{{ $evacuation_center->characteristics }}</td>
+                                        <td>{{ $evacuation_center['characteristics'] }}</td>
                                         @endif
-                                        @if($evacuation_center->camp_manager_name == null)
+                                        @if($evacuation_center['camp_manager_name'] == null)
                                         <td class="text-danger"><strong>{{ __('None') }}</strong></td>
                                         @else
-                                        <td>{{ $evacuation_center->camp_manager_name }}</td>
+                                        <td>{{ $evacuation_center['camp_manager_name'] }}</td>
                                         @endif
-                                        <td>{{ $evacuation_center->capacity }}</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <!-- <td>
-                                            <a href="{{ route('evacuation-center.edit', ['id' => $evacuation_center->id] ) }}"
-                                                class="btn btn-light"> <i class="cil-pencil"></i></a>
+                                        <td>{{ $evacuation_center['capacity'] }}</td>
+                                        <td>{{ $evacuation_center['total_number_of_evacuees'] }}</td>
+                                        <td>{{ $evacuation_center['male'] }}</td>
+                                        <td>{{ $evacuation_center['female'] }}</td>
+                                        <td>{{ $evacuation_center['lactating'] }}</td>
+                                        <td>{{ $evacuation_center['pwd'] }}</td>
+                                        <td>{{ $evacuation_center['senior_citizen'] }}</td>
+                                        <td>{{ $evacuation_center['children'] }}</td>
+                                        <td>{{ $evacuation_center['pregnant'] }}</td>
+                                        <td>{{ $evacuation_center['solo_parent'] }}</td>
                                         
-                                            <a href="{{ route('evacuation-center.delete', ['id' => $evacuation_center->id] ) }}"
-                                                class="btn btn-danger"> <i class="cil-trash"></i></a>
-                                        </td> -->
-
+                   
                                         <td>
                                             <div class="row">
                                                 <div class="col-6 ">
                                                     <a
-                                                        href="{{ route('evacuation-center.edit', ['id' => $evacuation_center->id] ) }}">
+                                                        href="{{ route('evacuation-center.edit', ['id' => $evacuation_center['id']] ) }}">
                                                         <svg class="c-icon ">
                                                             <use
                                                                 xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-pencil">
@@ -150,7 +144,7 @@
 
                                                 <div class="col-6 ">
                                                     <form
-                                                        action="{{ route('evacuation-center.delete', ['id' => $evacuation_center->id] ) }}"
+                                                        action="{{ route('evacuation-center.delete', ['id' => $evacuation_center['id']] ) }}"
                                                         method="post">
                                                         @csrf
                                                         @method("DELETE")
@@ -176,8 +170,6 @@
                                 </tbody>
                             </table>
                         </div>
-
-                        {{ $evacuation_centers->links() }}
                     </div>
                 </div>
             </div>

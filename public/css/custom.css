@@ -73,10 +73,10 @@ body:not(.modal-open) {
     color: #65c295;
 }
 .form-control {
-    border: none !important;
+    border: 1px solid #9ba4b4 !important;
     color: rgba(2, 48, 71, 0.5) !important;
     background-color: #f4f7fc !important;
-    border-color: #fff !important;
+   
 }
 .form-control:focus {
     color: #768192;

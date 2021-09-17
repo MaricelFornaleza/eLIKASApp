@@ -13,32 +13,40 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($barangays as $barangay)
+                    @foreach($data['barangayData'] as $barangay)
                     <tr>
                         <td>
-                            <div>{{$barangay->barangay}}</div>
+                            <div>{{$barangay['barangay']}}</div>
                             <div class="small text-muted">Naga City
                             </div>
                         </td>
-                        <td>90</td>
+                        <td>{{$barangay['total_residents']}}</td>
                         <td>
                             <div class="clearfix">
-                                <div class="float-left"><strong>60</strong></div>
-                                <div class="float-right"><small class="text-muted">(67%)</small></div>
+                                <div class="float-left"><strong>{{$barangay['evacuees']}}</strong></div>
+                                <div class="float-right"><small
+                                        class="text-muted">({{round((($barangay['evacuees'] / $barangay['total_residents']) *100), 2)}}%)</small>
+                                </div>
                             </div>
                             <div class="progress progress-xs">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 67%"
-                                    aria-valuenow="60" aria-valuemin="0" aria-valuemax="90"></div>
+                                <div class="progress-bar bg-accent" role="progressbar"
+                                    style="width: {{round((($barangay['evacuees'] / $barangay['total_residents']) *100), 2)}}%"
+                                    aria-valuenow="{{$barangay['evacuees']}}" aria-valuemin="0"
+                                    aria-valuemax="{{$barangay['total_residents']}}"></div>
                             </div>
                         </td>
                         <td class="text-center">
                             <div class="clearfix">
-                                <div class="float-left"><strong>30</strong></div>
-                                <div class="float-right"><small class="text-muted">(33%)</small></div>
+                                <div class="float-left"><strong>{{$barangay['non_evacuees']}}</strong></div>
+                                <div class="float-right"><small
+                                        class="text-muted">({{round((($barangay['non_evacuees'] / $barangay['total_residents']) *100), 2)}}%)</small>
+                                </div>
                             </div>
                             <div class="progress progress-xs">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 33%"
-                                    aria-valuenow="30" aria-valuemin="0" aria-valuemax="90"></div>
+                                <div class="progress-bar bg-primary" role="progressbar"
+                                    style="width: {{round((($barangay['non_evacuees'] / $barangay['total_residents']) *100), 2)}}%"
+                                    aria-valuenow="{{$barangay['non_evacuees']}}" aria-valuemin="0"
+                                    aria-valuemax="{{$barangay['total_residents']}}"></div>
                             </div>
                         </td>
 

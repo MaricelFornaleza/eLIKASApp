@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Maatwebsite\Excel\Facades\Excel;
 use PDF;
+use Barryvdh\Snappy\Facades\SnappyPdf;
 
 
 class ExportController extends Controller
@@ -146,5 +147,15 @@ class ExportController extends Controller
             ->get();
         $pdf = PDF::loadView('admin.pdf.residents', compact('residents', 'admin'))->setPAper('a4', 'landscape');
         return $pdf->stream('Residents_' . $todayDate . '.pdf');
+    }
+
+    public function download()
+    {
+        $pdf = SnappyPDF::loadView('chart');
+        // $pdf->setOption('enable-javascript', true);
+        // $pdf->setOption('javascript-delay', 5000);
+        // $pdf->setOption('enable-smart-shrinking', true);
+        // $pdf->setOption('no-stop-slow-scripts', true);
+        return $pdf->stream('chart.pdf');
     }
 }

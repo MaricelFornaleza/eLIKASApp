@@ -10,7 +10,9 @@
 
 :root {
     --primary: #023047;
-    --secondary: rgb(206, 210, 216);
+    --secondary: #fb8500;
+    --primary-accent: #219ebc;
+    --secondary-accent: #ffb703;
     --success: #2eb85c;
     --info: #39f;
     --warning: #f9b115;

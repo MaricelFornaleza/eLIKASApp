@@ -4,16 +4,16 @@
 
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-8 my-auto">
             <!--  Title  -->
-            <div class="col-md-12 justify-content-between d-flex align-items-baseline p-0">
-                <div class="col-md-6">
+            <div class="col-md-12 justify-content-center px-0">
+                <div class="col-md-6 mx-auto">
                     <h4 class="font-weight-bold">Supply</h4>
                 </div>
 
             </div>
             <!-- Progress bars -->
-            <div class="col-md-6 mb-5 mt-5">
+            <div class="col-md-6 mx-auto my-5">
                 <div class="progress-group">
                     <div class="progress-group-header">
                         <div>Food Packs</div>
@@ -21,13 +21,13 @@
                         @if($total_number_of_evacuees == 0)
                         <div class="font-weight-bold">( {{ round(($stock_level->food_packs/$capacity) * 100) }} %)</div>
                         @elseif($total_number_of_evacuees < $stock_level->food_packs)
-                        <div class="font-weight-bold">(100%)
-                        </div>
-                        @else
-                        <div class="font-weight-bold">(
-                            {{ round(($stock_level->food_packs/$total_number_of_evacuees) * 100) }} %)
-                        </div>
-                        @endif
+                            <div class="font-weight-bold">(100%)
+                            </div>
+                            @else
+                            <div class="font-weight-bold">(
+                                {{ round(($stock_level->food_packs/$total_number_of_evacuees) * 100) }} %)
+                            </div>
+                            @endif
                     </div>
                     <div class="progress-group-bars">
                         <div class="progress progress-xs">
@@ -45,13 +45,13 @@
                         @if($total_number_of_evacuees == 0)
                         <div class="font-weight-bold">( {{ round(($stock_level->water/$capacity) * 100) }} %)</div>
                         @elseif($total_number_of_evacuees < $stock_level->water)
-                        <div class="font-weight-bold">(100%)
-                        </div>
-                        @else
-                        <div class="font-weight-bold">(
-                            {{ round(($stock_level->water/$total_number_of_evacuees) * 100) }} %)
-                        </div>
-                        @endif
+                            <div class="font-weight-bold">(100%)
+                            </div>
+                            @else
+                            <div class="font-weight-bold">(
+                                {{ round(($stock_level->water/$total_number_of_evacuees) * 100) }} %)
+                            </div>
+                            @endif
                     </div>
                     <div class="progress-group-bars">
                         <div class="progress progress-xs">
@@ -69,13 +69,13 @@
                         @if($total_number_of_evacuees == 0)
                         <div class="font-weight-bold">( {{ round(($stock_level->clothes/$capacity) * 100) }} %)</div>
                         @elseif($total_number_of_evacuees < $stock_level->clothes)
-                        <div class="font-weight-bold">(100%)
-                        </div>
-                        @else
-                        <div class="font-weight-bold">(
-                            {{ round(($stock_level->clothes/$total_number_of_evacuees) * 100) }} %)
-                        </div>
-                        @endif
+                            <div class="font-weight-bold">(100%)
+                            </div>
+                            @else
+                            <div class="font-weight-bold">(
+                                {{ round(($stock_level->clothes/$total_number_of_evacuees) * 100) }} %)
+                            </div>
+                            @endif
                     </div>
                     <div class="progress-group-bars">
                         <div class="progress progress-xs">
@@ -91,15 +91,16 @@
                         <div>Hygiene Kit</div>
                         <div class="mfs-auto font-weight-bold mr-2">{{ $stock_level->hygiene_kit }}</div>
                         @if($total_number_of_evacuees == 0)
-                        <div class="font-weight-bold">( {{ round(($stock_level->hygiene_kit/$capacity) * 100) }} %)</div>
+                        <div class="font-weight-bold">( {{ round(($stock_level->hygiene_kit/$capacity) * 100) }} %)
+                        </div>
                         @elseif($total_number_of_evacuees < $stock_level->hygiene_kit)
-                        <div class="font-weight-bold">(100%)
-                        </div>
-                        @else
-                        <div class="font-weight-bold">(
-                            {{ round(($stock_level->hygiene_kit/$total_number_of_evacuees) * 100) }} %)
-                        </div>
-                        @endif
+                            <div class="font-weight-bold">(100%)
+                            </div>
+                            @else
+                            <div class="font-weight-bold">(
+                                {{ round(($stock_level->hygiene_kit/$total_number_of_evacuees) * 100) }} %)
+                            </div>
+                            @endif
                     </div>
                     <div class="progress-group-bars">
                         <div class="progress progress-xs">
@@ -117,13 +118,13 @@
                         @if($total_number_of_evacuees == 0)
                         <div class="font-weight-bold">( {{ round(($stock_level->medicine/$capacity) * 100) }} %)</div>
                         @elseif($total_number_of_evacuees < $stock_level->medicine)
-                        <div class="font-weight-bold">(100%)
-                        </div>
-                        @else
-                        <div class="font-weight-bold">(
-                            {{ round(($stock_level->medicine/$total_number_of_evacuees) * 100) }} %)
-                        </div>
-                        @endif
+                            <div class="font-weight-bold">(100%)
+                            </div>
+                            @else
+                            <div class="font-weight-bold">(
+                                {{ round(($stock_level->medicine/$total_number_of_evacuees) * 100) }} %)
+                            </div>
+                            @endif
                     </div>
                     <div class="progress-group-bars">
                         <div class="progress progress-xs">
@@ -140,15 +141,18 @@
                         <div class="mfs-auto font-weight-bold mr-2">{{ $stock_level->emergency_shelter_assistance }}
                         </div>
                         @if($total_number_of_evacuees == 0)
-                        <div class="font-weight-bold">( {{ round(($stock_level->emergency_shelter_assistance/$capacity) * 100) }} %)</div>
-                        @elseif($total_number_of_evacuees < $stock_level->emergency_shelter_assistance)
-                        <div class="font-weight-bold">(100%)
-                        </div>
-                        @else
                         <div class="font-weight-bold">(
-                            {{ round(($stock_level->emergency_shelter_assistance/$total_number_of_evacuees) * 100) }} %)
+                            {{ round(($stock_level->emergency_shelter_assistance/$capacity) * 100) }} %)
                         </div>
-                        @endif
+                        @elseif($total_number_of_evacuees < $stock_level->emergency_shelter_assistance)
+                            <div class="font-weight-bold">(100%)
+                            </div>
+                            @else
+                            <div class="font-weight-bold">(
+                                {{ round(($stock_level->emergency_shelter_assistance/$total_number_of_evacuees) * 100) }}
+                                %)
+                            </div>
+                            @endif
                     </div>
                     <div class="progress-group-bars">
                         <div class="progress progress-xs">
@@ -162,7 +166,7 @@
             </div>
 
             <!-- buttons -->
-            <div class="fixed-bottom col-md-6">
+            <div class=" col-md-12 mx-auto">
                 <div class="col-12 center mt-5 ">
                     <div class="col-md-6 p-0 ">
                         <a href="/camp-manager/request-supply">
