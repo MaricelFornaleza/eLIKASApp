@@ -24,10 +24,16 @@
     <div class="col-md-12 ">
         <div class="input-group input-text center">
             <input class="form-control " type="text" name="message" class="submit" autofocus>
-            <div class="input-group-append "><span class="input-group-text">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit" onclick="send()"><svg class="c-icon">
+                        <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-paper-plane"></use>
+                    </svg>
+                </button>
+
+                <!-- <span class="input-group-text">
                     <svg class="c-icon">
                         <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-paper-plane"></use>
-                    </svg></span>
+                    </svg></span> -->
             </div>
 
         </div>

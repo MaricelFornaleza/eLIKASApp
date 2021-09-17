@@ -15,8 +15,8 @@
         <div class="col-md-8">
 
             <!--  Title  -->
-            <div class="col-md-12 justify-content-between d-flex align-items-baseline p-0">
-                <div class="col-md-6">
+            <div class="col-md-12  p-0">
+                <div class="col-md-6 mx-auto">
                     <h4 class="font-weight-bold">Request Supply</h4>
                 </div>
 
@@ -26,20 +26,21 @@
                 @csrf
 
                 <!-- Select Disaster Response -->
-                <div class="form-group col-sm-6">
+                <div class="form-group col-sm-6 mx-auto">
                     <label for="disaster_response">Disaster Response</label>
                     <select name="disaster_response_id" class="form-control" id="disaster_response_id" required>
                         <option value="">Select</option>
                         @foreach($disaster_responses as $disaster_response)
                         <option value="{{ $disaster_response->id }}">Disaster Response
-                            {{ $disaster_response->disaster_type }}</option>
+                            {{ $disaster_response->disaster_type }}
+                        </option>
                         @endforeach
                     </select>
 
                 </div>
 
                 <!-- Supply Info Form -->
-                <div class="supply-info mt-5">
+                <div class="supply-info mt-5 col-sm-6 mx-auto">
 
                     <!-- title -->
                     <div class="row title px-3 font-weight-bold ">
@@ -64,7 +65,7 @@
                                     </button>
                                 </span>
                                 <input type="text" id="food_packs" name="food_packs" class="form-control input-number"
-                                    value="0" min="0" max="10000">
+                                    value="{{ $total_number_of_evacuees }}" min="0" max="10000">
                                 <span class="input-group-btn ">
                                     <button type="button" class="btn btn-default btn-number p-1 " data-type="plus"
                                         data-field="food_packs">
@@ -89,8 +90,9 @@
                                             data-width="24"></span>
                                     </button>
                                 </span>
-                                <input type="text" id="water" name="water" class="form-control input-number" value="0"
-                                    min="0" max="10000">
+                                <input type="text" id="water" name="water" class="form-control input-number"
+                                    value="{{ $total_number_of_evacuees }}" min="{{ $total_number_of_evacuees }}"
+                                    max="10000">
                                 <span class="input-group-btn ">
                                     <button type="button" class="btn btn-default btn-number p-1 " data-type="plus"
                                         data-field="water">
@@ -116,7 +118,7 @@
                                     </button>
                                 </span>
                                 <input type="text" id="clothes" name="clothes" class="form-control input-number"
-                                    value="0" min="0" max="10000">
+                                    value="{{ $total_number_of_evacuees }}" min="0" max="10000">
                                 <span class="input-group-btn ">
                                     <button type="button" class="btn btn-default btn-number p-1 " data-type="plus"
                                         data-field="clothes">
@@ -142,7 +144,7 @@
                                     </button>
                                 </span>
                                 <input type="text" id="hygiene_kit" name="hygiene_kit" class="form-control input-number"
-                                    value="0" min="0" max="10000">
+                                    value="{{ $total_number_of_evacuees }}" min="0" max="10000">
                                 <span class="input-group-btn ">
                                     <button type="button" class="btn btn-default btn-number p-1 " data-type="plus"
                                         data-field="hygiene_kit">
@@ -168,7 +170,7 @@
                                     </button>
                                 </span>
                                 <input type="text" id="medicine" name="medicine" class="form-control input-number"
-                                    value="0" min="0" max="10000">
+                                    value="{{ $total_number_of_evacuees }}" min="0" max="10000">
                                 <span class="input-group-btn ">
                                     <button type="button" class="btn btn-default btn-number p-1 " data-type="plus"
                                         data-field="medicine">
@@ -194,7 +196,8 @@
                                     </button>
                                 </span>
                                 <input type="text" id="emergency_shelter_assistance" name="emergency_shelter_assistance"
-                                    class="form-control input-number" value="0" min="0" max="10000">
+                                    class="form-control input-number" value="{{ $total_number_of_evacuees }}" min="0"
+                                    max="10000">
                                 <span class="input-group-btn ">
                                     <button type="button" class="btn btn-default btn-number p-1 " data-type="plus"
                                         data-field="emergency_shelter_assistance">

@@ -22,12 +22,13 @@
                         </a>
                     </div> -->
                 </div>
-                
+
 
                 <div class="col-md-12 center p-0">
                     <div class="input-group mt-4 col-md-6 p-0 m-0">
                         <!-- <span class="input-group-addon">Search</span> -->
-                        <input type="text" name="search-text" id="search-text" placeholder="Search" class="form-control ">
+                        <input type="text" name="search-text" id="search-text" placeholder="Search"
+                            class="form-control ">
                     </div>
                 </div>
                     <div>
@@ -74,14 +75,15 @@
                                 <button class="btn  btn-accent  px-4" type="submit">{{ __('Admit') }}</button>
                             </div>
                         </div>
-                        <div class="col-12 center mt-4">
-                            <div class="col-md-6 mb-4 p-0">
-                                <a href="/camp-manager/evacuees" class="btn btn-accent-outline  px-4">
-                                    {{ __('Cancel') }}
-                                </a>
-                            </div>
+                    </div>
+                    <div class="col-12 center mt-4">
+                        <div class="col-md-6 mb-4 p-0">
+                            <a href="/camp-manager/evacuees" class="btn btn-accent-outline  px-4">
+                                {{ __('Cancel') }}
+                            </a>
                         </div>
                     </div>
+                </div>
             </form>
         </div>
     </div>
@@ -90,10 +92,51 @@
 
 
 @section('javascript')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
 <script>
+$(document).ready(function() {
+    $('#search-text').keyup(function() {
+        var text = $(this).val();
+        $.ajax({
+            url: "search/evacuees",
+            data: {
+                text: text
+            },
+            dataType: 'json',
+            beforeSend: function() {
+                $('#result').html(
+                    '<li class="list-group-item">Loading...</li>')
+            },
+            success: function(res) {
+                console.log(res);
+                var _html = '';
+                $.each(res, function(index, data) {
+                    _html +=
+                        '<li class="list-group-item list-group-item-action ">' +
+                        '<div class="form-check">' +
+                        ' <input onchange="selected(\'' + data.family_code +
+                        '\', this);"' +
+                        'class="form-check-input checkbox' + data.family_code +
+                        '"type = "checkbox" value = \' ' + data.family_code +
+                        '\' id="' + data.family_code +
+                        '" name="checkedResidents[]">' +
+                        '<label class="form-check-label" for="name0">' +
+                        data.name +
+                        '</label>' +
+                        '<span class="float-right my-2"> <div class="rounded-circle bg-secondary" style="height: 10px; width:10px;"> </div>  </span>' +
+                        '</div> </li>';
+                });
+                $('#result').html(_html);
+            }
+
+        })
+    })
+})
+
 function selected(family_code, t) {
-        $('input.'+family_code).prop('checked',t.checked);
+    $('input.' + family_code).prop('checked', t.checked);
+
 }
 </script>
 @endsection
-

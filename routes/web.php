@@ -87,6 +87,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::post('/admin/assign',   'DeliveryRequestController@assign_courier')->name('request.assign_courier')->middleware('officertype:Administrator');
         Route::get('/courier/accept/{id}',   'DeliveryRequestController@courier_accept')->name('request.courier_accept')->middleware('officertype:Courier');
         Route::get('/courier/decline',   'DeliveryRequestController@courier_decline')->name('request.courier_decline')->middleware('officertype:Courier');
+        Route::get('/evac-data/{id}', 'DeliveryRequestController@evac_data')->middleware('officertype:Administrator');
     });
 
     Route::group(['middleware' => ['officertype:Admin&BC', 'adminconfig']], function () {
@@ -184,6 +185,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
             Route::get('/request-supply', 'CampManagerController@requestSupplyView');
             Route::get('/history', 'CampManagerController@historyView')->name('request.camp-manager.history');
             Route::get('/details/{id}', 'CampManagerController@detailsView');
+            Route::get('/search/evacuees', 'CampManagerController@searchEvacuees');
         });
     });
 
@@ -195,8 +197,3 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         });
     });
 });
-
-Route::get('preview', function () {
-    return view('chart');
-});
-Route::get('download', 'ExportController@download')->name('download');
