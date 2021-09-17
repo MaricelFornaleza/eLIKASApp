@@ -117,8 +117,8 @@ $(document).ready(function() {
                         '<div class="form-check">' +
                         ' <input onchange="selected(\'' + data.family_code +
                         '\', this);"' +
-                        'class="form-check-input checkbox' + data.family_code +
-                        '"type = "checkbox" value = \' ' + data.family_code +
+                        'class="form-check-input checkbox ' + data.family_code +
+                        ' "type = "checkbox" value = \'' + data.family_code +
                         '\' id="' + data.family_code +
                         '" name="checkedResidents[]">' +
                         '<label class="form-check-label" for="name0">' +
