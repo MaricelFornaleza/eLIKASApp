@@ -185,6 +185,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
             Route::get('/request-supply', 'CampManagerController@requestSupplyView');
             Route::get('/history', 'CampManagerController@historyView')->name('request.camp-manager.history');
             Route::get('/details/{id}', 'CampManagerController@detailsView');
+            Route::get('/search/evacuees', 'CampManagerController@searchEvacuees');
         });
     });
 
