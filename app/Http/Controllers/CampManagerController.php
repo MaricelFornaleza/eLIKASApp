@@ -290,8 +290,23 @@ class CampManagerController extends Controller
     }
     public function requestSupplyView()
     {
+
+        $id = Auth::id();
+        $evacuation_center = EvacuationCenter::where('camp_manager_id', '=', $id)->first();
+        $evacuees = Evacuee::where('evacuation_center_id', $evacuation_center->id)->get();
+        $total_number_of_evacuees = 0;
+        if ($evacuees != null) {
+
+            foreach ($evacuees as $evacuee) {
+                $relief_recipient = ReliefRecipient::where('id', $evacuee->relief_recipient_id)->first();
+                $family = Family::where('family_code', $relief_recipient->family_code)->first();
+                $total_number_of_evacuees = $total_number_of_evacuees + $family->no_of_members;
+            }
+        }
+
+
         $disaster_responses = DisasterResponse::where('date_ended', null)->get();
-        return view('camp-manager.supply.request')->with('disaster_responses', $disaster_responses);
+        return view('camp-manager.supply.request', ['disaster_responses' => $disaster_responses, 'total_number_of_evacuees' => $total_number_of_evacuees]);
     }
     public function historyView(Request $request)
     {
