@@ -16,6 +16,7 @@ class CreateSuppliesTable extends Migration
         Schema::create('supplies', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('inventory_id');
+            $table->string('date');
             $table->string('supply_type');
             $table->integer('quantity');
             $table->string('source');

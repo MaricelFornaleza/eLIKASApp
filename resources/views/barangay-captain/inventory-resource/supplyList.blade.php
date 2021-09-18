@@ -90,7 +90,7 @@
                                     </div>
                                     <div class="col-5">
                                         <span class="float-right ">
-                                            <small>{{ date('F j, Y', strtotime($supply->created_at)) }}</small>
+                                            <small>{{ $supply->date  }}</small>
                                         </span>
                                     </div>
                                 </div>
@@ -211,8 +211,8 @@ $(document).ready(function() {
                         '</div>' +
                         '<div class="col-5">' +
                         '<span class="float-right ">' +
-                        '<small>{{ date("F j, Y", strtotime(' + data.created_at +
-                        ')) }}</small>' +
+                        '<small>' + data.date +
+                        '</small>' +
                         '</span>' +
                         '</div>' +
                         '</div>' +

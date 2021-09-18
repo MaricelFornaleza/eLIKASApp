@@ -168,14 +168,15 @@ class BarangayCaptainController extends Controller
                 ->where('inventory_id', $bc_inventory->id)
                 ->where(function ($q) use ($text) {
                     $q->where('supply_type', 'ILIKE', "%{$text}%")
-                        ->orWhere('created_at', 'ILIKE', "%{$text}%")
+                        ->orWhere('date', 'ILIKE', "%{$text}%")
+                        ->orWhere('source', 'ILIKE', "%{$text}%")
                         ->get();
                 })
-                ->select('supply_type', 'id', 'quantity', 'source', 'created_at')->get();
+                ->select('supply_type', 'id', 'quantity', 'source', 'date')->get();
         } else {
             $inventory_supplies = DB::table('supplies')
                 ->where('inventory_id', $bc_inventory->id)
-                ->select('supply_type', 'id', 'quantity', 'source', 'created_at')->get();
+                ->select('supply_type', 'id', 'quantity', 'source', 'date')->get();
         }
         return Response($inventory_supplies);
     }

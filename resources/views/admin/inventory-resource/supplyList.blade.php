@@ -100,7 +100,7 @@
                                     @foreach($inventory_supplies as $supply)
 
                                     <tr>
-                                        <td>{{ date('F j, Y', strtotime($supply->created_at)) }}</td>
+                                        <td>{{ $supply->date  }}</td>
                                         <td>{{ $supply->supply_type }}</td>
                                         <td>{{ $supply->quantity }}</td>
                                         <td>{{ $supply->source }}</td>

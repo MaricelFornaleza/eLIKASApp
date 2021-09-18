@@ -95,10 +95,12 @@
                         </div>
                         <div class="progress-group-bars">
                             <div class="progress progress-xs">
+                                @if($residents != 0)
                                 <div class="progress-bar bg-accent" role="progressbar"
                                     style="width: {{ ($bc_inventory->total_no_of_food_packs/$residents) * 100}}%"
                                     aria-valuenow="{{$bc_inventory->total_no_of_food_packs}}" aria-valuemin="0"
                                     aria-valuemax="{{$residents}}"></div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -109,10 +111,12 @@
                         </div>
                         <div class="progress-group-bars">
                             <div class="progress progress-xs">
+                                @if($residents != 0)
                                 <div class="progress-bar bg-accent" role="progressbar"
                                     style="width: {{ ($bc_inventory->total_no_of_water/$residents) * 100}}%"
                                     aria-valuenow="{{$bc_inventory->total_no_of_water}}" aria-valuemin="0"
                                     aria-valuemax="{{$residents}}"></div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -123,10 +127,12 @@
                         </div>
                         <div class="progress-group-bars">
                             <div class="progress progress-xs">
+                                @if($residents != 0)
                                 <div class="progress-bar bg-accent" role="progressbar"
                                     style="width: {{ ($bc_inventory->total_no_of_clothes/$residents) * 100}}%"
                                     aria-valuenow="{{$bc_inventory->total_no_of_clothes}}" aria-valuemin="0"
                                     aria-valuemax="{{$residents}}"></div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -137,10 +143,12 @@
                         </div>
                         <div class="progress-group-bars">
                             <div class="progress progress-xs">
+                                @if($residents != 0)
                                 <div class="progress-bar bg-accent" role="progressbar"
                                     style="width: {{ ($bc_inventory->total_no_of_hygiene_kit/$residents) * 100}}%"
                                     aria-valuenow="{{$bc_inventory->total_no_of_hygiene_kit}}" aria-valuemin="0"
                                     aria-valuemax="{{$residents}}"></div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -151,10 +159,12 @@
                         </div>
                         <div class="progress-group-bars">
                             <div class="progress progress-xs">
+                                @if($residents != 0)
                                 <div class="progress-bar bg-accent" role="progressbar"
                                     style="width: {{ ($bc_inventory->total_no_of_medicine/$residents) * 100}}%"
                                     aria-valuenow="{{$bc_inventory->total_no_of_medicine}}" aria-valuemin="0"
                                     aria-valuemax="{{$residents}}"></div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -167,10 +177,12 @@
                         </div>
                         <div class="progress-group-bars">
                             <div class="progress progress-xs">
+                                @if($residents != 0)
                                 <div class="progress-bar bg-accent" role="progressbar"
                                     style="width: {{ ($bc_inventory->total_no_of_emergency_shelter_assistance/$residents) * 100}}%"
                                     aria-valuenow="{{$bc_inventory->total_no_of_emergency_shelter_assistance}}"
                                     aria-valuemin="0" aria-valuemax="{{$residents}}"></div>
+                                @endif
                             </div>
                         </div>
                     </div>
