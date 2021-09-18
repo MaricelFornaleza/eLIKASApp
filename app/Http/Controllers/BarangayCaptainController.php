@@ -12,6 +12,7 @@ use App\Http\Controllers\Carbon\Carbon;
 use App\Models\ReliefGood;
 use App\Models\Inventory;
 use App\Models\User;
+
 class BarangayCaptainController extends Controller
 {
     public function addSupply()
@@ -20,12 +21,12 @@ class BarangayCaptainController extends Controller
     }
     public function dispenseView()
     {
-        
+
         $disaster_responses = DisasterResponse::where('date_ended', null)->get();
 
         $user = Auth::user();
-        $barangay_captain =DB::table('barangay_captains')->where('user_id', $user->id)->first();
-        $bc_inventory =DB::table('inventories')->where('user_id', $user->id)->first();
+        $barangay_captain = DB::table('barangay_captains')->where('user_id', $user->id)->first();
+        $bc_inventory = DB::table('inventories')->where('user_id', $user->id)->first();
         $family_members = DB::table('family_members')
             ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
             ->leftJoin('disaster_responses', 'relief_recipients.disaster_response_id', '=', 'disaster_responses.id')
@@ -37,10 +38,14 @@ class BarangayCaptainController extends Controller
             ->select('relief_recipients.family_code as rr_fc', 'name')
             ->get();
 
-        return view('barangay-captain.supply.dispense', 
-        ['disaster_responses' => $disaster_responses,
-        'non_evacuees' => $family_members,
-        'bc_inventory' => $bc_inventory]);
+        return view(
+            'barangay-captain.supply.dispense',
+            [
+                'disaster_responses' => $disaster_responses,
+                'non_evacuees' => $family_members,
+                'bc_inventory' => $bc_inventory
+            ]
+        );
     }
     public function dispense(Request $request)
     {
@@ -55,9 +60,9 @@ class BarangayCaptainController extends Controller
             'emergency_shelter_assistance'  => ['numeric', 'min:0', 'max:10000'],
         ]);
         $this_rr = DB::table('relief_recipients')
-        ->where('family_code',$validated['relief_recipient_family_code'])
-        ->where('disaster_response_id',$validated['disaster_response_id'])->first();
-    //  dd($this_rr->id);
+            ->where('family_code', $validated['relief_recipient_family_code'])
+            ->where('disaster_response_id', $validated['disaster_response_id'])->first();
+        //  dd($this_rr->id);
         $user = Auth::user();
 
         $relief_good = new ReliefGood();
@@ -84,7 +89,6 @@ class BarangayCaptainController extends Controller
         ]);
         $request->session()->flash('message', 'Dispense Supply successfully!');
         return redirect()->route('home');
-        
     }
     public function detailsView($id)
     {
@@ -101,23 +105,24 @@ class BarangayCaptainController extends Controller
         $user = Auth::user();
         $barangay_captain = DB::table('barangay_captains')->where('user_id', $user->id)->first();
         $non_evacuees = DB::table('family_members')
-                ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
-                ->leftJoin('disaster_responses', 'relief_recipients.disaster_response_id', '=', 'disaster_responses.id')
-                ->whereNotNull('family_members.family_code')
-                ->where('family_members.barangay', $barangay_captain->barangay)
-                ->where('relief_recipients.recipient_type', 'Non-evacuee')
-                ->whereNull('disaster_responses.date_ended')
-                ->select('family_members.is_family_head','family_members.sectoral_classification','name')
-                ->get();
+            ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
+            ->leftJoin('disaster_responses', 'relief_recipients.disaster_response_id', '=', 'disaster_responses.id')
+            ->whereNotNull('family_members.family_code')
+            ->where('family_members.barangay', $barangay_captain->barangay)
+            ->where('relief_recipients.recipient_type', 'Non-evacuee')
+            ->whereNull('disaster_responses.date_ended')
+            ->select('family_members.is_family_head', 'family_members.sectoral_classification', 'name')
+            ->get();
         return view('barangay-captain.non-evacuees.list', ['non_evacuees' => $non_evacuees]);
     }
 
-    public function searchNonEvacuees(Request $data){
+    public function searchNonEvacuees(Request $data)
+    {
         $text = $data->text;
 
         $user = Auth::user();
         $barangay_captain = DB::table('barangay_captains')->where('user_id', $user->id)->first();
-     
+
         if (strlen($text) > 0) {
             $matches = DB::table('family_members')
                 ->where('name', 'ILIKE', "%{$text}%")
@@ -134,7 +139,7 @@ class BarangayCaptainController extends Controller
                 ->where('family_members.barangay', $barangay_captain->barangay)
                 ->where('relief_recipients.recipient_type', 'Non-evacuee')
                 ->whereNull('disaster_responses.date_ended')
-                ->select('family_members.is_family_head','family_members.sectoral_classification','name')
+                ->select('family_members.is_family_head', 'family_members.sectoral_classification', 'name')
                 ->get();
         } else {
             $family = DB::table('family_members')
@@ -144,7 +149,7 @@ class BarangayCaptainController extends Controller
                 ->where('family_members.barangay', $barangay_captain->barangay)
                 ->where('relief_recipients.recipient_type', 'Non-evacuee')
                 ->whereNull('disaster_responses.date_ended')
-                ->select('family_members.is_family_head','family_members.sectoral_classification', 'name')
+                ->select('family_members.is_family_head', 'family_members.sectoral_classification', 'name')
                 ->get();
         }
 
@@ -152,20 +157,25 @@ class BarangayCaptainController extends Controller
         return Response($family);
     }
 
-    public function searchSupplies(Request $data){
+    public function searchSupplies(Request $data)
+    {
         $text = $data->text;
 
         $user = Auth::user();
         $bc_inventory = DB::table('inventories')->where('user_id', '=', $user->id)->first();
         if (strlen($text) > 0) {
-        $inventory_supplies = DB::table('supplies')
-            ->where('inventory_id', $bc_inventory->id)
-            ->where('name', 'ILIKE', "%{$text}%")
-            ->select('supply_type','id', 'quantity', 'source', 'created_at')->get();
-        }else{
             $inventory_supplies = DB::table('supplies')
-            ->where('inventory_id', $bc_inventory->id)
-            ->select('supply_type','id', 'quantity', 'source', 'created_at')->get();
+                ->where('inventory_id', $bc_inventory->id)
+                ->where(function ($q) use ($text) {
+                    $q->where('supply_type', 'ILIKE', "%{$text}%")
+                        ->orWhere('created_at', 'ILIKE', "%{$text}%")
+                        ->get();
+                })
+                ->select('supply_type', 'id', 'quantity', 'source', 'created_at')->get();
+        } else {
+            $inventory_supplies = DB::table('supplies')
+                ->where('inventory_id', $bc_inventory->id)
+                ->select('supply_type', 'id', 'quantity', 'source', 'created_at')->get();
         }
         return Response($inventory_supplies);
     }

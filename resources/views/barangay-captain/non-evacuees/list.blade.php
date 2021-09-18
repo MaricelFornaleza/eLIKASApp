@@ -11,73 +11,81 @@
     <div class="fade-in">
         <div class="row center">
             <div class="col-md-8">
-                <!-- Title  -->
-                <div class="col-md-12 justify-content-between d-flex align-items-baseline p-0 mb-3">
-                    <h5 class="font-weight-bold">Non Evacuees</h5>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        @if(Session::has('message'))
-                        <div class="alert alert-success">{{ Session::get('message') }}</div>
-                        @endif
+                <div class="row center">
+                    <div class="col-md-6 p-0 px-3 mb-3">
+                        <h5 class="font-weight-bold">Non Evacuees</h5>
                     </div>
+
                 </div>
-                <div class="justify-content-between d-flex">
-                    <div class="dropdown ">
-                        <button class=" btn btn-outline-primary " type=" button" data-toggle="dropdown">Filter
-                            <span>
-                                <svg class="c-icon ">
-                                    <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-filter"></use>
-                                </svg>
-                            </span>
-                        </button>
-                        <ul id="dropdownMenuButton1" class="dropdown-menu p-2" aria-labelledby="dropdownMenuButton1">
-                            <li onclick="filter('all')"><a id="all" class="dropdown-item active">Show All</a></li>
-                            <li onclick="filter('Yes')"><a id="Yes" class="dropdown-item">Family Representative</a></li>
-                            <li onclick="filter('Children')"><a id="Children" class="dropdown-item">Children</a></li>
-                            <li onclick="filter('Lactating')"><a id="Lactating" class="dropdown-item">Lactating</a></li>
-                            <li onclick="filter('Person with Disability')"><a id="Person with Disability" class="dropdown-item">PWD</a></li>
-                            <li onclick="filter('Senior Citizen')"><a id="Senior Citizen" class="dropdown-item">Senior Citizen</a></li>
-                            <li onclick="filter('Pregnant')"><a id="Pregnant" class="dropdown-item">Pregnant</a></li>
-                            <li onclick="filter('Solo Parent')"><a id="Solo Parent" class="dropdown-item">Solo Parent</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-9 p-0 float-right">
-                        <div class="input-group">
-                            <!-- <span class="input-group-addon">Search</span> -->
-                            <input type="text" name="search-text" id="search-text" placeholder="Search"
-                                class="form-control ">
+                <div class="row center">
+                    <div class="col-md-6 justify-content-between d-flex">
+                        <div class="dropdown ">
+                            <button class=" btn btn-outline-primary p-1" type=" button" data-toggle="dropdown">Filter
+                                <span>
+                                    <svg class="c-icon ">
+                                        <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-filter"></use>
+                                    </svg>
+                                </span>
+                            </button>
+                            <ul id="dropdownMenuButton1" class="dropdown-menu p-2"
+                                aria-labelledby="dropdownMenuButton1">
+                                <li onclick="filter('all')"><a id="all" class="dropdown-item active">Show All</a></li>
+                                <li onclick="filter('Yes')"><a id="Yes" class="dropdown-item">Family Representative</a>
+                                </li>
+                                <li onclick="filter('Children')"><a id="Children" class="dropdown-item">Children</a>
+                                </li>
+                                <li onclick="filter('Lactating')"><a id="Lactating" class="dropdown-item">Lactating</a>
+                                </li>
+                                <li onclick="filter('Person with Disability')"><a id="Person with Disability"
+                                        class="dropdown-item">PWD</a></li>
+                                <li onclick="filter('Senior Citizen')"><a id="Senior Citizen"
+                                        class="dropdown-item">Senior
+                                        Citizen</a></li>
+                                <li onclick="filter('Pregnant')"><a id="Pregnant" class="dropdown-item">Pregnant</a>
+                                </li>
+                                <li onclick="filter('Solo Parent')"><a id="Solo Parent" class="dropdown-item">Solo
+                                        Parent</a></li>
+                            </ul>
                         </div>
-                        </span>
+                        <div class="col-9 p-0 float-right">
+                            <div class="input-group">
+                                <!-- <span class="input-group-addon">Search</span> -->
+                                <input type="text" name="search-text" id="search-text" placeholder="Search"
+                                    class="form-control ">
+                            </div>
+                            </span>
+
+                        </div>
 
                     </div>
-
                 </div>
 
-                <div class="col-md-6 px-0 pt-4 ">
+
+                <div class="col-md-6 mx-auto px-0 pt-4 ">
                     <ul id="result" class="list-group list-group-hover list-group-striped">
                         @foreach($non_evacuees as $non_evacuee)
-                        <li class="list-group-item list-group-item-action {{ $non_evacuee->is_family_head }} {{ $non_evacuee->sectoral_classification }} ">
+                        <li
+                            class="list-group-item list-group-item-action {{ $non_evacuee->is_family_head }} {{ $non_evacuee->sectoral_classification }} ">
                             <div class="form-check">
                                 <label class="form-check-label" for="name0">
                                     {{$non_evacuee->name}}
                                 </label>
                                 <span class="float-right my-2">
-                                @if($non_evacuee->sectoral_classification == 'Children')
-                                <div class="rounded-circle children" style="height: 10px; width:10px;"></div>
-                                @elseif($non_evacuee->sectoral_classification == 'Lactating')
-                                <div class="rounded-circle lactating" style="height: 10px; width:10px;"></div>
-                                @elseif($non_evacuee->sectoral_classification == 'Person with Disability')
-                                <div class="rounded-circle pwd" style="height: 10px; width:10px;"></div>
-                                @elseif($non_evacuee->sectoral_classification == 'Pregnant')
-                                <div class="rounded-circle pregnant" style="height: 10px; width:10px;"></div>
-                                @elseif($non_evacuee->sectoral_classification == 'Senior Citizen')
-                                <div class="rounded-circle senior" style="height: 10px; width:10px;"></div>
-                                @elseif($non_evacuee->sectoral_classification == 'Solo Parent')
-                                <div class="rounded-circle solo_parent" style="height: 10px; width:10px;"></div>
-                                @else
-                                <div class="rounded-circle none" style="height: 10px; width:10px;"></div>
-                                @endif
+                                    @if($non_evacuee->sectoral_classification == 'Children')
+                                    <div class="rounded-circle children" style="height: 10px; width:10px;"></div>
+                                    @elseif($non_evacuee->sectoral_classification == 'Lactating')
+                                    <div class="rounded-circle lactating" style="height: 10px; width:10px;"></div>
+                                    @elseif($non_evacuee->sectoral_classification == 'Person with Disability')
+                                    <div class="rounded-circle pwd" style="height: 10px; width:10px;"></div>
+                                    @elseif($non_evacuee->sectoral_classification == 'Pregnant')
+                                    <div class="rounded-circle pregnant" style="height: 10px; width:10px;"></div>
+                                    @elseif($non_evacuee->sectoral_classification == 'Senior Citizen')
+                                    <div class="rounded-circle senior" style="height: 10px; width:10px;"></div>
+                                    @elseif($non_evacuee->sectoral_classification == 'Solo Parent')
+                                    <div class="rounded-circle solo_parent" style="height: 10px; width:10px;"></div>
+                                    @else
+                                    <div class="rounded-circle none" style="height: 10px; width:10px;"></div>
+                                    @endif
                                 </span>
                             </div>
                         </li>
@@ -96,6 +104,7 @@
 <script>
 var li, li_a, li_b, li_c, li_d, li_e, li_f, li_g;
 filter('all');
+
 function filter(supply_type) {
     //var def = document.getElementById("default");
     li = document.getElementsByClassName('list-group-item');
@@ -166,7 +175,7 @@ function show_remove(x) {
     if (x === 'Solo Parent') {
         if (li_g !== null) document.getElementById('Solo Parent').classList.add('active');
         for (var i = 0; i < li_g.length; i++) {
-            if (li_g!== null) li_g[i].style.display = "";
+            if (li_g !== null) li_g[i].style.display = "";
         }
     }
 }
@@ -189,28 +198,37 @@ $(document).ready(function() {
                 console.log(res);
                 var _html = '';
                 $.each(res, function(index, data) {
-                        _html +=
-                        '<li class="list-group-item list-group-item-action' + data.is_family_head + data.sectoral_classification+' ">' +
+                    _html +=
+                        '<li class="list-group-item list-group-item-action' + data
+                        .is_family_head + data.sectoral_classification + ' ">' +
                         '<div class="form-check">' +
                         '<label class="form-check-label" for="name0">' +
                         data.name +
                         '</label>' +
                         '<span class="float-right my-2">';
-                        if(data.sectoral_classification == 'Children')
-                        _html += '<div class="rounded-circle children" style="height: 10px; width:10px;"></div>';
-                        else if(data.sectoral_classification == 'Lactating')
-                        _html += '<div class="rounded-circle lactating" style="height: 10px; width:10px;"></div>';
-                        else if(data.sectoral_classification == 'Person with Disability')
-                        _html += '<div class="rounded-circle pwd" style="height: 10px; width:10px;"></div>';
-                        else if(data.sectoral_classification == 'Pregnant')
-                        _html += '<div class="rounded-circle pregnant" style="height: 10px; width:10px;"></div>';
-                        else if(data.sectoral_classification == 'Senior Citizen')
-                        _html += '<div class="rounded-circle senior" style="height: 10px; width:10px;"></div>';
-                        else if(data.sectoral_classification == 'Solo Parent')
-                        _html += '<div class="rounded-circle solo_parent" style="height: 10px; width:10px;"></div>';
-                        else
-                        _html += '<div class="rounded-circle none" style="height: 10px; width:10px;"></div>';
-                        _html +='</span>' + '</div> </li>';
+                    if (data.sectoral_classification == 'Children')
+                        _html +=
+                        '<div class="rounded-circle children" style="height: 10px; width:10px;"></div>';
+                    else if (data.sectoral_classification == 'Lactating')
+                        _html +=
+                        '<div class="rounded-circle lactating" style="height: 10px; width:10px;"></div>';
+                    else if (data.sectoral_classification ==
+                        'Person with Disability')
+                        _html +=
+                        '<div class="rounded-circle pwd" style="height: 10px; width:10px;"></div>';
+                    else if (data.sectoral_classification == 'Pregnant')
+                        _html +=
+                        '<div class="rounded-circle pregnant" style="height: 10px; width:10px;"></div>';
+                    else if (data.sectoral_classification == 'Senior Citizen')
+                        _html +=
+                        '<div class="rounded-circle senior" style="height: 10px; width:10px;"></div>';
+                    else if (data.sectoral_classification == 'Solo Parent')
+                        _html +=
+                        '<div class="rounded-circle solo_parent" style="height: 10px; width:10px;"></div>';
+                    else
+                        _html +=
+                        '<div class="rounded-circle none" style="height: 10px; width:10px;"></div>';
+                    _html += '</span>' + '</div> </li>';
                 });
                 $('#result').html(_html);
             }
