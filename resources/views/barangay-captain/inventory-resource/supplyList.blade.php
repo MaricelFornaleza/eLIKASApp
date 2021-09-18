@@ -40,20 +40,20 @@
                             <li onclick="filter('ESA')"><a id="ESA" class="dropdown-item">ESA</a></li>
                         </ul>
                     </div>
-                    <div class="col-9 p-0 float-right">
-                        <div class="input-group">
+                    <!-- <div class="col-9 p-0 float-right">
+                        <div class="input-group"> -->
                             <!-- <span class="input-group-addon">Search</span> -->
-                            <input type="text" name="search-text" id="search-text" placeholder="Search"
+                            <!-- <input type="text" name="search-text" id="search-text" placeholder="Search"
                                 class="form-control ">
                         </div>
                         </span>
 
-                    </div>
+                    </div> -->
 
                 </div>
 
                 <div class="col-md-6 px-0 pt-4 ">
-                    <ul class="list-group list-group-hover list-group-striped">
+                    <ul id="result" class="list-group list-group-hover list-group-striped">
                         @if(empty($is_empty->id))
                         <li class="list-group-item list-group-item-action Food Packs Water Clothes Hygiene Kit Medicine ESA"
                             id="default">
@@ -95,6 +95,7 @@
 @endsection
 
 @section('javascript')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script>
 var li, li_a, li_b, li_c, li_d, li_e, li_f;
 filter('all');
@@ -166,5 +167,49 @@ function show_remove(x) {
         }
     }
 }
+</script>
+<script>
+$(document).ready(function() {
+    $('#search-text').keyup(function() {
+        var text = $(this).val();
+        $.ajax({
+            url: "search/bc-supplies",
+            data: {
+                text: text
+            },
+            dataType: 'json',
+            beforeSend: function() {
+                $('#result').html(
+                    '<li class="list-group-item">Loading...</li>')
+            },
+            success: function(res) {
+                console.log(res);
+                var _html = '';
+                $.each(res, function(index, data) {
+                        _html +=
+                        '<li class="list-group-item list-group-item-action' + data.supply_type +'">'+
+                            '<a href="/barangay-captain/details/' + data.id +'">'+
+                                '<div class="row">'+
+                                    '<div class="col-7">'+
+                                        '<h6 class="font-weight-bold">' + data.supply_type +'</h6>'+
+                                        '<small>' + data.quantity +' pcs</small>'+
+                                        '<br>'+
+                                        '<small>' + data.source +'</small>'+
+                                    '</div>'+
+                                    '<div class="col-5">'+
+                                        '<span class="float-right ">'+
+                                            '<small>{{ date("F j, Y", strtotime(' + data.created_at +')) }}</small>'+
+                                        '</span>'+
+                                    '</div>'+
+                                '</div>'+
+                            '</a>'+
+                        '</li>';
+                });
+                $('#result').html(_html);
+            }
+
+        })
+    })
+})
 </script>
 @endsection

@@ -341,7 +341,7 @@ var ajax_request;
 $(document).ready(function() {
     var evac_id = $('.evac-data').attr('id');
     $('.evac-data').popover({
-        placement: "right",
+        placement: "left",
         title: "Evacuation Center Data",
         content: fetchData(),
         html: true,
