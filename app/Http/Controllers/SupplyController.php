@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Carbon\Carbon;
 
 use Illuminate\Support\Facades\Session;
 
@@ -81,6 +82,7 @@ class SupplyController extends Controller
 
         $supply = new Supply();
         $supply->inventory_id     = $user_inventory_id;
+        $supply->date   = now()->format('F j, Y');
         $supply->supply_type   = $validated['supply_type'];
         $supply->quantity = $validated['quantity'];
         $supply->source = $validated['source'];

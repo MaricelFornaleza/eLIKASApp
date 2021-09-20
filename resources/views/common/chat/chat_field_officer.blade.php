@@ -1,6 +1,11 @@
 @extends('layouts.mobileBase')
 @section('css')
 <link href="{{ asset('css/chat.css') }}" rel="stylesheet">
+<style>
+body {
+    background-color: #f4f7fc !important;
+}
+</style>
 @endsection
 
 @section('content')
@@ -92,6 +97,31 @@ $(document).ready(function() {
         }
     });
 });
+
+function send() {
+    var message = $('.input-text input').val();
+    //check of enter key is pressed and message is not empty and recipient is selected
+    if (message != '' && recipient != null) {
+        $('.input-text input').val('');
+        var datastr = "recipient=" + recipient + "&message=" + message;
+        $.ajax({
+            type: "post",
+            url: "chat",
+            data: datastr,
+            cache: false,
+            success: function(data) {
+                // $('#messages').html(data);
+            },
+            error: function(jqXHR, status, err) {
+                // alert(jqXHR.err);
+            },
+            complete: function() {
+                scrollToBottom();
+            }
+        })
+    }
+
+}
 
 
 $(document).ready(function() {

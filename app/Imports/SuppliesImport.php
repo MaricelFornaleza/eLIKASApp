@@ -7,6 +7,7 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Http\Controllers\Carbon\Carbon;
 
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -59,6 +60,7 @@ class SuppliesImport implements ToCollection, WithHeadingRow
                 } 
                 $supply = new Supply();
                 $supply->inventory_id     = $user_inventory_id;
+                $supply->date   = now()->format('F j, Y');
                 $supply->supply_type   = $row['supply_type'];
                 $supply->quantity = $row['quantity'];
                 $supply->source = $row['source'];

@@ -11,9 +11,12 @@
         <div class="row center">
             <div class="col-md-8">
                 <!-- Title  -->
-                <div class="col-md-12 justify-content-between d-flex align-items-baseline p-0 mb-3">
-                    <h5 class="font-weight-bold">Inventory</h5>
+                <div class="row center">
+                    <div class="col-md-6 px-3 p-0 mb-3">
+                        <h5 class="font-weight-bold">Inventory</h5>
+                    </div>
                 </div>
+
                 <div class="row">
                     <div class="col-12">
                         @if(Session::has('message'))
@@ -21,39 +24,48 @@
                         @endif
                     </div>
                 </div>
-                <div class="justify-content-between d-flex">
-                    <div class="dropdown ">
-                        <button class=" btn btn-outline-primary " type=" button" id="dropdownMenuButton1" data-toggle="dropdown">Filter
-                            <span>
-                                <svg class="c-icon ">
-                                    <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-filter"></use>
-                                </svg>
-                            </span>
-                        </button>
-                        <ul id="dropdownMenuButton1" class="dropdown-menu p-2" aria-labelledby="dropdownMenuButton1">
-                            <li onclick="filter('all')"><a id="all" class="dropdown-item active">Show All</a></li>
-                            <li onclick="filter('Food Packs')"><a id="Food Packs" class="dropdown-item">Food Packs</a></li>
-                            <li onclick="filter('Water')"><a id="Water" class="dropdown-item">Water</a></li>
-                            <li onclick="filter('Clothes')"><a id="Clothes" class="dropdown-item">Clothes</a></li>
-                            <li onclick="filter('Hygiene Kit')"><a id="Hygiene Kit" class="dropdown-item">Hygiene Kit</a></li>
-                            <li onclick="filter('Medicine')"><a id="Medicine" class="dropdown-item">Medicine</a></li>
-                            <li onclick="filter('ESA')"><a id="ESA" class="dropdown-item">ESA</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-9 p-0 float-right">
-                        <div class="input-group">
-                            <!-- <span class="input-group-addon">Search</span> -->
-                            <input type="text" name="search-text" id="search-text" placeholder="Search"
-                                class="form-control ">
+                <div class="row center">
+                    <div class="col-md-6 justify-content-between d-flex">
+                        <div class="dropdown ">
+                            <button class=" btn btn-outline-primary p-1" type=" button" id="dropdownMenuButton1"
+                                data-toggle="dropdown">Filter
+                                <span>
+                                    <svg class="c-icon ">
+                                        <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-filter"></use>
+                                    </svg>
+                                </span>
+                            </button>
+                            <ul id="dropdownMenuButton1" class="dropdown-menu p-2"
+                                aria-labelledby="dropdownMenuButton1">
+                                <li onclick="filter('all')"><a id="all" class="dropdown-item active">Show All</a></li>
+                                <li onclick="filter('Food Packs')"><a id="Food Packs" class="dropdown-item">Food
+                                        Packs</a>
+                                </li>
+                                <li onclick="filter('Water')"><a id="Water" class="dropdown-item">Water</a></li>
+                                <li onclick="filter('Clothes')"><a id="Clothes" class="dropdown-item">Clothes</a></li>
+                                <li onclick="filter('Hygiene Kit')"><a id="Hygiene Kit" class="dropdown-item">Hygiene
+                                        Kit</a></li>
+                                <li onclick="filter('Medicine')"><a id="Medicine" class="dropdown-item">Medicine</a>
+                                </li>
+                                <li onclick="filter('ESA')"><a id="ESA" class="dropdown-item">ESA</a></li>
+                            </ul>
                         </div>
-                        </span>
+                        <div class="col-9 p-0 float-right">
+                            <div class="input-group">
+                                <!-- <span class="input-group-addon">Search</span> -->
+                                <input type="text" name="search-text" id="search-text" placeholder="Search"
+                                    class="form-control ">
+                            </div>
+                            </span>
+
+                        </div>
 
                     </div>
-
                 </div>
 
-                <div class="col-md-6 px-0 pt-4 ">
-                    <ul class="list-group list-group-hover list-group-striped">
+
+                <div class="col-md-6 px-0 pt-4 mx-auto">
+                    <ul id="result" class="list-group list-group-hover list-group-striped">
                         @if(empty($is_empty->id))
                         <li class="list-group-item list-group-item-action Food Packs Water Clothes Hygiene Kit Medicine ESA"
                             id="default">
@@ -78,7 +90,7 @@
                                     </div>
                                     <div class="col-5">
                                         <span class="float-right ">
-                                            <small>{{ date('F j, Y', strtotime($supply->created_at)) }}</small>
+                                            <small>{{ $supply->date  }}</small>
                                         </span>
                                     </div>
                                 </div>
@@ -95,6 +107,7 @@
 @endsection
 
 @section('javascript')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script>
 var li, li_a, li_b, li_c, li_d, li_e, li_f;
 filter('all');
@@ -166,5 +179,52 @@ function show_remove(x) {
         }
     }
 }
+
+$(document).ready(function() {
+    $('#search-text').keyup(function() {
+        var text = $(this).val();
+        $.ajax({
+            url: "/barangay-captain/search/bc-supplies/",
+            data: {
+                text: text
+            },
+            dataType: 'json',
+            beforeSend: function() {
+                $('#result').html(
+                    '<li class="list-group-item">Loading...</li>')
+            },
+            success: function(res) {
+                console.log(res);
+                var _html = '';
+                $.each(res, function(index, data) {
+                    _html +=
+                        '<li class="list-group-item list-group-item-action' + data
+                        .supply_type + '">' +
+                        '<a href="/barangay-captain/details/' + data.id + '">' +
+                        '<div class="row">' +
+                        '<div class="col-7">' +
+                        '<h6 class="font-weight-bold">' + data.supply_type +
+                        '</h6>' +
+                        '<small>' + data.quantity + ' pcs</small>' +
+                        '<br>' +
+                        '<small>' + data.source + '</small>' +
+                        '</div>' +
+                        '<div class="col-5">' +
+                        '<span class="float-right ">' +
+                        '<small>' + data.date +
+                        '</small>' +
+                        '</span>' +
+                        '</div>' +
+                        '</div>' +
+                        '</a>' +
+                        '</li>';
+                });
+                $('#result').html(_html);
+            }
+
+        })
+    })
+})
 </script>
+
 @endsection

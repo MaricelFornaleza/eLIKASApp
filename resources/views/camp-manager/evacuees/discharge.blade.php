@@ -1,5 +1,7 @@
 @extends('layouts.mobileBase')
-
+@section('css')
+<link href="{{ asset('css/sectoral-class.css') }}" rel="stylesheet">
+@endsection
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -20,7 +22,7 @@
             <form method="POST" action="/camp-manager/discharge" onsubmit="return validateForm()">
             @csrf
                 <div class="col-md-6 px-0 pt-4 mx-auto">
-                    <ul class="list-group list-group-hover list-group-striped">
+                    <ul id="result" class="list-group list-group-hover list-group-striped">
                     @foreach($family_members as $family_member)
                             <li class="list-group-item list-group-item-action ">
                                 <div class="form-check">
@@ -31,8 +33,21 @@
                                         {{$family_member->name}}
                                     </label>
                                     <span class="float-right my-2">
-                                        <div class="rounded-circle bg-secondary" style="height: 10px; width:10px;">
-                                        </div>
+                                            @if($family_member->sectoral_classification == 'Children')
+                                            <div class="rounded-circle children" style="height: 10px; width:10px;"></div>
+                                            @elseif($family_member->sectoral_classification == 'Lactating')
+                                            <div class="rounded-circle lactating" style="height: 10px; width:10px;"></div>
+                                            @elseif($family_member->sectoral_classification == 'Person with Disability')
+                                            <div class="rounded-circle pwd" style="height: 10px; width:10px;"></div>
+                                            @elseif($family_member->sectoral_classification == 'Pregnant')
+                                            <div class="rounded-circle pregnant" style="height: 10px; width:10px;"></div>
+                                            @elseif($family_member->sectoral_classification == 'Senior Citizen')
+                                            <div class="rounded-circle senior" style="height: 10px; width:10px;"></div>
+                                            @elseif($family_member->sectoral_classification == 'Solo Parent')
+                                            <div class="rounded-circle solo_parent" style="height: 10px; width:10px;"></div>
+                                            @else
+                                            <div class="rounded-circle none" style="height: 10px; width:10px;"></div>
+                                            @endif
                                     </span>
                                 </div>
                             </li>
@@ -59,7 +74,63 @@
 </div>
 @endsection
 @section('javascript')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
 <script>
+$(document).ready(function() {
+    $('#search-text').keyup(function() {
+        var text = $(this).val();
+        $.ajax({
+            url: "search/discharge-evacuees",
+            data: {
+                text: text
+            },
+            dataType: 'json',
+            beforeSend: function() {
+                $('#result').html(
+                    '<li class="list-group-item">Loading...</li>')
+            },
+            success: function(res) {
+                console.log(res);
+                var _html = '';
+                $.each(res, function(index, data) {
+                        _html +=
+                        '<li class="list-group-item list-group-item-action ">' +
+                        '<div class="form-check">' +
+                        ' <input onchange="selected(\'' + data.family_code +
+                        '\', this);"' +
+                        'class="form-check-input checkbox ' + data.family_code +
+                        ' "type = "checkbox" value = \'' + data.family_code +
+                        '\' id="' + data.family_code +
+                        '" name="checkedEvacuees[]">' +
+                        '<label class="form-check-label" for="name0">' +
+                        data.name +
+                        '</label>' +
+                        '<span class="float-right my-2">';
+                        if(data.sectoral_classification == 'Children')
+                        _html += '<div class="rounded-circle children" style="height: 10px; width:10px;"></div>';
+                        else if(data.sectoral_classification == 'Lactating')
+                        _html += '<div class="rounded-circle lactating" style="height: 10px; width:10px;"></div>';
+                        else if(data.sectoral_classification == 'Person with Disability')
+                        _html += '<div class="rounded-circle pwd" style="height: 10px; width:10px;"></div>';
+                        else if(data.sectoral_classification == 'Pregnant')
+                        _html += '<div class="rounded-circle pregnant" style="height: 10px; width:10px;"></div>';
+                        else if(data.sectoral_classification == 'Senior Citizen')
+                        _html += '<div class="rounded-circle senior" style="height: 10px; width:10px;"></div>';
+                        else if(data.sectoral_classification == 'Solo Parent')
+                        _html += '<div class="rounded-circle solo_parent" style="height: 10px; width:10px;"></div>';
+                        else
+                        _html += '<div class="rounded-circle none" style="height: 10px; width:10px;"></div>';
+                        _html +='</span>' + '</div> </li>';
+
+                });
+                $('#result').html(_html);
+            }
+
+        })
+    })
+})
+
 function selected(family_code, t) {
         $('input.'+family_code).prop('checked',t.checked);
 }

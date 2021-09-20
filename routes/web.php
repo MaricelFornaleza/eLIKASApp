@@ -87,6 +87,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::post('/admin/assign',   'DeliveryRequestController@assign_courier')->name('request.assign_courier')->middleware('officertype:Administrator');
         Route::get('/courier/accept/{id}',   'DeliveryRequestController@courier_accept')->name('request.courier_accept')->middleware('officertype:Courier');
         Route::get('/courier/decline',   'DeliveryRequestController@courier_decline')->name('request.courier_decline')->middleware('officertype:Courier');
+        Route::get('/evac-data/{id}', 'DeliveryRequestController@evac_data')->middleware('officertype:Administrator');
     });
 
     Route::group(['middleware' => ['officertype:Admin&BC']], function () {
@@ -167,6 +168,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
             Route::get('/details/{id}', 'BarangayCaptainController@detailsView');
             Route::get('/edit/{id}', 'BarangayCaptainController@editSupply');
             Route::get('/list', 'BarangayCaptainController@listView');
+            Route::get('/search/non-evacuees', 'BarangayCaptainController@searchNonEvacuees');
+            Route::get('/search/bc-supplies', 'BarangayCaptainController@searchSupplies');
         });
     });
 
@@ -184,6 +187,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
             Route::get('/request-supply', 'CampManagerController@requestSupplyView');
             Route::get('/history', 'CampManagerController@historyView')->name('request.camp-manager.history');
             Route::get('/details/{id}', 'CampManagerController@detailsView');
+            Route::get('/search/admit-evacuees', 'CampManagerController@searchAdmitEvacuees');
+            Route::get('/search/discharge-evacuees', 'CampManagerController@searchDischargeEvacuees');
+            
         });
     });
 
@@ -195,8 +201,3 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         });
     });
 });
-
-Route::get('preview', function () {
-    return view('chart');
-});
-Route::get('download', 'ExportController@download')->name('download');

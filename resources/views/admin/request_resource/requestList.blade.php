@@ -81,7 +81,7 @@
                     <div class="card-body">
                         <div id="requestList">
                             <table id="requesTable" class="table table-borderless table-hover table-light table-striped"
-                                style="width: 200%;">
+                                style="max-width: 300%;">
                                 <thead>
                                     <tr>
                                         <th>TIME RECEIVED</th>
@@ -95,7 +95,7 @@
                                         <th>MEDICINE</th>
                                         <th>EMERGENCY SHELTER ASSISTANCE</th>
                                         <th>NOTE</th>
-                                        <th>SUGGESTION</th>
+
                                         <th>STATUS</th>
 
 
@@ -110,7 +110,11 @@
                                             <td>{{date('g:i a m/d/Y', strtotime($delivery_request->updated_at)) }}</td>
                                             <td>{{ $delivery_request->id }}</td>
                                             <td>{{ $delivery_request->camp_manager_name }}</td>
-                                            <td>{{ $delivery_request->evacuation_center_name }}</td>
+                                            <td class="evac-data " id="{{ $delivery_request->id }}"
+                                                data-toggle="popover">
+                                                <u> {{ $delivery_request->evacuation_center_name }},
+                                                    {{ $delivery_request->evacuation_center_address }}</u>
+                                            </td>
                                             <td>{{ $delivery_request->food_packs }}</td>
                                             <td>{{ $delivery_request->water }}</td>
                                             <td>{{ $delivery_request->hygiene_kit }}</td>
@@ -118,7 +122,7 @@
                                             <td>{{ $delivery_request->medicine }}</td>
                                             <td>{{ $delivery_request->emergency_shelter_assistance }}</td>
                                             <td>{{ $delivery_request->note }}</td>
-                                            <td><a href="/requests/suggestion/{{$delivery_request->id}}">View</a></td>
+
                                             @if( $delivery_request->status == 'pending' )
                                             <td>
                                                 <div class="badge badge-pill bg-secondary-accent text-white">
@@ -312,6 +316,8 @@
                         </div>
 
                         {{-- {{ $evacuation_centers->links() }} --}}
+
+
                     </div>
                 </div>
             </div>
@@ -332,6 +338,29 @@
 <script>
 var markers = L.layerGroup();
 var ajax_request;
+$(document).ready(function() {
+    var evac_id = $('.evac-data').attr('id');
+    $('.evac-data').popover({
+        placement: "left",
+        title: "Evacuation Center Data",
+        content: fetchData(),
+        html: true,
+    }, );
+
+    function fetchData() {
+        var fetch_data = '';
+        $.ajax({
+            url: "requests/evac-data/" + evac_id,
+            type: "GET",
+            async: false,
+            data: "",
+            success: function(data) {
+                fetch_data = data;
+            }
+        });
+        return fetch_data;
+    }
+});
 $(document).ready(function() {
     var table = $('#requesTable').DataTable({
         "scrollX": true,
@@ -630,6 +659,7 @@ $(document).ready(function() {
             var table = $('#requestTable').DataTable({
                 "scrollX": true,
                 "order": [],
+
             });
 
         });
