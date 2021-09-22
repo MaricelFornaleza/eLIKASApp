@@ -19,4 +19,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 */
 
+Route::post('login', 'api\UserAPIController@login');
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::post('details', 'api\UserAPIController@details');
+});
+
 Route::post('update/location', 'CourierController@update');
