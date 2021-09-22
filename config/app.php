@@ -180,6 +180,7 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         Barryvdh\Snappy\ServiceProvider::class,
+        Laravel\Passport\PassportServiceProvider::class,
         // niklasravnsborg\LaravelPdf\PdfServiceProvider::class,
 
     ],
