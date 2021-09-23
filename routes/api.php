@@ -25,3 +25,6 @@ Route::group(['middleware' => 'auth:api'], function () {
 });
 
 Route::post('update/location', 'CourierController@update');
+
+Route::get('/affected_residents', 'api\RestAPIController@affectedResidents');
+Route::get('/barangay_residents/{barangay}', 'api\RestAPIController@barangayResidents');
