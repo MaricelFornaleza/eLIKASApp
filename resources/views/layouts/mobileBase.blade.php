@@ -15,8 +15,8 @@
     <title>eLIKAS</title>
     <link rel="icon" sizes="57x57" href="/assets/brand/Logo-icon-blue.svg">
     <!-- Icons-->
-    <link href="{{ asset('css/free.min.css') }}" rel="stylesheet"> <!-- icons -->
-    <link href="{{ asset('css/flag-icon.min.css') }}" rel="stylesheet"> <!-- icons -->
+    <!-- <link href="{{ asset('css/free.min.css') }}" rel="stylesheet">  -->
+    <!-- <link href="{{ asset('css/flag-icon.min.css') }}" rel="stylesheet">  -->
     <!-- Main styles for this application-->
     <link href="{{ asset('css/primary-style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/mobile.css') }}" rel="stylesheet">

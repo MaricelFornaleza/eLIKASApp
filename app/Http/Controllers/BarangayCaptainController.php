@@ -8,10 +8,9 @@ use Illuminate\Http\Request;
 use App\Models\DisasterResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Carbon\Carbon;
 use App\Models\ReliefGood;
 use App\Models\Inventory;
-use App\Models\User;
+
 
 class BarangayCaptainController extends Controller
 {

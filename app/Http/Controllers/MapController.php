@@ -2,13 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Admin;
-use App\Models\AffectedArea;
+
 use App\Models\DisasterResponse;
 use App\Models\EvacuationCenter;
-use App\Models\StockLevel;
-use App\Models\Courier;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Pusher\Pusher;
 
@@ -23,12 +19,19 @@ class MapController extends Controller
     {
         $evacuation_centers = DB::table('evacuation_centers')
             ->join('stock_levels', 'evacuation_centers.id', '=', 'stock_levels.evacuation_center_id')
-            ->select('evacuation_centers.*', 'stock_levels.food_packs', 'stock_levels.water', 'stock_levels.hygiene_kit', 'stock_levels.medicine',
-                'stock_levels.clothes', 'stock_levels.emergency_shelter_assistance')
+            ->select(
+                'evacuation_centers.*',
+                'stock_levels.food_packs',
+                'stock_levels.water',
+                'stock_levels.hygiene_kit',
+                'stock_levels.medicine',
+                'stock_levels.clothes',
+                'stock_levels.emergency_shelter_assistance'
+            )
             ->orderByRaw('evacuation_centers.id ASC')
             ->get();
 
-       $couriers = DB::table('couriers')
+        $couriers = DB::table('couriers')
             ->leftJoin('users', 'couriers.user_id', '=', 'users.id')
             ->leftJoin('locations', 'couriers.user_id', '=', 'locations.courier_id')
             ->select('users.id', 'users.name', 'locations.latitude', 'locations.longitude', 'locations.updated_at')
@@ -57,11 +60,18 @@ class MapController extends Controller
 
         $evacuation_centers = DB::table('evacuation_centers')
             ->join('stock_levels', 'evacuation_centers.id', '=', 'stock_levels.evacuation_center_id')
-            ->select('evacuation_centers.*', 'stock_levels.food_packs', 'stock_levels.water', 'stock_levels.hygiene_kit', 'stock_levels.medicine',
-                'stock_levels.clothes', 'stock_levels.emergency_shelter_assistance')
+            ->select(
+                'evacuation_centers.*',
+                'stock_levels.food_packs',
+                'stock_levels.water',
+                'stock_levels.hygiene_kit',
+                'stock_levels.medicine',
+                'stock_levels.clothes',
+                'stock_levels.emergency_shelter_assistance'
+            )
             ->orderByRaw('evacuation_centers.id ASC')
             ->get();
-            
+
         //return [ 'evacuation_centers' => $evacuation_centers ];
 
         $options  = array(
@@ -78,7 +88,6 @@ class MapController extends Controller
 
         $data = ['evacuation_centers' => $evacuation_centers];
         $pusher->trigger('my-channel', 'my-event', $data);
-
     }
 
     public function get_couriers()
@@ -89,8 +98,8 @@ class MapController extends Controller
             ->select('couriers.*', 'locations.latitude', 'locations.longitude', 'locations.updated_at')
             ->orderByRaw('couriers.id ASC')
             ->get();
-        
-        return [ 'couriers' => $couriers ];
+
+        return ['couriers' => $couriers];
     }
 
     public function get_locations($id)
@@ -117,7 +126,7 @@ class MapController extends Controller
         return $data;
     }
 
-    public function affected_areas() 
+    public function affected_areas()
     {
         $admins = DB::table('admins')->select('address')->first();
         $address = explode(',', $admins->address);
@@ -130,11 +139,10 @@ class MapController extends Controller
         // }
         // $all_barangays = array_values(array_unique($all_barangays));
         $all_barangays = DisasterResponse::where('date_ended', '=', null)
-            ->leftjoin('affected_areas','affected_areas.disaster_response_id','=','disaster_responses.id')
+            ->leftjoin('affected_areas', 'affected_areas.disaster_response_id', '=', 'disaster_responses.id')
             ->select('barangay')
             ->get();
         // $barangays = AffectedArea::where('disaster_response_id', '=', $id)->select('barangay')->get();
-        return [ 'address' => $address, 'all_barangays' => $all_barangays ];
+        return ['address' => $address, 'all_barangays' => $all_barangays];
     }
-    
 }

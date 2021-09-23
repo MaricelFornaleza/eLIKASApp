@@ -18,7 +18,7 @@ class CreateLocationsTable extends Migration
             $table->unsignedBigInteger('courier_id');
             $table->float('latitude')->nullable();
             $table->float('longitude')->nullable();
-            //$table->timestamp('DateTime');
+
             $table->timestamps();
             $table->foreign('courier_id')->references('id')->on('users')
                 ->onUpdate('cascade')->onDelete('cascade');

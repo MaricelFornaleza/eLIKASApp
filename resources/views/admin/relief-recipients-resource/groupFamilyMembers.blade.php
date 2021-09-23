@@ -100,66 +100,7 @@
         </div>
     </div>
     <!-- /.row-->
-    <!-- 
-            <div class="col-sm-6">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="col-lg-12 mr-auto">
-                            <h4 class="title">
-                                Choose Family Representative
-                            </h4>
-                        </div>
-                    </div>
-                    <div class="card-body ">
-                        <form method="POST" action="residents.groupResidents">
-                        @csrf
-                        <div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <label class="lead">Address</label>
-                                        <input class="form-control @error('address') is-invalid @enderror" type="text" placeholder="{{ __('Enter Address') }}" name="address" required autofocus>
-                                        @error('address')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
 
-                   
-
-                            <table id=""
-                                class="table table-borderless table-hover table-light table-striped "
-                                style="width: 100%;">
-                                <thead>
-                                    <tr>
-                                        <th class="col-sm-6">NAME</th>
-                                        <th class="col-sm-6">SECTORAL CLASSIFICATION</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="selectedResident" name="selectedResident">
-                                </tbody>
-                            </table>
-                      
-                            
-
-                            <div class="row mt-5 center">
-                                <div class="col-4 ">
-                                    <button class="btn btn-primary px-4 " type="submit">{{ __('Submit') }}</button>
-                                </div>
-                                <div class="col-4 ">
-                                    <a href="{{ route('residents.index') }}" class="btn btn-outline-primary px-4 "
-                                        >{{ __('Cancel') }}</a>
-                                </div>
-                            </div>
-                        </div>
-                        </form>
-                    </div>
-                </div>
-            </div> -->
-    <!-- /.col-->
 
 </div>
 </div>
@@ -186,30 +127,6 @@ $(document).ready(function() {
         "scrollX": true,
     });
 
-    // var checkedResidents = new Array();
-
-    // $('#residentsTable :checkbox').change(function() 
-    // {
-
-    //     checkedResidents = new Array();
-    //     $('#residentsTable :checkbox').each(function(i, item){
-    //         if($(item).is(':checked'))
-    //         {
-    //             var resident = $(item).val();
-
-    //             checkedResidents.push(resident); 
-    //         }
-    //     });
-
-    // console.log("checkedResidents:", checkedResidents);
-    // let textHtml = "";
-    // for (let i=0; i < checkedResidents.length; i++) {
-    //     textHtml += checkedResidents[i];
-    // }
-
-    // $('#selectedResident').html(textHtml);  
-
-    // });
 });
 </script>
 @endsection

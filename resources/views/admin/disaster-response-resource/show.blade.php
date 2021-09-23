@@ -132,14 +132,10 @@
 @section('javascript')
 <script src="{{ asset('js/Chart.min.js') }}"></script>
 <script src="{{ asset('js/coreui-chartjs.bundle.js') }}"></script>
-<script src="{{ asset('js/reports-js/donut.js') }}"></script>
-<script src="{{ asset('js/reports-js/line.js') }}"></script>
 <script src="{{ asset('js/reports-js/barChart.js') }}" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
     integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-
 
 <script>
 var chartData = <?php echo $chartData; ?>;
@@ -170,12 +166,7 @@ function generatePDF() {
 
     };
     document.getElementById('canvas-2').style.width = '100%';
-
-    // Choose the element that our invoice is rendered in.
     element = document.getElementById('content');
-
-    // Choose the element and save the PDF for our user.
-    // html2pdf().set(opt).from(element).save();
     html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
         window.open(pdf.output('bloburl'), '_blank');
     });

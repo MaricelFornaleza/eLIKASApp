@@ -2,23 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\EvacuationCenter;
 use App\Models\DisasterResponse;
 use App\Models\DeliveryRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
-
 use App\Models\FamilyMember;
 use App\Models\Evacuee;
-use App\Models\CampManager;
 use App\Models\ReliefRecipient;
-use Illuminate\Support\Str;
-
-use App\Http\Controllers\Carbon\Carbon;
-
 use App\Models\ReliefGood;
 use App\Models\Family;
 
@@ -96,7 +88,7 @@ class CampManagerController extends Controller
             ->whereNotNull('family_members.family_code')
             ->whereNotNull('relief_recipients.id')->where('relief_recipients.recipient_type', 'Non-evacuee')
             ->whereNull('disaster_responses.date_ended')
-            ->select('family_members.family_code', 'family_members.sectoral_classification','name')
+            ->select('family_members.family_code', 'family_members.sectoral_classification', 'name')
             ->distinct()
             ->get();
         return view('camp-manager.evacuees.admit', ['family_members' => $family_members]);
@@ -164,7 +156,7 @@ class CampManagerController extends Controller
             ->where('evacuees.evacuation_center_id', $evacuation_center->id)
             ->whereNull('evacuees.date_discharged')
             ->whereNull('disaster_responses.date_ended')
-            ->select('family_members.family_code','family_members.sectoral_classification', 'name')
+            ->select('family_members.family_code', 'family_members.sectoral_classification', 'name')
             ->distinct()
             ->get();
         return view('camp-manager.evacuees.discharge', ['family_members' => $family_members]);
@@ -312,7 +304,8 @@ class CampManagerController extends Controller
         return view('camp-manager.request.details')->with('delivery_request', $delivery_request);
     }
 
-    public function searchAdmitEvacuees(Request $data){
+    public function searchAdmitEvacuees(Request $data)
+    {
         $text = $data->text;
 
         $id = Auth::id();
@@ -343,7 +336,7 @@ class CampManagerController extends Controller
                 ->whereNotNull('family_members.family_code')
                 ->whereNotNull('relief_recipients.id')->where('relief_recipients.recipient_type', 'Non-evacuee')
                 ->whereNull('disaster_responses.date_ended')
-                ->select('family_members.family_code','family_members.sectoral_classification',  'family_members.name')
+                ->select('family_members.family_code', 'family_members.sectoral_classification',  'family_members.name')
                 ->distinct()
                 ->get();
         }
@@ -351,7 +344,8 @@ class CampManagerController extends Controller
 
         return Response($family);
     }
-    public function searchDischargeEvacuees(Request $data){
+    public function searchDischargeEvacuees(Request $data)
+    {
         $text = $data->text;
 
         $id = Auth::id();
@@ -375,7 +369,7 @@ class CampManagerController extends Controller
                 ->where('evacuees.evacuation_center_id', $evacuation_center->id)
                 ->whereNull('evacuees.date_discharged')
                 ->whereNull('disaster_responses.date_ended')
-                ->select('family_members.family_code','family_members.sectoral_classification', 'name')
+                ->select('family_members.family_code', 'family_members.sectoral_classification', 'name')
                 ->distinct()
                 ->get();
         } else {
@@ -388,7 +382,7 @@ class CampManagerController extends Controller
                 ->where('evacuees.evacuation_center_id', $evacuation_center->id)
                 ->whereNull('evacuees.date_discharged')
                 ->whereNull('disaster_responses.date_ended')
-                ->select('family_members.family_code','family_members.sectoral_classification', 'name')
+                ->select('family_members.family_code', 'family_members.sectoral_classification', 'name')
                 ->distinct()
                 ->get();
         }

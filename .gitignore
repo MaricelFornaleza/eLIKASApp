@@ -15,7 +15,7 @@
 # /public/icons
 /public/vendors
 # /public/public
-/storage/*.key
+# /storage/*.key
 /vendor
 .env
 .env.backup

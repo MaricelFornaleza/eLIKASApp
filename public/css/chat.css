@@ -50,7 +50,7 @@ li {
     height: 50px;
 }
 .media-left {
-    margin: 0 10px;
+    margin: 0 5px;
 }
 .media-left img {
     width: 55px;
@@ -84,12 +84,13 @@ li {
 }
 .received {
     background-color: white;
+    float: left;
+    text-align: left;
 }
 .sent {
     background-color: #023047;
     color: white;
     float: right;
-
     text-align: right;
 }
 .message p {

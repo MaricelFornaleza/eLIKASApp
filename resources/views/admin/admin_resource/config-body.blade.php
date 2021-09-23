@@ -190,7 +190,7 @@ function change() {
     });
     $('#barangay_name').val(option_array);
 
-    console.log(option_array);
+    // console.log(option_array);
 
 
 }

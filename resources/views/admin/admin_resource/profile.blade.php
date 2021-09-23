@@ -56,16 +56,5 @@
 @endsection
 
 @section('javascript')
-<script type="text/javascript">
-function update() {
-    var select = document.getElementById('officer_type');
-    if (select.value == 'barangay_captain') {
-        document.getElementById('barangay').style.display = "block";
-        document.getElementById('designation').style.display = "none";
-    } else {
-        document.getElementById('barangay').style.display = "none";
-        document.getElementById('designation').style.display = "block";
-    }
-}
-</script>
+
 @endsection

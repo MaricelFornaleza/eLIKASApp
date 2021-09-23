@@ -21,8 +21,6 @@
         background-color: #f4f7fc;
     }
 
-
-
     #data th {
         padding-top: 12px;
         padding-bottom: 12px;
@@ -153,30 +151,30 @@
                 <tbody>
 
 
-                    @foreach($evacuation_centers as $evacuation_center)
+                    @foreach($allEvacuationCenters as $evacuation_center)
                     <tr>
-                        <td>{{ $evacuation_center->name }}</td>
-                        <td>{{ $evacuation_center->address }}</td>
-                        @if($evacuation_center->characteristics == null)
+                        <td>{{ $evacuation_center['name'] }}</td>
+                        <td>{{ $evacuation_center['address'] }}</td>
+                        @if($evacuation_center['characteristics'] == null)
                         <td class="font-italic">No description added.</td>
                         @else
-                        <td>{{ $evacuation_center->characteristics }}</td>
+                        <td>{{ $evacuation_center['characteristics'] }}</td>
                         @endif
-                        @if($evacuation_center->camp_manager_name == null)
+                        @if($evacuation_center['camp_manager_name'] == null)
                         <td class="text-danger"><strong>{{ __('None') }}</strong></td>
                         @else
-                        <td>{{ $evacuation_center->camp_manager_name }}</td>
+                        <td>{{ $evacuation_center['camp_manager_name'] }}</td>
                         @endif
-                        <td>{{ $evacuation_center->capacity }}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>{{ $evacuation_center['capacity'] }}</td>
+                        <td>{{ $evacuation_center['total_number_of_evacuees'] }}</td>
+                        <td>{{ $evacuation_center['male'] }}</td>
+                        <td>{{ $evacuation_center['female'] }}</td>
+                        <td>{{ $evacuation_center['lactating'] }}</td>
+                        <td>{{ $evacuation_center['pwd'] }}</td>
+                        <td>{{ $evacuation_center['senior_citizen'] }}</td>
+                        <td>{{ $evacuation_center['children'] }}</td>
+                        <td>{{ $evacuation_center['pregnant'] }}</td>
+                        <td>{{ $evacuation_center['solo_parent'] }}</td>
 
 
 

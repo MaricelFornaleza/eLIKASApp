@@ -2,15 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\EvacuationCenter;
 use App\Models\StockLevel;
 use App\CustomClasses\UpdateMarker;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Pusher\Pusher;
-
 use App\Models\FamilyMember;
 use App\Models\Evacuee;
 use App\Models\ReliefRecipient;
@@ -25,18 +21,18 @@ class EvacuationCenterController extends Controller
      */
     public function index()
     {
-        $allEvacuationCenters = Array();
+        $allEvacuationCenters = array();
         $evacuation_centers = DB::table('evacuation_centers')
             ->leftJoin('users', 'evacuation_centers.camp_manager_id', '=', 'users.id')
             ->select('evacuation_centers.*', 'users.name as camp_manager_name')
             ->orderByRaw('evacuation_centers.id ASC')
             ->get();
 
-        foreach($evacuation_centers as $evacuation_center){
+        foreach ($evacuation_centers as $evacuation_center) {
             $evacuees = Evacuee::where('evacuation_center_id', $evacuation_center->id)->whereNull('date_discharged')->get();
             $total_number_of_evacuees = 0;
-            $family_codes =  Array();
-            $female =0 ;
+            $family_codes =  array();
+            $female = 0;
             $male = 0;
             $children = 0;
             $lactating = 0;
@@ -47,13 +43,13 @@ class EvacuationCenterController extends Controller
             if ($evacuees != null) {
                 foreach ($evacuees as $evacuee) {
                     $relief_recipient = ReliefRecipient::where('id', $evacuee->relief_recipient_id)->first();
-                    if(!in_array($relief_recipient->family_code, $family_codes)){
+                    if (!in_array($relief_recipient->family_code, $family_codes)) {
                         array_push($family_codes, $relief_recipient->family_code);
                         $family = Family::where('family_code', $relief_recipient->family_code)->first();
                         $total_number_of_evacuees = $total_number_of_evacuees + $family->no_of_members;
-                        
+
                         $family_members = FamilyMember::where('family_code', $family->family_code)->get();
-                        
+
                         $female = $female + $family_members->where('gender', 'Female')->count();
                         $male = $male + $family_members->where('gender', 'Male')->count();
                         $children = $children + $family_members->where('sectoral_classification', 'Children')->count();
@@ -63,7 +59,6 @@ class EvacuationCenterController extends Controller
                         $senior_citizen  = $senior_citizen + $family_members->where('sectoral_classification', 'Senior Citizen')->count();
                         $solo_parent = $solo_parent + $family_members->where('sectoral_classification', 'Solo Parent')->count();
                     }
-                    
                 }
             }
             $eCenter = array(
@@ -87,9 +82,7 @@ class EvacuationCenterController extends Controller
             array_push($allEvacuationCenters, $eCenter);
         }
         // foreach($allEvacuationCenters as $allEvacuationCenter)
-         return view('admin.evacuation-center.evacList', ['evacuation_centers' => $allEvacuationCenters]);
-        
-    
+        return view('admin.evacuation-center.evacList', ['evacuation_centers' => $allEvacuationCenters]);
     }
 
     /**
@@ -171,7 +164,7 @@ class EvacuationCenterController extends Controller
         ]);
 
         $request->session()->flash('message', 'Successfully created ' . $evacuation_center->name . ' evacuation center!');
-        
+
         $updatemarker = new UpdateMarker;
         $updatemarker->get_evac();
 

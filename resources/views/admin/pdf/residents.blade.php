@@ -21,8 +21,6 @@
         background-color: #f4f7fc;
     }
 
-
-
     #data th {
         padding-top: 12px;
         padding-bottom: 12px;
@@ -54,7 +52,6 @@
         margin-bottom: 5px;
         border-bottom: 3px solid #ddd;
     }
-
 
     .heading p {
         font-size: 0;

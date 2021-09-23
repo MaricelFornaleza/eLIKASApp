@@ -1,7 +1,5 @@
 <?php
-/*
-    $data = $menuel['elements']
-*/
+
 
 if (!function_exists('renderDropdown')) {
     function renderDropdown($data)

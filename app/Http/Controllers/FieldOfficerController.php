@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Mail\Credentials;
 use App\Mail\VerifyEmail;
-use App\Models\Admin;
 use App\Models\Barangay;
 use App\Models\BarangayCaptain;
 use App\Models\CampManager;
@@ -14,7 +13,6 @@ use App\Models\Inventory;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;

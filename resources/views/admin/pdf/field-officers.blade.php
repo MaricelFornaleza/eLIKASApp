@@ -22,8 +22,6 @@
         background-color: #f4f7fc;
     }
 
-
-
     #data th {
         padding-top: 12px;
         padding-bottom: 12px;

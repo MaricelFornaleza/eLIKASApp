@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Admin;
+
 use App\Models\AffectedArea;
 use App\Models\Barangay;
 use App\Models\DisasterResponse;
@@ -14,7 +14,6 @@ use App\Models\Family;
 use App\Models\ReliefGood;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use PDF;
