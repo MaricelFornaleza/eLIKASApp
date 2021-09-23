@@ -5,16 +5,8 @@ namespace App\Imports;
 use App\Models\FamilyMember;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
-use Illuminate\Support\Facades\Auth;
-use App\Models\User;
-
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\DB;
-use App\Models\Family;
-use App\Models\ReliefRecipient;
 
 class ResidentsImport implements ToCollection, WithHeadingRow
 {
@@ -44,27 +36,6 @@ class ResidentsImport implements ToCollection, WithHeadingRow
                 $family_member->street = $row['street'];
                 $family_member->barangay = $row['barangay'];
                 $family_member->save();
-
-                // if ($row['family_code'] != null) {
-                //     $findFamily =  DB::table('families')->where('family_code', $family_member->family_code)->first();
-                //     if($findFamily == null){
-                //         $family = new Family();
-                //         $family->family_code = $family_member->family_code;
-                //         $family->no_of_members = 1;
-                //         $family->save();
-
-                //         $relief_recipient = new ReliefRecipient();
-                //         $relief_recipient->family_code = $family_member->family_code;
-                //         $relief_recipient->recipient_type = 'Non-Evacuee';
-                //         $relief_recipient->save();
-                //     }else if($findFamily != null){
-                //         $family = Family::find($findFamily->id);
-                //         $family->no_of_members = $family->no_of_members+1;
-                //         $family->save();
-                //     }
-                // }
-
-
             }
         }
     }

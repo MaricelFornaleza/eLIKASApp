@@ -7,8 +7,6 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use App\Http\Controllers\Carbon\Carbon;
-
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
@@ -33,31 +31,31 @@ class SuppliesImport implements ToCollection, WithHeadingRow
         foreach ($collection as $row) {
             if ($row->filter()->isNotEmpty()) {
                 $user_inventory_prev_stock = $user->user_inventory()->first();
-                if($row['supply_type'] == 'Food Packs'){
+                if ($row['supply_type'] == 'Food Packs') {
                     $user->user_inventory()->update([
                         'total_no_of_food_packs'                    => ($user_inventory_prev_stock->total_no_of_food_packs + $row['quantity']),
                     ]);
-                }else if($row['supply_type'] == 'Water'){
+                } else if ($row['supply_type'] == 'Water') {
                     $user->user_inventory()->update([
                         'total_no_of_water'                         => ($user_inventory_prev_stock->total_no_of_water + $row['quantity']),
                     ]);
-                }else if($row['supply_type'] == 'Hygiene Kit'){
+                } else if ($row['supply_type'] == 'Hygiene Kit') {
                     $user->user_inventory()->update([
                         'total_no_of_hygiene_kit'                   => ($user_inventory_prev_stock->total_no_of_hygiene_kit + $row['quantity']),
                     ]);
-                }else if($row['supply_type'] == 'Medicine'){
+                } else if ($row['supply_type'] == 'Medicine') {
                     $user->user_inventory()->update([
                         'total_no_of_medicine'                      => ($user_inventory_prev_stock->total_no_of_medicine + $row['quantity']),
                     ]);
-                }else if($row['supply_type'] == 'Clothes'){
+                } else if ($row['supply_type'] == 'Clothes') {
                     $user->user_inventory()->update([
                         'total_no_of_clothes'                       => ($user_inventory_prev_stock->total_no_of_clothes + $row['quantity']),
                     ]);
-                }else if($row['supply_type'] == 'ESA'){
+                } else if ($row['supply_type'] == 'ESA') {
                     $user->user_inventory()->update([
                         'total_no_of_emergency_shelter_assistance'  => ($user_inventory_prev_stock->total_no_of_emergency_shelter_assistance + $row['quantity']),
                     ]);
-                } 
+                }
                 $supply = new Supply();
                 $supply->inventory_id     = $user_inventory_id;
                 $supply->date   = now()->format('F j, Y');

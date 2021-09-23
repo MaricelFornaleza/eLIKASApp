@@ -7,17 +7,19 @@ use App\Exports\SuppliesExport;
 use App\Exports\EvacuationCenterExport;
 use App\Exports\DeliveryRequestExport;
 use App\Exports\ResidentsExport;
-
 use App\Models\Admin;
 use App\Models\EvacuationCenter;
+use App\Models\Evacuee;
+use App\Models\Family;
+use App\Models\FamilyMember;
 use App\Models\Inventory;
+use App\Models\ReliefRecipient;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Redirect;
 use Maatwebsite\Excel\Facades\Excel;
 use PDF;
-use Barryvdh\Snappy\Facades\SnappyPdf;
+
 
 
 class ExportController extends Controller
@@ -76,20 +78,68 @@ class ExportController extends Controller
 
         $admin = Admin::first();
         $todayDate = date("Y-m-d");
-        $evacuation_centers =  EvacuationCenter::leftJoin('users', 'evacuation_centers.camp_manager_id', '=', 'users.id')
-            ->select(
-                'users.name as camp_manager_name',
-                'evacuation_centers.name',
-                'evacuation_centers.address',
-                'evacuation_centers.latitude',
-                'evacuation_centers.longitude',
-                'evacuation_centers.capacity',
-                'evacuation_centers.characteristics'
-            )
+        $allEvacuationCenters = array();
+        $evacuation_centers = DB::table('evacuation_centers')
+            ->leftJoin('users', 'evacuation_centers.camp_manager_id', '=', 'users.id')
+            ->select('evacuation_centers.*', 'users.name as camp_manager_name')
             ->orderByRaw('evacuation_centers.id ASC')
             ->get();
 
-        $pdf = PDF::loadView('admin.pdf.evacuation-centers', compact('evacuation_centers', 'admin'))->setPAper('a4', 'landscape');
+        foreach ($evacuation_centers as $evacuation_center) {
+            $evacuees = Evacuee::where('evacuation_center_id', $evacuation_center->id)->whereNull('date_discharged')->get();
+            $total_number_of_evacuees = 0;
+            $family_codes =  array();
+            $female = 0;
+            $male = 0;
+            $children = 0;
+            $lactating = 0;
+            $pwd = 0;
+            $pregnant = 0;
+            $senior_citizen  = 0;
+            $solo_parent = 0;
+            if ($evacuees != null) {
+                foreach ($evacuees as $evacuee) {
+                    $relief_recipient = ReliefRecipient::where('id', $evacuee->relief_recipient_id)->first();
+                    if (!in_array($relief_recipient->family_code, $family_codes)) {
+                        array_push($family_codes, $relief_recipient->family_code);
+                        $family = Family::where('family_code', $relief_recipient->family_code)->first();
+                        $total_number_of_evacuees = $total_number_of_evacuees + $family->no_of_members;
+
+                        $family_members = FamilyMember::where('family_code', $family->family_code)->get();
+
+                        $female = $female + $family_members->where('gender', 'Female')->count();
+                        $male = $male + $family_members->where('gender', 'Male')->count();
+                        $children = $children + $family_members->where('sectoral_classification', 'Children')->count();
+                        $lactating = $lactating + $family_members->where('sectoral_classification', 'Lactating')->count();
+                        $pwd = $pwd + $family_members->where('sectoral_classification', 'Person with Disability')->count();
+                        $pregnant = $pregnant + $family_members->where('sectoral_classification', 'Pregnant')->count();
+                        $senior_citizen  = $senior_citizen + $family_members->where('sectoral_classification', 'Senior Citizen')->count();
+                        $solo_parent = $solo_parent + $family_members->where('sectoral_classification', 'Solo Parent')->count();
+                    }
+                }
+            }
+            $eCenter = array(
+                'id' => $evacuation_center->id,
+                'name' =>  $evacuation_center->name,
+                'address' =>  $evacuation_center->address,
+                'characteristics' =>  $evacuation_center->characteristics,
+                'camp_manager_name' => $evacuation_center->camp_manager_name,
+                'capacity' => $evacuation_center->capacity,
+                'total_number_of_evacuees' => $total_number_of_evacuees,
+                'capacity' => $evacuation_center->capacity,
+                'female' => $female,
+                'male' => $male,
+                'children' => $children,
+                'lactating' => $lactating,
+                'pwd' => $pwd,
+                'pregnant' => $pregnant,
+                'senior_citizen' => $senior_citizen,
+                'solo_parent' => $solo_parent
+            );
+            array_push($allEvacuationCenters, $eCenter);
+        }
+
+        $pdf = PDF::loadView('admin.pdf.evacuation-centers', compact('allEvacuationCenters', 'admin'))->setPAper('a4', 'landscape');
         return $pdf->stream('Evacuation_Centers_' . $todayDate . '.pdf');
     }
     public function exportDeliveryRequests()
@@ -147,15 +197,5 @@ class ExportController extends Controller
             ->get();
         $pdf = PDF::loadView('admin.pdf.residents', compact('residents', 'admin'))->setPAper('a4', 'landscape');
         return $pdf->stream('Residents_' . $todayDate . '.pdf');
-    }
-
-    public function download()
-    {
-        $pdf = SnappyPDF::loadView('chart');
-        // $pdf->setOption('enable-javascript', true);
-        // $pdf->setOption('javascript-delay', 5000);
-        // $pdf->setOption('enable-smart-shrinking', true);
-        // $pdf->setOption('no-stop-slow-scripts', true);
-        return $pdf->stream('chart.pdf');
     }
 }

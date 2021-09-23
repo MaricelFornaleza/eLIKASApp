@@ -367,20 +367,6 @@ $(document).ready(function() {
         "order": [],
     });
 
-    // var cors_api_url = 'https://cors-anywhere.herokuapp.com/';
-    // var settings = {
-    //     "url": cors_api_url + "https://bkintanar-psgc.herokuapp.com/api/cities/051724000?include=barangays",
-    //     "method": "GET",
-    //     "timeout": 0,
-    //     "headers": {
-    //         "Accept": "application/json"
-    //     },
-    // };
-
-    // $.ajax(settings).done(function (response) {
-    //     console.log(response);
-    // });
-
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -454,7 +440,7 @@ $(document).ready(function() {
 
 
     //remove on production
-    Pusher.logToConsole = true;
+    // Pusher.logToConsole = true;
 
     var pusher = new Pusher('ab82b7896a919c5e39dd', {
         cluster: 'ap1'
@@ -466,193 +452,12 @@ $(document).ready(function() {
             $('#requestTable').DataTable().clear();
             $('#requestTable').DataTable().destroy();
         }
-        //2nd empty html
-        // $("requestTable tbody").empty();
-        // $("requestTable thead").empty();
-        //$('#requestList').empty();
+
         $.ajax({
             method: "GET",
             url: "/requests/refresh",
         }).done(function(data) {
-            /*
-            console.log(data);
-            var html;
-            html = `<table id="requestTable"
-                        class="table table-borderless table-hover table-light table-striped" 
-                        style="width: 100%;"> 
-                        <thead>
-                            <tr>
-                                <th>REQUEST ID</th>
-                                <th>CAMP MANAGER NAME</th>
-                                <th>EVACUATION CENTER</th>
-                                <th>FOOD PACKS</th>
-                                <th>WATER</th>
-                                <th>HYGIENE KIT</th>
-                                <th>CLOTHES</th>
-                                <th>MEDICINE</th>
-                                <th>EMERGENCY SHELTER ASSISTANCE</th>
-                                <th>NOTE</th>
-                                <th>STATUS</th>
-                                
-                                <th>ACTIONS</th>
-                                
-                            </tr>
-                        </thead>`;
-                        
-            $.each(data, function(key, value) {
-                for(var i=0; i < value.length; i++) {
-                    html += `<tbody id="request-tbody">
-                                <div id="request-wrapper">
-                                    <tr>
-                                        <td>${value[i].id}</td>
-                                        <td>${value[i].camp_manager_name}</td>
-                                        <td>${value[i].evacuation_center_name}</td>
-                                        <td>${value[i].food_packs}</td>
-                                        <td>${value[i].water}</td>
-                                        <td>${value[i].hygiene_kit}</td>
-                                        <td>${value[i].clothes}</td>
-                                        <td>${value[i].medicine}</td>
-                                        <td>${value[i].emergency_shelter_assistance}</td>
-                                        <td>${value[i].note}</td>`;
 
-                    if(value[i].status == 'pending') {
-                        html += `<td>
-                                    <div class="badge badge-pill bg-secondary-accent text-white">` + 
-                                        value[i].status.toUpperCase() +
-                                    `</div>
-                                </td>`;
-                        html += `<td>
-                                    <div class="row">
-                                        <div class="col-6 ">
-                                            <a href="{{ route('request.approve', ['id' =>` + value[i].id + `] ) }}" onclick="return confirm('Are you sure to approve the request?')">
-                                                <svg width="25" height="25" xmlns="http://www.w3.org/2000/svg">
-                                                    <image href="{{ url('icons/sprites/approve-request.svg') }}" height="25" width="25"/>
-                                                </svg>
-                                            </a>
-                                        </div>
-                                        <div class="col-6">
-                                            <a href="{{ route('request.admin_decline', ['id' =>` + value[i].id + `] ) }}" onclick="return confirm('Are you sure to decline the request?')">
-                                                <svg width="25" height="25" xmlns="http://www.w3.org/2000/svg">
-                                                    <image href="{{ url('icons/sprites/decline-request.svg') }}" height="25" width="25"/>
-                                                </svg>
-                                            </a>
-                                        </div>
-                                        </form>
-                                    </div>
-                                </td>`; 
-                    }          
-                    else if( value[i].status == 'preparing' && value[i].courier_id == null ) {
-                        html += `<td>
-                                    <span class="badge badge-pill bg-accent text-white">` +
-                                        value[i].status.toUpperCase() +
-                                    `</span>
-                                </td>         
-                                <td>
-                                    <div class="row">
-                                        <div class="col-6 ">
-                                            <a href="" data-toggle="modal" data-target="#assignModal" data-evac-id="${value[i].evacuation_center_id}">
-                                                <svg width="25" height="25" xmlns="http://www.w3.org/2000/svg">
-                                                    <image href="{{ url('icons/sprites/assign-courier.svg') }}" height="25" width="25"/>
-                                                </svg>
-                                            </a>
-                                            <!-- Modal -->
-                                            <div class="modal fade" id="assignModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-lg" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <form method="POST" action="{{ route('request.assign_courier', ['id' =>` + value[i].id + `] ) }}">
-                                                            @csrf
-                                                            <label for="courier_id" class="mr-3 lead modal-title" id="exampleModalLabel">Assign Courier</label>
-                                                            <select name="courier_id" id='courier_id' class="w-100 form-control" required>
-                                                               
-                                                            </select>
-
-                                                            <input type="submit" id="submit-form" class="hidden d-none" />
-                                                        </form>
-
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>   
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <div class="row">
-                                                            <div class="w-100" id="mapid"></div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                        <label for="submit-form" class="btn btn-warning" tabindex="0">Assign</label>
-                                                    </div>
-                                                </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <a href="{{ route('request.cancel', ['id' =>` + value[i].id + `] ) }}" onclick="return confirm('Are you sure to cancel the request?')">
-                                                <svg width="25" height="25" xmlns="http://www.w3.org/2000/svg">
-                                                    <image href="{{ url('icons/sprites/decline-request.svg') }}" height="25" width="25"/>
-                                                </svg>
-                                            </a>
-                                        </div>
-                                        </form>
-                                    </div>
-                                </td> `;
-                                    
-                    }
-                    else if( value[i].status == 'preparing' && value[i].courier_id !== null ) {
-                        html += `<td>
-                                    <span class="badge badge-pill bg-accent text-white">` +
-                                        value[i].status.toUpperCase() +
-                                        `PREPARING
-                                    </span>
-                                </td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-6 ">
-                                        </div>
-                                        <div class="col-6">
-                                            <a href="{{ route('request.cancel', ['id' =>` + value[i].id + `] ) }}" onclick="return confirm('Are you sure to cancel the request?')">
-                                                <svg width="25" height="25" xmlns="http://www.w3.org/2000/svg">
-                                                    <image href="{{ url('icons/sprites/decline-request.svg') }}" height="25" width="25"/>
-                                                </svg>
-                                            </a>
-                                        </div>
-                                        </form>
-                                    </div>
-                                </td>`;
-                    }
-                    else if(  value[i].status == 'in-transit' ) {
-                        html += `<td>
-                                    <span class="badge badge-pill bg-secondary text-white">` +
-                                        value[i].status.toUpperCase() +
-                                    `</span>
-                                </td>
-                                <td>
-                                </td>`;
-                    }
-                    else if(  value[i].status == 'delivered' ) {
-                        html += `<td>
-                                    <span class="badge badge-pill badge-primary text-white">` +
-                                        value[i].status.toUpperCase() +
-                                    `</span>
-                                </td>
-                                <td>
-                                </td>`;
-                    }
-                    else if( value[i].status == 'declined' ||  value[i].status == 'cancelled') {
-                        html += `<td>
-                                    <span class="badge badge-pill badge-danger text-white">` +
-                                        value[i].status.toUpperCase() +
-                                    `</span>
-                                </td>
-                                <td>
-                                </td>`;
-                    }
-                    html += `</tr> </div></tbody>`;             
-                }
-            });
-            html += `</table>`;
-            */
 
             //this is the shortcut implementation
             $('#requestList').html(data);

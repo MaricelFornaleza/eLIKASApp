@@ -5,21 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use App\Models\DeliveryRequest;
 use App\Models\DisasterResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
-use App\Models\User;
 use App\Models\EvacuationCenter;
 use App\Models\FamilyMember;
 use App\Models\Evacuee;
 use App\Models\ReliefRecipient;
 use App\Models\Family;
-
 use App\Models\Inventory;
-
 use Illuminate\Support\Facades\DB;
-
-use App\Models\Supply;
 
 class HomeController extends Controller
 {

@@ -24,7 +24,6 @@ class CreateUsersTable extends Migration
             $table->string('officer_type');
             $table->rememberToken();
             $table->timestamps();
-            // $table->softDeletes();
         });
         Schema::create('admins', function (Blueprint $table) {
             $table->bigIncrements('id');
@@ -73,7 +72,6 @@ class CreateUsersTable extends Migration
         Schema::dropIfExists('camp_managers');
         Schema::dropIfExists('barangay_captains');
         Schema::dropIfExists('couriers');
-
         Schema::dropIfExists('users');
     }
 }

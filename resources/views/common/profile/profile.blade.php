@@ -25,11 +25,14 @@
                                 <h4>Profile</h4>
                             </div>
                             <div class="ml-4 mr-4">
-                                <a href="/profile/{{$user->user_id}}/edit">
-                                    <button class="btn btn-primary">
-                                        Edit Profile
-                                    </button>
+                                <a href="/profile/{{$user->user_id}}/edit"><svg class="c-icon ">
+                                        <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-pencil">
+
+                                        </use>
+                                    </svg>
+                                    Edit
                                 </a>
+
                             </div>
 
                         </div>
@@ -51,6 +54,21 @@
                                 <h6>{{ $user ->contact_no}}</h6>
 
                             </div>
+
+
+                            <div class="col-md-4 mt-5 center">
+                                <a href="{{ route('logout') }}"
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"> @csrf <button
+                                            type="submit" class="btn btn-primary"> <svg class="c-icon mr-2">
+                                                <use
+                                                    xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-account-logout">
+                                                </use>
+                                            </svg>Logout</button></form>
+                                </a>
+
+
+                            </div>
                         </div>
 
 
@@ -69,16 +87,5 @@
 @endsection
 
 @section('javascript')
-<script type="text/javascript">
-function update() {
-    var select = document.getElementById('officer_type');
-    if (select.value == 'barangay_captain') {
-        document.getElementById('barangay').style.display = "block";
-        document.getElementById('designation').style.display = "none";
-    } else {
-        document.getElementById('barangay').style.display = "none";
-        document.getElementById('designation').style.display = "block";
-    }
-}
-</script>
+
 @endsection

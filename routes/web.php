@@ -11,20 +11,9 @@
 |
 */
 
-use App\Models\User;
-
-use App\Http\Controllers\FieldOfficerController;
-use App\Http\Controllers\SupplyController;
-use App\Http\Controllers\InventoryController;
-use App\Http\Controllers\ImportExcelController;
-use App\Http\Controllers\ExportExcelController;
-use App\Http\Controllers\FamilyMemberController;
 use App\Mail\VerifyEmail;
-use Barryvdh\DomPDF\PDF as DomPDFPDF;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
-use Barryvdh\DomPDF\Facade\PDF;
 
 //login and register 
 Route::get('/', function () {
@@ -51,8 +40,6 @@ Route::get('/send-mail', function () {
 //email verification
 
 Route::get('/user/verify/{remember_token}', 'FieldOfficerController@verifyUser');
-
-
 
 // the user must be authenticated to access these routes
 Route::group(['middleware' => ['auth', 'verified']], function () {
@@ -189,7 +176,6 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
             Route::get('/details/{id}', 'CampManagerController@detailsView');
             Route::get('/search/admit-evacuees', 'CampManagerController@searchAdmitEvacuees');
             Route::get('/search/discharge-evacuees', 'CampManagerController@searchDischargeEvacuees');
-            
         });
     });
 

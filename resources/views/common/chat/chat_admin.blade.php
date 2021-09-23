@@ -23,8 +23,7 @@ $(document).ready(function() {
         }
     });
     // Enable pusher logging - don't include this in production
-
-    Pusher.logToConsole = true;
+    // Pusher.logToConsole = true;
     var pusher = new Pusher('ab82b7896a919c5e39dd', {
         cluster: 'ap1'
     });
@@ -92,6 +91,31 @@ $(document).ready(function() {
         }
     });
 });
+
+function send() {
+    var message = $('.input-text input').val();
+    //check of enter key is pressed and message is not empty and recipient is selected
+    if (message != '' && recipient != null) {
+        $('.input-text input').val('');
+        var datastr = "recipient=" + recipient + "&message=" + message;
+        $.ajax({
+            type: "post",
+            url: "chat",
+            data: datastr,
+            cache: false,
+            success: function(data) {
+                // $('#messages').html(data);
+            },
+            error: function(jqXHR, status, err) {
+                // alert(jqXHR.err);
+            },
+            complete: function() {
+                scrollToBottom();
+            }
+        })
+    }
+
+}
 
 function scrollToBottom() {
     $('.message-wrapper').animate({
