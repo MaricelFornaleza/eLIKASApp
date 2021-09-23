@@ -16,10 +16,7 @@
                             <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-user"></use>
                         </svg> Profile
                     </a>
-                    <a class="dropdown-item" href="#">
-                        <svg class="c-icon mr-2">
-                            <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-settings"></use>
-                        </svg> Settings</a>
+
                     <a class="dropdown-item" href="{{ url('/logout') }}"
                         onclick="event.preventDefault(); document.getElementById('logout-form').submit(); Android.logout();">
 

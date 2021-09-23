@@ -150,7 +150,7 @@
 
 
                                     </div>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-6 mt-3">
                                         <div class="form-group">
                                             <label for="password">New Password</label>
                                             <input class="form-control" autocomplete="password" id="password"
