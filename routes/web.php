@@ -194,7 +194,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
 Route::get('sms/inbound-sms', function () {
     if (isset($_GET['access_token']) && $_GET['access_token'] != "") {
-        $user = User::where('contact_no', $_GET['subscriber_no'])->first();
+        $user = User::where('contact_no', $_GET['subscriber_number'])->first();
         $user->remember_token = $_GET['access_token'];
         $user->save();
     }
