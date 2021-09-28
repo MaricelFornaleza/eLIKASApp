@@ -12,6 +12,7 @@
 */
 
 use App\Mail\VerifyEmail;
+use Facade\FlareClient\Http\Response;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -186,4 +187,16 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
             Route::get('/details/{id}', 'CourierController@details');
         });
     });
+});
+
+Route::get('sms/inbound-sms', function () {
+    $http = new \GuzzleHttp\Client();
+    $response = $http->post("'https://developer.globelabs.com.ph/oauth/access_token'", [
+        'form_params' => [
+            "app_id" => env('GLOBE_LABS_APP_ID'),
+            "app_secret" => env('GLOBE_LABS_APP_SECRET'),
+        ]
+    ]);
+    Log::info($response->getBody());
+    return $response->getBody();
 });
