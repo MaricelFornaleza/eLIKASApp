@@ -12,6 +12,7 @@
 */
 
 use App\Mail\VerifyEmail;
+use App\Models\User;
 use Facade\FlareClient\Http\Response;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -201,6 +202,18 @@ Route::get('subscribe', function () {
     return $response->getBody();
 });
 
-Route::get('sms/inbound-sms', function ($response) {
-    return response()->json($response);
+Route::get('sms/inbound-sms', function () {
+
+    if (isset($_GET['access_token']) && $_GET['access_token'] != "") {
+        $user = User::find(1);
+        $user->remember_token = $_GET['access_token'];
+        $user->save();
+        return response()->json($_GET['access_token']);
+    }
+    return response()->json("failed");
+});
+
+Route::get('admin-token', function () {
+    $user = User::find(1);
+    return $user->remember_token;
 });
