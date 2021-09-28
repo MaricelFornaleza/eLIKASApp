@@ -200,3 +200,7 @@ Route::get('subscribe', function () {
     Log::info($response->getBody());
     return $response->getBody();
 });
+
+Route::get('sms/inbound-sms', function () {
+    return response()->json($_POST);
+});
