@@ -194,7 +194,7 @@ Route::get('subscribe', function () {
     $response = $http->post("https://developer.globelabs.com.ph/oauth/access_token", [
         'form_params' => [
             "app_id" => env('GLOBE_LABS_APP_ID'),
-            "app_secret" => env('GLOBE_LABS_APP_SECRET'),
+            "app_secret" => env('GLOBE_LABS_APP_SECRET')
         ]
     ]);
     Log::info($response->getBody());
