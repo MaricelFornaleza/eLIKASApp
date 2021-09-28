@@ -201,6 +201,6 @@ Route::get('subscribe', function () {
     return $response->getBody();
 });
 
-Route::get('sms/inbound-sms', function () {
-    return response()->json($_POST);
+Route::get('sms/inbound-sms', function ($response) {
+    return response()->json($response);
 });
