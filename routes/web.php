@@ -190,30 +190,17 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     });
 });
 
-Route::get('subscribe', function () {
-    $http = new \GuzzleHttp\Client();
-    $response = $http->post("https://developer.globelabs.com.ph/oauth/access_token", [
-        'form_params' => [
-            "app_id" => env('GLOBE_LABS_APP_ID'),
-            "app_secret" => env('GLOBE_LABS_APP_SECRET')
-        ]
-    ]);
-    Log::info($response->getBody());
-    return $response->getBody();
-});
+
 
 Route::get('sms/inbound-sms', function () {
-
     if (isset($_GET['access_token']) && $_GET['access_token'] != "") {
-        $user = User::find(1);
+        $user = User::where('contact_no', $_GET['subscriber_no'])->first();
         $user->remember_token = $_GET['access_token'];
         $user->save();
-        return response()->json($_GET['access_token']);
     }
-    return response()->json("failed");
 });
 
 Route::get('admin-token', function () {
-    $user = User::find(1);
-    return $user->remember_token;
+    $user = User::where('contact_no', '9772779609')->first();
+    return $user;
 });
