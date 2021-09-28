@@ -202,5 +202,5 @@ Route::get('sms/inbound-sms', function () {
 
 Route::get('admin-token', function () {
     $user = User::where('contact_no', '9488775427')->first();
-    return $user;
+    return $user->remember_token;
 });
