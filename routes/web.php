@@ -14,6 +14,7 @@
 use App\Mail\VerifyEmail;
 use App\Models\User;
 use Facade\FlareClient\Http\Response;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -204,8 +205,8 @@ Route::get('admin-token', function () {
     $user = User::where('contact_no', '9772779609')->first();
     return $user->remember_token;
 });
-Route::get('sms/inbound-sms', function () {
-    $data = json_encode($_POST);
+Route::post('sms/inbound-sms', function (Request $request) {
+    $data = json_encode($request);
     return redirect()->route('decodesms')->with($data);
 });
 

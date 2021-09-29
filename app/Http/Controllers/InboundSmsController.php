@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 
 class InboundSmsController extends Controller
 {
-    public function decodesms($data)
+    public function decodesms()
     {
         $http = new Client();
         $user = User::where('contact_no', '9772779609')->first();
