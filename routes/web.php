@@ -12,6 +12,8 @@
 */
 
 use App\Mail\VerifyEmail;
+use Facade\FlareClient\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -186,4 +188,13 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
             Route::get('/details/{id}', 'CourierController@details');
         });
     });
+});
+
+Route::get('sms/inbound-sms', function () {
+    $data = json_encode($_POST);
+    return redirect()->route('decodesms')->with($data);
+});
+
+Route::prefix('sms')->group(function () {
+    Route::get('/decodesms', 'InboundSmsController@decodesms')->name('decodesms');
 });
