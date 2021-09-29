@@ -207,9 +207,9 @@ Route::get('admin-token', function () {
     $user = User::where('contact_no', '9772779609')->first();
     return $user->remember_token;
 });
-Route::post('sms/inbound-sms', function (Request $request) {
-    $data = json_encode($request);
-    Log::info($data);
+Route::get('sms/inbound-sms', function () {
+    // $data = json_encode($_POST);
+    Log::info("received");
 });
 
 Route::prefix('sms')->group(function () {
