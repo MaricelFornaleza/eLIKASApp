@@ -225,7 +225,7 @@ Route::get('send', function () {
             "senderAddress" => env('SHORT_CODE_SUFFIX'),
             "clientCorrelator" => env('SHORT_CODE'),
             "outboundSMSTextMessage" => ["message" => "Text received"],
-            "address" => "9772779609"
+            "address" => "tel:+69772779609",
         ]
     ]);
     Log::info($response->getBody());
