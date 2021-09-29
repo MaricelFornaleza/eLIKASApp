@@ -222,10 +222,11 @@ Route::get('send', function () {
     $access_token = $user->globe_labs_access_token;
     $response = $http->post("https://devapi.globelabs.com.ph/smsmessaging/v1/outbound/0098/requests?access_token=" . $access_token, [
         "outboundSMSMessageRequest" => [
+            "address" => 9772779609,
             "senderAddress" => env('SHORT_CODE_SUFFIX'),
             "clientCorrelator" => env('SHORT_CODE'),
             "outboundSMSTextMessage" => ["message" => "Text received"],
-            "address" => "tel:+69772779609",
+
         ]
     ]);
     Log::info($response->getBody());
