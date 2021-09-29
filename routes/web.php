@@ -196,7 +196,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 Route::get('subscribe', function () {
     if (isset($_GET['access_token']) && $_GET['access_token'] != "") {
         $user = User::where('contact_no', $_GET['subscriber_number'])->first();
-        $user->remember_token = $_GET['access_token'];
+        $user->globe_labs_access_token = $_GET['access_token'];
         $user->save();
     }
 });
