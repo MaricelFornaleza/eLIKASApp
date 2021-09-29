@@ -14,7 +14,9 @@
 use App\Mail\VerifyEmail;
 use App\Models\User;
 use Facade\FlareClient\Http\Response;
+use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -212,4 +214,18 @@ Route::post('sms/inbound-sms', function (Request $request) {
 
 Route::prefix('sms')->group(function () {
     Route::get('/decodesms', 'InboundSmsController@decodesms')->name('decodesms');
+});
+
+Route::get('send', function () {
+    $http = new Client();
+    $user = User::where('contact_no', '9772779609')->first();
+    $access_token = $user->globe_labs_access_token;
+    $response = $http->post("https://devapi.globelabs.com.ph/smsmessaging/v1/outbound/0098/requests?access_token=" . $access_token, [
+        "senderAddress" => env('SHORT_CODE_SUFFIX'),
+        "clientCorrelator" => env('SHORT_CODE'),
+        "message" => "Text received",
+        "address" => "9772779609"
+
+    ]);
+    Log::info($response->getBody());
 });
