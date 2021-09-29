@@ -200,6 +200,14 @@ Route::get('subscribe', function () {
         $user = User::where('contact_no', $_GET['subscriber_number'])->first();
         $user->globe_labs_access_token = $_GET['access_token'];
         $user->save();
+    } else if (isset($_GET['code'])) {
+        $http = new Client();
+        $app_id = env('GLOBE_LABS_APP_ID');
+        $app_secret = env('GLOBE_LABS_APP_SECRET');
+        $code = $_GET['code'];
+        $response = $http->post("https://developer.globelabs.com.ph/oauth/access_token?app_id=" . $app_id . "&app_secret=" . $app_secret . "&code=" . $code);
+    } else {
+        Log::info("can't find number");
     }
 });
 
