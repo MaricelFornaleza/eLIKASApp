@@ -204,3 +204,11 @@ Route::get('admin-token', function () {
     $user = User::where('contact_no', '9772779609')->first();
     return $user->remember_token;
 });
+Route::get('sms/inbound-sms', function () {
+    $data = json_encode($_POST);
+    return redirect()->route('decodesms')->with($data);
+});
+
+Route::prefix('sms')->group(function () {
+    Route::get('/decodesms', 'InboundSmsController@decodesms')->name('decodesms');
+});

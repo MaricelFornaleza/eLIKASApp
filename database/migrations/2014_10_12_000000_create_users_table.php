@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->bigInteger('contact_no')->unique()->nullable();
             $table->string('password');
             $table->string('officer_type');
+            $table->string('globe_labs_access_token')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
