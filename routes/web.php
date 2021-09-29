@@ -209,7 +209,7 @@ Route::get('admin-token', function () {
 });
 Route::post('sms/inbound-sms', function (Request $request) {
     $data = json_encode($request);
-    return redirect()->route('decodesms')->with($data);
+    Log::info($data);
 });
 
 Route::prefix('sms')->group(function () {
@@ -222,7 +222,7 @@ Route::get('send', function () {
     $access_token = $user->globe_labs_access_token;
     $response = $http->post("https://devapi.globelabs.com.ph/smsmessaging/v1/outbound/0098/requests?access_token=" . $access_token, [
         "outboundSMSMessageRequest" => [
-            "address" => 9772779609,
+            "address" => "9772779609",
             "senderAddress" => env('SHORT_CODE_SUFFIX'),
             "clientCorrelator" => env('SHORT_CODE'),
             "outboundSMSTextMessage" => ["message" => "Text received"],
