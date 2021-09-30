@@ -221,7 +221,7 @@ Route::get('access-token/{number}', function ($number) {
 });
 Route::post('sms/inbound-sms', function () {
     if (isset($_POST) && $_POST != "") {
-        $data = $_POST;
+        $data = json_encode($_POST);
         Log::info($data);
         return response($data);
     } else {
