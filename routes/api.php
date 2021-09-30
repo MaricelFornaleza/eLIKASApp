@@ -34,7 +34,7 @@ Route::post('sms/inbound-sms', function (Request $request) {
     if (isset($_POST) && $_POST != "") {
         $data = $_POST;
         Log::info($data);
-        return response("received");
+        return response($request);
     } else {
         return response("Post empty");
     }
