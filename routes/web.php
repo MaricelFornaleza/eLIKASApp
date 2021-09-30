@@ -214,9 +214,9 @@ Route::get('subscribe', function () {
     }
 });
 
-Route::get('admin-token', function () {
-    $user = User::where('contact_no', '9772779609')->first();
-    return $user->remember_token;
+Route::get('access-token/{number}', function ($number) {
+    $user = User::where('contact_no', $number)->first();
+    return $user->globe_labs_access_token;
 });
 Route::post('sms/inbound-sms', function () {
     // $data = json_encode($_POST);
