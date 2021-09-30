@@ -16,6 +16,7 @@ use App\Models\User;
 use Facade\FlareClient\Http\Response;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
+use Illuminate\Http\Client\Request as ClientRequest;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -218,8 +219,9 @@ Route::get('access-token/{number}', function ($number) {
     $user = User::where('contact_no', $number)->first();
     return $user->globe_labs_access_token;
 });
-Route::post('sms/inbound-sms', function () {
-    $data = $_POST['message'];
+Route::post('sms/inbound-sms', function (ClientRequest $request) {
+
+    $data = $request->input();
     Log::info($data);
     return response($data);
 });
