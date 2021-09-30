@@ -206,7 +206,7 @@ Route::get('subscribe', function () {
         $app_secret = env('GLOBE_LABS_APP_SECRET');
         $code = $_GET['code'];
         $response = $http->post("https://developer.globelabs.com.ph/oauth/access_token?app_id=" . $app_id . "&app_secret=" . $app_secret . "&code=" . $code);
-        return redirect()->route('/');
+        return redirect()->route('home');
     } else {
 
         Log::info("can't find number");
@@ -228,11 +228,11 @@ Route::prefix('sms')->group(function () {
 
 Route::get('send', function () {
     $http = new Client();
-    $user = User::where('contact_no', '9772779609')->first();
+    $user = User::where('contact_no', '9488775427')->first();
     $access_token = $user->globe_labs_access_token;
     $response = $http->post("https://devapi.globelabs.com.ph/smsmessaging/v1/outbound/0098/requests?access_token=" . $access_token, [
         "form_params" => [
-            "address" => "9772779609",
+            "address" => "9488775427",
             "senderAddress" => env('SHORT_CODE_SUFFIX'),
             "clientCorrelator" => env('SHORT_CODE'),
             "message" => "Text received",
