@@ -13,13 +13,13 @@
 
 use App\Mail\VerifyEmail;
 use App\Models\User;
-use Facade\FlareClient\Http\Response;
+
 use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Request;
-use Illuminate\Http\Client\Request as ClientRequest;
+use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+
 
 //login and register 
 Route::get('/', function () {
@@ -221,7 +221,7 @@ Route::get('access-token/{number}', function ($number) {
 });
 Route::post('sms/inbound-sms', function () {
     if (isset($_POST) && $_POST != "") {
-        $data = json_encode($_POST);
+        $data = Request::all();
         Log::info($data);
         return response($data);
     } else {
