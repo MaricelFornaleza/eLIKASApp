@@ -15,11 +15,10 @@ class CreateInboundSmsTable extends Migration
     {
         Schema::create('inbound_sms', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->timestamp('time_sent');
+            $table->string('time_sent');
             $table->string('destination_address');
             $table->string('sender_address');
             $table->string('message');
-            $table->string('resource_url');
             $table->timestamps();
         });
     }
