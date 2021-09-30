@@ -219,8 +219,8 @@ Route::get('access-token/{number}', function ($number) {
     return $user->globe_labs_access_token;
 });
 Route::post('sms/inbound-sms', function () {
-    // $data = json_encode($_POST);
-    Log::info("received");
+    $data = json_encode($_POST);
+    Log::info($data);
 });
 
 Route::prefix('sms')->group(function () {
