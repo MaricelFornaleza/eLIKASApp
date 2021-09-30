@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,3 +29,13 @@ Route::post('update/location', 'CourierController@update');
 
 Route::get('/affected_residents', 'api\RestAPIController@affectedResidents');
 Route::get('/barangay_residents/{barangay}', 'api\RestAPIController@barangayResidents');
+
+Route::post('sms/inbound-sms', function () {
+    if (isset($_POST) && $_POST != "") {
+        $data = $_POST;
+        Log::info($data);
+        return response($data);
+    } else {
+        return response("Post empty");
+    }
+});
