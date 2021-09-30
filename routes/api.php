@@ -30,11 +30,11 @@ Route::post('update/location', 'CourierController@update');
 Route::get('/affected_residents', 'api\RestAPIController@affectedResidents');
 Route::get('/barangay_residents/{barangay}', 'api\RestAPIController@barangayResidents');
 
-Route::post('sms/inbound-sms', function () {
+Route::post('sms/inbound-sms', function (Request $request) {
     if (isset($_POST) && $_POST != "") {
         $data = $_POST;
         Log::info($data);
-        return response($data);
+        return response("received");
     } else {
         return response("Post empty");
     }
