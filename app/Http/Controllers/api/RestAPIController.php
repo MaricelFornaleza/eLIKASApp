@@ -44,10 +44,10 @@ class RestAPIController extends Controller
             $inboundSMSMessage = $request['inboundSMSMessageList']['inboundSMSMessage'];
 
             $inboundsms = InboundSms::create([
-                'time_sent' => $inboundSMSMessage['dateTime'],
-                'destination_address' => substr($inboundSMSMessage['destinationAddress'], 8),
-                'message' => $inboundSMSMessage['message'],
-                'sender_address' => substr($inboundSMSMessage['senderAddress'], 10),
+                'time_sent' => $inboundSMSMessage[0]['dateTime'],
+                'destination_address' => substr($inboundSMSMessage[0]['destinationAddress'], 8),
+                'message' => $inboundSMSMessage[0]['message'],
+                'sender_address' => substr($inboundSMSMessage[0]['senderAddress'], 10),
                 'resource_url' => "null",
 
             ]);
