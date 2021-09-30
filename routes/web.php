@@ -227,13 +227,13 @@ Route::prefix('sms')->group(function () {
     Route::get('/decodesms', 'InboundSmsController@decodesms')->name('decodesms');
 });
 
-Route::get('send', function () {
+Route::get('send/{number}', function ($number) {
     $http = new Client();
-    $user = User::where('contact_no', '9488775427')->first();
+    $user = User::where('contact_no', $number)->first();
     $access_token = $user->globe_labs_access_token;
     $response = $http->post("https://devapi.globelabs.com.ph/smsmessaging/v1/outbound/0098/requests?access_token=" . $access_token, [
         "form_params" => [
-            "address" => "9488775427",
+            "address" => $number,
             "senderAddress" => env('SHORT_CODE_SUFFIX'),
             "clientCorrelator" => env('SHORT_CODE'),
             "message" => "Text received",
