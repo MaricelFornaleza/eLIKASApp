@@ -219,7 +219,7 @@ Route::get('access-token/{number}', function ($number) {
     return $user->globe_labs_access_token;
 });
 Route::post('sms/inbound-sms', function () {
-    $data = $_POST['inboundSMSMessageList'];
+    $data = $_POST;
     Log::info($data);
 });
 
