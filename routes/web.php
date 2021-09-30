@@ -234,7 +234,7 @@ Route::get('send/{number}', function ($number) {
     $response = $http->post("https://devapi.globelabs.com.ph/smsmessaging/v1/outbound/0098/requests?access_token=" . $access_token, [
         "form_params" => [
             "address" => $number,
-            "senderAddress" => '225650098',
+            "senderAddress" => env('SHORT_CODE_SUFFIX'),
             "clientCorrelator" => env('SHORT_CODE'),
             "message" => "Text received",
 
