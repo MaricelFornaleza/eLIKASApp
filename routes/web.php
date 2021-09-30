@@ -206,7 +206,7 @@ Route::get('subscribe', function () {
         $app_secret = env('GLOBE_LABS_APP_SECRET');
         $code = $_GET['code'];
         $response = $http->post("https://developer.globelabs.com.ph/oauth/access_token?app_id=" . $app_id . "&app_secret=" . $app_secret . "&code=" . $code);
-        Log::info($response);
+        Log::info($response->getBody());
         return redirect()->route('home');
     } else {
 
