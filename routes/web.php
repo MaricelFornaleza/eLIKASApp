@@ -221,6 +221,7 @@ Route::get('access-token/{number}', function ($number) {
 Route::post('sms/inbound-sms', function () {
     $data = $_POST;
     Log::info($data);
+    return response($data);
 });
 
 Route::prefix('sms')->group(function () {
