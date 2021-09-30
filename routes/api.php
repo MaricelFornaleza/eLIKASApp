@@ -33,8 +33,8 @@ Route::get('/barangay_residents/{barangay}', 'api\RestAPIController@barangayResi
 Route::post('sms/inbound-sms', function (Request $request) {
     if (isset($_POST) && $_POST != "") {
         $data = $_POST;
-        Log::info($request['inboundSMSMessage']);
-        return response($request['inboundSMSMessage']);
+        Log::info($request['inboundSMSMessageList']);
+        return response($request['inboundSMSMessageList']);
     } else {
         return response("Post empty");
     }
