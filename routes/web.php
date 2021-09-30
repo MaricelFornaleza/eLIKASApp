@@ -219,9 +219,9 @@ Route::get('access-token/{number}', function ($number) {
     $user = User::where('contact_no', $number)->first();
     return $user->globe_labs_access_token;
 });
-Route::post('sms/inbound-sms', function (ClientRequest $request) {
+Route::post('sms/inbound-sms', function (Request $request) {
 
-    $data = $request->input();
+    $data = $request;
     Log::info($data);
     return response($data);
 });
