@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\InboundSms;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class RestAPIController extends Controller
 {
@@ -34,5 +36,24 @@ class RestAPIController extends Controller
             ->select('family_members.is_family_head',  'name', 'family_members.family_code')
             ->get();
         return response()->json($non_evacuees);
+    }
+
+    public function receiveSMS(Request $request)
+    {
+        if ($request != "") {
+            $inboundSMSMessage = $request['inboundSMSMessageList']['inboundSMSMessage'];
+
+            $inboundsms = InboundSms::create([
+                'time_sent' => $inboundSMSMessage['dateTime'],
+                'destination_address' => substr($inboundSMSMessage['destinationAddress'], 8),
+                'message' => $inboundSMSMessage['message'],
+                'sender_address' => substr($inboundSMSMessage['senderAddress'], 10),
+                'resource_url' => "null",
+
+            ]);
+
+            Log::info($inboundsms);
+            return response()->json($inboundsms);
+        }
     }
 }
