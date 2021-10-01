@@ -107,7 +107,7 @@ class InboundSmsController extends Controller
         $this_rr = ReliefRecipient::where('family_code', $message[3])
             ->where('disaster_response_id', $message[2])->first();
 
-        $user = User::where('id', $message[1]);
+        $user = User::where('id', $message[1])->first();
 
         $relief_good = new ReliefGood();
         $relief_good->field_officer_id              = $user->id;
