@@ -160,7 +160,7 @@ class InboundSmsController extends Controller
         $user = User::where('id', $message[1])->first();
 
         $delivery_request = DeliveryRequest::create([
-            'disaster_response_id'          => $message[0],
+            'disaster_response_id'          => $message[2],
             'camp_manager_id'               => $user->id,
             'date'                          => now(),
             'food_packs'                    => $message[3],
