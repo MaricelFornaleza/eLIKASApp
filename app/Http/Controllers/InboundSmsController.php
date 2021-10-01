@@ -69,10 +69,14 @@ class InboundSmsController extends Controller
                 }
             }
         }
-        return response()->json($families);
+        $reply = "Residents admitted successfully!";
+
+        return (new OutboundSmsController)->successSms($sender, $reply);
     }
     public function discharge($sender, $message)
     {
+        $reply = "Residents admitted successfully!";
+
         return (new OutboundSmsController)->successSms($sender, $message);
     }
     public function dispense($sender, $message)
