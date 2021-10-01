@@ -272,7 +272,7 @@ class InboundSmsController extends Controller
         } else if ($user->officer_type == "Barangay Captain") {
             $barangay = BarangayCaptain::where('user_id', $user->id)->select('barangay')->first();
             $bc_inventory = Inventory::where('user_id', $user->id)->first();
-            $reply = "Barangay " . $barangay
+            $reply = "Barangay " . $barangay->barangay
                 . "\nClothes: " . $bc_inventory->total_no_of_clothes
                 . "\nESA: " . $bc_inventory->total_no_of_emergency_shelter_assistance
                 . "\nFood Packs: " . $bc_inventory->total_no_of_food_packs
