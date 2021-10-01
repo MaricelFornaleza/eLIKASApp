@@ -20,7 +20,7 @@ class InboundSmsController extends Controller
         ];
         switch ($message[0]) {
             case 'admit':
-                return redirect()->route('admit', [$data]);
+                return redirect()->route('admit')->with($data);
                 break;
             case 'discharge':
                 # code...
@@ -48,7 +48,7 @@ class InboundSmsController extends Controller
                 break;
         };
     }
-    public function admit($data)
+    public function admit()
     {
         return response("admit success");
     }

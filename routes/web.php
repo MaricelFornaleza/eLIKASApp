@@ -197,7 +197,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
 Route::prefix('sms')->group(function () {
     Route::get('/decodesms/{id}', 'InboundSmsController@decodesms')->name('decodesms');
-    Route::get('/admit/{data}', 'InboundSmsController@admit')->name('admit');
+    Route::get('/admit', 'InboundSmsController@admit')->name('admit');
     Route::get('/discharge/{data}', 'InboundSmsController@discharge')->name('discharge');
     Route::get('/dispense/{data}', 'InboundSmsController@dispense')->name('dispense');
     Route::get('/request/{data}', 'InboundSmsController@request')->name('request');
