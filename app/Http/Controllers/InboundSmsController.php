@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 
 class InboundSmsController extends Controller
 {
-    public function decodesms()
+    public function decodesms($id)
     {
         return response("success");
     }
