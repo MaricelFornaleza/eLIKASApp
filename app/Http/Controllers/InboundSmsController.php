@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\InboundSms;
 use App\Models\User;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
@@ -11,7 +12,10 @@ class InboundSmsController extends Controller
 {
     public function decodesms($id)
     {
-        return response("success");
+        $sms = InboundSms::where('id', $id)->first();
+        $message = explode(',', $sms->message);
+
+        return response()->json($message);
     }
     public function admit($data)
     {
