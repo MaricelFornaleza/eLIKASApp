@@ -14,8 +14,15 @@ class InboundSmsController extends Controller
     {
         $sms = InboundSms::where('id', $id)->first();
         $message = explode(',', $sms->message);
+        switch ($message[0]) {
+            case 'admit':
+                return response()->json($message);
+                break;
 
-        return response()->json($message);
+            default:
+                # code...
+                break;
+        };
     }
     public function admit($data)
     {
