@@ -14,6 +14,7 @@ use App\Models\InboundSms;
 use App\Models\Inventory;
 use App\Models\ReliefGood;
 use App\Models\ReliefRecipient;
+use App\Models\Supply;
 use App\Models\User;
 
 class InboundSmsController extends Controller
@@ -241,7 +242,7 @@ class InboundSmsController extends Controller
             . "\nPWD: " . $pwd
             . "\nPregnant: " . $pregnant
             . "\nSenior Citizen: " . $senior_citizen
-            . "\nSolo Parent" . $solo_parent;
+            . "\nSolo Parent: " . $solo_parent;
         return (new OutboundSmsController)->reply($sender, $reply);
     }
     public function viewSupply($sender, $message)
@@ -334,12 +335,49 @@ class InboundSmsController extends Controller
             . "\nPWD: " . $pwd
             . "\nPregnant: " . $pregnant
             . "\nSenior Citizen: " . $senior_citizen
-            . "\nSolo Parent" . $solo_parent;
+            . "\nSolo Parent: " . $solo_parent;
         return (new OutboundSmsController)->reply($sender, $reply);
     }
     public function addSupply($sender, $message)
     {
-        return;
+        $user  = User::where('contact_no', $sender)->first();
+        $user_inventory_id = User::find($user->id)->user_inventory->id;
+        $user_inventory_prev_stock = $user->user_inventory()->first();
+        if ($message[2] == 'Food Packs') {
+            $user->user_inventory()->update([
+                'total_no_of_food_packs'                    => ($user_inventory_prev_stock->total_no_of_food_packs + $message[3]),
+            ]);
+        } else if ($message[2] == 'Water') {
+            $user->user_inventory()->update([
+                'total_no_of_water'                         => ($user_inventory_prev_stock->total_no_of_water + $message[3]),
+            ]);
+        } else if ($message[2] == 'Hygiene Kit') {
+            $user->user_inventory()->update([
+                'total_no_of_hygiene_kit'                   => ($user_inventory_prev_stock->total_no_of_hygiene_kit + $message[3]),
+            ]);
+        } else if ($message[2] == 'Medicine') {
+            $user->user_inventory()->update([
+                'total_no_of_medicine'                      => ($user_inventory_prev_stock->total_no_of_medicine + $message[3]),
+            ]);
+        } else if ($message[2] == 'Clothes') {
+            $user->user_inventory()->update([
+                'total_no_of_clothes'                       => ($user_inventory_prev_stock->total_no_of_clothes + $message[3]),
+            ]);
+        } else if ($message[2] == 'ESA') {
+            $user->user_inventory()->update([
+                'total_no_of_emergency_shelter_assistance'  => ($user_inventory_prev_stock->total_no_of_emergency_shelter_assistance + $message[3]),
+            ]);
+        }
+
+        $supply = new Supply();
+        $supply->inventory_id     = $user_inventory_id;
+        $supply->date   = now()->format('F j, Y');
+        $supply->supply_type   = $message[2];
+        $supply->quantity = $message[3];
+        $supply->source = $message[4];
+        $supply->save();
+        $reply = "Supply added succesfully";
+        return (new OutboundSmsController)->reply($sender, $reply);
     }
     public function cancelRequest($sender, $message)
     {
@@ -347,8 +385,8 @@ class InboundSmsController extends Controller
         $delivery_request = DeliveryRequest::where('id', '=', $message[1])->first();
         $delivery_request->status = 'cancelled';
         $delivery_request->save();
-
-        return response("cancelled");
+        $reply = "Request with no. " . $delivery_request->id . " was cancelled successfully.";
+        return (new OutboundSmsController)->reply($sender, $reply);
     }
     public function acceptRequest($sender, $message)
     {
