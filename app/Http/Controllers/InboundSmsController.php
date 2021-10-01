@@ -199,7 +199,7 @@ class InboundSmsController extends Controller
     }
     public function cancelRequest($sender, $message)
     {
-        $user = User::where('contact_no', $sender)->get();
+        $user = User::where('contact_no', $sender)->first();
         $delivery_request = DeliveryRequest::where('camp_manager_id', '=', $user->id)->orderBy('created_at', 'desc')->first();
         $delivery_request->status = 'cancelled';
         $delivery_request->save();
