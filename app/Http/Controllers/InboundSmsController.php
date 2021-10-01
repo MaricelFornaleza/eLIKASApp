@@ -18,7 +18,7 @@ class InboundSmsController extends Controller
     public function decodesms($id)
     {
         $sms = InboundSms::where('id', $id)->first();
-        if (substr($sms->message, -6) == "cancel") {
+        if (substr($sms->message, 0, 6) == "cancel") {
             $message = explode(' ', $sms->message);
         } else {
             $message = explode(',', $sms->message);
