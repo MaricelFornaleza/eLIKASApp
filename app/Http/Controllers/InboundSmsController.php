@@ -50,7 +50,7 @@ class InboundSmsController extends Controller
     public function admit($sender, $message)
     {
         $evac_center = EvacuationCenter::where('camp_manager_id', $message[1])->first();
-        $names = ReliefRecipient::whereIn('name', $message)->get();
+        $names = ReliefRecipient::whereIn('family_code', $message)->get();
         return response()->json($names);
     }
     public function discharge($sender, $message)
