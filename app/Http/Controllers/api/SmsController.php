@@ -22,7 +22,7 @@ class SmsController extends Controller
                 'sender_address' => substr($inboundSMSMessage[0]['senderAddress'], -10),
 
             ]);
-            return response()->route('decodesms', $inboundsms->id);
+            return redirect()->route('decodesms', $inboundsms->id);
         }
     }
     public function subscribe()
