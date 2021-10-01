@@ -38,6 +38,6 @@ class OutboundSmsController extends Controller
 
             ]
         ]);
-        return response("success");
+        return response()->json($response);
     }
 }
