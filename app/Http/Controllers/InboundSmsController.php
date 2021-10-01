@@ -18,7 +18,12 @@ class InboundSmsController extends Controller
     public function decodesms($id)
     {
         $sms = InboundSms::where('id', $id)->first();
-        $message = explode(',', $sms->message);
+        if (substr($sms->message, -6) == "cancel") {
+            $message = explode(' ', $sms->message);
+        } else {
+            $message = explode(',', $sms->message);
+        }
+
         $sender = $sms->sender_address;
         switch ($message[0]) {
             case 'admit':
@@ -178,7 +183,7 @@ class InboundSmsController extends Controller
         ]);
         $update_requests = new UpdateRequests;
         $update_requests->refreshList();
-        $reply = "Request " . $delivery_request->id . ": \n\nYour request is pending. Reply 'cancel' to this message if you want to cancel the request or reply 'accept' when you received the delivery.";
+        $reply = "Request " . $delivery_request->id . ": \n\nYour request is pending. Reply 'cancel <SPACE><REQUEST ID>' to this message if you want to cancel the request or reply 'accept <SPACE><REQUEST ID>' when you received the delivery.";
         return (new OutboundSmsController)->requestReply($sender, $reply);
     }
     public function viewEvacuees($sender, $message)
@@ -199,11 +204,11 @@ class InboundSmsController extends Controller
     }
     public function cancelRequest($sender, $message)
     {
-        $user = User::where('contact_no', $sender)->first();
-        $delivery_request = DeliveryRequest::all();
-        // $delivery_request->status = 'cancelled';
-        // $delivery_request->save();
 
-        return response()->json($delivery_request);
+        $delivery_request = DeliveryRequest::where('id', '=', $message[1])->first();
+        $delivery_request->status = 'cancelled';
+        $delivery_request->save();
+
+        return response("cancelled");
     }
 }
