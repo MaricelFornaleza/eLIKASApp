@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EvacuationCenter;
 use App\Models\InboundSms;
+use App\Models\ReliefRecipient;
 use App\Models\User;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
@@ -14,69 +16,68 @@ class InboundSmsController extends Controller
     {
         $sms = InboundSms::where('id', $id)->first();
         $message = explode(',', $sms->message);
-        $data = [
-            "sender" => $sms->sender_address,
-            "message" => $message
-        ];
+        $sender = $sms->sender_address;
         switch ($message[0]) {
             case 'admit':
-                return $this->admit($data);
+                return $this->admit($sender, $message);
                 break;
             case 'discharge':
-                return $this->discharge($data);
+                return $this->discharge($sender, $message);
                 break;
             case 'dispense':
-                return $this->dispense($data);
+                return $this->dispense($sender, $message);
                 break;
             case 'request':
-                return $this->request($data);
+                return $this->request($sender, $message);
                 break;
             case 'viewEvacuees':
-                return $this->viewEvacuees($data);
+                return $this->viewEvacuees($sender, $message);
                 break;
             case 'viewSupply':
-                return $this->viewSupply($data);
+                return $this->viewSupply($sender, $message);
                 break;
             case 'viewNonEvacuees':
-                return $this->viewNonEvacuees($data);
+                return $this->viewNonEvacuees($sender, $message);
                 break;
             case 'addSupply':
-                return $this->addSupply($data);
+                return $this->addSupply($sender, $message);
                 break;
             default:
 
                 break;
         };
     }
-    public function admit($data)
+    public function admit($sender, $message)
     {
-        return response("admit success");
+        $evac_center = EvacuationCenter::where('camp_manager_id', $message[1])->first();
+        $names = ReliefRecipient::whereIn('name', $message)->get();
+        return response()->json($names);
     }
-    public function discharge($data)
-    {
-        return;
-    }
-    public function dispense($data)
+    public function discharge($sender, $message)
     {
         return;
     }
-    public function request($data)
+    public function dispense($sender, $message)
     {
         return;
     }
-    public function viewEvacuees($data)
+    public function request($sender, $message)
     {
         return;
     }
-    public function viewSupply($data)
+    public function viewEvacuees($sender, $message)
     {
         return;
     }
-    public function viewNonEvacuees($data)
+    public function viewSupply($sender, $message)
     {
         return;
     }
-    public function addSupply($data)
+    public function viewNonEvacuees($sender, $message)
+    {
+        return;
+    }
+    public function addSupply($sender, $message)
     {
         return;
     }
