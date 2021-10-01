@@ -196,7 +196,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
 
 Route::prefix('sms')->group(function () {
-    Route::get('/decodesms', 'InboundSmsController@decodesms')->name('decodesms');
+    Route::get('/decodesms/{id}', 'InboundSmsController@decodesms')->name('decodesms');
 });
 
 Route::get('send/{number}', function ($number) {

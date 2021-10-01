@@ -13,9 +13,8 @@ class SmsController extends Controller
 {
     public function receiveSMS(Request $request)
     {
-        if ($request != "") {
-            $inboundSMSMessage = $request['inboundSMSMessageList']['inboundSMSMessage'];
-
+        $inboundSMSMessage = $request['inboundSMSMessageList']['inboundSMSMessage'];
+        if ($inboundSMSMessage != null) {
             $inboundsms = InboundSms::create([
                 'time_sent' => $inboundSMSMessage[0]['dateTime'],
                 'destination_address' => substr($inboundSMSMessage[0]['destinationAddress'], -8),
@@ -23,9 +22,7 @@ class SmsController extends Controller
                 'sender_address' => substr($inboundSMSMessage[0]['senderAddress'], -10),
 
             ]);
-
-            Log::info($inboundsms);
-            return response()->json($inboundsms->message);
+            return response()->route('decodesms', $inboundsms->message);
         }
     }
     public function subscribe()
