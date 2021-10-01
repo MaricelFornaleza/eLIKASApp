@@ -153,12 +153,12 @@ class InboundSmsController extends Controller
             ]);
         }
 
-        return response("success");
+        return response($user->officer_type);
     }
     public function request($sender, $message)
     {
         $user = User::where('id', $message[1])->first();
-        $evacuation_center = EvacuationCenter::where('camp_manager_id', '=', $user->id)->first();
+
         $delivery_request = DeliveryRequest::create([
             'disaster_response_id'          => $message[0],
             'camp_manager_id'               => $user->id,
