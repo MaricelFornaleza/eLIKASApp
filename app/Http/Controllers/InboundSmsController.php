@@ -20,7 +20,7 @@ class InboundSmsController extends Controller
         ];
         switch ($message[0]) {
             case 'admit':
-                return redirect()->route('admit', $data);
+                return redirect()->route('admit', [$data]);
                 break;
             case 'discharge':
                 # code...
