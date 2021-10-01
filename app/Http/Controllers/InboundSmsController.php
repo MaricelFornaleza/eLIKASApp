@@ -51,34 +51,29 @@ class InboundSmsController extends Controller
     }
     public function admit($sender, $message)
     {
-        $user = User::where('contact_no', $sender)->first();
-        if ($user != null) {
-            $evac_center = EvacuationCenter::where('camp_manager_id', $user->id)->first();
-            $families = ReliefRecipient::whereIn('family_code', $message)->get();
-            foreach ($families as $family) {
-                $relief_recipient = ReliefRecipient::find($family->id);
-                $relief_recipient->recipient_type = 'Evacuee';
-                $relief_recipient->save();
+        $evac_center = EvacuationCenter::where('camp_manager_id', $message[1])->first();
+        $families = ReliefRecipient::whereIn('family_code', $message)->get();
+        foreach ($families as $family) {
+            $relief_recipient = ReliefRecipient::find($family->id);
+            $relief_recipient->recipient_type = 'Evacuee';
+            $relief_recipient->save();
 
-                $checkIf_DR_IsEnded = DisasterResponse::where('id', $relief_recipient->disaster_response_id)->first();
-                $checkIfExistsInEvacuee = Evacuee::where('relief_recipient_id', $relief_recipient->id)->first();
-                if ($checkIf_DR_IsEnded->date_ended == null) {
-                    if ($checkIfExistsInEvacuee == null) {
-                        $evacuee = new Evacuee();
-                        $evacuee->relief_recipient_id = $relief_recipient->id;
-                        $evacuee->date_admitted = now();
-                        $evacuee->evacuation_center_id = $evac_center->id;
-                        $evacuee->save();
-                    } else {
-                        $checkIfExistsInEvacuee->date_discharged = null;
-                        $checkIfExistsInEvacuee->save();
-                    }
+            $checkIf_DR_IsEnded = DisasterResponse::where('id', $relief_recipient->disaster_response_id)->first();
+            $checkIfExistsInEvacuee = Evacuee::where('relief_recipient_id', $relief_recipient->id)->first();
+            if ($checkIf_DR_IsEnded->date_ended == null) {
+                if ($checkIfExistsInEvacuee == null) {
+                    $evacuee = new Evacuee();
+                    $evacuee->relief_recipient_id = $relief_recipient->id;
+                    $evacuee->date_admitted = now();
+                    $evacuee->evacuation_center_id = $evac_center->id;
+                    $evacuee->save();
+                } else {
+                    $checkIfExistsInEvacuee->date_discharged = null;
+                    $checkIfExistsInEvacuee->save();
                 }
             }
-            return response()->json($families);
-        } else {
-            return response("Unsubscribed Number");
         }
+        return response()->json($families);
     }
     public function discharge($sender, $message)
     {
