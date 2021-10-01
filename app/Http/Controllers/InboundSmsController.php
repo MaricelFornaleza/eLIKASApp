@@ -54,7 +54,7 @@ class InboundSmsController extends Controller
         $evac_center = EvacuationCenter::where('camp_manager_id', $message[1])->first();
         $families = ReliefRecipient::whereIn('family_code', $message)->get();
         foreach ($families as $family) {
-            $relief_recipient = ReliefRecipient::find($family);
+            $relief_recipient = ReliefRecipient::find($family->id);
             $relief_recipient->recipient_type = 'Evacuee';
             $relief_recipient->save();
 
