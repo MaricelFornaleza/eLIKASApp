@@ -91,9 +91,9 @@ class InboundSmsController extends Controller
                     $evacuee = Evacuee::find($findEvacuee->id);
                     $evacuee->date_discharged = now();
                     $evacuee->save();
-                    $reply = "Residents discharged successfully!";
                 }
             }
+            $reply = "Residents discharged successfully!";
         } else {
             $reply = "Request unsuccessful.";
         }
