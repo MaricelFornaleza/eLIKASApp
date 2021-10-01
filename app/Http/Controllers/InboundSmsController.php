@@ -269,7 +269,7 @@ class InboundSmsController extends Controller
                 . "\nMedicine: " . $stock_level->medicine
                 . "\nWater: " . $stock_level->water;
         } else if ($user->officer_type == "Barangay Captain") {
-            $barangay = BarangayCaptain::where('id', $user->id)->select('barangay')->first();
+            $barangay = BarangayCaptain::where('user_id', $user->id)->select('barangay')->first();
             $bc_inventory = Inventory::where('user_id', $user->id)->first();
             $reply = "Barangay " . $barangay
                 . "\nClothes: " . $bc_inventory->total_no_of_clothes
@@ -283,7 +283,59 @@ class InboundSmsController extends Controller
     }
     public function viewNonEvacuees($sender, $message)
     {
-        return;
+        $user = User::where('id', $message[1])->first();
+        $barangay_captain =  BarangayCaptain::where('user_id', $user->id)->first();
+
+        $female = 0;
+        $male = 0;
+        $children = 0;
+        $lactating = 0;
+        $pwd = 0;
+        $pregnant = 0;
+        $senior_citizen  = 0;
+        $solo_parent = 0;
+        $evacuees = FamilyMember::leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
+            ->leftJoin('disaster_responses', 'relief_recipients.disaster_response_id', '=', 'disaster_responses.id')
+            ->whereNotNull('family_members.family_code')
+            ->where('family_members.barangay', $barangay_captain->barangay)
+            ->where('relief_recipients.recipient_type', 'Evacuee')
+            ->whereNull('disaster_responses.date_ended')
+            ->select('name')
+            ->get();
+        $evac_names = [];
+        foreach ($evacuees as $name) {
+            $evac_names[] = array_push($evac_names, $name->name);
+        }
+        $non_evacuees = FamilyMember::where('barangay', $barangay_captain->barangay)
+            ->whereNotNull('family_members.family_code')
+            ->whereNotIn('name', $evac_names)
+            ->get();
+
+        $family_members = FamilyMember::where('barangay', $barangay_captain->barangay)
+            ->whereNotNull('family_members.family_code')->get();
+        if ($non_evacuees != null) {
+            $female = $female + $non_evacuees->where('gender', 'Female')->count();
+            $male = $male + $non_evacuees->where('gender', 'Male')->count();
+            $children = $children + $non_evacuees->where('sectoral_classification', 'Children')->count();
+            $lactating = $lactating + $non_evacuees->where('sectoral_classification', 'Lactating')->count();
+            $pwd = $pwd + $non_evacuees->where('sectoral_classification', 'Person with Disability')->count();
+            $pregnant = $pregnant + $non_evacuees->where('sectoral_classification', 'Pregnant')->count();
+            $senior_citizen  = $senior_citizen + $non_evacuees->where('sectoral_classification', 'Senior Citizen')->count();
+            $solo_parent = $solo_parent + $non_evacuees->where('sectoral_classification', 'Solo Parent')->count();
+        }
+        $reply = "Barangay " . $barangay_captain->barangay
+            . " Non-evacuees Record"
+            . "\n\nTotal Residents: " . $family_members->count()
+            . "\nFemale: " . $female
+            . "\nMale: " . $male
+            . "\n\nSectoral Breakdown: "
+            . "\nChildren: " . $children
+            . "\nLactating: " . $lactating
+            . "\nPWD: " . $pwd
+            . "\nPregnant: " . $pregnant
+            . "\nSenior Citizen: " . $senior_citizen
+            . "\nSolo Parent" . $solo_parent;
+        return (new OutboundSmsController)->reply($sender, $reply);
     }
     public function addSupply($sender, $message)
     {
