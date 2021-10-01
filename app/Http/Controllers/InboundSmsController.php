@@ -6,7 +6,9 @@ use App\Models\DisasterResponse;
 use App\Models\EvacuationCenter;
 use App\Models\Evacuee;
 use App\Models\InboundSms;
+use App\Models\ReliefGood;
 use App\Models\ReliefRecipient;
+use App\Models\User;
 
 class InboundSmsController extends Controller
 {
@@ -102,7 +104,35 @@ class InboundSmsController extends Controller
     }
     public function dispense($sender, $message)
     {
-        return;
+        $this_rr = ReliefRecipient::where('family_code', $message[3])
+            ->where('disaster_response_id', $message[2])->first();
+
+        $user = User::where('id', $message[1]);
+
+        $relief_good = new ReliefGood();
+        $relief_good->field_officer_id              = $user->id;
+        $relief_good->disaster_response_id          = $message[2];
+        $relief_good->relief_recipient_id           = $this_rr->id;
+        $relief_good->date                          = now();
+        $relief_good->food_packs                    = $message[4];
+        $relief_good->water                         = $message[5];
+        $relief_good->hygiene_kit                   = $message[6];
+        $relief_good->medicine                      = $message[7];
+        $relief_good->clothes                       = $message[8];
+        $relief_good->emergency_shelter_assistance  = $message[9];
+        $relief_good->save();
+
+        $evacuation_center = EvacuationCenter::where('camp_manager_id', '=', $user->id)->first();
+        $prev_stock = $evacuation_center->stock_level()->first();
+        $evacuation_center->stock_level()->update([
+            'food_packs'                    => ($prev_stock->food_packs - $relief_good->food_packs),
+            'water'                         => ($prev_stock->water - $relief_good->water),
+            'hygiene_kit'                   => ($prev_stock->hygiene_kit - $relief_good->hygiene_kit),
+            'medicine'                      => ($prev_stock->medicine - $relief_good->medicine),
+            'clothes'                       => ($prev_stock->clothes - $relief_good->clothes),
+            'emergency_shelter_assistance'  => ($prev_stock->emergency_shelter_assistance - $relief_good->emergency_shelter_assistance),
+        ]);
+        return response("success");
     }
     public function request($sender, $message)
     {
