@@ -14,11 +14,35 @@ class InboundSmsController extends Controller
     {
         $sms = InboundSms::where('id', $id)->first();
         $message = explode(',', $sms->message);
+        $data = [
+            "sender" => $sms->sender_address,
+            "message" => $message
+        ];
         switch ($message[0]) {
             case 'admit':
+                return redirect()->route('admit', $data);
+                break;
+            case 'discharge':
+                # code...
+                break;
+            case 'dispense':
+                # code...
+                break;
+            case 'request':
+                # code...
+                break;
+            case 'viewEvacuees':
                 return response()->json($message);
                 break;
-
+            case 'viewSupply':
+                # code...
+                break;
+            case 'viewNonEvacuees':
+                return response()->json($message);
+                break;
+            case 'addSupply':
+                # code...
+                break;
             default:
                 # code...
                 break;
@@ -26,7 +50,7 @@ class InboundSmsController extends Controller
     }
     public function admit($data)
     {
-        # code...
+        return response("admit success");
     }
     public function discharge($data)
     {
