@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\CustomClasses\UpdateRequests;
+use App\Models\BarangayCaptain;
 use App\Models\DeliveryRequest;
 use App\Models\DisasterResponse;
 use App\Models\EvacuationCenter;
@@ -95,7 +96,7 @@ class InboundSmsController extends Controller
             $reply = "Request unsuccessful.";
         }
 
-        return (new OutboundSmsController)->successSms($sender, $reply);
+        return (new OutboundSmsController)->reply($sender, $reply);
     }
     public function discharge($sender, $message)
     {
@@ -118,7 +119,7 @@ class InboundSmsController extends Controller
             $reply = "Request unsuccessful.";
         }
 
-        return (new OutboundSmsController)->successSms($sender, $reply);
+        return (new OutboundSmsController)->reply($sender, $reply);
     }
     public function dispense($sender, $message)
     {
@@ -190,7 +191,7 @@ class InboundSmsController extends Controller
         $update_requests = new UpdateRequests;
         $update_requests->refreshList();
         $reply = "Request " . $delivery_request->id . ": \n\nYour request is pending. Reply 'cancel <SPACE><REQUEST ID>' to this message if you want to cancel the request or reply 'accept <SPACE><REQUEST ID>' when you received the delivery.";
-        return (new OutboundSmsController)->requestReply($sender, $reply);
+        return (new OutboundSmsController)->reply($sender, $reply);
     }
     public function viewEvacuees($sender, $message)
     {
@@ -229,7 +230,7 @@ class InboundSmsController extends Controller
                 }
             }
         }
-        $reply = now() . "\n" . $evacuation_center->address . " " . $evacuation_center->name
+        $reply = $evacuation_center->address . " " . $evacuation_center->name
             . " Evacuees Record"
             . "\n\nTotal Evacuees: " . $total_number_of_evacuees
             . "\nFemale: " . $female
@@ -241,11 +242,44 @@ class InboundSmsController extends Controller
             . "\nPregnant: " . $pregnant
             . "\nSenior Citizen: " . $senior_citizen
             . "\nSolo Parent" . $solo_parent;
-        return (new OutboundSmsController)->evacueesReply($sender, $reply);
+        return (new OutboundSmsController)->reply($sender, $reply);
     }
     public function viewSupply($sender, $message)
     {
-        return;
+        $user = User::where('id', $message[1])->first();
+        if ($user->officer_type == "Camp Manager") {
+            $evacuation_center = EvacuationCenter::where('camp_manager_id', '=', $user->id)->first();
+
+            $evacuees = Evacuee::where('evacuation_center_id', $evacuation_center->id)->get();
+            $total_number_of_evacuees = 0;
+            if ($evacuees != null) {
+
+                foreach ($evacuees as $evacuee) {
+                    $relief_recipient = ReliefRecipient::where('id', $evacuee->relief_recipient_id)->first();
+                    $family = Family::where('family_code', $relief_recipient->family_code)->first();
+                    $total_number_of_evacuees = $total_number_of_evacuees + $family->no_of_members;
+                }
+            }
+            $stock_level = $evacuation_center->stock_level()->first();
+            $reply = $evacuation_center->address . " " . $evacuation_center->name
+                . "\nClothes: " . $stock_level->clothes
+                . "\nESA: " . $stock_level->emergency_shelter_assistance
+                . "\nFood Packs: " . $stock_level->food_packs
+                . "\nHygiene Kit: " . $stock_level->hygiene_kit
+                . "\nMedicine: " . $stock_level->medicine
+                . "\nWater: " . $stock_level->water;
+        } else if ($user->officer_type == "Barangay Captain") {
+            $barangay = BarangayCaptain::where('id', $user->id)->select('barangay')->first();
+            $bc_inventory = Inventory::where('user_id', $user->id)->first();
+            $reply = "Barangay " . $barangay
+                . "\nClothes: " . $bc_inventory->total_no_of_clothes
+                . "\nESA: " . $bc_inventory->total_no_of_emergency_shelter_assistance
+                . "\nFood Packs: " . $bc_inventory->total_no_of_food_packs
+                . "\nHygiene Kit: " . $bc_inventory->total_no_of_hygiene_kit
+                . "\nMedicine: " . $bc_inventory->total_no_of_medicine
+                . "\nWater: " . $bc_inventory->total_no_of_water;
+        }
+        return (new OutboundSmsController)->reply($sender, $reply);
     }
     public function viewNonEvacuees($sender, $message)
     {
