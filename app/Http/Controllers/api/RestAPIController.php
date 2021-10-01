@@ -37,23 +37,4 @@ class RestAPIController extends Controller
             ->get();
         return response()->json($non_evacuees);
     }
-
-    public function receiveSMS(Request $request)
-    {
-        if ($request != "") {
-            $inboundSMSMessage = $request['inboundSMSMessageList']['inboundSMSMessage'];
-
-            $inboundsms = InboundSms::create([
-                'time_sent' => $inboundSMSMessage[0]['dateTime'],
-                'destination_address' => substr($inboundSMSMessage[0]['destinationAddress'], 8),
-                'message' => $inboundSMSMessage[0]['message'],
-                'sender_address' => substr($inboundSMSMessage[0]['senderAddress'], 10),
-                'resource_url' => "null",
-
-            ]);
-
-            Log::info($inboundsms);
-            return response()->json($inboundsms);
-        }
-    }
 }

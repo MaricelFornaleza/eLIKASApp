@@ -195,40 +195,6 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 });
 
 
-
-Route::get('subscribe', function () {
-    if (isset($_GET['access_token']) && $_GET['access_token'] != "") {
-        $user = User::where('contact_no', $_GET['subscriber_number'])->first();
-        $user->globe_labs_access_token = $_GET['access_token'];
-        $user->save();
-    } else if (isset($_GET['code'])) {
-        $http = new Client();
-        $app_id = env('GLOBE_LABS_APP_ID');
-        $app_secret = env('GLOBE_LABS_APP_SECRET');
-        $code = $_GET['code'];
-        $response = $http->post("https://developer.globelabs.com.ph/oauth/access_token?app_id=" . $app_id . "&app_secret=" . $app_secret . "&code=" . $code);
-        Log::info($response->getBody());
-        return redirect()->route('home');
-    } else {
-
-        Log::info("can't find number");
-    }
-});
-
-Route::get('access-token/{number}', function ($number) {
-    $user = User::where('contact_no', $number)->first();
-    return $user->globe_labs_access_token;
-});
-Route::post('sms/inbound-sms', function () {
-    if (isset($_POST) && $_POST != "") {
-        $data = Request::json_decode();;
-        Log::info($data);
-        return response($data);
-    } else {
-        return response("Post empty");
-    }
-});
-
 Route::prefix('sms')->group(function () {
     Route::get('/decodesms', 'InboundSmsController@decodesms')->name('decodesms');
 });
