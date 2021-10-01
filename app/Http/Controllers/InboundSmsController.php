@@ -23,28 +23,28 @@ class InboundSmsController extends Controller
                 return $this->admit($data);
                 break;
             case 'discharge':
-                # code...
+                return $this->discharge($data);
                 break;
             case 'dispense':
-                # code...
+                return $this->dispense($data);
                 break;
             case 'request':
-                # code...
+                return $this->request($data);
                 break;
             case 'viewEvacuees':
-                return response()->json($message);
+                return $this->viewEvacuees($data);
                 break;
             case 'viewSupply':
-                # code...
+                return $this->viewSupply($data);
                 break;
             case 'viewNonEvacuees':
-                return response()->json($message);
+                return $this->viewNonEvacuees($data);
                 break;
             case 'addSupply':
-                # code...
+                return $this->addSupply($data);
                 break;
             default:
-                # code...
+
                 break;
         };
     }
@@ -54,30 +54,30 @@ class InboundSmsController extends Controller
     }
     public function discharge($data)
     {
-        # code...
+        return;
     }
     public function dispense($data)
     {
-        # code...
+        return;
     }
     public function request($data)
     {
-        # code...
+        return;
     }
     public function viewEvacuees($data)
     {
-        # code...
+        return;
     }
     public function viewSupply($data)
     {
-        # code...
+        return;
     }
     public function viewNonEvacuees($data)
     {
-        # code...
+        return;
     }
     public function addSupply($data)
     {
-        # code...
+        return;
     }
 }
