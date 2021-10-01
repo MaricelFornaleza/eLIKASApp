@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\CustomClasses\UpdateRequests;
+use App\Models\DeliveryRequest;
 use App\Models\DisasterResponse;
 use App\Models\EvacuationCenter;
 use App\Models\Evacuee;
 use App\Models\InboundSms;
+use App\Models\Inventory;
 use App\Models\ReliefGood;
 use App\Models\ReliefRecipient;
 use App\Models\User;
@@ -122,21 +125,56 @@ class InboundSmsController extends Controller
         $relief_good->emergency_shelter_assistance  = $message[9];
         $relief_good->save();
 
-        $evacuation_center = EvacuationCenter::where('camp_manager_id', '=', $user->id)->first();
-        $prev_stock = $evacuation_center->stock_level()->first();
-        $evacuation_center->stock_level()->update([
-            'food_packs'                    => ($prev_stock->food_packs - $relief_good->food_packs),
-            'water'                         => ($prev_stock->water - $relief_good->water),
-            'hygiene_kit'                   => ($prev_stock->hygiene_kit - $relief_good->hygiene_kit),
-            'medicine'                      => ($prev_stock->medicine - $relief_good->medicine),
-            'clothes'                       => ($prev_stock->clothes - $relief_good->clothes),
-            'emergency_shelter_assistance'  => ($prev_stock->emergency_shelter_assistance - $relief_good->emergency_shelter_assistance),
-        ]);
+        if ($user->officer_type = "Camp Manager") {
+            $evacuation_center = EvacuationCenter::where('camp_manager_id', '=', $user->id)->first();
+
+            if ($evacuation_center->stock_level() != null) {
+                $prev_stock = $evacuation_center->stock_level()->first();
+                $evacuation_center->stock_level()->update([
+                    'food_packs'                    => ($prev_stock->food_packs - $relief_good->food_packs),
+                    'water'                         => ($prev_stock->water - $relief_good->water),
+                    'hygiene_kit'                   => ($prev_stock->hygiene_kit - $relief_good->hygiene_kit),
+                    'medicine'                      => ($prev_stock->medicine - $relief_good->medicine),
+                    'clothes'                       => ($prev_stock->clothes - $relief_good->clothes),
+                    'emergency_shelter_assistance'  => ($prev_stock->emergency_shelter_assistance - $relief_good->emergency_shelter_assistance),
+                ]);
+            } else {
+                return response("empty stocks");
+            }
+        } else if ($user->officer_type = "Barangay Captain") {
+            $bc_inventory = Inventory::where('user_id', '=', $user->id)->first();
+            $bc_inventory->update([
+                'total_no_of_food_packs'                    => ($bc_inventory->total_no_of_food_packs - $relief_good->food_packs),
+                'total_no_of_water'                         => ($bc_inventory->total_no_of_water - $relief_good->water),
+                'total_no_of_hygiene_kit'                   => ($bc_inventory->total_no_of_hygiene_kit - $relief_good->hygiene_kit),
+                'total_no_of_medicine'                      => ($bc_inventory->total_no_of_medicine - $relief_good->medicine),
+                'total_no_of_clothes'                       => ($bc_inventory->total_no_of_clothes - $relief_good->clothes),
+                'total_no_of_emergency_shelter_assistance'  => ($bc_inventory->total_no_of_emergency_shelter_assistance - $relief_good->emergency_shelter_assistance),
+            ]);
+        }
+
         return response("success");
     }
     public function request($sender, $message)
     {
-        return;
+        $user = User::where('id', $message[1])->first();
+        $evacuation_center = EvacuationCenter::where('camp_manager_id', '=', $user->id)->first();
+        $delivery_request = DeliveryRequest::create([
+            'disaster_response_id'          => $message[0],
+            'camp_manager_id'               => $user->id,
+            'date'                          => now(),
+            'food_packs'                    => $message[3],
+            'water'                         => $message[4],
+            'hygiene_kit'                   => $message[5],
+            'medicine'                      => $message[6],
+            'clothes'                       => $message[7],
+            'emergency_shelter_assistance'  => $message[8],
+            'note'                          => $message[9],
+            'status'                        => "pending"
+        ]);
+        $update_requests = new UpdateRequests;
+        $update_requests->refreshList();
+        return response("success");
     }
     public function viewEvacuees($sender, $message)
     {
