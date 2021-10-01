@@ -18,9 +18,9 @@ class SmsController extends Controller
 
             $inboundsms = InboundSms::create([
                 'time_sent' => $inboundSMSMessage[0]['dateTime'],
-                'destination_address' => substr($inboundSMSMessage[0]['destinationAddress'], 8),
+                'destination_address' => substr($inboundSMSMessage[0]['destinationAddress'], -8),
                 'message' => $inboundSMSMessage[0]['message'],
-                'sender_address' => substr($inboundSMSMessage[0]['senderAddress'], 10),
+                'sender_address' => substr($inboundSMSMessage[0]['senderAddress'], -10),
 
             ]);
 
@@ -34,17 +34,9 @@ class SmsController extends Controller
             $user = User::where('contact_no', $_GET['subscriber_number'])->first();
             $user->globe_labs_access_token = $_GET['access_token'];
             $user->save();
-        } else if (isset($_GET['code'])) {
-            $http = new Client();
-            $app_id = env('GLOBE_LABS_APP_ID');
-            $app_secret = env('GLOBE_LABS_APP_SECRET');
-            $code = $_GET['code'];
-            $response = $http->post("https://developer.globelabs.com.ph/oauth/access_token?app_id="
-                . $app_id . "&app_secret=" . $app_secret . "&code=" . $code);
-            return redirect()->route('home');
         } else {
 
-            Log::info("can't find number");
+            Log::info("No access token");
         }
     }
     public function unsubscribe(Request $request)
