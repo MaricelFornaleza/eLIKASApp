@@ -7,10 +7,6 @@ use App\Models\EvacuationCenter;
 use App\Models\Evacuee;
 use App\Models\InboundSms;
 use App\Models\ReliefRecipient;
-use App\Models\User;
-use GuzzleHttp\Client;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class InboundSmsController extends Controller
 {
@@ -77,7 +73,7 @@ class InboundSmsController extends Controller
     }
     public function discharge($sender, $message)
     {
-        return;
+        return (new OutboundSmsController)->successSms($sender, $message);
     }
     public function dispense($sender, $message)
     {

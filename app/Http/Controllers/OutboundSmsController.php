@@ -22,4 +22,8 @@ class OutboundSmsController extends Controller
     {
         # code...
     }
+    public function successSms($sender, $message)
+    {
+        return response("success");
+    }
 }
