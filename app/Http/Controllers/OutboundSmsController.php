@@ -34,10 +34,10 @@ class OutboundSmsController extends Controller
                 "address" => $address,
                 "senderAddress" => env('SHORT_CODE_SUFFIX'),
                 "clientCorrelator" => env('SHORT_CODE'),
-                "message" => $message,
+                "message" => $message . "\n -eLIKAS",
 
             ]
         ]);
-        return response()->json($response);
+        return response($message);
     }
 }
