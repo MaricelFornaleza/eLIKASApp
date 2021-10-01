@@ -125,7 +125,7 @@ class InboundSmsController extends Controller
         $relief_good->emergency_shelter_assistance  = $message[9];
         $relief_good->save();
 
-        if ($user->officer_type = "Camp Manager") {
+        if ($user->officer_type == "Camp Manager") {
             $evacuation_center = EvacuationCenter::where('camp_manager_id', '=', $user->id)->first();
 
             if ($evacuation_center->stock_level() != null) {
@@ -141,7 +141,7 @@ class InboundSmsController extends Controller
             } else {
                 return response("empty stocks");
             }
-        } else if ($user->officer_type = "Barangay Captain") {
+        } else if ($user->officer_type == "Barangay Captain") {
             $bc_inventory = Inventory::where('user_id', '=', $user->id)->first();
             $bc_inventory->update([
                 'total_no_of_food_packs'                    => ($bc_inventory->total_no_of_food_packs - $relief_good->food_packs),
