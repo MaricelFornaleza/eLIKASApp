@@ -7,6 +7,8 @@ use App\Models\DeliveryRequest;
 use App\Models\DisasterResponse;
 use App\Models\EvacuationCenter;
 use App\Models\Evacuee;
+use App\Models\Family;
+use App\Models\FamilyMember;
 use App\Models\InboundSms;
 use App\Models\Inventory;
 use App\Models\ReliefGood;
@@ -19,6 +21,8 @@ class InboundSmsController extends Controller
     {
         $sms = InboundSms::where('id', $id)->first();
         if (substr($sms->message, 0, 6) == "cancel") {
+            $message = explode(' ', $sms->message);
+        } else if (substr($sms->message, 0, 6) == "accept") {
             $message = explode(' ', $sms->message);
         } else {
             $message = explode(',', $sms->message);
@@ -52,7 +56,9 @@ class InboundSmsController extends Controller
                 break;
             case 'cancel':
                 return $this->cancelRequest($sender, $message);
-                # code...
+                break;
+            case 'accept':
+                return $this->acceptRequest($sender, $message);
                 break;
             default:
 
@@ -188,7 +194,54 @@ class InboundSmsController extends Controller
     }
     public function viewEvacuees($sender, $message)
     {
-        return;
+
+        $evacuation_center = EvacuationCenter::where('camp_manager_id', '=', $message[1])->first();
+        $evacuees = Evacuee::where('evacuation_center_id', $evacuation_center->id)->whereNull('date_discharged')->get();
+        $total_number_of_evacuees = 0;
+        if ($evacuees != null) {
+            $family_codes =  array();
+            $female = 0;
+            $male = 0;
+            $children = 0;
+            $lactating = 0;
+            $pwd = 0;
+            $pregnant = 0;
+            $senior_citizen  = 0;
+            $solo_parent = 0;
+
+            foreach ($evacuees as $evacuee) {
+                $relief_recipient = ReliefRecipient::where('id', $evacuee->relief_recipient_id)->first();
+                if (!in_array($relief_recipient->family_code, $family_codes)) {
+                    array_push($family_codes, $relief_recipient->family_code);
+                    $family = Family::where('family_code', $relief_recipient->family_code)->first();
+                    $total_number_of_evacuees = $total_number_of_evacuees + $family->no_of_members;
+
+                    $family_members = FamilyMember::where('family_code', $family->family_code)->get();
+
+                    $female = $female + $family_members->where('gender', 'Female')->count();
+                    $male = $male + $family_members->where('gender', 'Male')->count();
+                    $children = $children + $family_members->where('sectoral_classification', 'Children')->count();
+                    $lactating = $lactating + $family_members->where('sectoral_classification', 'Lactating')->count();
+                    $pwd = $pwd + $family_members->where('sectoral_classification', 'Person with Disability')->count();
+                    $pregnant = $pregnant + $family_members->where('sectoral_classification', 'Pregnant')->count();
+                    $senior_citizen  = $senior_citizen + $family_members->where('sectoral_classification', 'Senior Citizen')->count();
+                    $solo_parent = $solo_parent + $family_members->where('sectoral_classification', 'Solo Parent')->count();
+                }
+            }
+        }
+        $reply = now() . "\n" . $evacuation_center->address . " " . $evacuation_center->name
+            . " Evacuees Record"
+            . "\n\nTotal Evacuees: " . $total_number_of_evacuees
+            . "\nFemale: " . $female
+            . "\nMale: " . $male
+            . "\n\nSectoral Breakdown: "
+            . "\nChildren: " . $children
+            . "\nLactating: " . $lactating
+            . "\nPWD: " . $pwd
+            . "\nPregnant: " . $pregnant
+            . "\nSenior Citizen: " . $senior_citizen
+            . "\nSolo Parent" . $solo_parent;
+        return (new OutboundSmsController)->evacueesReply($sender, $reply);
     }
     public function viewSupply($sender, $message)
     {
@@ -210,5 +263,29 @@ class InboundSmsController extends Controller
         $delivery_request->save();
 
         return response("cancelled");
+    }
+    public function acceptRequest($sender, $message)
+    {
+        $user  = User::where('contact_no', $sender)->first();
+        $delivery_request = DeliveryRequest::where('id', '=', $message[1])->first();
+
+        if ($user->office_type  == "Courier") {
+            $delivery_request->status = 'in-transit';
+            $delivery_request->save();
+        } else if ($user->office_type  == "Camp Manager") {
+            $evacuation_center = EvacuationCenter::where('camp_manager_id', '=', $delivery_request->camp_manager_id)->first();
+            $prev_stock = $evacuation_center->stock_level()->first();
+            $evacuation_center->stock_level()->update([
+                'food_packs'                    => ($prev_stock->food_packs + $delivery_request->food_packs),
+                'water'                         => ($prev_stock->water + $delivery_request->water),
+                'hygiene_kit'                   => ($prev_stock->hygiene_kit + $delivery_request->hygiene_kit),
+                'medicine'                      => ($prev_stock->medicine + $delivery_request->medicine),
+                'clothes'                       => ($prev_stock->clothes + $delivery_request->clothes),
+                'emergency_shelter_assistance'  => ($prev_stock->emergency_shelter_assistance + $delivery_request->emergency_shelter_assistance),
+            ]);
+            $delivery_request->status = "delivered";
+            $delivery_request->save();
+        }
+        return response("accepted");
     }
 }
