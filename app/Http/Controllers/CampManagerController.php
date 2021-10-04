@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\FamilyMember;
 use App\Models\Evacuee;
 use App\Models\AffectedResident;
+use App\Models\AffectedResidentStat;
 use App\Models\ReliefGood;
 use App\Models\Family;
 
@@ -104,33 +105,52 @@ class CampManagerController extends Controller
         ]);
         $family_codes =  array();
         foreach ($request->checkedResidents as $checkedResident) {
-            $find_checkedResident = DB::table('affected_residents')->where('family_code', $checkedResident)->get();
-            // dd($find_checkedResident);
-            array_push($family_codes, $checkedResident);
+            if (!in_array($checkedResident, $family_codes)) {
+                array_push($family_codes, $checkedResident);
+                $find_checkedResident = DB::table('affected_residents')->where('family_code', $checkedResident)->get();
+                if ($find_checkedResident != null) {
+                    foreach ($find_checkedResident as $found_affected_resident) {
+                        $affected_resident = AffectedResident::find($found_affected_resident->id);
+                        $affected_resident->affected_resident_type = 'Evacuee';
+                        $affected_resident->save();
 
-            if ($find_checkedResident != null) {
-                foreach ($find_checkedResident as $found_affected_resident) {
-                    $affected_resident = AffectedResident::find($found_affected_resident->id);
-                    $affected_resident->affected_resident_type = 'Evacuee';
-                    $affected_resident->save();
+                        $checkIf_DR_IsEnded = DB::table('disaster_responses')->where('id', $affected_resident->disaster_response_id)->first();
+                        $checkIfExistsInEvacuee = Evacuee::where('affected_resident_id', $affected_resident->id)->first();
 
-                    $checkIf_DR_IsEnded = DB::table('disaster_responses')->where('id', $affected_resident->disaster_response_id)->first();
-                    $checkIfExistsInEvacuee = Evacuee::where('affected_resident_id', $affected_resident->id)->first();
-
-                    if ($checkIf_DR_IsEnded->date_ended == null) {
-                        if ($checkIfExistsInEvacuee == null) {
-                            $evacuee = new Evacuee();
-                            $evacuee->affected_resident_id = $affected_resident->id;
-                            $evacuee->date_admitted = now();
-                            $evacuee->evacuation_center_id = $evacuation_center->id;
-                            $evacuee->save();
-                        } else {
-                            $checkIfExistsInEvacuee->date_discharged = null;
-                            $checkIfExistsInEvacuee->save();
+                        if ($checkIf_DR_IsEnded->date_ended == null) {
+                            if ($checkIfExistsInEvacuee == null) {
+                                $evacuee = new Evacuee();
+                                $evacuee->affected_resident_id = $affected_resident->id;
+                                $evacuee->date_admitted = now();
+                                $evacuee->evacuation_center_id = $evacuation_center->id;
+                                $evacuee->save();
+                            } else {
+                                $checkIfExistsInEvacuee->date_discharged = null;
+                                $checkIfExistsInEvacuee->save();
+                            }
                         }
+                        $no_of_evacuees = Family::where('family_code', $affected_resident->family_code)->value('no_of_members');
+
+                        $prev_affected_residents_stats = AffectedResidentStat::where('disaster_response_id', $affected_resident->disaster_response_id)->orderBy('date', 'DESC')->first();
+                        AffectedResidentStat::updateOrCreate(
+                            [
+                                'disaster_response_id' => $affected_resident->disaster_response_id,
+                                'date' => now()->format('F j, Y')
+                            ],
+                            [
+                                'no_of_evacuees' => $prev_affected_residents_stats->no_of_evacuees + $no_of_evacuees,
+                                'no_of_non_evacuees' => $prev_affected_residents_stats->no_of_non_evacuees - $no_of_evacuees
+                            ]
+                        );
+
+                        // dd([$no_of_evacuees, $prev, $prev_affected_residents_stats->no_of_evacuees]);
                     }
                 }
             }
+            // dd($find_checkedResident);
+
+
+
         }
 
 
@@ -183,6 +203,19 @@ class CampManagerController extends Controller
                             $evacuee->date_discharged = now();
                             $evacuee->save();
                         }
+                        $no_of_non_evacuees = Family::where('family_code', $affected_resident->family_code)->value('no_of_members');
+                        $prev_affected_residents_stats = AffectedResidentStat::where('disaster_response_id', $affected_resident->disaster_response_id)->orderBy('date', 'DESC')->first();
+
+                        AffectedResidentStat::updateOrCreate(
+                            [
+                                'disaster_response_id' => $affected_resident->disaster_response_id,
+                                'date' => now()->format('F j, Y')
+                            ],
+                            [
+                                'no_of_evacuees' => $prev_affected_residents_stats->no_of_evacuees - $no_of_non_evacuees,
+                                'no_of_non_evacuees' => $prev_affected_residents_stats->no_of_non_evacuees + $no_of_non_evacuees
+                            ]
+                        );
                     }
                 }
             }

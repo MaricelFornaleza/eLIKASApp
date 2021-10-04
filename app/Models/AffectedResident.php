@@ -10,7 +10,8 @@ class AffectedResident extends Model
     use HasFactory;
     protected $table = 'affected_residents';
     protected $fillable = [
-        'disaster_response_id'
+        'disaster_response_id',
+        'affected_resident_type',
     ];
 
     public function evacuee()

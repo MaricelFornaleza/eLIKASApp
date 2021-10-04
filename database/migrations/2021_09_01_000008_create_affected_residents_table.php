@@ -19,6 +19,9 @@ class CreateAffectedResidentsTable extends Migration
             $table->unsignedBigInteger('disaster_response_id');
             $table->string('affected_resident_type');
             $table->timestamps();
+
+            $table->foreign('disaster_response_id')->references('id')->on('disaster_responses')
+                ->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

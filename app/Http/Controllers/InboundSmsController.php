@@ -14,6 +14,7 @@ use App\Models\InboundSms;
 use App\Models\Inventory;
 use App\Models\ReliefGood;
 use App\Models\AffectedResident;
+use App\Models\AffectedResidentStat;
 use App\Models\Supply;
 use App\Models\User;
 
@@ -91,6 +92,19 @@ class InboundSmsController extends Controller
                         $checkIfExistsInEvacuee->save();
                     }
                 }
+                $no_of_evacuees = Family::where('family_code', $affected_resident->family_code)->value('no_of_members');
+
+                $prev_affected_residents_stats = AffectedResidentStat::where('disaster_response_id', $affected_resident->disaster_response_id)->orderBy('date', 'DESC')->first();
+                AffectedResidentStat::updateOrCreate(
+                    [
+                        'disaster_response_id' => $affected_resident->disaster_response_id,
+                        'date' => now()->format('F j, Y')
+                    ],
+                    [
+                        'no_of_evacuees' => $prev_affected_residents_stats->no_of_evacuees + $no_of_evacuees,
+                        'no_of_non_evacuees' => $prev_affected_residents_stats->no_of_non_evacuees - $no_of_evacuees
+                    ]
+                );
             }
             $reply = "Residents admitted successfully!";
         } else {
@@ -109,11 +123,24 @@ class InboundSmsController extends Controller
                 $affected_resident->save();
                 $findEvacuee = Evacuee::where('affected_resident_id', $affected_resident->id)->first();
 
-                if ($findEvacuee == null) {
+                if ($findEvacuee != null) {
                     $evacuee = Evacuee::find($findEvacuee->id);
                     $evacuee->date_discharged = now();
                     $evacuee->save();
                 }
+                $no_of_non_evacuees = Family::where('family_code', $affected_resident->family_code)->value('no_of_members');
+                $prev_affected_residents_stats = AffectedResidentStat::where('disaster_response_id', $affected_resident->disaster_response_id)->orderBy('date', 'DESC')->first();
+
+                AffectedResidentStat::updateOrCreate(
+                    [
+                        'disaster_response_id' => $affected_resident->disaster_response_id,
+                        'date' => now()->format('F j, Y')
+                    ],
+                    [
+                        'no_of_evacuees' => $prev_affected_residents_stats->no_of_evacuees - $no_of_non_evacuees,
+                        'no_of_non_evacuees' => $prev_affected_residents_stats->no_of_non_evacuees + $no_of_non_evacuees
+                    ]
+                );
             }
             $reply = "Residents discharged successfully!";
         } else {

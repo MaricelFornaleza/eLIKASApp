@@ -9,6 +9,7 @@ use App\Models\DisasterResponse;
 use App\Models\FamilyMember;
 use App\Models\AffectedResident;
 use App\CustomClasses\UpdateMarker;
+use App\Models\AffectedResidentStat;
 use App\Models\Evacuee;
 use App\Models\Family;
 use App\Models\ReliefGood;
@@ -76,19 +77,10 @@ class DisasterResponseController extends Controller
             ->groupBy('families.family_code', 'affected_residents.affected_resident_type', 'evacuees.evacuation_center_id', 'evacuees.date_admitted')
             ->get();
 
-        // $affectedFamilies = Family::leftJoin('affected_residents', function ($join) {
-        //     $join->on('affected_residents.family_code', 'families.family_code')
-        //         ->join('disaster_responses', 'disaster_responses.id', 'affected_residents.disaster_response_id')
-        //         ->whereNull('disaster_responses.date_ended');
-        // })
-        //     ->leftJoin('evacuees', 'evacuees.affected_resident_id', 'affected_residents.id')
-        //     ->select('families.family_code', 'affected_residents.affected_resident_type', 'evacuees.evacuation_center_id', 'evacuees.date_admitted')
-        //     ->groupBy('families.family_code', 'affected_residents.affected_resident_type', 'evacuees.evacuation_center_id', 'evacuees.date_admitted')
-        //     ->get();
-
-
         $data = [];
         $families = [];
+        $no_of_evacuees = 0;
+        $no_of_non_evacuees = 0;
         foreach ($affectedFamilies as $index) {
             if (!in_array($index->family_code, $families)) {
                 $families[] = $index->family_code;
@@ -108,26 +100,42 @@ class DisasterResponseController extends Controller
                     $evacuee->date_admitted = $index->date_admitted;
                     $evacuee->evacuation_center_id = $index->evacuation_center_id;
                     $evacuee->save();
+                    $evacuees = Family::where('family_code', $index->family_code)->select('no_of_members')->first();
+                    $no_of_evacuees += $evacuees->no_of_members;
                 } else {
                     $affected_resident = new AffectedResident();
                     $affected_resident->disaster_response_id = $disaster_response->id;
                     $affected_resident->family_code = $index->family_code;
                     $affected_resident->affected_resident_type = 'Non-evacuee';
                     $affected_resident->save();
+                    $non_evacuees = Family::where('family_code', $index->family_code)->select('no_of_members')->first();
+                    $no_of_non_evacuees += $non_evacuees->no_of_members;
                 }
             }
         }
-
+        $this->refreshAffectedResidentsStats($disaster_response->id, $no_of_evacuees, $no_of_non_evacuees);
         $update_requests = new UpdateMarker;
         $update_requests->refreshMap();
         Session::flash('message', 'Disaster Response started.');
         return redirect('home');
         // dd(AffectedResident::all());
     }
+    public function refreshAffectedResidentsStats($disaster_response_id, $no_of_evacuees, $no_of_non_evacuees)
+    {
+        AffectedResidentStat::updateOrCreate(
+            [
+                'disaster_response_id' => $disaster_response_id,
+                'date' => now()->format('F j, Y')
+            ],
+            [
+                'no_of_evacuees' => $no_of_evacuees,
+                'no_of_non_evacuees' => $no_of_non_evacuees
+            ]
+        );
+    }
     public function show($id)
     {
         $disaster_response = DisasterResponse::where('id', $id)->first();
-
 
         // About Relief Goods
         $dispensed_relief_goods = ReliefGood::where('disaster_response_id', $id)->get();
@@ -185,58 +193,31 @@ class DisasterResponseController extends Controller
             'barangayData' => $barangayData,
 
         ];
-        // About evacuees
-        $admitted = FamilyMember::join('affected_residents', function ($join) use ($id) {
-            $join->on('affected_residents.family_code', 'family_members.family_code')
-                ->where('disaster_response_id', $id)
-                ->join('evacuees', 'evacuees.affected_resident_id', 'affected_residents.id')
-                ->select('evacuees.date_admitted', 'evacuees.date_discharged');
-        })
-            ->select(
-                'affected_residents.family_code',
-                'affected_residents.affected_resident_type',
-                'evacuees.date_admitted',
-                'evacuees.date_discharged',
-                DB::raw('DATE(evacuees.date_admitted) as admitted_date'),
-                DB::raw('DATE(evacuees.date_discharged) as discharged_date'),
-                DB::raw('COUNT(evacuees.date_admitted) as admitted'),
-                DB::raw('COUNT(family_members.family_code) as non_evac'),
-                DB::raw('COUNT(evacuees.date_discharged) as discharged')
-            )->groupBy(
-                'affected_residents.family_code',
-                'affected_residents.affected_resident_type',
-                'evacuees.date_admitted',
-                'evacuees.date_discharged',
-                'admitted_date'
-            )
-            ->get();
 
-        // Initialize arrays
+        $count = AffectedResidentStat::where('disaster_response_id', $disaster_response->id)->count();
         $evac = [];
         $non_evac = [];
         $dates = [];
-        // Put dates in dates array. This is for chart label
-        foreach ($admitted as $person) {
-            if (!in_array($person->admitted_date, $dates)) {
-                $dates[] = $person->admitted_date;
+        if ($count == 1) {
+            $affected_resident_stats = AffectedResidentStat::where('disaster_response_id', $disaster_response->id)->orderBy('date', 'ASC')->first();
+            $dates[] = $affected_resident_stats->date;
+            $evac[] = $affected_resident_stats->no_of_evacuees;
+            $non_evac[] = $affected_resident_stats->no_of_non_evacuees;
+        } else {
+            $affected_resident_stats = AffectedResidentStat::where('disaster_response_id', $disaster_response->id)->get();
+            // dd($affected_resident_stats->get('date'));
+            foreach ($affected_resident_stats as $index) {
+                $dates[] = $index->date;
+                $evac[] = $index->no_of_evacuees;
+                $non_evac[] = $index->no_of_non_evacuees;
             }
-        }
-        sort($dates);
-
-        // Lopp in each date and get number of evacuees and non-evacuees
-        foreach ($dates as $date) {
-            $evacuees = $admitted->where('admitted_date', '<=', $date)
-                ->where('discharged_date', '!=', $date)
-                ->sum('admitted');
-            $evac[] = $evacuees;
-            $ne =  $affected_residents->count();
-            $non_evac[] = $ne - $evacuees;
         }
 
         // These are the data for main chart
         $chartData = json_encode($evac, JSON_NUMERIC_CHECK);
         $chartData2 = json_encode($non_evac, JSON_NUMERIC_CHECK);
         $dates = json_encode($dates);
+
 
         return view('admin.disaster-response-resource.show')
             ->with(compact('disaster_response', 'barangays', 'data', 'chartData', 'chartData2', 'dates'));

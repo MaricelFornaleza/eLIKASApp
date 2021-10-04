@@ -22,6 +22,18 @@ class CreateDisasterResponsesTable extends Migration
             $table->string('photo');
             $table->timestamps();
         });
+
+        Schema::create('affected_resident_stats', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('disaster_response_id');
+            $table->integer('no_of_evacuees')->default(0);
+            $table->integer('no_of_non_evacuees')->default(0);
+            $table->string('date');
+            $table->timestamps();
+
+            $table->foreign('disaster_response_id')->references('id')->on('disaster_responses')
+                ->onUpdate('cascade')->onDelete('cascade');
+        });
     }
 
     /**
@@ -31,6 +43,7 @@ class CreateDisasterResponsesTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('affected_residents_stats');
         Schema::dropIfExists('disaster_responses');
     }
 }
