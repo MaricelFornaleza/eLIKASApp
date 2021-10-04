@@ -115,10 +115,10 @@
                                         <td>{{ $family_member->sectoral_classification }}</td>
                                         <td>{{ $family_member->is_family_head }}</td>
                                         <td>{{ $family_member->street }}, {{ $family_member->barangay }}</td>
-                                        @if($family_member->recipient_type == "")
+                                        @if($family_member->affected_resident_type == "")
                                         <td>Non-Evacuee</td>
                                         @else
-                                        <td>{{ $family_member->recipient_type }}</td>
+                                        <td>{{ $family_member->affected_resident_type }}</td>
                                         @endif
 
                                         <td>

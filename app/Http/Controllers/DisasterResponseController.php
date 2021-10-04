@@ -7,7 +7,7 @@ use App\Models\AffectedArea;
 use App\Models\Barangay;
 use App\Models\DisasterResponse;
 use App\Models\FamilyMember;
-use App\Models\ReliefRecipient;
+use App\Models\AffectedResident;
 use App\CustomClasses\UpdateMarker;
 use App\Models\Evacuee;
 use App\Models\Family;
@@ -66,24 +66,24 @@ class DisasterResponseController extends Controller
                 ->join('affected_areas', 'family_members.barangay', 'affected_areas.barangay')
                 ->where('affected_areas.disaster_response_id', $disaster_response->id);
         })
-            ->leftJoin('relief_recipients', function ($join) {
-                $join->on('relief_recipients.family_code', 'families.family_code')
-                    ->join('disaster_responses', 'disaster_responses.id', 'relief_recipients.disaster_response_id')
+            ->leftJoin('affected_residents', function ($join) {
+                $join->on('affected_residents.family_code', 'families.family_code')
+                    ->join('disaster_responses', 'disaster_responses.id', 'affected_residents.disaster_response_id')
                     ->whereNull('disaster_responses.date_ended');
             })
-            ->leftJoin('evacuees', 'evacuees.relief_recipient_id', 'relief_recipients.id')
-            ->select('families.family_code', 'relief_recipients.recipient_type', 'evacuees.evacuation_center_id', 'evacuees.date_admitted')
-            ->groupBy('families.family_code', 'relief_recipients.recipient_type', 'evacuees.evacuation_center_id', 'evacuees.date_admitted')
+            ->leftJoin('evacuees', 'evacuees.affected_resident_id', 'affected_residents.id')
+            ->select('families.family_code', 'affected_residents.affected_resident_type', 'evacuees.evacuation_center_id', 'evacuees.date_admitted')
+            ->groupBy('families.family_code', 'affected_residents.affected_resident_type', 'evacuees.evacuation_center_id', 'evacuees.date_admitted')
             ->get();
 
-        // $affectedFamilies = Family::leftJoin('relief_recipients', function ($join) {
-        //     $join->on('relief_recipients.family_code', 'families.family_code')
-        //         ->join('disaster_responses', 'disaster_responses.id', 'relief_recipients.disaster_response_id')
+        // $affectedFamilies = Family::leftJoin('affected_residents', function ($join) {
+        //     $join->on('affected_residents.family_code', 'families.family_code')
+        //         ->join('disaster_responses', 'disaster_responses.id', 'affected_residents.disaster_response_id')
         //         ->whereNull('disaster_responses.date_ended');
         // })
-        //     ->leftJoin('evacuees', 'evacuees.relief_recipient_id', 'relief_recipients.id')
-        //     ->select('families.family_code', 'relief_recipients.recipient_type', 'evacuees.evacuation_center_id', 'evacuees.date_admitted')
-        //     ->groupBy('families.family_code', 'relief_recipients.recipient_type', 'evacuees.evacuation_center_id', 'evacuees.date_admitted')
+        //     ->leftJoin('evacuees', 'evacuees.affected_resident_id', 'affected_residents.id')
+        //     ->select('families.family_code', 'affected_residents.affected_resident_type', 'evacuees.evacuation_center_id', 'evacuees.date_admitted')
+        //     ->groupBy('families.family_code', 'affected_residents.affected_resident_type', 'evacuees.evacuation_center_id', 'evacuees.date_admitted')
         //     ->get();
 
 
@@ -92,28 +92,28 @@ class DisasterResponseController extends Controller
         foreach ($affectedFamilies as $index) {
             if (!in_array($index->family_code, $families)) {
                 $families[] = $index->family_code;
-                if ($index->recipient_type == "Evacuee") {
+                if ($index->affected_resident_type == "Evacuee") {
                     $data[] = [
                         'disaster_response_id' => $disaster_response->id,
                         'family_code' => $index->family_code,
-                        'recipient_type' =>  $index->recipient_type,
+                        'affected_resident_type' =>  $index->affected_resident_type,
                     ];
-                    $relief_recipient = new ReliefRecipient();
-                    $relief_recipient->disaster_response_id = $disaster_response->id;
-                    $relief_recipient->family_code = $index->family_code;
-                    $relief_recipient->recipient_type = $index->recipient_type;
-                    $relief_recipient->save();
+                    $affected_resident = new AffectedResident();
+                    $affected_resident->disaster_response_id = $disaster_response->id;
+                    $affected_resident->family_code = $index->family_code;
+                    $affected_resident->affected_resident_type = $index->affected_resident_type;
+                    $affected_resident->save();
                     $evacuee = new Evacuee();
-                    $evacuee->relief_recipient_id = $relief_recipient->id;
+                    $evacuee->affected_resident_id = $affected_resident->id;
                     $evacuee->date_admitted = $index->date_admitted;
                     $evacuee->evacuation_center_id = $index->evacuation_center_id;
                     $evacuee->save();
                 } else {
-                    $relief_recipient = new ReliefRecipient();
-                    $relief_recipient->disaster_response_id = $disaster_response->id;
-                    $relief_recipient->family_code = $index->family_code;
-                    $relief_recipient->recipient_type = 'Non-evacuee';
-                    $relief_recipient->save();
+                    $affected_resident = new AffectedResident();
+                    $affected_resident->disaster_response_id = $disaster_response->id;
+                    $affected_resident->family_code = $index->family_code;
+                    $affected_resident->affected_resident_type = 'Non-evacuee';
+                    $affected_resident->save();
                 }
             }
         }
@@ -122,7 +122,7 @@ class DisasterResponseController extends Controller
         $update_requests->refreshMap();
         Session::flash('message', 'Disaster Response started.');
         return redirect('home');
-        // dd(ReliefRecipient::all());
+        // dd(AffectedResident::all());
     }
     public function show($id)
     {
@@ -142,13 +142,13 @@ class DisasterResponseController extends Controller
         ];
 
         // About Residents
-        $affected_residents = FamilyMember::join('relief_recipients', function ($join) use ($id) {
-            $join->on('relief_recipients.family_code', 'family_members.family_code')
+        $affected_residents = FamilyMember::join('affected_residents', function ($join) use ($id) {
+            $join->on('affected_residents.family_code', 'family_members.family_code')
                 ->where('disaster_response_id', $id);
         })
             ->select(
                 'family_members.*',
-                'relief_recipients.recipient_type',
+                'affected_residents.affected_resident_type',
             )->get();
         $sectors = [
             'children' => $affected_residents->where('sectoral_classification', 'Children')->count(),
@@ -167,8 +167,8 @@ class DisasterResponseController extends Controller
             $barangayData[] = [
                 'barangay' => $barangay->barangay,
                 'total_residents' => $affected_residents->where('barangay', $barangay->barangay)->count(),
-                'evacuees' => $affected_residents->where('barangay', $barangay->barangay)->where('recipient_type', 'Evacuee')->count(),
-                'non_evacuees' => $affected_residents->where('barangay', $barangay->barangay)->where('recipient_type', 'Non-evacuee')->count(),
+                'evacuees' => $affected_residents->where('barangay', $barangay->barangay)->where('affected_resident_type', 'Evacuee')->count(),
+                'non_evacuees' => $affected_residents->where('barangay', $barangay->barangay)->where('affected_resident_type', 'Non-evacuee')->count(),
 
             ];
         }
@@ -176,9 +176,9 @@ class DisasterResponseController extends Controller
         $data = [
             'sectors' => $sectors,
             'affected_residents' => $affected_residents->count(),
-            'families' => ReliefRecipient::where('disaster_response_id', $id)->count(),
-            'evacuees' => $affected_residents->where('recipient_type', 'Evacuee')->count(),
-            'non-evacuees' => $affected_residents->where('recipient_type', 'Non-evacuee')->count(),
+            'families' => AffectedResident::where('disaster_response_id', $id)->count(),
+            'evacuees' => $affected_residents->where('affected_resident_type', 'Evacuee')->count(),
+            'non-evacuees' => $affected_residents->where('affected_resident_type', 'Non-evacuee')->count(),
             'female' => $affected_residents->where('gender', 'Female')->count(),
             'male' => $affected_residents->where('gender', 'Male')->count(),
             'relief_goods' => $relief_goods,
@@ -186,15 +186,15 @@ class DisasterResponseController extends Controller
 
         ];
         // About evacuees
-        $admitted = FamilyMember::join('relief_recipients', function ($join) use ($id) {
-            $join->on('relief_recipients.family_code', 'family_members.family_code')
+        $admitted = FamilyMember::join('affected_residents', function ($join) use ($id) {
+            $join->on('affected_residents.family_code', 'family_members.family_code')
                 ->where('disaster_response_id', $id)
-                ->join('evacuees', 'evacuees.relief_recipient_id', 'relief_recipients.id')
+                ->join('evacuees', 'evacuees.affected_resident_id', 'affected_residents.id')
                 ->select('evacuees.date_admitted', 'evacuees.date_discharged');
         })
             ->select(
-                'relief_recipients.family_code',
-                'relief_recipients.recipient_type',
+                'affected_residents.family_code',
+                'affected_residents.affected_resident_type',
                 'evacuees.date_admitted',
                 'evacuees.date_discharged',
                 DB::raw('DATE(evacuees.date_admitted) as admitted_date'),
@@ -203,8 +203,8 @@ class DisasterResponseController extends Controller
                 DB::raw('COUNT(family_members.family_code) as non_evac'),
                 DB::raw('COUNT(evacuees.date_discharged) as discharged')
             )->groupBy(
-                'relief_recipients.family_code',
-                'relief_recipients.recipient_type',
+                'affected_residents.family_code',
+                'affected_residents.affected_resident_type',
                 'evacuees.date_admitted',
                 'evacuees.date_discharged',
                 'admitted_date'

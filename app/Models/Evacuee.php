@@ -12,13 +12,13 @@ class Evacuee extends Model
     protected $table = 'evacuees';
 
     protected $fillable = [
-        'relief_recipient_id', 
+        'affected_resident_id',
         'evacuation_center_id'
     ];
 
-    public function relief_recipient()
+    public function affected_resident()
     {
-        return $this->belongsTo('App\Models\ReliefRecipient');
+        return $this->belongsTo('App\Models\AffectedResident');
     }
 
     public function evacuation_center()

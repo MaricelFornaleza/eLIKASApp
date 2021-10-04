@@ -17,7 +17,7 @@ class CreateReliefGoodsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('field_officer_id');
             $table->unsignedBigInteger('disaster_response_id');
-            $table->unsignedBigInteger('relief_recipient_id');
+            $table->unsignedBigInteger('affected_resident_id');
             $table->date('date');
             $table->integer('food_packs');
             $table->integer('water');

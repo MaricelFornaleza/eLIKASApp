@@ -13,7 +13,7 @@ use App\Models\FamilyMember;
 use App\Models\InboundSms;
 use App\Models\Inventory;
 use App\Models\ReliefGood;
-use App\Models\ReliefRecipient;
+use App\Models\AffectedResident;
 use App\Models\Supply;
 use App\Models\User;
 
@@ -70,19 +70,19 @@ class InboundSmsController extends Controller
     public function admit($sender, $message)
     {
         $evac_center = EvacuationCenter::where('camp_manager_id', $message[1])->first();
-        $families = ReliefRecipient::whereIn('family_code', $message)->get();
+        $families = AffectedResident::whereIn('family_code', $message)->get();
         if ($families != null) {
             foreach ($families as $family) {
-                $relief_recipient = ReliefRecipient::find($family->id);
-                $relief_recipient->recipient_type = 'Evacuee';
-                $relief_recipient->save();
+                $affected_resident = AffectedResident::find($family->id);
+                $affected_resident->affected_resident_type = 'Evacuee';
+                $affected_resident->save();
 
-                $checkIf_DR_IsEnded = DisasterResponse::where('id', $relief_recipient->disaster_response_id)->first();
-                $checkIfExistsInEvacuee = Evacuee::where('relief_recipient_id', $relief_recipient->id)->first();
+                $checkIf_DR_IsEnded = DisasterResponse::where('id', $affected_resident->disaster_response_id)->first();
+                $checkIfExistsInEvacuee = Evacuee::where('affected_resident_id', $affected_resident->id)->first();
                 if ($checkIf_DR_IsEnded->date_ended == null) {
                     if ($checkIfExistsInEvacuee == null) {
                         $evacuee = new Evacuee();
-                        $evacuee->relief_recipient_id = $relief_recipient->id;
+                        $evacuee->affected_resident_id = $affected_resident->id;
                         $evacuee->date_admitted = now();
                         $evacuee->evacuation_center_id = $evac_center->id;
                         $evacuee->save();
@@ -101,13 +101,13 @@ class InboundSmsController extends Controller
     }
     public function discharge($sender, $message)
     {
-        $families = ReliefRecipient::whereIn('family_code', $message)->get();
+        $families = AffectedResident::whereIn('family_code', $message)->get();
         if ($families != null) {
             foreach ($families as $family) {
-                $relief_recipient = ReliefRecipient::find($family->id);
-                $relief_recipient->recipient_type = 'Non-evacuee';
-                $relief_recipient->save();
-                $findEvacuee = Evacuee::where('relief_recipient_id', $relief_recipient->id)->first();
+                $affected_resident = AffectedResident::find($family->id);
+                $affected_resident->affected_resident_type = 'Non-evacuee';
+                $affected_resident->save();
+                $findEvacuee = Evacuee::where('affected_resident_id', $affected_resident->id)->first();
 
                 if ($findEvacuee == null) {
                     $evacuee = Evacuee::find($findEvacuee->id);
@@ -124,7 +124,7 @@ class InboundSmsController extends Controller
     }
     public function dispense($sender, $message)
     {
-        $this_rr = ReliefRecipient::where('family_code', $message[3])
+        $this_rr = AffectedResident::where('family_code', $message[3])
             ->where('disaster_response_id', $message[2])->first();
 
         $user = User::where('id', $message[1])->first();
@@ -132,7 +132,7 @@ class InboundSmsController extends Controller
         $relief_good = new ReliefGood();
         $relief_good->field_officer_id              = $user->id;
         $relief_good->disaster_response_id          = $message[2];
-        $relief_good->relief_recipient_id           = $this_rr->id;
+        $relief_good->affected_resident_id           = $this_rr->id;
         $relief_good->date                          = now();
         $relief_good->food_packs                    = $message[4];
         $relief_good->water                         = $message[5];
@@ -212,10 +212,10 @@ class InboundSmsController extends Controller
             $solo_parent = 0;
 
             foreach ($evacuees as $evacuee) {
-                $relief_recipient = ReliefRecipient::where('id', $evacuee->relief_recipient_id)->first();
-                if (!in_array($relief_recipient->family_code, $family_codes)) {
-                    array_push($family_codes, $relief_recipient->family_code);
-                    $family = Family::where('family_code', $relief_recipient->family_code)->first();
+                $affected_resident = AffectedResident::where('id', $evacuee->affected_resident_id)->first();
+                if (!in_array($affected_resident->family_code, $family_codes)) {
+                    array_push($family_codes, $affected_resident->family_code);
+                    $family = Family::where('family_code', $affected_resident->family_code)->first();
                     $total_number_of_evacuees = $total_number_of_evacuees + $family->no_of_members;
 
                     $family_members = FamilyMember::where('family_code', $family->family_code)->get();
@@ -256,8 +256,8 @@ class InboundSmsController extends Controller
             if ($evacuees != null) {
 
                 foreach ($evacuees as $evacuee) {
-                    $relief_recipient = ReliefRecipient::where('id', $evacuee->relief_recipient_id)->first();
-                    $family = Family::where('family_code', $relief_recipient->family_code)->first();
+                    $affected_resident = AffectedResident::where('id', $evacuee->affected_resident_id)->first();
+                    $family = Family::where('family_code', $affected_resident->family_code)->first();
                     $total_number_of_evacuees = $total_number_of_evacuees + $family->no_of_members;
                 }
             }
@@ -295,11 +295,11 @@ class InboundSmsController extends Controller
         $pregnant = 0;
         $senior_citizen  = 0;
         $solo_parent = 0;
-        $evacuees = FamilyMember::leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
-            ->leftJoin('disaster_responses', 'relief_recipients.disaster_response_id', '=', 'disaster_responses.id')
+        $evacuees = FamilyMember::leftJoin('affected_residents', 'family_members.family_code', '=', 'affected_residents.family_code')
+            ->leftJoin('disaster_responses', 'affected_residents.disaster_response_id', '=', 'disaster_responses.id')
             ->whereNotNull('family_members.family_code')
             ->where('family_members.barangay', $barangay_captain->barangay)
-            ->where('relief_recipients.recipient_type', 'Evacuee')
+            ->where('affected_residents.affected_resident_type', 'Evacuee')
             ->whereNull('disaster_responses.date_ended')
             ->select('name')
             ->get();

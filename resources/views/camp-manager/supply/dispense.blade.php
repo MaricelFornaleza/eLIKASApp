@@ -29,8 +29,8 @@
                 </div>
                 <!-- Select Relief Recipient -->
                 <div class="form-group col-sm-6 mx-auto">
-                    <label for="relief_recipient">Relief Recipient</label>
-                    <select name="relief_recipient_family_code" class="form-control" id="relief_recipient">
+                    <label for="affected_resident">Relief Recipient</label>
+                    <select name="affected_resident_family_code" class="form-control" id="affected_resident">
                         <option value="">Select</option>
                         @foreach($evacuees as $evacuee)
                         <option value="{{$evacuee->rr_fc}}">{{$evacuee->name}}</option>

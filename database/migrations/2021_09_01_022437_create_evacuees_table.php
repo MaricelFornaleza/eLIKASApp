@@ -15,13 +15,13 @@ class CreateEvacueesTable extends Migration
     {
         Schema::create('evacuees', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('relief_recipient_id');
+            $table->unsignedBigInteger('affected_resident_id');
             $table->timestamp('date_admitted');
             $table->timestamp('date_discharged')->nullable();
             $table->unsignedBigInteger('evacuation_center_id');
             $table->timestamps();
 
-            $table->foreign('relief_recipient_id')->references('id')->on('relief_recipients')
+            $table->foreign('affected_resident_id')->references('id')->on('affected_residents')
                 ->onUpdate('cascade')->onDelete('cascade');
 
             $table->foreign('evacuation_center_id')->references('id')->on('evacuation_centers')

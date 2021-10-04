@@ -11,16 +11,6 @@
 |
 */
 
-use App\Mail\VerifyEmail;
-use App\Models\User;
-
-use GuzzleHttp\Client;
-use Illuminate\Http\Client\Request;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
-
-
 //login and register 
 Route::get('/', function () {
     if (auth()->user()) {
@@ -33,18 +23,7 @@ Route::get('/', function () {
 
 Auth::routes(['register' => false, 'verify' => true]);
 
-Route::get('/send-mail', function () {
-    $data = [
-        'name' => 'Maricel',
-        'remember_token' => Str::random(25),
-        'email' => 'maformaleza@gbox.adnu.edu.ph',
-    ];
-
-    Mail::to($data['email'])->send(new VerifyEmail($data));
-});
-
 //email verification
-
 Route::get('/user/verify/{remember_token}', 'FieldOfficerController@verifyUser');
 
 // the user must be authenticated to access these routes
@@ -112,7 +91,6 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::resource('/field_officers', 'FieldOfficerController');
         Route::get('/resend-verification/{remember_token}', 'FieldOfficerController@resendVerification');
         // Residents
-        Route::resource('relief-recipient', 'ReliefRecipientController');
         Route::resource('residents', 'FamilyMemberController');
         Route::get('residents.group', 'FamilyMemberController@group')->name('residents.group');
         Route::post('residents.groupResidents', 'FamilyMemberController@groupResidents');
@@ -192,25 +170,4 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
             Route::get('/details/{id}', 'CourierController@details');
         });
     });
-});
-
-
-Route::prefix('sms')->group(function () {
-    Route::get('/decodesms/{id}', 'InboundSmsController@decodesms')->name('decodesms');
-});
-
-Route::get('send/{number}', function ($number) {
-    $http = new Client();
-    $user = User::where('contact_no', $number)->first();
-    $access_token = $user->globe_labs_access_token;
-    $response = $http->post("https://devapi.globelabs.com.ph/smsmessaging/v1/outbound/0098/requests?access_token=" . $access_token, [
-        "form_params" => [
-            "address" => $number,
-            "senderAddress" => env('SHORT_CODE_SUFFIX'),
-            "clientCorrelator" => env('SHORT_CODE'),
-            "message" => "Text received",
-
-        ]
-    ]);
-    Log::info($response->getBody());
 });
