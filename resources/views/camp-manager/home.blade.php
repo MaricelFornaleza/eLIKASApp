@@ -92,4 +92,12 @@
             </div>
         </div>
     </div>
-    @endsection
+@endsection
+
+@section('javascript')
+<script>
+    var my_id = "{{ Auth::id() }}";
+    // This is for android interface
+    Android.User(my_id, "Camp Manager");
+</script>
+@endsection
