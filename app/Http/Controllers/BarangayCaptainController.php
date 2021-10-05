@@ -27,14 +27,14 @@ class BarangayCaptainController extends Controller
         $barangay_captain = DB::table('barangay_captains')->where('user_id', $user->id)->first();
         $bc_inventory = DB::table('inventories')->where('user_id', $user->id)->first();
         $family_members = DB::table('family_members')
-            ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
-            ->leftJoin('disaster_responses', 'relief_recipients.disaster_response_id', '=', 'disaster_responses.id')
+            ->leftJoin('affected_residents', 'family_members.family_code', '=', 'affected_residents.family_code')
+            ->leftJoin('disaster_responses', 'affected_residents.disaster_response_id', '=', 'disaster_responses.id')
             ->whereNotNull('family_members.family_code')
             ->where('family_members.barangay', $barangay_captain->barangay)
             ->where('is_family_head', 'Yes')
-            ->where('relief_recipients.recipient_type', 'Non-evacuee')
+            ->where('affected_residents.affected_resident_type', 'Non-evacuee')
             ->whereNull('disaster_responses.date_ended')
-            ->select('relief_recipients.family_code as rr_fc', 'name')
+            ->select('affected_residents.family_code as rr_fc', 'name')
             ->get();
 
         return view(
@@ -50,7 +50,7 @@ class BarangayCaptainController extends Controller
     {
         $validated = $request->validate([
             'disaster_response_id'          => ['required', 'numeric'],
-            'relief_recipient_family_code'  => ['required', 'string'],
+            'affected_resident_family_code'  => ['required', 'string'],
             'food_packs'                    => ['numeric', 'min:0', 'max:10000'],
             'water'                         => ['numeric', 'min:0', 'max:10000'],
             'clothes'                       => ['numeric', 'min:0', 'max:10000'],
@@ -58,8 +58,8 @@ class BarangayCaptainController extends Controller
             'medicine'                      => ['numeric', 'min:0', 'max:10000'],
             'emergency_shelter_assistance'  => ['numeric', 'min:0', 'max:10000'],
         ]);
-        $this_rr = DB::table('relief_recipients')
-            ->where('family_code', $validated['relief_recipient_family_code'])
+        $this_rr = DB::table('affected_residents')
+            ->where('family_code', $validated['affected_resident_family_code'])
             ->where('disaster_response_id', $validated['disaster_response_id'])->first();
         //  dd($this_rr->id);
         $user = Auth::user();
@@ -67,7 +67,7 @@ class BarangayCaptainController extends Controller
         $relief_good = new ReliefGood();
         $relief_good->field_officer_id              = $user->id;
         $relief_good->disaster_response_id          = $validated['disaster_response_id'];
-        $relief_good->relief_recipient_id           = $this_rr->id;
+        $relief_good->affected_resident_id           = $this_rr->id;
         $relief_good->date                          = now();
         $relief_good->food_packs                    = $validated['food_packs'];
         $relief_good->water                         = $validated['water'];
@@ -104,11 +104,11 @@ class BarangayCaptainController extends Controller
         $user = Auth::user();
         $barangay_captain = DB::table('barangay_captains')->where('user_id', $user->id)->first();
         $non_evacuees = DB::table('family_members')
-            ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
-            ->leftJoin('disaster_responses', 'relief_recipients.disaster_response_id', '=', 'disaster_responses.id')
+            ->leftJoin('affected_residents', 'family_members.family_code', '=', 'affected_residents.family_code')
+            ->leftJoin('disaster_responses', 'affected_residents.disaster_response_id', '=', 'disaster_responses.id')
             ->whereNotNull('family_members.family_code')
             ->where('family_members.barangay', $barangay_captain->barangay)
-            ->where('relief_recipients.recipient_type', 'Non-evacuee')
+            ->where('affected_residents.affected_resident_type', 'Non-evacuee')
             ->whereNull('disaster_responses.date_ended')
             ->select('family_members.is_family_head', 'family_members.sectoral_classification', 'name')
             ->get();
@@ -132,21 +132,21 @@ class BarangayCaptainController extends Controller
             }
             $family = DB::table('family_members')
                 ->whereIn('family_members.family_code', $family_codes)
-                ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
-                ->leftJoin('disaster_responses', 'relief_recipients.disaster_response_id', '=', 'disaster_responses.id')
+                ->leftJoin('affected_residents', 'family_members.family_code', '=', 'affected_residents.family_code')
+                ->leftJoin('disaster_responses', 'affected_residents.disaster_response_id', '=', 'disaster_responses.id')
                 ->whereNotNull('family_members.family_code')
                 ->where('family_members.barangay', $barangay_captain->barangay)
-                ->where('relief_recipients.recipient_type', 'Non-evacuee')
+                ->where('affected_residents.affected_resident_type', 'Non-evacuee')
                 ->whereNull('disaster_responses.date_ended')
                 ->select('family_members.is_family_head', 'family_members.sectoral_classification', 'name')
                 ->get();
         } else {
             $family = DB::table('family_members')
-                ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
-                ->leftJoin('disaster_responses', 'relief_recipients.disaster_response_id', '=', 'disaster_responses.id')
+                ->leftJoin('affected_residents', 'family_members.family_code', '=', 'affected_residents.family_code')
+                ->leftJoin('disaster_responses', 'affected_residents.disaster_response_id', '=', 'disaster_responses.id')
                 ->whereNotNull('family_members.family_code')
                 ->where('family_members.barangay', $barangay_captain->barangay)
-                ->where('relief_recipients.recipient_type', 'Non-evacuee')
+                ->where('affected_residents.affected_resident_type', 'Non-evacuee')
                 ->whereNull('disaster_responses.date_ended')
                 ->select('family_members.is_family_head', 'family_members.sectoral_classification', 'name')
                 ->get();

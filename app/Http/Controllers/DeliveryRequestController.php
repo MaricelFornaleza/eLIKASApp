@@ -9,7 +9,7 @@ use App\CustomClasses\UpdateRequests;
 use App\Models\Evacuee;
 use App\Models\Family;
 use App\Models\FamilyMember;
-use App\Models\ReliefRecipient;
+use App\Models\AffectedResident;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -70,10 +70,10 @@ class DeliveryRequestController extends Controller
             $solo_parent = 0;
 
             foreach ($evacuees as $evacuee) {
-                $relief_recipient = ReliefRecipient::where('id', $evacuee->relief_recipient_id)->first();
-                if (!in_array($relief_recipient->family_code, $family_codes)) {
-                    array_push($family_codes, $relief_recipient->family_code);
-                    $family = Family::where('family_code', $relief_recipient->family_code)->first();
+                $affected_resident = AffectedResident::where('id', $evacuee->affected_resident_id)->first();
+                if (!in_array($affected_resident->family_code, $family_codes)) {
+                    array_push($family_codes, $affected_resident->family_code);
+                    $family = Family::where('family_code', $affected_resident->family_code)->first();
                     $total_number_of_evacuees = $total_number_of_evacuees + $family->no_of_members;
 
                     $family_members = FamilyMember::where('family_code', $family->family_code)->get();
@@ -265,15 +265,6 @@ class DeliveryRequestController extends Controller
         return redirect()->route('home')->with('message', 'You have declined Request ID ' . $id);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -324,54 +315,5 @@ class DeliveryRequestController extends Controller
         //TO-DO: put here dynamic updating
 
         return redirect()->route('request.camp-manager.history');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-    }
-    public function viewSuggestion($id)
-    {
-
-        return view('admin.request_resource.suggestion');
     }
 }

@@ -91,6 +91,7 @@ $(document).ready(function() {
                 },
                 complete: function() {
                     scrollToBottom();
+
                 }
             })
         }

@@ -11,12 +11,6 @@
 |
 */
 
-use App\Mail\VerifyEmail;
-use Facade\FlareClient\Http\Response;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
-
 //login and register 
 Route::get('/', function () {
     if (auth()->user()) {
@@ -29,18 +23,7 @@ Route::get('/', function () {
 
 Auth::routes(['register' => false, 'verify' => true]);
 
-Route::get('/send-mail', function () {
-    $data = [
-        'name' => 'Maricel',
-        'remember_token' => Str::random(25),
-        'email' => 'maformaleza@gbox.adnu.edu.ph',
-    ];
-
-    Mail::to($data['email'])->send(new VerifyEmail($data));
-});
-
 //email verification
-
 Route::get('/user/verify/{remember_token}', 'FieldOfficerController@verifyUser');
 
 // the user must be authenticated to access these routes
@@ -79,7 +62,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::get('/evac-data/{id}', 'DeliveryRequestController@evac_data')->middleware('officertype:Administrator');
     });
 
-    Route::group(['middleware' => ['officertype:Admin&BC', 'adminconfig']], function () {
+    Route::group(['middleware' => ['officertype:Admin&BC']], function () {
         // Supply
         Route::resource('supplies', 'SupplyController');
         // Inventory
@@ -108,7 +91,6 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::resource('/field_officers', 'FieldOfficerController');
         Route::get('/resend-verification/{remember_token}', 'FieldOfficerController@resendVerification');
         // Residents
-        Route::resource('relief-recipient', 'ReliefRecipientController');
         Route::resource('residents', 'FamilyMemberController');
         Route::get('residents.group', 'FamilyMemberController@group')->name('residents.group');
         Route::post('residents.groupResidents', 'FamilyMemberController@groupResidents');
@@ -188,13 +170,4 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
             Route::get('/details/{id}', 'CourierController@details');
         });
     });
-});
-
-Route::get('sms/inbound-sms', function () {
-    $data = json_encode($_POST);
-    return redirect()->route('decodesms')->with($data);
-});
-
-Route::prefix('sms')->group(function () {
-    Route::get('/decodesms', 'InboundSmsController@decodesms')->name('decodesms');
 });

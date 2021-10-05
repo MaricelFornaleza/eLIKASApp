@@ -5,12 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ReliefRecipient extends Model
+class AffectedResident extends Model
 {
     use HasFactory;
-    protected $table = 'relief_recipients';
+    protected $table = 'affected_residents';
     protected $fillable = [
-        'disaster_response_id'
+        'disaster_response_id',
+        'affected_resident_type',
     ];
 
     public function evacuee()

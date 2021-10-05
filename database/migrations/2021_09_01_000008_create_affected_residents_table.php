@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateReliefRecipientsTable extends Migration
+class CreateAffectedResidentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,15 @@ class CreateReliefRecipientsTable extends Migration
      */
     public function up()
     {
-        Schema::create('relief_recipients', function (Blueprint $table) {
+        Schema::create('affected_residents', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('family_code');
             $table->unsignedBigInteger('disaster_response_id');
-            $table->string('recipient_type');
+            $table->string('affected_resident_type');
             $table->timestamps();
+
+            $table->foreign('disaster_response_id')->references('id')->on('disaster_responses')
+                ->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
@@ -29,6 +32,6 @@ class CreateReliefRecipientsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('relief_recipients');
+        Schema::dropIfExists('affected_residents');
     }
 }

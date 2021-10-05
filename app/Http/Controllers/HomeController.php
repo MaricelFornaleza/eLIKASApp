@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\EvacuationCenter;
 use App\Models\FamilyMember;
 use App\Models\Evacuee;
-use App\Models\ReliefRecipient;
+use App\Models\AffectedResident;
 use App\Models\Family;
 use App\Models\Inventory;
 use Illuminate\Support\Facades\DB;
@@ -36,10 +36,10 @@ class HomeController extends Controller
             $barangay_captain = DB::table('barangay_captains')->where('user_id', $user->id)->first();
             $disaster_responses = DisasterResponse::where('date_ended', '=', null)->get();
 
-            // $relief_recipients = DB::table('relief_recipients')
-            // ->where('relief_recipients.recipient_type', 'Non-evacuee')
-            // ->select('relief_recipients.family_code')
-            // ->groupBy('relief_recipients.family_code')
+            // $affected_residents = DB::table('affected_residents')
+            // ->where('affected_residents.affected_resident_type', 'Non-evacuee')
+            // ->select('affected_residents.family_code')
+            // ->groupBy('affected_residents.family_code')
             // ->get();
 
             $residents = 0;
@@ -53,11 +53,11 @@ class HomeController extends Controller
             $solo_parent = 0;
 
             $evacuees = DB::table('family_members')
-                ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
-                ->leftJoin('disaster_responses', 'relief_recipients.disaster_response_id', '=', 'disaster_responses.id')
+                ->leftJoin('affected_residents', 'family_members.family_code', '=', 'affected_residents.family_code')
+                ->leftJoin('disaster_responses', 'affected_residents.disaster_response_id', '=', 'disaster_responses.id')
                 ->whereNotNull('family_members.family_code')
                 ->where('family_members.barangay', $barangay_captain->barangay)
-                ->where('relief_recipients.recipient_type', 'Evacuee')
+                ->where('affected_residents.affected_resident_type', 'Evacuee')
                 ->whereNull('disaster_responses.date_ended')
                 ->select('name')
                 ->get();
@@ -84,7 +84,6 @@ class HomeController extends Controller
             }
             // dd($non_evacuees);
             $bc_inventory = Inventory::where('user_id', '=', $user->id)->first();
-
 
             return view(
                 'barangay-captain.home',
@@ -116,10 +115,10 @@ class HomeController extends Controller
             if ($evacuees != null) {
                 $family_codes =  array();
                 foreach ($evacuees as $evacuee) {
-                    $relief_recipient = ReliefRecipient::where('id', $evacuee->relief_recipient_id)->first();
-                    if (!in_array($relief_recipient->family_code, $family_codes)) {
-                        array_push($family_codes, $relief_recipient->family_code);
-                        $family = Family::where('family_code', $relief_recipient->family_code)->first();
+                    $affected_resident = AffectedResident::where('id', $evacuee->affected_resident_id)->first();
+                    if (!in_array($affected_resident->family_code, $family_codes)) {
+                        array_push($family_codes, $affected_resident->family_code);
+                        $family = Family::where('family_code', $affected_resident->family_code)->first();
                         $total_number_of_evacuees = $total_number_of_evacuees + $family->no_of_members;
                     }
                 }

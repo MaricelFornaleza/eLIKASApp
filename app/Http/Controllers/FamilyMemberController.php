@@ -24,13 +24,13 @@ class FamilyMemberController extends Controller
     {
         $residents = DB::table('family_members')
             ->leftJoin('families', 'family_members.family_code', '=', 'families.family_code')
-            // ->leftJoin('relief_recipients', function ($join) {
-            //     $join->on('family_members.family_code', '=', 'relief_recipients.family_code')
-            //         ->leftJoin('evacuees', 'evacuees.relief_recipient_id', '=', 'relief_recipients.id')
+            // ->leftJoin('affected_residents', function ($join) {
+            //     $join->on('family_members.family_code', '=', 'affected_residents.family_code')
+            //         ->leftJoin('evacuees', 'evacuees.affected_resident_id', '=', 'affected_residents.id')
             //         ->where('evacuees.date_discharged', '!=', null);
             // })
-            ->leftJoin('relief_recipients', 'relief_recipients.family_code', '=', 'families.family_code')
-            ->leftJoin('disaster_responses', 'relief_recipients.disaster_response_id', '=', 'disaster_responses.id')
+            ->leftJoin('affected_residents', 'affected_residents.family_code', '=', 'families.family_code')
+            ->leftJoin('disaster_responses', 'affected_residents.disaster_response_id', '=', 'disaster_responses.id')
             ->whereNull('disaster_responses.date_ended')
             ->select(
                 'family_members.id as fm_id',
@@ -42,7 +42,7 @@ class FamilyMemberController extends Controller
                 'is_family_head',
                 'street',
                 'barangay',
-                'relief_recipients.recipient_type'
+                'affected_residents.affected_resident_type'
             )
             ->distinct()
             ->get();
@@ -103,10 +103,10 @@ class FamilyMemberController extends Controller
             //     $family->no_of_members = 1;
             //     $family->save();
 
-            //     $relief_recipient = new ReliefRecipient();
-            //     $relief_recipient->family_code = $family_member->family_code;
-            //     $relief_recipient->recipient_type = 'Non-Evacuee';
-            //     $relief_recipient->save();}else 
+            //     $affected_resident = new AffectedResident();
+            //     $affected_resident->family_code = $family_member->family_code;
+            //     $affected_resident->affected_resident_type = 'Non-Evacuee';
+            //     $affected_resident->save();}else 
 
             if ($findFamily != null) {
                 $family = Family::find($findFamily->id);
@@ -183,10 +183,10 @@ class FamilyMemberController extends Controller
             //     $family->no_of_members = 1;
             //     $family->save();
 
-            //     $relief_recipient = new ReliefRecipient();
-            //     $relief_recipient->family_code = $family_member->family_code;
-            //     $relief_recipient->recipient_type = 'Non-Evacuee';
-            //     $relief_recipient->save();}else 
+            //     $affected_resident = new AffectedResident();
+            //     $affected_resident->family_code = $family_member->family_code;
+            //     $affected_resident->affected_resident_type = 'Non-Evacuee';
+            //     $affected_resident->save();}else 
 
             if ($findFamily != null) {
                 $family = Family::find($findFamily->id);
@@ -215,8 +215,8 @@ class FamilyMemberController extends Controller
                 if ($findFamily->no_of_members <= 1) {
                     $family = Family::find($findFamily->id);
                     $family->delete();
-                    // $relief_recipient = DB::table('relief_recipients')->where('family_code', $prev_family_member_family_code);
-                    // $relief_recipient->delete();
+                    // $affected_resident = DB::table('affected_residents')->where('family_code', $prev_family_member_family_code);
+                    // $affected_resident->delete();
                 } else {
                     $family = Family::find($findFamily->id);
                     $family->no_of_members = $family->no_of_members - 1;
@@ -247,8 +247,8 @@ class FamilyMemberController extends Controller
                 $family_member->delete();
                 $family = Family::find($findFamily->id);
                 $family->delete();
-                // $relief_recipient = DB::table('relief_recipients')->where('family_code', $family_member->family_code);
-                // $relief_recipient->delete();
+                // $affected_resident = DB::table('affected_residents')->where('family_code', $family_member->family_code);
+                // $affected_resident->delete();
             } else if ($findFamily->no_of_members > 1) {
                 $family_member->delete();
                 $family = Family::find($findFamily->id);
@@ -267,7 +267,7 @@ class FamilyMemberController extends Controller
         // $userData = FamilyMember::get();
         // return json_encode(array('data'=>$userData));
         // $residents = DB::table('family_members')
-        //     ->leftJoin('relief_recipients', 'family_members.family_code', '=', 'relief_recipients.family_code')
+        //     ->leftJoin('affected_residents', 'family_members.family_code', '=', 'affected_residents.family_code')
         //     ->get();
         // dd($checkedResidents);
 
@@ -313,12 +313,12 @@ class FamilyMemberController extends Controller
 
             // $family_member_rep->save();
 
-            // $relief_recipient = new ReliefRecipient();
-            // $relief_recipient->family_code     = $family_code;
-            // $relief_recipient->no_of_members     = count($request->checkedResidents);
-            // $relief_recipient->address     = $validated['address'];
-            // $relief_recipient->recipient_type     = 'Non-Evacuee';
-            // $relief_recipient->save();
+            // $affected_resident = new AffectedResident();
+            // $affected_resident->family_code     = $family_code;
+            // $affected_resident->no_of_members     = count($request->checkedResidents);
+            // $affected_resident->address     = $validated['address'];
+            // $affected_resident->affected_resident_type     = 'Non-Evacuee';
+            // $affected_resident->save();
             $request->session()->flash('message', 'Group Resident successfully!');
             return redirect()->back();
         } else if ($count == 0) {

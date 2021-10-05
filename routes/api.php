@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -28,3 +28,7 @@ Route::post('update/location', 'CourierController@update');
 
 Route::get('/affected_residents', 'api\RestAPIController@affectedResidents');
 Route::get('/barangay_residents/{barangay}', 'api\RestAPIController@barangayResidents');
+
+Route::post('sms/inbound-sms', 'api\SmsController@receiveSMS');
+Route::get('subscribe', 'api\SmsController@subscribe');
+Route::post('subscribe', 'api\SmsController@unsubscribe');

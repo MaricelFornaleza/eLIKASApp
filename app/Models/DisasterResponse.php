@@ -21,4 +21,8 @@ class DisasterResponse extends Model
     {
         return $this->hasMany('App\Models\DeliveryRequest');
     }
+    public function affected_residents_stats()
+    {
+        return $this->hasOne('App\Models\AffectedResidentStats');
+    }
 }

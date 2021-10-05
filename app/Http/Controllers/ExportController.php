@@ -13,7 +13,7 @@ use App\Models\Evacuee;
 use App\Models\Family;
 use App\Models\FamilyMember;
 use App\Models\Inventory;
-use App\Models\ReliefRecipient;
+use App\Models\AffectedResident;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -99,10 +99,10 @@ class ExportController extends Controller
             $solo_parent = 0;
             if ($evacuees != null) {
                 foreach ($evacuees as $evacuee) {
-                    $relief_recipient = ReliefRecipient::where('id', $evacuee->relief_recipient_id)->first();
-                    if (!in_array($relief_recipient->family_code, $family_codes)) {
-                        array_push($family_codes, $relief_recipient->family_code);
-                        $family = Family::where('family_code', $relief_recipient->family_code)->first();
+                    $affected_resident = AffectedResident::where('id', $evacuee->affected_resident_id)->first();
+                    if (!in_array($affected_resident->family_code, $family_codes)) {
+                        array_push($family_codes, $affected_resident->family_code);
+                        $family = Family::where('family_code', $affected_resident->family_code)->first();
                         $total_number_of_evacuees = $total_number_of_evacuees + $family->no_of_members;
 
                         $family_members = FamilyMember::where('family_code', $family->family_code)->get();
