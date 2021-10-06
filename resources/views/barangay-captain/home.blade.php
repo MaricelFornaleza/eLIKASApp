@@ -212,6 +212,6 @@
 <script>
     var my_id = "{{ Auth::id() }}";
     // This is for android interface
-    Android.User(my_id, "Barangay Captain");
+    Android.currentUser(my_id, "Barangay Captain");
 </script>
 @endsection
