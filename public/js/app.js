@@ -18454,8 +18454,8 @@ window.geoIndex = __webpack_require__(/*! geojson-lookup */ "./node_modules/geoj
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\laragon\www\eLIKAS-experiment\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\laragon\www\eLIKAS-experiment\resources\sass\style.scss */"./resources/sass/style.scss");
+__webpack_require__(/*! C:\laragon\www\eLIKAS-app\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\eLIKAS-app\resources\sass\style.scss */"./resources/sass/style.scss");
 
 
 /***/ })
