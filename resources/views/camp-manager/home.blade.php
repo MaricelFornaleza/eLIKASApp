@@ -97,7 +97,10 @@
 @section('javascript')
 <script>
     var my_id = "{{ Auth::id() }}";
+    var evac_name = "{{ $evacuation_center_name }}"
+    var total = "{{ $capacity }}"
     // This is for android interface
-    Android.User(my_id, "Camp Manager");
+    Android.currentUser(my_id, "Camp Manager");
+    Android.areaOfFieldOfficer(evac_name, total);
 </script>
 @endsection
