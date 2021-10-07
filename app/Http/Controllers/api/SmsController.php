@@ -36,7 +36,7 @@ class SmsController extends Controller
             $app_id = env('GLOBE_LABS_APP_ID');
             $app_secret = env('GLOBE_LABS_APP_SECRET');
             $code = $request->code;
-            $response = $http->post("http://developer.globelabs.com.ph/oauth/access_token?app_id=" . $app_id . "&app_secret=" . $app_secret . "&code=" . $code);
+            $response = $http->post("https://developer.globelabs.com.ph/oauth/access_token?app_id=" . $app_id . "&app_secret=" . $app_secret . "&code=" . $code);
             Log::info($request);
             return response()->json($response);
         }
