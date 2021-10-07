@@ -41,7 +41,7 @@ class SmsController extends Controller
             $user = User::where('contact_no', $response['subscriber_number'])->first();
             $user->globe_labs_access_token = $response['access_token'];
             $user->save();
-            return response()->json($user);
+            return view('auth.subscribed-body');
         }
     }
     public function unsubscribe(Request $request)

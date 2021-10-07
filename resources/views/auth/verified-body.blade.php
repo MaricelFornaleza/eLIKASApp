@@ -10,6 +10,9 @@
     <div class="fade-in">
 
         <div class="row center">
+            <lottie-player src="https://assets6.lottiefiles.com/packages/lf20_4qldwfx4.json" background="transparent"
+                speed="1" style="width: 300px; height: 300px;" loop controls autoplay></lottie-player>
+
             <div class="col-lg-6  ">
                 <div class="card">
                     <div class="card-header">
@@ -17,9 +20,10 @@
 
                     </div>
                     <div class="card-body ">
-                        <p>We sent you an email regarding your account details. Download the eLIKAS mobile appllication
-                            and
-                            login using your credentials provided.</p>
+                        <p>Subscribe to eLIKAS by providing your contact number.</p>
+                        <a href="http://developer.globelabs.com.ph/dialog/oauth/LaGMsA8yBqf4RiLE4kcyzefLna59sjxK">
+                            <button class="primary-btn">SUBSCRIBE</button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -33,5 +37,5 @@
 @endsection
 
 @section('javascript')
-
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 @endsection
