@@ -11,8 +11,8 @@
 
         <div class="row center">
             <div class="col-lg-6  ">
-                <div class="col-12 px-auto">
-                    <lottie-player src="https://assets6.lottiefiles.com/packages/lf20_wkebwzpz.json"
+                <div class="col-12">
+                    <lottie-player class="mx-auto" src="https://assets6.lottiefiles.com/packages/lf20_wkebwzpz.json"
                         background="#f4f7fc" speed="1" style="width: 200px; height: 200px;" loop autoplay>
                     </lottie-player>
                 </div>
