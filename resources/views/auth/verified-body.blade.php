@@ -10,8 +10,11 @@
     <div class="fade-in">
 
         <div class="row center">
-            <lottie-player src="https://assets6.lottiefiles.com/packages/lf20_4qldwfx4.json" background="transparent"
-                speed="1" style="width: 300px; height: 300px;" loop controls autoplay></lottie-player>
+            <div class="col-lg-6 alugn-items-center">
+                <lottie-player src="https://assets6.lottiefiles.com/packages/lf20_4qldwfx4.json"
+                    background="transparent" speed="1" style="width: 200px; height: 200px;" autoplay>
+                </lottie-player>
+            </div>
 
             <div class="col-lg-6  ">
                 <div class="card">
@@ -22,7 +25,7 @@
                     <div class="card-body ">
                         <p>Subscribe to eLIKAS by providing your contact number.</p>
                         <a href="http://developer.globelabs.com.ph/dialog/oauth/LaGMsA8yBqf4RiLE4kcyzefLna59sjxK">
-                            <button class="primary-btn">SUBSCRIBE</button>
+                            <button class="btn btn-primary">SUBSCRIBE</button>
                         </a>
                     </div>
                 </div>
