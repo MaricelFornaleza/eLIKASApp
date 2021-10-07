@@ -32,9 +32,13 @@ class SmsController extends Controller
             $user->globe_labs_access_token = $_GET['access_token'];
             $user->save();
         } else {
-
+            $http = new Client();
+            $app_id = env('GLOBE_LABS_APP_ID');
+            $app_secret = env('GLOBE_LABS_APP_SECRET');
+            $code = $request->code;
+            $response = $http->post("http://developer.globelabs.com.ph/oauth/access_token?app_id=" . $app_id . "&app_secret=" . $app_secret . "&code=" . $code);
             Log::info($request);
-            return response()->json($request);
+            return response()->json($response);
         }
     }
     public function unsubscribe(Request $request)
