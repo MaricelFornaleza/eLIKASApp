@@ -10,7 +10,7 @@
     <div class="fade-in">
 
         <div class="row center">
-            <div class="col-lg-12  ">
+            <div class="col-lg-6  ">
                 <div class="col-12 align-items-center">
                     <lottie-player src="https://assets6.lottiefiles.com/packages/lf20_wkebwzpz.json"
                         background="#f4f7fc" speed="1" style="width: 200px; height: 200px;" loop autoplay>

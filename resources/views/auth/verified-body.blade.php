@@ -13,13 +13,13 @@
 
 
             <div class="col-lg-12  ">
-                <div class="col-12 align-items-center">
+                <div class="mx-auto">
                     <lottie-player src="https://assets6.lottiefiles.com/packages/lf20_wkebwzpz.json"
                         background="#f4f7fc" speed="1" style="width: 200px; height: 200px;" loop autoplay>
                     </lottie-player>
                 </div>
                 <div class="col-12 card">
-                    <div class="card-header">
+                    <div class="card-header mt-2">
                         <h4 class="title">Your account was successfully verified!</h4>
 
                     </div>
