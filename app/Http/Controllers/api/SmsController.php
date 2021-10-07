@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Http;
 
 class SmsController extends Controller
 {
@@ -36,7 +37,7 @@ class SmsController extends Controller
             $app_id = env('GLOBE_LABS_APP_ID');
             $app_secret = env('GLOBE_LABS_APP_SECRET');
             $code = $request->code;
-            $response = $http->post("https://developer.globelabs.com.ph/oauth/access_token?app_id=" . $app_id . "&app_secret=" . $app_secret . "&code=" . $code);
+            $response = Http::post("https://developer.globelabs.com.ph/oauth/access_token?app_id=" . $app_id . "&app_secret=" . $app_secret . "&code=" . $code)->json();
             Log::info($request);
             return response()->json($response);
         }
