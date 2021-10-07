@@ -10,13 +10,14 @@
     <div class="fade-in">
 
         <div class="row center">
-            <div class="col-lg-6 alugn-items-center">
-                <lottie-player src="https://assets6.lottiefiles.com/packages/lf20_4qldwfx4.json"
-                    background="transparent" speed="1" style="width: 200px; height: 200px;" autoplay>
-                </lottie-player>
-            </div>
+
 
             <div class="col-lg-6  ">
+                <div class="col-12 align-items-center">
+                    <lottie-player src="https://assets6.lottiefiles.com/packages/lf20_wkebwzpz.json"
+                        background="#f4f7fc" speed="1" style="width: 200px; height: 200px;" autoplay>
+                    </lottie-player>
+                </div>
                 <div class="card">
                     <div class="card-header">
                         <h4 class="title">Your account was successfully verified!</h4>
