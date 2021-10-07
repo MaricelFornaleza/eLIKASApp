@@ -25,7 +25,7 @@ class SmsController extends Controller
             return redirect()->route('decodesms', $inboundsms->id);
         }
     }
-    public function subscribe()
+    public function subscribe(Request $request)
     {
         if (isset($_GET['access_token']) && $_GET['access_token'] != "") {
             $user = User::where('contact_no', $_GET['subscriber_number'])->first();
@@ -33,7 +33,8 @@ class SmsController extends Controller
             $user->save();
         } else {
 
-            Log::info("No access token");
+            Log::info($request);
+            return response()->json($request);
         }
     }
     public function unsubscribe(Request $request)
