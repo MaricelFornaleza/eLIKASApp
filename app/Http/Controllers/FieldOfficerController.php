@@ -276,10 +276,10 @@ class FieldOfficerController extends Controller
         } else {
             $validated = $request->validate([
                 'name' => ['required', 'string', 'max:255', 'alpha_spaces'],
-                'email' => ['required', 'string', 'email', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
                 'photo' => ['image', 'mimes:jpg,png,jpeg'],
                 'officer_type' => ['required'],
-                'contact_no' => ['required', 'numeric', 'digits:11', 'regex:/^(09)\d{9}$/'],
+                'contact_no' => ['required', 'numeric', 'digits:11', 'regex:/^(09)\d{9}$/', Rule::unique('users')->ignore($user->id)],
                 'barangay' => ['nullable'],
                 'designation' => ['required'],
                 'password' => ['nullable', 'string', 'min:8', 'confirmed'],

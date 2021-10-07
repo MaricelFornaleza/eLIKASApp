@@ -124,15 +124,6 @@
                                             @endempty
                                         </td>
                                         <td>0{{$field_officer -> contact_no}}
-                                            @empty($field_officer->globe_labs_access_token)
-                                            <span class="badge badge-pill bg-accent text-white">
-                                                Unverified
-                                            </span>
-                                            @else
-                                            <span class="badge badge-pill bg-primary text-white">
-                                                Verified
-                                            </span>
-                                            @endempty
                                         </td>
                                         <td>@empty($field_officer -> barangay )
                                             NA

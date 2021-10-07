@@ -171,3 +171,5 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         });
     });
 });
+
+Route::get('/decodesms/{id}', 'InboundSmsController@decodesms')->name('decodesms');
