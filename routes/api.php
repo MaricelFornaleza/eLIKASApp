@@ -24,7 +24,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('details', 'api\UserAPIController@details');
 });
 
-Route::post('update/location', 'CourierController@update');
+Route::post('update/location', 'api\RestAPIController@updateCourierLocation');
+Route::get('/disaster_responses', 'api\RestAPIController@disasterResponses');
 
 Route::get('/affected_residents', 'api\RestAPIController@affectedResidents');
 Route::get('/barangay_residents/{barangay}', 'api\RestAPIController@barangayResidents');
@@ -32,3 +33,5 @@ Route::get('/barangay_residents/{barangay}', 'api\RestAPIController@barangayResi
 Route::post('sms/inbound-sms', 'api\SmsController@receiveSMS');
 Route::get('subscribe', 'api\SmsController@subscribe');
 Route::post('subscribe', 'api\SmsController@unsubscribe');
+
+//Route::get('/area/{id}', 'api\RestAPIController@AreaOfConcern');

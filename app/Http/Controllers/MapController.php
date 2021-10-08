@@ -128,8 +128,9 @@ class MapController extends Controller
 
     public function affected_areas()
     {
-        $admins = DB::table('admins')->select('address')->first();
-        $address = explode(',', $admins->address);
+        $admins = DB::table('admins')->select('province','city')->first();
+        $province = $admins->province;
+        $city = $admins->city;
 
         // $barangays = DB::table('affected_areas')->select('barangay')->get();
         // $all_barangays = [];
@@ -141,8 +142,9 @@ class MapController extends Controller
         $all_barangays = DisasterResponse::where('date_ended', '=', null)
             ->leftjoin('affected_areas', 'affected_areas.disaster_response_id', '=', 'disaster_responses.id')
             ->select('barangay')
+            ->distinct()
             ->get();
         // $barangays = AffectedArea::where('disaster_response_id', '=', $id)->select('barangay')->get();
-        return ['address' => $address, 'all_barangays' => $all_barangays];
+        return ['province' => $province, 'city' => $city, 'all_barangays' => $all_barangays];
     }
 }

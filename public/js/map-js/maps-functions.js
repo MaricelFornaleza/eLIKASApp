@@ -172,8 +172,8 @@ function _loadGeoJson() {
 function drawPolygons(data, json) {
   // console.log(data);
   // console.log(json);
-  var city = split(data.address[0]);
-  var province = split(data.address[1]);
+  var city = data.city;
+  var province = data.province;
   var affected_areas = data.all_barangays;
   var polyStyle = {
       "color": "red", //#ff7800
@@ -194,7 +194,7 @@ function drawPolygons(data, json) {
       onEachFeature: onEachFeature,
     }).addTo(barangayLayer);
   });
-
+  // barangayLayer.addTo(mymap);
   // var overlays = {
   //     "Affected Barangays": barangayLayer
   // };

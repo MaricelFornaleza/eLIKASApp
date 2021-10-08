@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\api;
 
+use App\Models\Location;
+use App\CustomClasses\UpdateMarker;
 use App\Http\Controllers\Controller;
 use App\Models\InboundSms;
 use Illuminate\Http\Request;
@@ -10,6 +12,35 @@ use Illuminate\Support\Facades\Log;
 
 class RestAPIController extends Controller
 {
+    public function updateCourierLocation(Request $request)
+    {
+        $validated = $request->validate([
+            'courier_id'    => ['required', 'numeric'],
+            'latitude'      => ['required'],
+            'longitude'     => ['required'],
+        ]);
+
+        Location::where('courier_id', $validated['courier_id'])->update([
+            'latitude'   => $validated['latitude'],
+            'longitude'  => $validated['longitude'],
+        ]);
+
+        $updatemarker = new UpdateMarker;
+        $updatemarker->get_couriers();
+
+        return ["status" => "success"] ;
+    }
+
+    public function disasterResponses()
+    {
+        $disaster_responses = DB::table('disaster_responses')
+            ->where('date_ended', null)
+            ->select('id', 'disaster_type as type')
+            ->get();
+
+        return response()->json($disaster_responses);
+    }
+
     public function affectedResidents()
     {
         $family_members = DB::table('family_members')

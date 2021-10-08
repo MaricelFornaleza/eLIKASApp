@@ -42,12 +42,11 @@ class UpdateMarker {
     public function get_couriers()
     {
         $couriers =  DB::table('couriers')
-            ->join('locations', 'couriers.id', '=', 'locations.courier_id')
+            ->leftJoin('locations', 'couriers.user_id', '=', 'locations.courier_id')
             ->select('couriers.*', 'locations.latitude', 'locations.longitude', 'locations.updated_at')
             ->orderByRaw('couriers.id ASC')
             ->get();
         $data = [ 'couriers' => $couriers ];
         $this->pusher->trigger('location-channel', 'courier-event', $data);
     }
-    
 }
