@@ -24,7 +24,7 @@ class SmsController extends Controller
                 'sender_address' => substr($inboundSMSMessage[0]['senderAddress'], -10),
 
             ]);
-            Log::info($inboundSMSMessage->json());
+            Log::info($inboundSMSMessage);
 
             return (new InboundSmsController)->decodesms($inboundsms->id);
         }
