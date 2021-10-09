@@ -273,10 +273,10 @@ $(document).ready(function() {
         }
     });
 
-    
-    // This is for android interface
-    Android.startSendingLocations(my_id, "Courier");
 });
+
+// This is for android interface
+Android.currentUser(my_id, "Courier");
 
 </script>
 @endsection

@@ -211,7 +211,10 @@
 @section('javascript')
 <script>
     var my_id = "{{ Auth::id() }}";
+    var barangay = "{{ $barangay_captain->barangay }}"
+    var total = "{{ $residents }}"
     // This is for android interface
     Android.currentUser(my_id, "Barangay Captain");
+    Android.areaOfFieldOfficer(barangay, total);
 </script>
 @endsection
