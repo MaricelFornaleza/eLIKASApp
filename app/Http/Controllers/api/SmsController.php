@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\InboundSmsController;
 use App\Models\InboundSms;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -23,7 +24,9 @@ class SmsController extends Controller
                 'sender_address' => substr($inboundSMSMessage[0]['senderAddress'], -10),
 
             ]);
-            return redirect()->route('decodesms', $inboundsms->id);
+            Log::info($inboundSMSMessage->json());
+
+            return (new InboundSmsController)->decodesms($inboundsms->id);
         }
     }
     public function subscribe(Request $request)
