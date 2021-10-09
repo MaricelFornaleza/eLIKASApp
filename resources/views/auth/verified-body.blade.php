@@ -26,7 +26,7 @@
                     <div class="card-body ">
                         <p>Subscribe to eLIKAS by providing your contact number.</p>
                         <div class="col-md-4 mx-auto">
-                            <a href="http://developer.globelabs.com.ph/dialog/oauth/LaGMsA8yBqf4RiLE4kcyzefLna59sjxK">
+                            <a href="http://developer.globelabs.com.ph/dialog/oauth/9yk8u8xRyeHzacXandTR65HnqyEburE4">
                                 <button class="btn btn-primary">SUBSCRIBE</button>
                             </a>
                         </div>
