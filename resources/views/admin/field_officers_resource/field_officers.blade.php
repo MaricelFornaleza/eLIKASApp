@@ -124,6 +124,15 @@
                                             @endempty
                                         </td>
                                         <td>0{{$field_officer -> contact_no}}
+                                            @empty($field_officer->globe_labs_access_token)
+                                            <div class="rounded-circle bg-danger" style="height: 10px; width:10px;">
+                                            </div>
+                                            @else
+                                            <div class="rounded-circle bg-success" style="height: 10px; width:10px;">
+                                            </div>
+                                            @endempty
+
+
                                         </td>
                                         <td>@empty($field_officer -> barangay )
                                             NA
