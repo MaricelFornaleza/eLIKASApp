@@ -10,14 +10,13 @@
     <div class="fade-in">
 
         <div class="row center">
-            <div class="col-lg-8 ">
+            <div class="col-lg-10 ">
                 <div class="card">
                     <div class="card-header">
                         <h5>Import Excel to add Residents</h5>
 
                     </div>
                     <div class="card-body ">
-                        <h6>To add more than one resident, you can upload an excel file.</h6>
                         <div class="row">
                             @if(count($errors) > 0)
                             <div class="alert alert-danger col-12">
@@ -29,36 +28,78 @@
                             @endif
 
                         </div>
-                        <code>Important note: The file must contain the folowing format.</code>
-                        <ul>
+                        <div>
+                            <form action="{{ url('/import/residents/store') }}" method="post"
+                                enctype="multipart/form-data">
+                                @csrf
+                                <div class="row  center mt-3">
+                                    <div class="col-md-6 fileUpload">
+                                        <input type="file" name="import_file" id="">
 
-                            <li><strong>name</strong><code>*</code></li>
-                            <li><strong>gender</strong><code>*</code></li>
-                            <li><strong>birthdate</strong><code>*</code> - format: Y-m-d (1999-12-29)</li>
-                            <li><strong>sectoral_classification</strong><code>*</code></li>
-                            <li><strong>is_family_head</strong><code>*</code></li>
-                            <li><strong>street</strong><code>*</code></li>
-                            <li><strong>barangay</strong><code>*</code></li>
-
-
-                        </ul>
-                        <form action="{{ url('/import/residents/store') }}" method="post" enctype="multipart/form-data">
-                            @csrf
-                            <div class="row  center mt-5">
-                                <div class="col-md-6 fileUpload">
-                                    <input type="file" name="import_file" id="">
-
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row mt-5 center">
-                                <div class="col-4 ">
-                                    <button class="btn btn-primary  " type="submit">{{ __('Import') }}</button>
+                                <div class="row mt-3 mb-5 center">
+                                    <div class="col-4 ">
+                                        <button class="btn btn-primary  " type="submit">{{ __('Import') }}</button>
+                                    </div>
                                 </div>
-                            </div>
 
 
 
-                        </form>
+                            </form>
+                        </div>
+                        <h6><strong>Important note:</strong> The file must contain the following column name.</h6>
+
+                        <table class="table">
+                            <thead>
+                                <tr class="font-weight-bold">
+                                    <td>Column name</td>
+                                    <td>Required?</td>
+                                    <td>Format</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="font-weight-bold">name</td>
+                                    <td>Yes</td>
+                                    <td>First name MI. Last name</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-bold">gender</td>
+                                    <td>Yes</td>
+                                    <td>Male or Female</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-bold">birthdate</td>
+                                    <td>Yes</td>
+                                    <td>Y-m-d</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-bold">sectoral_classification</td>
+                                    <td>Yes</td>
+                                    <td>Children, Lactating, Pregnant, Person with Disability, <br> Senior Citizen, Solo
+                                        Parent, or None</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-bold">is_family_head</td>
+                                    <td>Yes</td>
+                                    <td>Yes or No</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-bold">street</td>
+                                    <td>Yes</td>
+                                    <td>N/A</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-bold">barangay</td>
+                                    <td>Yes</td>
+                                    <td>N/A</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h6><strong>Sample Import:</strong></h6>
+                        <img class="" src="/assets/import-sample/residents.png" style="width: 100%; ">
+
 
                     </div>
                 </div>

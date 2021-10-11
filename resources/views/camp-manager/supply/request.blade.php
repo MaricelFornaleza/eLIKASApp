@@ -26,7 +26,7 @@
                 @csrf
 
                 <!-- Select Disaster Response -->
-                <div class="form-group col-sm-6 mx-auto">
+                <div class="form-group col-md-6 mx-auto">
                     <label for="disaster_response">Disaster Response</label>
                     <select name="disaster_response_id" class="form-control" id="disaster_response_id" required>
                         <option value="">Select</option>
@@ -43,7 +43,7 @@
                 <div class="supply-info mt-5 col-sm-6 mx-auto">
 
                     <!-- title -->
-                    <div class="row title px-3 font-weight-bold ">
+                    <div class="row title  font-weight-bold ">
                         <div class="col-7">
                             Supply Type
                         </div>
@@ -53,9 +53,9 @@
                     </div>
 
                     <!-- food packs input -->
-                    <div class="form-group row px-3 mt-3">
-                        <label class="col-7 col-form-label" for="food-qty">Food Packs</label>
-                        <div class="col-5 text-right">
+                    <div class="form-group row  mt-3">
+                        <label class="col-6 col-form-label" for="food-qty">Food Packs</label>
+                        <div class="col-6 text-right">
                             <div class="input-group">
                                 <span class="input-group-btn ">
                                     <button type="button" class="btn btn-default btn-number p-1" disabled="disabled"
@@ -79,9 +79,9 @@
                     </div>
 
                     <!-- Water input -->
-                    <div class="form-group row px-3 mt-3">
-                        <label class="col-7 col-form-label" for="food-qty">Water</label>
-                        <div class="col-5 text-right">
+                    <div class="form-group row  mt-3">
+                        <label class="col-6 col-form-label" for="food-qty">Water</label>
+                        <div class="col-6 text-right">
                             <div class="input-group">
                                 <span class="input-group-btn ">
                                     <button type="button" class="btn btn-default btn-number p-1" disabled="disabled"
@@ -105,9 +105,9 @@
                     </div>
 
                     <!-- Clothes input -->
-                    <div class="form-group row px-3 mt-3">
-                        <label class="col-7 col-form-label" for="food-qty">Clothes</label>
-                        <div class="col-5 text-right">
+                    <div class="form-group row mt-3">
+                        <label class="col-6 col-form-label" for="food-qty">Clothes</label>
+                        <div class="col-6 text-right">
                             <div class="input-group">
                                 <span class="input-group-btn ">
                                     <button type="button" class="btn btn-default btn-number p-1" disabled="disabled"
@@ -131,9 +131,9 @@
                     </div>
 
                     <!-- Hygiene Kit input -->
-                    <div class="form-group row px-3 mt-3">
-                        <label class="col-7 col-form-label" for="food-qty">Hygiene Kit</label>
-                        <div class="col-5 text-right">
+                    <div class="form-group row  mt-3">
+                        <label class="col-6 col-form-label" for="food-qty">Hygiene Kit</label>
+                        <div class="col-6 text-right">
                             <div class="input-group">
                                 <span class="input-group-btn ">
                                     <button type="button" class="btn btn-default btn-number p-1" disabled="disabled"
@@ -157,9 +157,9 @@
                     </div>
 
                     <!-- Medicine input -->
-                    <div class="form-group row px-3 mt-3">
-                        <label class="col-7 col-form-label" for="food-qty">Medicine</label>
-                        <div class="col-5 text-right">
+                    <div class="form-group row mt-3">
+                        <label class="col-6 col-form-label" for="food-qty">Medicine</label>
+                        <div class="col-6 text-right">
                             <div class="input-group">
                                 <span class="input-group-btn ">
                                     <button type="button" class="btn btn-default btn-number p-1" disabled="disabled"
@@ -183,9 +183,9 @@
                     </div>
 
                     <!-- Emergency Shelter Assistance input -->
-                    <div class="form-group row px-3 mt-3">
-                        <label class="col-7 col-form-label" for="food-qty">Emergency Shelter Assistance</label>
-                        <div class="col-5 text-right">
+                    <div class="form-group row mt-3">
+                        <label class="col-6 col-form-label" for="food-qty">ESA</label>
+                        <div class="col-6 text-right">
                             <div class="input-group">
                                 <span class="input-group-btn ">
                                     <button type="button" class="btn btn-default btn-number p-1" disabled="disabled"
@@ -209,7 +209,7 @@
                     </div>
 
                     <!-- Note text Area -->
-                    <div class="col-12">
+                    <div class="col-12 px-0">
                         <label for="note">Note</label>
                         <textarea class="form-control" id="note" name="note" placeholder="Write something.."
                             rows="5"></textarea>

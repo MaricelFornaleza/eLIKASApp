@@ -17,7 +17,7 @@
 
                     </div>
                     <div class="card-body ">
-                        <h6>To add more than one supply, you can upload an excel file.</h6>
+
                         <div class="row">
                             @if(count($errors) > 0)
                             <div class="alert alert-danger col-12">
@@ -29,30 +29,54 @@
                             @endif
 
                         </div>
-                        <code>Important note: The file must contain the folowing format.</code>
-                        <ul>
-
-                            <li><strong>supply_type</strong><code>*</code></li>
-                            <li><strong>quantity</strong><code>*</code></li>
-                            <li><strong>source</strong><code>*</code></li>
-                        </ul>
-                        <form action="{{ url('/import/supplies/store') }}" method="post" enctype="multipart/form-data">
-                            @csrf
-                            <div class="row  center mt-5">
-                                <div class="col-md-6 fileUpload">
-                                    <input type="file" name="import_file" id="">
-
+                        <div>
+                            <form action="{{ url('/import/supplies/store') }}" method="post"
+                                enctype="multipart/form-data">
+                                @csrf
+                                <div class="row  center mt-3">
+                                    <div class="col-md-6 fileUpload">
+                                        <input type="file" name="import_file" id="">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row mt-5 center">
-                                <div class="col-4 ">
-                                    <button class="btn btn-primary  " type="submit">{{ __('Import') }}</button>
+                                <div class="row mt-3 mb-5 center">
+                                    <div class="col-4 ">
+                                        <button class="btn btn-primary  " type="submit">{{ __('Import') }}</button>
+                                    </div>
                                 </div>
-                            </div>
+                            </form>
+                        </div>
+                        <h6><strong>Important note:</strong> The file must contain the following column name.</h6>
+                        <table class="table">
+                            <thead>
+                                <tr class="font-weight-bold">
+                                    <td>Column name</td>
+                                    <td>Required?</td>
+                                    <td>Format</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="font-weight-bold">supply_type</td>
+                                    <td>Yes</td>
+                                    <td>Clothes, Emergency Shelter Assistance, <br>Food Packs, Hygiene Kit, Water</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-bold">quantity</td>
+                                    <td>Yes</td>
+                                    <td>N/A</td>
 
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-bold">source</td>
+                                    <td>Yes</td>
+                                    <td>N/A</td>
+                                </tr>
+                            </tbody>
+                        </table>
 
+                        <h6><strong>Sample Import:</strong></h6>
+                        <img class="" src="/assets/import-sample/supply.png" style="width: 100%; ">
 
-                        </form>
 
                     </div>
                 </div>

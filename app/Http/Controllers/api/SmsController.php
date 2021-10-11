@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\InboundSmsController;
 use App\Models\InboundSms;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Http;
 
 class SmsController extends Controller
 {
@@ -22,18 +24,27 @@ class SmsController extends Controller
                 'sender_address' => substr($inboundSMSMessage[0]['senderAddress'], -10),
 
             ]);
-            return redirect()->route('decodesms', $inboundsms->id);
+            Log::info($inboundSMSMessage);
+
+            return (new InboundSmsController)->decodesms($inboundsms->id);
         }
     }
-    public function subscribe()
+    public function subscribe(Request $request)
     {
         if (isset($_GET['access_token']) && $_GET['access_token'] != "") {
             $user = User::where('contact_no', $_GET['subscriber_number'])->first();
             $user->globe_labs_access_token = $_GET['access_token'];
             $user->save();
         } else {
-
-            Log::info("No access token");
+            $http = new Client();
+            $app_id = env('GLOBE_LABS_APP_ID');
+            $app_secret = env('GLOBE_LABS_APP_SECRET');
+            $code = $request->code;
+            $response = Http::post("https://developer.globelabs.com.ph/oauth/access_token?app_id=" . $app_id . "&app_secret=" . $app_secret . "&code=" . $code)->json();
+            $user = User::where('contact_no', $response['subscriber_number'])->first();
+            $user->globe_labs_access_token = $response['access_token'];
+            $user->save();
+            return view('auth.subscribed-body');
         }
     }
     public function unsubscribe(Request $request)
