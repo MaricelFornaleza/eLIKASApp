@@ -208,6 +208,8 @@ function show_remove(x) {
 }
 
 var my_id = "{{ Auth::id() }}";
+//var num = "{{ Auth::user()->contact_no }}";
+//console.log(num);
 $(document).ready(function() {
     //remove on production
     Pusher.logToConsole = true;
