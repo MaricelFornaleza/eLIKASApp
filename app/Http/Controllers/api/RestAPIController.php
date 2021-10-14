@@ -108,9 +108,19 @@ class RestAPIController extends Controller
             ->where('evacuees.evacuation_center_id', $evacuation_center->id)
             ->whereNull('evacuees.date_discharged')
             ->whereNull('disaster_responses.date_ended')
-            ->select('family_members.family_code', 'family_members.sectoral_classification', 'name')
+            ->select('family_members.family_code', 'family_members.sectoral_classification', 'name', 'affected_residents.affected_resident_type')
             ->distinct()
             ->get();
-        return response()->json($evacuees);
+        $family_members = DB::table('family_members')
+            ->leftJoin('affected_residents', 'family_members.family_code', '=', 'affected_residents.family_code')
+            ->leftJoin('disaster_responses', 'affected_residents.disaster_response_id', '=', 'disaster_responses.id')
+            ->whereNotNull('family_members.family_code')
+            ->whereNotNull('affected_residents.id')->where('affected_residents.affected_resident_type', 'Non-evacuee')
+            ->whereNull('disaster_responses.date_ended')
+            ->select('family_members.family_code', 'family_members.sectoral_classification', 'name', 'affected_residents.affected_resident_type')
+            ->distinct()
+            ->get();
+        $merged = $family_members->$evacuees;
+        return response()->json($merged);
     }
 }
