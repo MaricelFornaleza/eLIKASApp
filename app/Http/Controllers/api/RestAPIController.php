@@ -120,7 +120,7 @@ class RestAPIController extends Controller
             ->select('family_members.family_code', 'family_members.sectoral_classification', 'name', 'affected_residents.affected_resident_type')
             ->distinct()
             ->get();
-        $merged = $family_members->$evacuees;
+        $merged = $family_members->merge($evacuees);
         return response()->json($merged);
     }
 }
