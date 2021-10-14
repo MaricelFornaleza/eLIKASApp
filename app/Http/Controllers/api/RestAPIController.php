@@ -28,7 +28,7 @@ class RestAPIController extends Controller
         $updatemarker = new UpdateMarker;
         $updatemarker->get_couriers();
 
-        return ["status" => "success"] ;
+        return ["status" => "success"];
     }
 
     public function disasterResponses()
@@ -52,24 +52,25 @@ class RestAPIController extends Controller
     }
 
     public function affectedResidents($id)
-    {   
+    {
         $evacuation_center = DB::table('evacuation_centers')->where('camp_manager_id', $id)->first();
         $family_members = DB::table('family_members')
             ->leftJoin('affected_residents', 'family_members.family_code', '=', 'affected_residents.family_code')
             ->leftJoin('disaster_responses', 'affected_residents.disaster_response_id', '=', 'disaster_responses.id')
             ->leftJoin('evacuees', 'affected_residents.id', '=', 'evacuees.affected_resident_id')
             ->whereNotNull('family_members.family_code')
-            ->whereNotNull('affected_residents.id')//->where('affected_residents.affected_resident_type', 'Non-evacuee')
+            ->whereNotNull('affected_residents.id') //->where('affected_residents.affected_resident_type', 'Non-evacuee')
             ->where('evacuees.evacuation_center_id', $evacuation_center->id)
             ->whereNull('evacuees.date_discharged')
             ->whereNull('disaster_responses.date_ended')
             ->select(
-                'affected_residents.id', 
-                'name', 
-                'family_members.family_code', 
-                'family_members.sectoral_classification', 
-                'family_members.is_family_head', 
-                'affected_residents.affected_resident_type as type')
+                'affected_residents.id',
+                'name',
+                'family_members.family_code',
+                'family_members.sectoral_classification',
+                'family_members.is_family_head',
+                'affected_residents.affected_resident_type as type'
+            )
             ->distinct()
             ->get();
         return response()->json($family_members);
@@ -85,12 +86,31 @@ class RestAPIController extends Controller
             ->where('affected_residents.affected_resident_type', 'Non-evacuee')
             ->whereNull('disaster_responses.date_ended')
             ->select(
-                'affected_residents.id as id', 
-                'name', 'family_members.family_code', 
-                'family_members.sectoral_classification', 
-                'family_members.is_family_head', 
-                'affected_residents.affected_resident_type as type')
+                'affected_residents.id as id',
+                'name',
+                'family_members.family_code',
+                'family_members.sectoral_classification',
+                'family_members.is_family_head',
+                'affected_residents.affected_resident_type as type'
+            )
             ->get();
         return response()->json($non_evacuees);
+    }
+    public function evacuees($id)
+    {
+        $evacuation_center = DB::table('evacuation_centers')->where('camp_manager_id', $id)->first();
+        $evacuees = DB::table('family_members')
+            ->leftJoin('affected_residents', 'family_members.family_code', '=', 'affected_residents.family_code')
+            ->leftJoin('disaster_responses', 'affected_residents.disaster_response_id', '=', 'disaster_responses.id')
+            ->leftJoin('evacuees', 'affected_residents.id', '=', 'evacuees.affected_resident_id')
+            ->whereNotNull('family_members.family_code')
+            ->where('affected_residents.affected_resident_type', 'Evacuee')
+            ->where('evacuees.evacuation_center_id', $evacuation_center->id)
+            ->whereNull('evacuees.date_discharged')
+            ->whereNull('disaster_responses.date_ended')
+            ->select('family_members.family_code', 'family_members.sectoral_classification', 'name')
+            ->distinct()
+            ->get();
+        return response()->json($evacuees);
     }
 }
