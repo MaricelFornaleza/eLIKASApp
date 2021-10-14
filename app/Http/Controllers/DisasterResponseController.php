@@ -224,18 +224,20 @@ class DisasterResponseController extends Controller
     }
     public function stop($id)
     {
-        // $disaster_reponse = DisasterResponse::find($id);
-        // $disaster_reponse->date_ended = Carbon::now();
-        // $disaster_reponse->save();
+
         $affected_resident = AffectedResident::where('disaster_response_id', $id)
             ->where('affected_resident_type', 'Evacuee')->count();
-        dd($affected_resident);
 
-
-
+        if ($affected_resident == 0) {
+            $disaster_reponse = DisasterResponse::find($id);
+            $disaster_reponse->date_ended = Carbon::now();
+            $disaster_reponse->save();
+            Session::flash('message', 'Disaster Response ended');
+        } else {
+            Session::flash('error', 'Cannot stop Disaster Response');
+        }
         $update_requests = new UpdateMarker;
         $update_requests->refreshMap();
-        Session::flash('message', 'Disaster Response ended');
         return redirect('home');
     }
     public function exportPDF($id)

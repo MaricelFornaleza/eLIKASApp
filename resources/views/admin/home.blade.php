@@ -32,6 +32,15 @@
             </div>
             @endif
         </div>
+        <div class="col-md-11">
+            @if(Session::has('error'))
+            <div class="alert alert-danger">{{ Session::get('error') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @endif
+        </div>
 
         <div class="col-md-11">
             <div class="row justify-content-start">
