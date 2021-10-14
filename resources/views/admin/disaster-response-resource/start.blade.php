@@ -36,7 +36,7 @@
                                         <option value="Flood">Flood</option>
                                         <option value="Landslide">Landslide</option>
                                         <option value="Tornado">Tornado</option>
-                                        <option value="Typhoon">Typhoon</option>
+                                        <option value="Tropical Cyclone">Tropical Cyclone</option>
                                         <option value="Volcanic Eruption">Volcanic Eruption</option>
                                         <option value="Wildfire">Wildfire</option>
 

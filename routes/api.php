@@ -29,6 +29,8 @@ Route::post('/phone_num/{id}', 'api\RestAPIController@phoneNum');
 Route::get('/disaster_responses', 'api\RestAPIController@disasterResponses');
 
 Route::get('/affected_residents', 'api\RestAPIController@affectedResidents');
+Route::get('/evacuees/{id}', 'api\RestAPIController@evacuees');
+
 Route::get('/barangay_residents/{barangay}', 'api\RestAPIController@barangayResidents');
 
 Route::post('sms/inbound-sms', 'api\SmsController@receiveSMS');
