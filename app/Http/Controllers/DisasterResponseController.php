@@ -229,6 +229,7 @@ class DisasterResponseController extends Controller
         // $disaster_reponse->save();
         $affected_resident = AffectedResident::where('disaster_response_id', $id)
             ->where('affected_resident_type', 'Evacuee')->count();
+        dd($affected_resident);
 
 
 
