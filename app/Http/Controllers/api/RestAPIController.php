@@ -57,7 +57,7 @@ class RestAPIController extends Controller
             ->leftJoin('affected_residents', 'family_members.family_code', '=', 'affected_residents.family_code')
             ->leftJoin('disaster_responses', 'affected_residents.disaster_response_id', '=', 'disaster_responses.id')
             ->whereNotNull('family_members.family_code')
-            ->whereNotNull('affected_residents.id')->where('affected_residents.affected_resident_type', 'Non-evacuee')
+            ->whereNotNull('affected_residents.id')//->where('affected_residents.affected_resident_type', 'Non-evacuee')
             ->whereNull('disaster_responses.date_ended')
             ->select(
                 'affected_residents.id', 
