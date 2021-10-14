@@ -28,7 +28,7 @@ Route::post('update/location', 'api\RestAPIController@updateCourierLocation');
 Route::post('/phone_num/{id}', 'api\RestAPIController@phoneNum');
 Route::get('/disaster_responses', 'api\RestAPIController@disasterResponses');
 
-Route::get('/affected_residents/{id}', 'api\RestAPIController@affectedResidents');
+Route::get('/affected_residents', 'api\RestAPIController@affectedResidents');
 Route::get('/barangay_residents/{barangay}', 'api\RestAPIController@barangayResidents');
 
 Route::post('sms/inbound-sms', 'api\SmsController@receiveSMS');
