@@ -104,7 +104,14 @@ class RestAPIController extends Controller
             ->where('evacuees.evacuation_center_id', $evacuation_center->id)
             ->whereNull('evacuees.date_discharged')
             ->whereNull('disaster_responses.date_ended')
-            ->select('family_members.family_code', 'family_members.sectoral_classification', 'name', 'affected_residents.affected_resident_type')
+            ->select(
+                'affected_residents.id as id',
+                'name',
+                'family_members.family_code',
+                'family_members.sectoral_classification',
+                'family_members.is_family_head',
+                'affected_residents.affected_resident_type as type'
+            )
             ->distinct()
             ->get();
         $family_members = DB::table('family_members')
@@ -113,7 +120,14 @@ class RestAPIController extends Controller
             ->whereNotNull('family_members.family_code')
             ->whereNotNull('affected_residents.id')->where('affected_residents.affected_resident_type', 'Non-evacuee')
             ->whereNull('disaster_responses.date_ended')
-            ->select('family_members.family_code', 'family_members.sectoral_classification', 'name', 'affected_residents.affected_resident_type')
+            ->select(
+                'affected_residents.id as id',
+                'name',
+                'family_members.family_code',
+                'family_members.sectoral_classification',
+                'family_members.is_family_head',
+                'affected_residents.affected_resident_type as type'
+            )
             ->distinct()
             ->get();
         $merged = $family_members->merge($evacuees);
