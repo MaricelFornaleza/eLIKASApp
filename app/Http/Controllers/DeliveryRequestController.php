@@ -10,6 +10,7 @@ use App\Models\Evacuee;
 use App\Models\Family;
 use App\Models\FamilyMember;
 use App\Models\AffectedResident;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -198,6 +199,11 @@ class DeliveryRequestController extends Controller
 
         $update_requests = new UpdateRequests;
         $update_requests->refreshDeliveries($request->input('courier_id'));
+        //send sms to courier
+        $user = User::where('id', $request->input('courier_id'))->first();
+        $message = "Request " . $delivery_request->id . ": \n\nA delivery request was assigned to you. Reply 'cancel <SPACE><REQUEST ID>' to this message if you want to cancel the request or reply 'accept <SPACE><REQUEST ID>' to accept the delivery.";
+
+        (new OutboundSmsController)->reply($user->contact_no, $message);
 
         //dd($delivery_requests->courier_name);
         return redirect()->back()->with('message', 'You have assigned '
