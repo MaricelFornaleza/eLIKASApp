@@ -201,7 +201,7 @@ class DeliveryRequestController extends Controller
         $update_requests->refreshDeliveries($request->input('courier_id'));
         //send sms to courier
         $user = User::where('id', $request->input('courier_id'))->first();
-        $message = "Request " . $delivery_request->id . ": \n\nA delivery request was assigned to you. Reply 'cancel <SPACE><REQUEST ID>' to this message if you want to cancel the request or reply 'accept <SPACE><REQUEST ID>' to accept the delivery.";
+        $message = "Request " . $delivery_request->id . ": \n\nA delivery was assigned to you. Reply 'accept<SPACE><REQUEST ID>' if you want to accept the request otherwise, reply 'cancel<SPACE><REQUEST ID>'.";
 
         (new OutboundSmsController)->reply($user->contact_no, $message);
 
