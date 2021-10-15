@@ -36,6 +36,6 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->environment('production')) {
             \URL::forceScheme('https');
         }
-        Schema::defaultStringLength(191);
+        Schema::defaultStringLength(255);
     }
 }
