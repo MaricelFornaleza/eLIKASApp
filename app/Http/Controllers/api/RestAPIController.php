@@ -27,7 +27,7 @@ class RestAPIController extends Controller
 
         $updatemarker = new UpdateMarker;
         $updatemarker->get_couriers();
-        Log::info($location->latitude);
+        
 
         return ["status" => "success"];
     }
