@@ -213,10 +213,10 @@ $.each(result1, function(key, value) {
                 '</div>' +
                 '</div>' +
                 '</div>' +
-                '<h6 class="small text-center  my-1">Medicine (' + (value
+                '<h6 class="small text-center  my-1">Medicine (' + Math.round((value
                     .medicine /
                     value.capacity *
-                    100) +
+                    100) * 100) / 100 +
                 '%)</h6>' +
 
                 '</div>' +
