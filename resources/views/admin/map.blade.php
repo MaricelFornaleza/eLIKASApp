@@ -120,9 +120,9 @@ $.each(result1, function(key, value) {
                 '</div>' +
                 '</div>' +
                 '</div>' +
-                '<h6 class="small text-center  my-1">Clothes (' + (value.clothes / value
+                '<h6 class="small text-center  my-1">Clothes (' + round((value.clothes / value
                     .capacity *
-                    100) +
+                    100), 2) +
                 '%)</h6>' +
 
                 '</div>' +
@@ -142,10 +142,10 @@ $.each(result1, function(key, value) {
                 '</div>' +
                 '</div>' +
                 '</div>' +
-                '<h6 class="small text-center  my-1">ESA (' + (value
+                '<h6 class="small text-center  my-1">ESA (' + round((value
                     .emergency_shelter_assistance /
                     value.capacity *
-                    100) +
+                    100), 2) +
                 '%)</h6>' +
 
                 '</div>' +
@@ -165,9 +165,9 @@ $.each(result1, function(key, value) {
                 '</div>' +
                 '</div>' +
                 '</div>' +
-                '<h6 class="small text-center  my-1">Food Packs (' + (value.food_packs / value
+                '<h6 class="small text-center  my-1">Food Packs (' + round((value.food_packs / value
                     .capacity *
-                    100) +
+                    100), 2) +
                 '%)</h6>' +
 
                 '</div>' +
@@ -191,9 +191,9 @@ $.each(result1, function(key, value) {
                 '</div>' +
                 '</div>' +
                 '</div>' +
-                '<h6 class="small text-center  my-1">Hygiene Kit (' + (value.hygiene_kit / value
+                '<h6 class="small text-center  my-1">Hygiene Kit (' + round((value.hygiene_kit / value
                     .capacity *
-                    100) +
+                    100), 2) +
                 '%)</h6>' +
 
                 '</div>' +
@@ -213,10 +213,10 @@ $.each(result1, function(key, value) {
                 '</div>' +
                 '</div>' +
                 '</div>' +
-                '<h6 class="small text-center  my-1">Medicine (' + (value
+                '<h6 class="small text-center  my-1">Medicine (' + round((value
                     .medicine /
                     value.capacity *
-                    100) +
+                    100), 2) +
                 '%)</h6>' +
 
                 '</div>' +
@@ -236,9 +236,9 @@ $.each(result1, function(key, value) {
                 '</div>' +
                 '</div>' +
                 '</div>' +
-                '<h6 class="small text-center  my-1">Water (' + (value.water / value
+                '<h6 class="small text-center  my-1">Water (' + round((value.water / value
                     .capacity *
-                    100) +
+                    100), 2) +
                 '%)</h6>' +
 
                 '</div>' +
