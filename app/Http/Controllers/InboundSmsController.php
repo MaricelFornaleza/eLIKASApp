@@ -218,7 +218,7 @@ class InboundSmsController extends Controller
         ]);
         $update_requests = new UpdateRequests;
         $update_requests->refreshList();
-        $reply = "Request " . $delivery_request->id . ": \n\nYour request is pending. Reply 'accept<SPACE><REQUEST ID>' when you received the delivery otherwise, reply 'cancel <SPACE><REQUEST ID>'.";
+        $reply = "Request " . $delivery_request->id . ": \n\nYour request is pending. Reply 'accept " . $delivery_request->id . "' when you received the delivery otherwise, reply 'cancel " . $delivery_request->id . "'.";
         return (new OutboundSmsController)->reply($sender, $reply);
     }
     public function viewEvacuees($sender, $message)
