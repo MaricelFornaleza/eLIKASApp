@@ -7,6 +7,7 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
@@ -88,6 +89,9 @@ class SuppliesImport implements ToCollection, WithHeadingRow
                     $supply->save();
                 }
             }
+        } else {
+            Session::flash('error', 'Supply type not valid');
+            return redirect()->back();
         }
     }
 }
