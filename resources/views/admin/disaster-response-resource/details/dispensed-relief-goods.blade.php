@@ -11,6 +11,11 @@
                                 <div class="text-value-lg">{{$data['relief_goods']['count']}}</div>
                             </div>
                         </div>
+                        <div class="col-6">
+                            <div class="c-callout c-callout-fourth"><small class="text-muted">Total Items</small>
+                                <div class="text-value-lg">{{$data['total_items']}}</div>
+                            </div>
+                        </div>
                         <!-- /.col-->
 
                     </div>
