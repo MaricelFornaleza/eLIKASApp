@@ -346,10 +346,8 @@ $(document).ready(function() {
         content: fetchData(),
         html: true,
     }, );
-    $('.evac-data').click(function() {
-        var evac_id = $(this).attr('id');
+    var evac_id = $(this).attr('id');
 
-    });
 
     function fetchData() {
         var fetch_data = '';
