@@ -89,9 +89,6 @@ class SuppliesImport implements ToCollection, WithHeadingRow
                     $supply->save();
                 }
             }
-        } else if ($flag == 0) {
-            Session::flash('error', 'Supply type not valid');
-            return redirect('import/supplies');
         }
     }
 }
