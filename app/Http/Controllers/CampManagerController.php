@@ -126,6 +126,7 @@ class CampManagerController extends Controller
                                 $evacuee->save();
                             } else {
                                 $checkIfExistsInEvacuee->date_discharged = null;
+                                $checkIfExistsInEvacuee->evacuation_center_id = $evacuation_center->id;
                                 $checkIfExistsInEvacuee->save();
                             }
                         }
