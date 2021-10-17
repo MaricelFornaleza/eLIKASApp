@@ -218,7 +218,7 @@ class InboundSmsController extends Controller
         ]);
         $update_requests = new UpdateRequests;
         $update_requests->refreshList();
-        $reply = "Request " . $delivery_request->id . ": \n\nYour request is pending. Reply 'cancel <SPACE><REQUEST ID>' to this message if you want to cancel the request or reply 'accept <SPACE><REQUEST ID>' when you received the delivery.";
+        $reply = "Request " . $delivery_request->id . ": \n\nYour request is pending. Reply 'accept " . $delivery_request->id . "' when you received the delivery otherwise, reply 'cancel " . $delivery_request->id . "'.";
         return (new OutboundSmsController)->reply($sender, $reply);
     }
     public function viewEvacuees($sender, $message)
@@ -412,6 +412,9 @@ class InboundSmsController extends Controller
         $delivery_request = DeliveryRequest::where('id', '=', $message[1])->first();
         $delivery_request->status = 'cancelled';
         $delivery_request->save();
+        $update_requests = new UpdateRequests;
+        $update_requests->refreshList();
+        // $update_requests->refreshHistory($delivery_request->camp_manager_id);
         $reply = "Request with no. " . $delivery_request->id . " was cancelled successfully.";
         return (new OutboundSmsController)->reply($sender, $reply);
     }
@@ -420,10 +423,13 @@ class InboundSmsController extends Controller
         $user  = User::where('contact_no', $sender)->first();
         $delivery_request = DeliveryRequest::where('id', '=', $message[1])->first();
 
-        if ($user->office_type  == "Courier") {
+        if ($user->officer_type  == "Courier") {
             $delivery_request->status = 'in-transit';
             $delivery_request->save();
-        } else if ($user->office_type  == "Camp Manager") {
+            $update_requests = new UpdateRequests;
+            $update_requests->refreshList();
+            $update_requests->refreshHistory($delivery_request->camp_manager_id);
+        } else if ($user->officer_type  == "Camp Manager") {
             $evacuation_center = EvacuationCenter::where('camp_manager_id', '=', $delivery_request->camp_manager_id)->first();
             $prev_stock = $evacuation_center->stock_level()->first();
             $evacuation_center->stock_level()->update([
@@ -436,6 +442,9 @@ class InboundSmsController extends Controller
             ]);
             $delivery_request->status = "delivered";
             $delivery_request->save();
+            $update_requests = new UpdateRequests;
+            $update_requests->refreshList();
+            $update_requests->refreshDeliveries($delivery_request->courier_id);
         }
         return response("accepted");
     }

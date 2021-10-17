@@ -190,7 +190,11 @@ function change() {
     });
     $('#barangay_name').val(option_array);
 
-    // console.log(option_array);
+    console.log(option_array);
+    console.log($('#city_name').val());
+    console.log($('#province_name').val());
+    console.log($('#region_name').val());
+
 
 
 }

@@ -65,7 +65,7 @@
                                     </button>
                                 </span>
                                 <input type="text" id="food_packs" name="food_packs" class="form-control input-number"
-                                    min="0" max="10000">
+                                    value="0" min="0" max="10000">
                                 <span class="input-group-btn ">
                                     <button type="button" class="btn btn-default btn-number p-1 " data-type="plus"
                                         data-field="food_packs">
@@ -90,8 +90,8 @@
                                             data-width="24"></span>
                                     </button>
                                 </span>
-                                <input type="text" id="water" name="water" class="form-control input-number" min="0"
-                                    max="10000">
+                                <input type="text" id="water" name="water" class="form-control input-number" value="0"
+                                    min="0" max="10000">
                                 <span class="input-group-btn ">
                                     <button type="button" class="btn btn-default btn-number p-1 " data-type="plus"
                                         data-field="water">
@@ -116,8 +116,8 @@
                                             data-width="24"></span>
                                     </button>
                                 </span>
-                                <input type="text" id="clothes" name="clothes" class="form-control input-number" min="0"
-                                    max="10000">
+                                <input type="text" id="clothes" name="clothes" class="form-control input-number"
+                                    value="0" min="0" max="10000">
                                 <span class="input-group-btn ">
                                     <button type="button" class="btn btn-default btn-number p-1 " data-type="plus"
                                         data-field="clothes">
@@ -143,7 +143,7 @@
                                     </button>
                                 </span>
                                 <input type="text" id="hygiene_kit" name="hygiene_kit" class="form-control input-number"
-                                    min="0" max="10000">
+                                    value="0" min="0" max="10000">
                                 <span class="input-group-btn ">
                                     <button type="button" class="btn btn-default btn-number p-1 " data-type="plus"
                                         data-field="hygiene_kit">
@@ -169,7 +169,7 @@
                                     </button>
                                 </span>
                                 <input type="text" id="medicine" name="medicine" class="form-control input-number"
-                                    min="0" max="10000">
+                                    value="0" min="0" max="10000">
                                 <span class="input-group-btn ">
                                     <button type="button" class="btn btn-default btn-number p-1 " data-type="plus"
                                         data-field="medicine">
@@ -195,7 +195,7 @@
                                     </button>
                                 </span>
                                 <input type="text" id="emergency_shelter_assistance" name="emergency_shelter_assistance"
-                                    class="form-control input-number" min="0" max="10000">
+                                    class="form-control input-number" value="0" min="0" max="10000">
                                 <span class="input-group-btn ">
                                     <button type="button" class="btn btn-default btn-number p-1 " data-type="plus"
                                         data-field="emergency_shelter_assistance">

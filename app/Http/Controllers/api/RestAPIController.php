@@ -20,13 +20,14 @@ class RestAPIController extends Controller
             'longitude'     => ['required'],
         ]);
 
-        Location::where('courier_id', $validated['courier_id'])->update([
+        $location = Location::where('courier_id', $validated['courier_id'])->update([
             'latitude'   => $validated['latitude'],
             'longitude'  => $validated['longitude'],
         ]);
 
         $updatemarker = new UpdateMarker;
         $updatemarker->get_couriers();
+        
 
         return ["status" => "success"];
     }

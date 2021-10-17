@@ -110,7 +110,7 @@
                                             <td>{{date('g:i a m/d/Y', strtotime($delivery_request->updated_at)) }}</td>
                                             <td>{{ $delivery_request->id }}</td>
                                             <td>{{ $delivery_request->camp_manager_name }}</td>
-                                            <td class="evac-data " id="{{ $delivery_request->id }}"
+                                            <td class="evac-data " id="{{ $delivery_request->evacuation_center_id }}"
                                                 data-toggle="popover">
                                                 <u> {{ $delivery_request->evacuation_center_name }},
                                                     {{ $delivery_request->evacuation_center_address }}</u>
@@ -339,13 +339,15 @@
 var markers = L.layerGroup();
 var ajax_request;
 $(document).ready(function() {
-    var evac_id = $('.evac-data').attr('id');
+
     $('.evac-data').popover({
         placement: "left",
         title: "Evacuation Center Data",
         content: fetchData(),
         html: true,
     }, );
+    var evac_id = $(this).attr('id');
+
 
     function fetchData() {
         var fetch_data = '';

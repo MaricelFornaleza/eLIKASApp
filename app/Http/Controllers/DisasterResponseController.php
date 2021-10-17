@@ -148,6 +148,13 @@ class DisasterResponseController extends Controller
             'water' => $dispensed_relief_goods->sum('water'),
             'food_packs' => $dispensed_relief_goods->sum('food_packs'),
         ];
+        $total_items = $relief_goods['clothes']
+            + $relief_goods['emergency_shelter_assistance']
+            + $relief_goods['medicine']
+            + $relief_goods['hygiene_kit']
+            + $relief_goods['water']
+            + $relief_goods['food_packs'];
+
 
         // About Residents
         $affected_residents = FamilyMember::join('affected_residents', function ($join) use ($id) {
@@ -167,6 +174,7 @@ class DisasterResponseController extends Controller
             'senior' => $affected_residents->where('sectoral_classification', 'Senior Citizen')->count(),
             'solo' => $affected_residents->where('sectoral_classification', 'Solo Parent')->count(),
         ];
+
 
         // About Affected Barangays
         $barangays = AffectedArea::where('disaster_response_id', $id)->select('barangay')->get();
@@ -191,6 +199,7 @@ class DisasterResponseController extends Controller
             'male' => $affected_residents->where('gender', 'Male')->count(),
             'relief_goods' => $relief_goods,
             'barangayData' => $barangayData,
+            'total_items' => $total_items
 
         ];
 

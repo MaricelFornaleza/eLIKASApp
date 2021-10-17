@@ -21,7 +21,7 @@ class ResidentsImport implements ToCollection, WithHeadingRow
             '*.birthdate'         => ['required', 'date_format:Y-m-d'],
             '*.sectoral_classification' => ['required', 'string', 'max:255', 'alpha_spaces'],
             '*.is_family_head'    => ['required', 'string', 'max:255'],
-            '*.street'           => ['required', 'string', 'max:255', 'alpha_spaces'],
+            '*.street'           => ['required', 'string', 'max:255'],
             '*.barangay'           => ['required', 'string', 'max:255'],
         ])->validate();
 
