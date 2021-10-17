@@ -339,20 +339,24 @@
 var markers = L.layerGroup();
 var ajax_request;
 $(document).ready(function() {
-    var evac_id = $('.evac-data').attr('id');
+
     $('.evac-data').popover({
         placement: "left",
         title: "Evacuation Center Data",
         content: fetchData(),
         html: true,
     }, );
+    $('.evac-data').click(function() {
+        var evac_id = $(this).attr('id');
+
+    });
 
     function fetchData() {
         var fetch_data = '';
         $.ajax({
             url: "requests/evac-data/" + evac_id,
             type: "GET",
-            // async: false,
+            async: false,
             data: "",
             success: function(data) {
                 fetch_data = data;
