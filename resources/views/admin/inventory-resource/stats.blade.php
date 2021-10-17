@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-6 col-lg-3">
+    <div class="col-6 col-lg-2">
         <div class="card">
             <div class="card-body p-0">
                 <div class="c-callout c-callout-first my-0 py-2">
@@ -11,7 +11,7 @@
             </div>
         </div>
     </div>
-    <div class="col-6 col-lg-3">
+    <div class="col-6 col-lg-2">
         <div class="card">
             <div class="card-body p-0">
                 <div class="c-callout c-callout-second my-0 py-2">
@@ -25,7 +25,7 @@
             </div>
         </div>
     </div>
-    <div class="col-6 col-lg-3">
+    <div class="col-6 col-lg-2">
         <div class="card">
             <div class="card-body p-0">
                 <div class="c-callout c-callout-third my-0 py-2">
@@ -37,7 +37,7 @@
             </div>
         </div>
     </div>
-    <div class="col-6 col-lg-3">
+    <div class="col-6 col-lg-2">
         <div class="card">
             <div class="card-body p-0">
                 <div class="c-callout c-callout-fourth my-0 py-2">
@@ -49,7 +49,7 @@
             </div>
         </div>
     </div>
-    <div class="col-6 col-lg-3">
+    <div class="col-6 col-lg-2">
         <div class="card">
             <div class="card-body p-0">
                 <div class="c-callout c-callout-fourth my-0 py-2">
@@ -61,7 +61,7 @@
             </div>
         </div>
     </div>
-    <div class="col-6 col-lg-3">
+    <div class="col-6 col-lg-2">
         <div class="card">
             <div class="card-body p-0">
                 <div class="c-callout c-callout-fourth my-0 py-2">
