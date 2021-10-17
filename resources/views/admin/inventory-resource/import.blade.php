@@ -69,7 +69,7 @@
                                 <tr>
                                     <td class="font-weight-bold">supply_type</td>
                                     <td>Yes</td>
-                                    <td>Clothes, Emergency Shelter Assistance, <br>Food Packs, Hygiene Kit, Water</td>
+                                    <td>Clothes, ESA, <br>Food Packs, Hygiene Kit, Water</td>
                                 </tr>
                                 <tr>
                                     <td class="font-weight-bold">quantity</td>
