@@ -58,7 +58,7 @@
 
                             <div class="col-md-4 mt-5 center">
                                 <a href="{{ route('logout') }}"
-                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit(); Android.logout();">
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST"> @csrf <button
                                             type="submit" class="btn btn-primary"> <svg class="c-icon mr-2">
                                                 <use
