@@ -110,7 +110,7 @@
                                             <td>{{date('g:i a m/d/Y', strtotime($delivery_request->updated_at)) }}</td>
                                             <td>{{ $delivery_request->id }}</td>
                                             <td>{{ $delivery_request->camp_manager_name }}</td>
-                                            <td class="evac-data " id="{{ $delivery_request->id }}"
+                                            <td class="evac-data " id="{{ $delivery_request->evacuation_center_id }}"
                                                 data-toggle="popover">
                                                 <u> {{ $delivery_request->evacuation_center_name }},
                                                     {{ $delivery_request->evacuation_center_address }}</u>
