@@ -59,6 +59,7 @@ class DeliveryRequestController extends Controller
     public function evac_data($evac_id)
     {
         $evacuees = Evacuee::where('evacuation_center_id', $evac_id)->where('date_discharged', null)->get();
+        dd($evacuees);
         $total_number_of_evacuees = 0;
         if ($evacuees != null) {
             $family_codes =  array();
