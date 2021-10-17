@@ -29,7 +29,7 @@
 
 
         </div>
-
+        @include('admin.inventory-resource.stats')
 
         <div class="row">
             @if(count($errors) > 0)

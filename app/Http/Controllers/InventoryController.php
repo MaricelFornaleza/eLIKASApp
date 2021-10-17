@@ -23,7 +23,9 @@ class InventoryController extends Controller
         $inventory_supplies = Inventory::find($user_inventory->id)->inventory_supplies;
         //dd($inventory_supplies);
         if ($user->officer_type == "Administrator") {
-            return view('admin.inventory-resource.supplyList', ['inventory_supplies' => $inventory_supplies]);
+            $admin_inventory = Inventory::where('user_id', '=', $user->id)->first();
+
+            return view('admin.inventory-resource.supplyList', ['inventory_supplies' => $inventory_supplies, 'admin_inventory' => $admin_inventory]);
         } else if ($user->officer_type == "Barangay Captain") {
             $bc_inventory = Inventory::where('user_id', '=', $user->id)->first();
             $is_empty = Supply::where('inventory_id', $bc_inventory->id)->first();
