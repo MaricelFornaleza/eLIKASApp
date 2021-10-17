@@ -152,7 +152,7 @@ class DeliveryRequestController extends Controller
             ]);
             Session::flash('message', 'You have approved Request ID ' . $id);
         } else {
-            return redirect()->back()->with('error', 'Not enough supply');
+            Session::flash('message', 'Not enough supply');
         }
 
 
