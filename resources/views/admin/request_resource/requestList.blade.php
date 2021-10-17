@@ -352,7 +352,7 @@ $(document).ready(function() {
         $.ajax({
             url: "requests/evac-data/" + evac_id,
             type: "GET",
-            async: false,
+            // async: false,
             data: "",
             success: function(data) {
                 fetch_data = data;
