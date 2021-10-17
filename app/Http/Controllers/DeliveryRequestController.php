@@ -128,8 +128,7 @@ class DeliveryRequestController extends Controller
         $id = $request->input('id');
         $user = Auth::user();
         $delivery_request = DeliveryRequest::where('id', '=', $id)->first();
-        $delivery_request->status = "preparing";
-        $delivery_request->save();
+
 
         $admin_inventory = Inventory::where('user_id', '=', $user->id)->first();
 
@@ -141,6 +140,8 @@ class DeliveryRequestController extends Controller
             $admin_inventory->total_no_of_clothes >= $delivery_request->clothes &&
             $admin_inventory->total_no_of_emergency_shelter_assistance >= $delivery_request->emergency_shelter_assistance
         ) {
+            $delivery_request->status = "preparing";
+            $delivery_request->save();
             $admin_inventory->update([
                 'total_no_of_food_packs'                    => ($admin_inventory->total_no_of_food_packs - $delivery_request->food_packs),
                 'total_no_of_water'                         => ($admin_inventory->total_no_of_water - $delivery_request->water),
