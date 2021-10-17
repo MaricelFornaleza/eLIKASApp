@@ -18,7 +18,7 @@ class AdminController extends Controller
             'region' => ['required', 'string', 'max:255'],
             'province' => ['required', 'string', 'max:255'],
             'city' => ['required', 'string', 'max:255'],
-            'barangays' => ['required', 'min:3']
+            'barangays' => ['required']
         ]);
         $user = Auth::id();
         $region =  Str::title($data['region']);
