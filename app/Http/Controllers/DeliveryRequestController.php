@@ -10,12 +10,13 @@ use App\Models\Evacuee;
 use App\Models\Family;
 use App\Models\FamilyMember;
 use App\Models\AffectedResident;
+use App\Models\Inventory;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\Session;
 
 class DeliveryRequestController extends Controller
 {
@@ -125,14 +126,39 @@ class DeliveryRequestController extends Controller
     public function approve(Request $request)
     {
         $id = $request->input('id');
+        $user = Auth::user();
         $delivery_request = DeliveryRequest::where('id', '=', $id)->first();
         $delivery_request->status = "preparing";
         $delivery_request->save();
 
+        $admin_inventory = Inventory::where('user_id', '=', $user->id)->first();
+
+        if (
+            $admin_inventory->total_no_of_food_packs >= $delivery_request->food_packs &&
+            $admin_inventory->total_no_of_water >= $delivery_request->water &&
+            $admin_inventory->total_no_of_hygiene_kit >= $delivery_request->hygiene_kit &&
+            $admin_inventory->total_no_of_medicine >= $delivery_request->medicine &&
+            $admin_inventory->total_no_of_clothes >= $delivery_request->clothes &&
+            $admin_inventory->total_no_of_emergency_shelter_assistance >= $delivery_request->emergency_shelter_assistance
+        ) {
+            $admin_inventory->update([
+                'total_no_of_food_packs'                    => ($admin_inventory->total_no_of_food_packs - $delivery_request->food_packs),
+                'total_no_of_water'                         => ($admin_inventory->total_no_of_water - $delivery_request->water),
+                'total_no_of_hygiene_kit'                   => ($admin_inventory->total_no_of_hygiene_kit - $delivery_request->hygiene_kit),
+                'total_no_of_medicine'                      => ($admin_inventory->total_no_of_medicine - $delivery_request->medicine),
+                'total_no_of_clothes'                       => ($admin_inventory->total_no_of_clothes - $delivery_request->clothes),
+                'total_no_of_emergency_shelter_assistance'  => ($admin_inventory->total_no_of_emergency_shelter_assistance - $delivery_request->emergency_shelter_assistance),
+            ]);
+            Session::flash('message', 'You have approved Request ID ' . $id);
+        } else {
+            Session::flash('error', 'Not enough supply');
+        }
+
+
         $update_requests = new UpdateRequests;
         $update_requests->refreshHistory($delivery_request->camp_manager_id);
 
-        return redirect()->back()->with('message', 'You have approved Request ID ' . $id);
+        return redirect()->back();
     }
 
     public function admin_decline(Request $request)

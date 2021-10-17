@@ -52,7 +52,7 @@
     <div class="col-6 col-lg-2">
         <div class="card">
             <div class="card-body p-0">
-                <div class="c-callout c-callout-fourth my-0 py-2">
+                <div class="c-callout c-callout-first my-0 py-2">
                     <small class="text-muted ">Medicine</small>
                     <div class="text-value-lg ">
                         <h1 class="p-0 m-0"><strong>{{$admin_inventory->total_no_of_medicine}}</strong> </h1>
@@ -64,7 +64,7 @@
     <div class="col-6 col-lg-2">
         <div class="card">
             <div class="card-body p-0">
-                <div class="c-callout c-callout-fourth my-0 py-2">
+                <div class="c-callout c-callout-second my-0 py-2">
                     <small class="text-muted ">Water</small>
                     <div class="text-value-lg ">
                         <h1 class="p-0 m-0"><strong>{{$admin_inventory->total_no_of_water}}</strong> </h1>
