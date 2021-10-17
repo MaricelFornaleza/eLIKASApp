@@ -153,7 +153,7 @@ class DisasterResponseController extends Controller
             + $relief_goods['medicine']
             + $relief_goods['hygiene_kit']
             + $relief_goods['water']
-            + $relief_goods['foods_packs'];
+            + $relief_goods['food_packs'];
 
 
         // About Residents
