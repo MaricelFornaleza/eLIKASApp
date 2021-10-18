@@ -30,7 +30,7 @@
             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                 <div class="card">
                     <div class="card-header ">
-                        {{ __('Add an Evacuation Center') }}
+                        {{ __('Edit an Evacuation Center') }}
                     </div>
                     <div class="card-body">
                         <form method="POST"
