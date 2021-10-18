@@ -151,7 +151,7 @@ class InboundSmsController extends Controller
     }
     public function dispense($sender, $message)
     {
-        $this_rr = AffectedResident::where('family_code', $message[3])
+        $this_rr = AffectedResident::where('id', $message[3])
             ->where('disaster_response_id', $message[2])->first();
 
         $user = User::where('id', $message[1])->first();
@@ -197,7 +197,8 @@ class InboundSmsController extends Controller
             ]);
         }
 
-        return response($user->officer_type);
+        $reply = "Supply was dispensed successfully.";
+        return (new OutboundSmsController)->reply($sender, $reply);
     }
     public function request($sender, $message)
     {
