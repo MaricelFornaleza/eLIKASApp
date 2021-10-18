@@ -18,13 +18,13 @@
                     </a>
 
                     <a class="dropdown-item" href="{{ url('/logout') }}"
-                        onclick="event.preventDefault(); document.getElementById('logout-form').submit(); Android.logout();">
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
 
 
                         <svg class="c-icon mr-2">
                             <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-account-logout"></use>
                         </svg>
-                        <form id="logout-form" action="{{ url('/logout') }}" method="POST"> @csrf <button type="submit"
+                        <form id="logout-form" action="{{ url('/logout') }}" method="POST" onsubmit="Android.logout();"> @csrf <button type="submit"
                                 class="btn btn-ghost-dark btn-block">Logout</button></form>
                     </a>
                 </div>
