@@ -367,7 +367,7 @@ class InboundSmsController extends Controller
     }
     public function addSupply($sender, $message)
     {
-        $user  = User::where('contact_no', $sender)->first();
+        $user  = User::where('id', $message[1])->first();
         $user_inventory_id = User::find($user->id)->user_inventory->id;
         $user_inventory_prev_stock = $user->user_inventory()->first();
         if ($message[2] == 'Food Packs') {
