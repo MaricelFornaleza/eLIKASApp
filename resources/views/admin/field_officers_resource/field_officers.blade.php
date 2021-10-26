@@ -86,21 +86,14 @@
                         <div>
                             <table id="fieldOfficers"
                                 class="table table-borderless table-hover table-light table-striped "
-                                style="width: 150%;">
+                                style="width: 100%;">
                                 <thead>
                                     <tr>
                                         <th>PHOTO</th>
                                         <th>NAME</th>
                                         <th>OFFICER TYPE</th>
                                         <th>EMAIL ADDRESS</th>
-                                        <th>CONTACT NUMBER</th>
-                                        <th>BARANGAY</th>
-                                        <th>DESIGNATION</th>
-                                        <th>EMAIL VERIFICATION</th>
                                         <th>ACTION</th>
-
-
-
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -123,65 +116,114 @@
                                             </span>
                                             @endempty
                                         </td>
-                                        <td>0{{$field_officer -> contact_no}}
-                                            @empty($field_officer->globe_labs_access_token)
-                                            <div class="rounded-circle bg-danger" style="height: 10px; width:10px;">
-                                            </div>
-                                            @else
-                                            <div class="rounded-circle bg-success" style="height: 10px; width:10px;">
-                                            </div>
-                                            @endempty
 
+                                        <td>
+                                            <div class="row ">
+                                                <div class="mr-4 ">
+                                                    <button type="button" class="btn bg-secondary-accent text-white"
+                                                        data-toggle="modal" data-target="#view"
+                                                        data-id="{{$field_officer->user_id}}"
+                                                        data-photo="{{$field_officer->photo}}"
+                                                        data-name="{{$field_officer->name}}"
+                                                        data-email="{{$field_officer->email}}"
+                                                        data-verified="{{$field_officer->email_verified_at}}"
+                                                        data-contact="{{$field_officer->contact_no}}"
+                                                        data-subscribed="{{$field_officer->globe_labs_access_token}}"
+                                                        data-barangay="{{$field_officer->barangay}}"
+                                                        data-designation="{{$field_officer->designation}}{{ $field_officer -> camp_designation }}"
+                                                        data-token="{{$field_officer->remember_token}}">
+                                                        View
+                                                    </button>
 
-                                        </td>
-                                        <td>@empty($field_officer -> barangay )
-                                            NA
-                                            @endempty
-                                            {{ $field_officer -> barangay}}
-                                        </td>
-                                        <td>
-                                            @if($field_officer -> camp_designation == null && $field_officer ->
-                                            designation == null)
-                                            NA
-                                            @else
-                                            {{ $field_officer -> camp_designation }}
-                                            {{ $field_officer -> designation }}
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @empty($field_officer->email_verified_at)
-                                            <a href="/resend-verification/{{$field_officer->remember_token}}"
-                                                class="btn bg-secondary-accent text-white ">Resend</a>
-                                            @else
-                                            N/A
-                                            @endempty
-
-                                        </td>
-                                        <td>
-                                            <div class="row">
-                                                <div class="col-6 ">
-                                                    <a href="/field_officers/{{$field_officer->user_id}}/edit"><svg
-                                                            class="c-icon ">
-                                                            <use
-                                                                xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-pencil">
-                                                            </use>
-                                                        </svg>
-                                                    </a>
                                                 </div>
+                                                <div class="modal fade" id="view" data-backdrop="static"
+                                                    data-keyboard="false" tabindex="-1"
+                                                    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header bg-secondary text-white">
+                                                                <h5 class="modal-title" id="staticBackdropLabel">Details
+                                                                </h5>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close"><span
+                                                                        aria-hidden="true">&times;</span></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                                    <div class="col-4">
+                                                                        <img class="image modal-image" src=""
+                                                                            alt="profile_image"
+                                                                            style="height: 100%; width: 100%; object-fit: cover;">
 
-                                                <div class="col-6 ">
+                                                                    </div>
+                                                                    <div class="col-8 ">
+
+                                                                        <div class="mb-2">
+                                                                            <label for="name"
+                                                                                class="col-form-label small ">Name:</label>
+                                                                            <h6 id="name" class="font-weight-bold"></h6>
+
+                                                                        </div>
+                                                                        <div class="mb-2">
+                                                                            <label for="email"
+                                                                                class="col-form-label small ">Email
+                                                                                Address:</label>
+                                                                            <span
+                                                                                class="badge badge-pill text-white verify">
+                                                                            </span>
+                                                                            <h6 id="email" class="font-weight-bold">
+                                                                            </h6>
+                                                                        </div>
+                                                                        <div class="mb-2">
+                                                                            <label for="contact_no"
+                                                                                class="col-form-label small ">Contact
+                                                                                Number:</label>
+
+                                                                            <h6 id="contact_no"
+                                                                                class="font-weight-bold"></h6>
+                                                                        </div>
+                                                                        <div class="mb-2 barangay">
+                                                                            <label for="barangay"
+                                                                                class="col-form-label small ">Barangay:</label>
+                                                                            <h6 id="barangay" class="font-weight-bold">
+                                                                            </h6>
+                                                                        </div>
+                                                                        <div class="mb-2 designation">
+                                                                            <label for="designation"
+                                                                                class="col-form-label small ">Designation:</label>
+                                                                            <h6 id="designation"
+                                                                                class="font-weight-bold"></h6>
+                                                                        </div>
+                                                                        <div class="col-10 mx-0 px-0 mt-3">
+                                                                            <a href="" id="resend-verification"><button
+                                                                                    type="button"
+                                                                                    class="btn btn-primary text-white resend">Resend
+                                                                                    Email verification</button></a>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Close</button>
+                                                                <a href="" id="edit-fo">
+                                                                    <button type="button"
+                                                                        class="btn bg-secondary text-white">Edit</button>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="">
                                                     <form action="/field_officers/{{$field_officer->user_id}}"
                                                         method="post">
                                                         @csrf
                                                         @method("DELETE")
                                                         <button type="submit" value="Delete" name="submit"
-                                                            class=" btn-borderless"
+                                                            class="btn btn-transparent text-danger"
                                                             onclick="return confirm('Are you sure to delete?')">
-                                                            <svg class="c-icon ">
-                                                                <use
-                                                                    xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-delete">
-                                                                </use>
-                                                            </svg>
+                                                            Delete
                                                         </button>
 
 
@@ -211,15 +253,59 @@
 
 @section('javascript')
 
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
 <script>
 $(document).ready(function() {
-    $('#fieldOfficers').DataTable({
-        "scrollX": true,
+    $('#view').on('shown.coreui.modal', function(e) {
+        var button = $(e.relatedTarget);
+        var modal = $(this);
+        var photo = button.data('photo'),
+            id = button.data('id'),
+            name = button.data('name'),
+            email = button.data('email'),
+            email_verified = button.data('verified'),
+            contact = button.data('contact'),
+            subscribed = button.data('subscribed'),
+            barangay = button.data('barangay'),
+            designation = button.data('designation'),
+            token = button.data('token');
 
+        modal.find(".modal-image").attr('src', "{{ URL::asset('/public/images/') }}/" + photo);
+        modal.find("#email").text(email);
+        modal.find("#name").text(name);
+        modal.find("#contact_no").text(contact);
+        modal.find("#barangay").text(barangay);
+        modal.find("#designation").text(designation);
+        modal.find('#edit-fo').attr('href', 'field_officers/' + id + '/edit');
+        if (email_verified == "") {
+            modal.find(".verify").text('Unverified');
+            modal.find(".verify").addClass('bg-accent');
+            modal.find('#resend-verification').attr('href', '/resend-verification/' + token);
+            modal.find("#resend-verification").show();
+        } else {
+            modal.find(".verify").text('Verified');
+            modal.find(".verify").addClass('bg-primary');
+            modal.find("#resend-verification").hide();
+        }
+
+        if (subscribed == null) {
+            modal.find(".subscribe").addClass('bg-danger');
+        } else {
+            modal.find(".subscribe").addClass('bg-success');
+        }
+        if (barangay == "") {
+            modal.find('.barangay').hide();
+
+            modal.find('.designation').show();
+
+        } else {
+            modal.find('.barangay').show();
+            modal.find('.designation').hide();
+
+        }
     });
+
 });
 </script>
 @endsection

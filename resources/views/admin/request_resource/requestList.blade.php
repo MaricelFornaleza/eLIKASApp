@@ -81,24 +81,14 @@
                     <div class="card-body">
                         <div id="requestList">
                             <table id="requesTable" class="table table-borderless table-hover table-light table-striped"
-                                style="max-width: 300%;">
+                                style="width: 100%;">
                                 <thead>
                                     <tr>
                                         <th>TIME RECEIVED</th>
                                         <th>REQUEST ID</th>
                                         <th>CAMP MANAGER NAME</th>
                                         <th>EVACUATION CENTER</th>
-                                        <th>FOOD PACKS</th>
-                                        <th>WATER</th>
-                                        <th>HYGIENE KIT</th>
-                                        <th>CLOTHES</th>
-                                        <th>MEDICINE</th>
-                                        <th>EMERGENCY SHELTER ASSISTANCE</th>
-                                        <th>NOTE</th>
-
                                         <th>STATUS</th>
-
-
                                         <th>ACTIONS</th>
 
                                     </tr>
@@ -115,13 +105,124 @@
                                                 <u> {{ $delivery_request->evacuation_center_name }},
                                                     {{ $delivery_request->evacuation_center_address }}</u>
                                             </td>
-                                            <td>{{ $delivery_request->food_packs }}</td>
-                                            <td>{{ $delivery_request->water }}</td>
-                                            <td>{{ $delivery_request->hygiene_kit }}</td>
-                                            <td>{{ $delivery_request->clothes }}</td>
-                                            <td>{{ $delivery_request->medicine }}</td>
-                                            <td>{{ $delivery_request->emergency_shelter_assistance }}</td>
-                                            <td>{{ $delivery_request->note }}</td>
+
+                                            <div class="modal fade" id="view" data-backdrop="static"
+                                                data-keyboard="false" tabindex="-1"
+                                                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header bg-secondary text-white">
+                                                            <h5 class="modal-title" id="staticBackdropLabel">
+                                                                Details
+                                                            </h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close"><span
+                                                                    aria-hidden="true">&times;</span></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <div class="mb-2 col-6">
+                                                                    <label for="time_received"
+                                                                        class="col-form-label small ">Time
+                                                                        received:</label>
+                                                                    <h6 id="time_received" class="font-weight-bold">
+                                                                    </h6>
+
+                                                                </div>
+                                                                <div class="mb-2 col-6">
+                                                                    <label for="id"
+                                                                        class="col-form-label small ">Request
+                                                                        ID:</label>
+                                                                    <span class="badge badge-pill text-white verify">
+                                                                    </span>
+                                                                    <h6 id="request_id" class="font-weight-bold">
+                                                                    </h6>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="mb-2 col-6">
+                                                                    <label for="camp_manager"
+                                                                        class="col-form-label small ">Camp
+                                                                        Manager:</label>
+
+                                                                    <h6 id="camp_manager" class="font-weight-bold">
+                                                                    </h6>
+                                                                </div>
+                                                                <div class="mb-2 col-6">
+                                                                    <label for="evacuation_center"
+                                                                        class="col-form-label small ">Evacuation
+                                                                        Center:</label>
+                                                                    <h6 id="evacuation_center" class="font-weight-bold">
+                                                                    </h6>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="mb-2 ">
+                                                                <label for="note"
+                                                                    class="col-form-label small ">Note:</label>
+                                                                <h6 id="note" class="font-weight-bold">
+                                                                </h6>
+                                                            </div>
+
+
+                                                        </div>
+
+                                                        <!-- supply Info -->
+                                                        <div class="col-md-8  ml-auto mr-auto text-center">
+                                                            <div class="row">
+                                                                <div class="col-4 border p-2 ">
+                                                                    <h3 class="pb-0 mb-0">
+                                                                        <strong id="clothes"></strong>
+                                                                    </h3>
+                                                                    <small class="label-small">CLOTHES</small>
+                                                                </div>
+                                                                <div class="col-4 border p-2">
+                                                                    <h3 class="pb-0 mb-0">
+                                                                        <strong id="esa"></strong>
+                                                                    </h3>
+                                                                    <small class="label-small">ESA</small>
+                                                                </div>
+                                                                <div class="col-4 border p-2">
+                                                                    <h3 class="pb-0 mb-0"><strong
+                                                                            id="food_packs"></strong>
+                                                                    </h3>
+                                                                    <small class="label-small">FOOD PACKS</small>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-8  ml-auto mr-auto mb-4 text-center">
+                                                            <div class="row">
+                                                                <div class="col-4 border p-2">
+                                                                    <h3 class="pb-0 mb-0">
+                                                                        <strong id="hygiene_kit"></strong>
+                                                                    </h3>
+                                                                    <small class="label-small">HYGIENE KIT</small>
+                                                                </div>
+                                                                <div class="col-4 border p-2">
+                                                                    <h3 class="pb-0 mb-0">
+                                                                        <strong id="medicine"></strong>
+                                                                    </h3>
+                                                                    <small class="label-small">MEDICINE</small>
+                                                                </div>
+                                                                <div class="col-4 border p-2">
+                                                                    <h3 class="pb-0 mb-0">
+                                                                        <strong id="water"></strong>
+                                                                    </h3>
+                                                                    <small class="label-small">WATER</small>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Close</button>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- end view modal  -->
 
                                             @if( $delivery_request->status == 'pending' )
                                             <td>
@@ -131,7 +232,16 @@
                                             </td>
                                             <td>
                                                 <div class="row">
-                                                    <div class="col-6 ">
+                                                    <div class="mr-4 ">
+                                                        <button type="button"
+                                                            class="btn bg-secondary-accent text-white " id="button"
+                                                            data-toggle="modal" data-target="#view"
+                                                            data-array="{{json_encode($delivery_request)}}">
+                                                            View
+                                                        </button>
+
+                                                    </div>
+                                                    <div class="col-4 ">
                                                         <a href="{{ route('request.approve', ['id' => $delivery_request->id] ) }}"
                                                             onclick="return confirm('Are you sure to approve the request?')">
                                                             {{-- <img class="c-icon" src="{{ url('icons/sprites/accept-request.svg') }}"
@@ -144,7 +254,7 @@
                                                             </svg>
                                                         </a>
                                                     </div>
-                                                    <div class="col-6">
+                                                    <div class="col-4">
                                                         {{-- <form action="" method="post">
                                                             @csrf
                                                             @method("DELETE")
@@ -176,7 +286,18 @@
                                             </td>
                                             <td>
                                                 <div class="row">
-                                                    <div class="col-6 ">
+                                                    <div class="mr-4 ">
+                                                        <button type="button"
+                                                            class="btn bg-secondary-accent text-white " id="button"
+                                                            data-toggle="modal" data-target="#view"
+                                                            data-array="{{json_encode($delivery_request)}}">
+                                                            View
+                                                        </button>
+
+                                                    </div>
+
+
+                                                    <div class="col-4 ">
                                                         <a href="" data-toggle="modal" data-target="#assignModal"
                                                             data-evac-id="{{ $delivery_request->evacuation_center_id }}">
                                                             {{-- <img class="c-icon" src="{{ url('icons/sprites/accept-request.svg') }}"
@@ -244,7 +365,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-6">
+                                                    <div class="col-4">
                                                         <a href="{{ route('request.cancel', ['id' => $delivery_request->id] ) }}"
                                                             onclick="return confirm('Are you sure to cancel the request?')">
                                                             <svg width="25" height="25"
@@ -267,9 +388,17 @@
                                             </td>
                                             <td>
                                                 <div class="row">
-                                                    <div class="col-6 ">
+                                                    <div class="mr-4 ">
+                                                        <button type="button"
+                                                            class="btn bg-secondary-accent text-white " id="button"
+                                                            data-toggle="modal" data-target="#view"
+                                                            data-array="{{json_encode($delivery_request)}}">
+                                                            View
+                                                        </button>
+
                                                     </div>
-                                                    <div class="col-6">
+
+                                                    <div class="col-4">
                                                         <a href="{{ route('request.cancel', ['id' => $delivery_request->id] ) }}"
                                                             onclick="return confirm('Are you sure to cancel the request?')">
                                                             <svg width="25" height="25"
@@ -336,6 +465,38 @@
 <script src="{{ asset('js/map-js/maps-functions.js') }}"></script>
 <script src="{{ asset('js/map-js/leaflet-maps-simplified.js') }}"></script>
 <script>
+$(document).ready(function() {
+    $('#view').on('shown.coreui.modal', function(e) {
+        var button = document.getElementById('button');
+        var modal = $(this);
+        var array = button.getAttribute('data-array');
+        var data = JSON.parse(array);
+
+        modal.find('#time_received').text(data['updated_at']);
+        modal.find('#request_id').text(data['id']);
+        modal.find('#camp_manager').text(data['camp_manager_name']);
+        modal.find('#evacuation_center').text(data['evacuation_center_name'] + ", " + data[
+            'evacuation_center_address']);
+        if (data['note'] == null) {
+            modal.find('#note').text("None.");
+        } else {
+            modal.find('#note').text(data['note']);
+        }
+        modal.find("#clothes").text(data['clothes']);
+        modal.find("#esa").text(data['emergency_shelter_assistance']);
+        modal.find("#food_packs").text(data['food_packs']);
+        modal.find("#hygiene_kit").text(data['hygiene_kit']);
+        modal.find("#medicine").text(data['medicine']);
+        modal.find("#water").text(data['water']);
+
+
+
+
+    });
+
+});
+</script>
+<script>
 var markers = L.layerGroup();
 var ajax_request;
 $(document).ready(function() {
@@ -365,7 +526,7 @@ $(document).ready(function() {
 });
 $(document).ready(function() {
     var table = $('#requesTable').DataTable({
-        "scrollX": true,
+
         "order": [],
     });
 
@@ -464,7 +625,7 @@ $(document).ready(function() {
             //this is the shortcut implementation
             $('#requestList').html(data);
             var table = $('#requestTable').DataTable({
-                "scrollX": true,
+
                 "order": [],
 
             });
