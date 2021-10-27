@@ -49,16 +49,16 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     // Requests
     Route::prefix('requests')->group(function () {
         Route::get('/',         'DeliveryRequestController@index')->name('request.index')->middleware('officertype:Administrator');
-        Route::get('/refresh',         'DeliveryRequestController@refresh')->name('request.refresh')->middleware('officertype:Administrator');
-        Route::get('/receive',   'DeliveryRequestController@receive_supplies')->name('request.receive_supplies')->middleware('officertype:Camp Manager');
+        Route::get('/refresh',  'DeliveryRequestController@refresh')->name('request.refresh')->middleware('officertype:Administrator');
+        Route::get('/receive',  'DeliveryRequestController@receive_supplies')->name('request.receive_supplies')->middleware('officertype:Camp Manager');
         Route::post('/store',   'DeliveryRequestController@store')->name('request.store')->middleware('officertype:Camp Manager');
         Route::get('/cancel',   'DeliveryRequestController@cancel')->name('request.cancel');    //all users can access this
         Route::get('/admin/approve',   'DeliveryRequestController@approve')->name('request.approve')->middleware('officertype:Administrator');
-        Route::get('/suggestion/{id}',   'DeliveryRequestController@viewSuggestion')->middleware('officertype:Administrator');
+        Route::get('/suggestion/{id}', 'DeliveryRequestController@viewSuggestion')->middleware('officertype:Administrator');
         Route::get('/admin/decline',   'DeliveryRequestController@admin_decline')->name('request.admin_decline')->middleware('officertype:Administrator');
         Route::post('/admin/assign',   'DeliveryRequestController@assign_courier')->name('request.assign_courier')->middleware('officertype:Administrator');
-        Route::get('/courier/accept/{id}',   'DeliveryRequestController@courier_accept')->name('request.courier_accept')->middleware('officertype:Courier');
-        Route::get('/courier/decline',   'DeliveryRequestController@courier_decline')->name('request.courier_decline')->middleware('officertype:Courier');
+        Route::get('/courier/accept/{id}', 'DeliveryRequestController@courier_accept')->name('request.courier_accept')->middleware('officertype:Courier');
+        Route::get('/courier/decline','DeliveryRequestController@courier_decline')->name('request.courier_decline')->middleware('officertype:Courier');
         Route::get('/evac-data/{id}', 'DeliveryRequestController@evac_data')->middleware('officertype:Administrator');
     });
 

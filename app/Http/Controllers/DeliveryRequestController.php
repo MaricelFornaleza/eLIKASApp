@@ -56,6 +56,7 @@ class DeliveryRequestController extends Controller
 
         return view('admin.request_resource.requestList', ['delivery_requests' => $delivery_requests]);
     }
+    
     public function evac_data($evac_id)
     {
         $evacuees = Evacuee::where('evacuation_center_id', $evac_id)->where('date_discharged', null)->get();

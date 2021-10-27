@@ -417,8 +417,7 @@ $(document).ready(function() {
                     var marker = new L.marker([value[i].latitude, value[i].longitude], {
                             icon: truckIcon()
                         })
-                        .bindPopup('<div class="font-weight-bold">' + value[i].name + '</div>',
-                            truckOptions())
+                        .bindPopup('<div class="font-weight-bold">' + value[i].name + '</div>', truckOptions())
                         .addTo(courier_markers);
                     courier_markers.addTo(mymap);
                 }

@@ -107,11 +107,11 @@
                                         <td>{{ $field_officer -> officer_type}}</td>
                                         <td>{{ $field_officer -> email }}
                                             @empty($field_officer->email_verified_at)
-                                            <span class="badge badge-pill bg-accent text-white">
+                                            <span id="{{ $field_officer->user_id }}" class="badge badge-pill bg-accent text-white">
                                                 Unverified
                                             </span>
                                             @else
-                                            <span class="badge badge-pill bg-primary text-white">
+                                            <span id="{{ $field_officer->user_id }}" class="badge badge-pill bg-primary text-white">
                                                 Verified
                                             </span>
                                             @endempty
@@ -299,9 +299,7 @@ $(document).ready(function() {
         }
         if (barangay == "") {
             modal.find('.barangay').hide();
-
             modal.find('.designation').show();
-
         } else {
             modal.find('.barangay').show();
             modal.find('.designation').hide();
@@ -309,6 +307,27 @@ $(document).ready(function() {
         }
     });
 
+    //remove on production
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('ab82b7896a919c5e39dd', {
+        cluster: 'ap1'
+    });
+
+    var channel = pusher.subscribe('fieldOfficer-channel');
+    channel.bind('verification-event', function(data) {
+        $.each(data.field_officers, function(key, value) {
+            var html = "";
+            //console.log(value.id);
+            if(value.email_verified_at === null) {
+                html = `<span id="${value.id}" class="badge badge-pill bg-accent text-white">Unverified</span>`;
+            }
+            else {
+                html = `<span id="${value.id}" class="badge badge-pill bg-primary text-white">Verified</span>`;
+            }
+            $(`#${value.id}`).replaceWith(html);
+        });
+    });
 });
 </script>
 @endsection

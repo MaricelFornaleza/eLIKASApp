@@ -488,10 +488,6 @@ $(document).ready(function() {
         modal.find("#hygiene_kit").text(data['hygiene_kit']);
         modal.find("#medicine").text(data['medicine']);
         modal.find("#water").text(data['water']);
-
-
-
-
     });
 
 });
@@ -575,9 +571,7 @@ $(document).ready(function() {
         ajax_request.abort();
         //$(".modal.fade.in").removeClass("modal fade in");
     });
-
-
-
+    
     //remove on production
     // Pusher.logToConsole = true;
 
@@ -596,14 +590,10 @@ $(document).ready(function() {
             method: "GET",
             url: "/requests/refresh",
         }).done(function(data) {
-
-
             //this is the shortcut implementation
             $('#requestList').html(data);
             var table = $('#requestTable').DataTable({
-
                 "order": [],
-
             });
 
         });

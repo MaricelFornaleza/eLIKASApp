@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\Credentials;
 use App\Mail\VerifyEmail;
+use App\CustomClasses\UpdateVerification;
 use App\Models\Barangay;
 use App\Models\BarangayCaptain;
 use App\Models\CampManager;
@@ -41,10 +42,10 @@ class FieldOfficerController extends Controller
                 'users.id as user_id',
                 'camp_managers.designation as camp_designation',
                 'barangay_captains.barangay as barangay',
-
             )
             ->get();
         // dd($field_officers);
+
         return view('admin.field_officers_resource.field_officers')->with('field_officers', $field_officers);
     }
 
@@ -196,6 +197,9 @@ class FieldOfficerController extends Controller
             abort('403', "Sorry your email cannot be identified.");
         }
 
+        $update = new UpdateVerification;
+        $update->refreshVerifications();
+        
         return view('auth.verified-body');
     }
     public function resendVerification($remember_token)
