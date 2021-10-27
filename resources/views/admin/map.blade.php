@@ -31,7 +31,7 @@
     background-color: #DAE1EC;
 }
 
-.leaflet-popup-content {
+.custom-popup .leaflet-popup-content {
     width: 300px !important;
     max-width: 450px !important;
 }
@@ -284,7 +284,6 @@ $(document).ready(function() {
         evac_markers.clearLayers();
         $.each(result, function(key, value) {
             for (var i = 0; i < value.length; ++i) {
-                //console.log(i);
                 if (value.latitude !== null && value.longitude !== null) {
                     var marker = new L.marker([value[i].latitude, value[i].longitude], {
                             icon: evacIcon()
@@ -414,7 +413,6 @@ $(document).ready(function() {
         courier_markers.clearLayers();
         $.each(result, function(key, value) {
             for (var i = 0; i < value.length; ++i) {
-                //console.log(i);
                 if (value.latitude !== null && value.longitude !== null) {
                     var marker = new L.marker([value[i].latitude, value[i].longitude], {
                             icon: truckIcon()

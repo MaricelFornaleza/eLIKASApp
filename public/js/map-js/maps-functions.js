@@ -95,7 +95,7 @@ function evacIcon() {
     iconUrl: '/././assets/img/pins/orange-pin.png',
     iconSize: [61, 52],
     iconAnchor: [9, 48],
-    popupAnchor: [170, -20]
+    popupAnchor: [196, -24] //[170, -20]
   });
 }
 
@@ -114,7 +114,7 @@ function truckIcon() {
     iconUrl: 'assets/img/pins/truck_circle_pin.png',
     iconSize: [42, 42],
     iconAnchor: [9, 21],
-    popupAnchor: [0, -14]
+    popupAnchor: [10, -22]
   });
 }
 
@@ -124,7 +124,7 @@ function truckOptions() {
     'minWidth': '100',
     'autoClose': false,
     'closeOnClick': false,
-    // 'className': 'custom-popup'
+    'className': 'truck-popup'
   };
 }
 
