@@ -28,13 +28,14 @@ class BarangayCaptainController extends Controller
         $bc_inventory = DB::table('inventories')->where('user_id', $user->id)->first();
         $family_members = DB::table('family_members')
             ->leftJoin('affected_residents', 'family_members.family_code', '=', 'affected_residents.family_code')
+            ->leftJoin('families',  'family_members.family_code', '=', 'families.family_code')
             ->leftJoin('disaster_responses', 'affected_residents.disaster_response_id', '=', 'disaster_responses.id')
             ->whereNotNull('family_members.family_code')
             ->where('family_members.barangay', $barangay_captain->barangay)
             ->where('is_family_head', 'Yes')
             ->where('affected_residents.affected_resident_type', 'Non-evacuee')
             ->whereNull('disaster_responses.date_ended')
-            ->select('affected_residents.family_code as rr_fc', 'name')
+            ->select('affected_residents.family_code as rr_fc', 'name', 'no_of_members')
             ->get();
 
         return view(

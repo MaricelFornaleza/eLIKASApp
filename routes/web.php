@@ -99,7 +99,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
             Route::get('/start', 'DisasterResponseController@start');
             Route::post('/store', 'DisasterResponseController@store');
             Route::get('/show/{id}', 'DisasterResponseController@show');
-            Route::get('/stop/{id}', 'DisasterResponseController@stop');
+            Route::post('/stop/{id}', 'DisasterResponseController@stop');
             Route::get('/archive', 'DisasterResponseController@archive');
             Route::get('/export/{id}', 'DisasterResponseController@exportPDF');
         });

@@ -33,7 +33,9 @@
                     <select name="affected_resident_family_code" class="form-control" id="affected_resident">
                         <option value="">Select</option>
                         @foreach($evacuees as $evacuee)
-                        <option value="{{$evacuee->rr_fc}}">{{$evacuee->name}}</option>
+                        <option value="{{$evacuee->rr_fc}}" data-count="{{$evacuee->no_of_members}}" id="option">
+                            {{$evacuee->name}}
+                        </option>
                         @endforeach
 
                     </select>
@@ -234,6 +236,36 @@
 <script src="https://code.iconify.design/2/2.0.3/iconify.min.js"></script>
 
 <script>
+$('#affected_resident').on('change', function() {
+    let number = $(this).find(':selected').data('count');
+    var food = parseInt($('#food_packs').attr('max')),
+        water = parseInt($('#water').attr('max')),
+        clothes = parseInt($('#clothes').attr('max')),
+        hygiene_kit = parseInt($('#hygiene_kit').attr('max')),
+        medicine = parseInt($('#medicine').attr('max')),
+        esa = parseInt($('#emergency_shelter_assistance').attr('max'));
+
+    if (number <= food) {
+        $('#food_packs').val(number);
+    }
+    if (number <= water) {
+        $('#water').val(number);
+    }
+    if (number <= clothes) {
+        $('#clothes').val(number);
+    }
+    if (number <= hygiene_kit) {
+        $('#hygiene_kit').val(number);
+    }
+    if (number <= medicine) {
+        $('#medicine').val(number);
+    }
+    if (number <= esa) {
+        $('#emergency_shelter_assistance').val(number);
+    }
+
+});
+
 $('.btn-number').click(function(e) {
     e.preventDefault();
 

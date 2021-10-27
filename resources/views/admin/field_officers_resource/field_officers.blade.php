@@ -257,6 +257,9 @@
 <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
 <script>
 $(document).ready(function() {
+    $('#fieldOfficers').DataTable({
+
+    });
     $('#view').on('shown.coreui.modal', function(e) {
         var button = $(e.relatedTarget);
         var modal = $(this);

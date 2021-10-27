@@ -179,7 +179,7 @@
 <script>
 $(document).ready(function() {
     $('#suppliesTable').DataTable({
-        "scrollX": true,
+
     });
 });
 </script>

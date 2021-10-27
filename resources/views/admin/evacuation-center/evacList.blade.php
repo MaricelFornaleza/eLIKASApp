@@ -297,11 +297,14 @@
 <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
 <script>
 $(document).ready(function() {
+    $('#evacuationCenter').DataTable({
+
+    });
     $('#view').on('shown.coreui.modal', function(e) {
-        var button = document.getElementById('button');
+
         var modal = $(this);
-        var array = button.getAttribute('data-array');
-        var data = JSON.parse(array);
+        var button = $(e.relatedTarget);
+        var data = button.data('array');
 
         modal.find('#name').text(data['name']);
         modal.find('#address').text(data['address']);

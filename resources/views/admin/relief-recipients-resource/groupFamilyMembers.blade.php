@@ -121,10 +121,10 @@ $(document).ready(function() {
         }
     });
     $('#residentsTable').DataTable({
-        "scrollX": true,
+
     });
     $('#familyMembersTable').DataTable({
-        "scrollX": true,
+
     });
 
 });

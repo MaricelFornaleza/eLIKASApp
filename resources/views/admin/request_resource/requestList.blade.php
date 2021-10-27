@@ -466,11 +466,12 @@
 <script src="{{ asset('js/map-js/leaflet-maps-simplified.js') }}"></script>
 <script>
 $(document).ready(function() {
+
     $('#view').on('shown.coreui.modal', function(e) {
-        var button = document.getElementById('button');
+        var button = $(e.relatedTarget);
+        var data = button.data('array');
         var modal = $(this);
-        var array = button.getAttribute('data-array');
-        var data = JSON.parse(array);
+
 
         modal.find('#time_received').text(data['updated_at']);
         modal.find('#request_id').text(data['id']);

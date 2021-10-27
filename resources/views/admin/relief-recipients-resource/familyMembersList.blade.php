@@ -91,12 +91,8 @@
                                     <tr>
                                         <th>FAMILY CODE</th>
                                         <th>NAME</th>
-                                        <th>GENDER</th>
-                                        <th>BIRTHDATE</th>
                                         <th>SECTORAL CLASSIFICATION</th>
-                                        <th>FAMILY HEAD</th>
                                         <th>ADDRESS</th>
-                                        <th>STATUS</th>
                                         <th>ACTION</th>
                                     </tr>
                                 </thead>
@@ -110,30 +106,118 @@
                                         <td>{{ $family_member->family_code }}</td>
                                         @endif
                                         <td>{{ $family_member->name }}</td>
-                                        <td>{{ $family_member->gender }}</td>
-                                        <td>{{ $family_member->birthdate }}</td>
                                         <td>{{ $family_member->sectoral_classification }}</td>
-                                        <td>{{ $family_member->is_family_head }}</td>
                                         <td>{{ $family_member->street }}, {{ $family_member->barangay }}</td>
-                                        @if($family_member->affected_resident_type == "")
-                                        <td>Non-Evacuee</td>
-                                        @else
-                                        <td>{{ $family_member->affected_resident_type }}</td>
-                                        @endif
-
                                         <td>
                                             <div class="row">
-                                                <div class="col-6 ">
-                                                    <a
-                                                        href="{{ url('/residents/' . $family_member->fm_id . '/edit') }}"><svg
-                                                            class="c-icon ">
-                                                            <use
-                                                                xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-pencil">
-                                                            </use>
-                                                        </svg>
-                                                    </a>
+                                                <div class="mr-4 ">
+                                                    <button type="button" class="btn bg-secondary-accent text-white "
+                                                        id="button" data-toggle="modal" data-target="#view"
+                                                        data-array="{{json_encode($family_member)}}">
+                                                        View
+                                                    </button>
 
                                                 </div>
+                                                <!-- view modal  -->
+                                                <div class="modal fade" id="view" data-backdrop="static"
+                                                    data-keyboard="false" tabindex="-1"
+                                                    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header bg-secondary text-white">
+                                                                <h5 class="modal-title" id="staticBackdropLabel">Details
+                                                                </h5>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close"><span
+                                                                        aria-hidden="true">&times;</span></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                                    <div class="mb-2 col-6">
+                                                                        <label for="family_code"
+                                                                            class="col-form-label small ">Family
+                                                                            Code:</label>
+                                                                        <h6 id="family_code" class="font-weight-bold">
+                                                                        </h6>
+
+                                                                    </div>
+                                                                    <div class="mb-2 col-6">
+                                                                        <label for="status"
+                                                                            class="col-form-label small ">Status:</label>
+                                                                        <span
+                                                                            class="badge badge-pill text-white verify">
+                                                                        </span>
+                                                                        <h6 id="status" class="font-weight-bold">
+                                                                        </h6>
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="mb-2 col-6">
+                                                                        <label for="name"
+                                                                            class="col-form-label small ">Name:</label>
+
+                                                                        <h6 id="name" class="font-weight-bold">
+                                                                        </h6>
+                                                                    </div>
+                                                                    <div class="mb-2 col-6">
+                                                                        <label for="gender"
+                                                                            class="col-form-label small ">Gender:</label>
+                                                                        <h6 id="gender" class="font-weight-bold">
+                                                                        </h6>
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="mb-2 col-6">
+                                                                        <label for="address"
+                                                                            class="col-form-label small ">Address:</label>
+
+                                                                        <h6 id="address" class="font-weight-bold">
+                                                                        </h6>
+                                                                    </div>
+                                                                    <div class="mb-2 col-6">
+                                                                        <label for="birthdate"
+                                                                            class="col-form-label small ">Birthdate:</label>
+                                                                        <h6 id="birthdate" class="font-weight-bold">
+                                                                        </h6>
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="mb-2 col-6">
+                                                                        <label for="sectoral_classification"
+                                                                            class="col-form-label small ">Sectoral
+                                                                            Classification:</label>
+
+                                                                        <h6 id="sectoral_classification"
+                                                                            class="font-weight-bold">
+                                                                        </h6>
+                                                                    </div>
+                                                                    <div class="mb-2 col-6">
+                                                                        <label for="family_head"
+                                                                            class="col-form-label small ">Family
+                                                                            head:</label>
+                                                                        <h6 id="family_head" class="font-weight-bold">
+                                                                        </h6>
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Close</button>
+                                                                <a href="" id="edit">
+                                                                    <button type="button"
+                                                                        class="btn bg-secondary text-white">Edit</button>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
 
                                                 <div class="col-6 ">
                                                     <form
@@ -142,13 +226,9 @@
                                                         @csrf
                                                         @method("DELETE")
                                                         <button type="submit" value="Delete" name="submit"
-                                                            class=" btn-borderless"
+                                                            class=" btn btn-transparent text-danger"
                                                             onclick="return confirm('Are you sure to delete?')">
-                                                            <svg class="c-icon ">
-                                                                <use
-                                                                    xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-delete">
-                                                                </use>
-                                                            </svg>
+                                                            DELETE
                                                         </button>
 
 
@@ -178,14 +258,36 @@
 @endsection
 
 @section('javascript')
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
 <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
 <script>
 $(document).ready(function() {
     $('#familyMembersTable').DataTable({
-        "scrollX": true,
+
     });
+    $('#view').on('shown.coreui.modal', function(e) {
+        var button = $(e.relatedTarget);
+        var array = button.data('array');
+        console.log(array['family_code']);
+        var modal = $(this);
+        modal.find('#family_code').text(array['family_code']);
+        modal.find('#name').text(array['name']);
+        modal.find('#address').text(array['street'] + ", " + array['barangay']);
+        modal.find('#sectoral_classification').text(array['sectoral_classification']);
+        modal.find('#gender').text(array['gender']);
+        modal.find('#birthdate').text(array['birthdate']);
+        modal.find('#family_head').text(array['is_family_head']);
+        if (array['affected_resident_type'] == null) {
+            modal.find('#status').text("Non-evacuee");
+        } else {
+            modal.find('#status').text(array['affected_resident_type']);
+        }
+        modal.find('#edit').attr('href', 'residents/' + array['fm_id'] + '/edit');
+
+
+    });
+
 });
 </script>
 @endsection
