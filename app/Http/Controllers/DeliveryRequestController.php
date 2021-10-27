@@ -111,6 +111,7 @@ class DeliveryRequestController extends Controller
             ->select(
                 'users.name as camp_manager_name',
                 'evacuation_centers.name as evacuation_center_name',
+                'evacuation_centers.address as evacuation_center_address',
                 'evacuation_centers.id as evacuation_center_id',
                 'requests.*'
             )

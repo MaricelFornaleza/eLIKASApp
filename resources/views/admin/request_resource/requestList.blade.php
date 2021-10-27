@@ -80,7 +80,7 @@
                     </div> --}}
                     <div class="card-body">
                         <div id="requestList">
-                            <table id="requesTable" class="table table-borderless table-hover table-light table-striped"
+                            <table id="requestTable" class="table table-borderless table-hover table-light table-striped"
                                 style="width: 100%;">
                                 <thead>
                                     <tr>
@@ -464,35 +464,6 @@
 <script src="{{ asset('js/map-js/maps-functions.js') }}"></script>
 <script src="{{ asset('js/map-js/leaflet-maps-simplified.js') }}"></script>
 <script>
-$(document).ready(function() {
-
-    $('#view').on('shown.coreui.modal', function(e) {
-        var button = $(e.relatedTarget);
-        var data = button.data('array');
-        var modal = $(this);
-
-
-        modal.find('#time_received').text(data['updated_at']);
-        modal.find('#request_id').text(data['id']);
-        modal.find('#camp_manager').text(data['camp_manager_name']);
-        modal.find('#evacuation_center').text(data['evacuation_center_name'] + ", " + data[
-            'evacuation_center_address']);
-        if (data['note'] == null) {
-            modal.find('#note').text("None.");
-        } else {
-            modal.find('#note').text(data['note']);
-        }
-        modal.find("#clothes").text(data['clothes']);
-        modal.find("#esa").text(data['emergency_shelter_assistance']);
-        modal.find("#food_packs").text(data['food_packs']);
-        modal.find("#hygiene_kit").text(data['hygiene_kit']);
-        modal.find("#medicine").text(data['medicine']);
-        modal.find("#water").text(data['water']);
-    });
-
-});
-</script>
-<script>
 var markers = L.layerGroup();
 var ajax_request;
 
@@ -571,7 +542,7 @@ $(document).ready(function() {
         ajax_request.abort();
         //$(".modal.fade.in").removeClass("modal fade in");
     });
-    
+
     //remove on production
     // Pusher.logToConsole = true;
 
@@ -595,10 +566,55 @@ $(document).ready(function() {
             var table = $('#requestTable').DataTable({
                 "order": [],
             });
-
+            $('#view').on('shown.coreui.modal', function(e) {
+                var button = $(e.relatedTarget);
+                var data = button.data('array');
+                var modal = $(this);
+                
+                console.log(data['camp_manager_name']);
+                modal.find('#time_received').text(data['updated_at']);
+                modal.find('#request_id').text(data['id']);
+                modal.find('#camp_manager').text(data['camp_manager_name']);
+                modal.find('#evacuation_center').text(data['evacuation_center_name'] + ", " + data[
+                    'evacuation_center_address']);
+                if (data['note'] == null) {
+                    modal.find('#note').text("None.");
+                } else {
+                    modal.find('#note').text(data['note']);
+                }
+                modal.find("#clothes").text(data['clothes']);
+                modal.find("#esa").text(data['emergency_shelter_assistance']);
+                modal.find("#food_packs").text(data['food_packs']);
+                modal.find("#hygiene_kit").text(data['hygiene_kit']);
+                modal.find("#medicine").text(data['medicine']);
+                modal.find("#water").text(data['water']);
+            });
         });
     });
 
+    $('#view').on('shown.coreui.modal', function(e) {
+        var button = $(e.relatedTarget);
+        var data = button.data('array');
+        var modal = $(this);
+        
+        console.log(data['camp_manager_name']);
+        modal.find('#time_received').text(data['updated_at']);
+        modal.find('#request_id').text(data['id']);
+        modal.find('#camp_manager').text(data['camp_manager_name']);
+        modal.find('#evacuation_center').text(data['evacuation_center_name'] + ", " + data[
+            'evacuation_center_address']);
+        if (data['note'] == null) {
+            modal.find('#note').text("None.");
+        } else {
+            modal.find('#note').text(data['note']);
+        }
+        modal.find("#clothes").text(data['clothes']);
+        modal.find("#esa").text(data['emergency_shelter_assistance']);
+        modal.find("#food_packs").text(data['food_packs']);
+        modal.find("#hygiene_kit").text(data['hygiene_kit']);
+        modal.find("#medicine").text(data['medicine']);
+        modal.find("#water").text(data['water']);
+    });
 });
 </script>
 
