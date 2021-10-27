@@ -101,6 +101,6 @@
     var total = "{{ $capacity }}"
     // This is for android interface
     Android.currentUser(my_id, "Camp Manager");
-    Android.areaOfFieldOfficer(evac_name, total);
+    Android.areaOfFieldOfficer(capacity, total);
 </script>
 @endsection

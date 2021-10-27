@@ -111,8 +111,8 @@ function evacOptions() {
 
 function truckIcon() {
   return icon = L.icon({
-    iconUrl: 'assets/img/pins/mdi_truck-fast.png',
-    iconSize: [32, 27],
+    iconUrl: 'assets/img/pins/truck_circle_pin.png',
+    iconSize: [42, 42],
     iconAnchor: [9, 21],
     popupAnchor: [0, -14]
   });

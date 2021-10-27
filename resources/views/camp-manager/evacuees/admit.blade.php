@@ -12,7 +12,7 @@
                 <!-- Barangay Information  -->
                 <div class="col-md-12 justify-content-center d-flex align-items-baseline p-0">
                     <div class="col-md-6 p-0 m-0">
-                        <h5 class="font-weight-bold">List of Residents </h5>
+                        <h5 class="font-weight-bold">List of Residents</h5>
 
                     </div>
 
@@ -73,7 +73,7 @@
                     @enderror
                     <div class="col-12 center mt-5 ">
                         <div class="col-md-6 p-0 ">
-                            <button class="btn  btn-accent  px-4" type="submit">{{ __('Admit') }}</button>
+                            <button class="btn  btn-accent  px-4" type="submit" onclick="Android.updateResidents()">{{ __('Admit') }}</button>
                         </div>
                     </div>
                 </div>
