@@ -68,14 +68,69 @@
                                 </small>
                             </div>
                         </a>
-                        <a href="/disaster-response/stop/{{$disaster_response->id}}">
+                        <div class="card-footer ">
+                            <button type="button" class="btn-borderless text-danger " id="button" data-toggle="modal"
+                                data-target="#stop" data-type="{{$disaster_response->disaster_type}}">
+                                <svg class="c-icon">
+                                    <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-media-stop">
+                                    </use>
+                                </svg> Stop Disaster Response
+                            </button>
+
+                        </div>
+                        <div class="modal fade" id="stop" data-backdrop="static" data-keyboard="false" tabindex="-1"
+                            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-danger text-white">
+                                        <h5 class="modal-title" id="staticBackdropLabel">Stop Disaster Response</h5>
+                                        <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    </div>
+                                    <form method="POST" action="/disaster-response/stop/{{$disaster_response->id}}">
+                                        @csrf
+                                        <div class="modal-body">
+                                            Are you sure to stop <strong id="dr"></strong> ?
+                                            <br>
+                                            <small class="text-danger"> This action cannot be undone.</small>
+                                            <div class="mt-3">
+
+
+                                                <label for="status" class="col-form-label small ">Password:</label>
+                                                <div class="input-group ">
+
+                                                    <input class="form-control @error('password') is-invalid @enderror"
+                                                        type="password" placeholder="{{ __('Enter your password') }}"
+                                                        name="password" required autofocus>
+                                                    @error('password')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                    @enderror
+                                                </div>
+
+
+                                            </div>
+
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-danger">Yes, proceed.</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <a href="/disaster-response/stop/{{$disaster_response->id}}">
                             <div class="card-footer">
                                 <svg class="c-icon">
                                     <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-media-stop">
                                     </use>
                                 </svg> Stop Disaster Response
                             </div>
-                        </a>
+                        </a> -->
 
                     </div>
                 </div>

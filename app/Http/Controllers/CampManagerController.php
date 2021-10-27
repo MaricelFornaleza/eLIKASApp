@@ -255,6 +255,7 @@ class CampManagerController extends Controller
         $evacuation_center = DB::table('evacuation_centers')->where('camp_manager_id', $user->id)->first();
         $family_members = DB::table('family_members')
             ->leftJoin('affected_residents', 'family_members.family_code', '=', 'affected_residents.family_code')
+            ->leftJoin('families',  'family_members.family_code', '=', 'families.family_code')
             ->leftJoin('disaster_responses', 'affected_residents.disaster_response_id', '=', 'disaster_responses.id')
             ->leftJoin('evacuees', 'affected_residents.id', '=', 'evacuees.affected_resident_id')
             ->whereNotNull('family_members.family_code')->where('is_family_head', 'Yes')
@@ -262,7 +263,7 @@ class CampManagerController extends Controller
             ->where('evacuees.evacuation_center_id', $evacuation_center->id)
             ->whereNull('evacuees.date_discharged')
             ->whereNull('disaster_responses.date_ended')
-            ->select('affected_residents.family_code as rr_fc', 'name')
+            ->select('affected_residents.family_code as rr_fc', 'name', 'no_of_members')
             ->get();
         $disaster_responses = DisasterResponse::where('date_ended', null)->get();
         $sl_evacuation_center = EvacuationCenter::where('camp_manager_id', '=', $user->id)->first();
@@ -317,7 +318,23 @@ class CampManagerController extends Controller
     public function requestSupplyView()
     {
         $disaster_responses = DisasterResponse::where('date_ended', null)->get();
-        return view('camp-manager.supply.request')->with('disaster_responses', $disaster_responses);
+        $user = Auth::user();
+        $evacuation_center = DB::table('evacuation_centers')->where('camp_manager_id', $user->id)->first();
+        $family_members = DB::table('family_members')
+            ->leftJoin('affected_residents', 'family_members.family_code', '=', 'affected_residents.family_code')
+            ->leftJoin('disaster_responses', 'affected_residents.disaster_response_id', '=', 'disaster_responses.id')
+            ->leftJoin('evacuees', 'affected_residents.id', '=', 'evacuees.affected_resident_id')
+            ->whereNotNull('family_members.family_code')
+            ->where('affected_residents.affected_resident_type', 'Evacuee')
+            ->where('evacuees.evacuation_center_id', $evacuation_center->id)
+            ->whereNull('evacuees.date_discharged')
+            ->whereNull('disaster_responses.date_ended')
+            ->select('family_members.family_code', 'family_members.sectoral_classification', 'name')
+            ->distinct()
+            ->get();
+        $count = $family_members->count();
+
+        return view('camp-manager.supply.request')->with(compact('count', 'disaster_responses'));
     }
     public function historyView(Request $request)
     {

@@ -79,23 +79,16 @@
                     <div class="card-body">
                         <div>
                             <table id="evacuationCenter"
-                                class="table table-borderless table-hover table-light table-striped ">
+                                class="table table-borderless table-hover table-light table-striped "
+                                style="width: 100%;">
                                 <thead>
                                     <tr>
                                         <th>NAME</th>
                                         <th>ADDRESS</th>
-                                        <th>CHARACTERISTICS</th>
+
                                         <th>CAMP MANAGER</th>
                                         <th>TOTAL CAPACITY</th>
-                                        <th>EVACUEES</th>
-                                        <th>MALE</th>
-                                        <th>FEMALE</th>
-                                        <th>LACTATING</th>
-                                        <th>PWD</th>
-                                        <th>SENIOR CITIZEN</th>
-                                        <th>CHILDREN</th>
-                                        <th>PREGNANT</th>
-                                        <th>SOLO PARENT</th>
+
 
                                         <th>ACTIONS</th>
 
@@ -106,40 +99,162 @@
                                     <tr>
                                         <td>{{ $evacuation_center['name'] }}</td>
                                         <td>{{ $evacuation_center['address'] }}</td>
-                                        @if($evacuation_center['characteristics'] == null)
-                                        <td class="font-italic">No description added.</td>
-                                        @else
-                                        <td>{{ $evacuation_center['characteristics'] }}</td>
-                                        @endif
+
                                         @if($evacuation_center['camp_manager_name'] == null)
                                         <td class="text-danger"><strong>{{ __('None') }}</strong></td>
                                         @else
                                         <td>{{ $evacuation_center['camp_manager_name'] }}</td>
                                         @endif
                                         <td>{{ $evacuation_center['capacity'] }}</td>
-                                        <td>{{ $evacuation_center['total_number_of_evacuees'] }}</td>
-                                        <td>{{ $evacuation_center['male'] }}</td>
-                                        <td>{{ $evacuation_center['female'] }}</td>
-                                        <td>{{ $evacuation_center['lactating'] }}</td>
-                                        <td>{{ $evacuation_center['pwd'] }}</td>
-                                        <td>{{ $evacuation_center['senior_citizen'] }}</td>
-                                        <td>{{ $evacuation_center['children'] }}</td>
-                                        <td>{{ $evacuation_center['pregnant'] }}</td>
-                                        <td>{{ $evacuation_center['solo_parent'] }}</td>
-                                        
-                   
+
+
+
                                         <td>
                                             <div class="row">
-                                                <div class="col-6 ">
-                                                    <a
-                                                        href="{{ route('evacuation-center.edit', ['id' => $evacuation_center['id']] ) }}">
-                                                        <svg class="c-icon ">
-                                                            <use
-                                                                xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-pencil">
-                                                            </use>
-                                                        </svg>
-                                                    </a>
 
+                                                <div class="mr-4 ">
+                                                    <button type="button" class="btn bg-secondary-accent text-white "
+                                                        id="button" data-toggle="modal" data-target="#view"
+                                                        data-array="{{json_encode($evacuation_center)}}">
+                                                        View
+                                                    </button>
+
+                                                </div>
+                                                <div class="modal fade" id="view" data-backdrop="static"
+                                                    data-keyboard="false" tabindex="-1"
+                                                    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header bg-secondary text-white">
+                                                                <h5 class="modal-title" id="staticBackdropLabel">Details
+                                                                </h5>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close"><span
+                                                                        aria-hidden="true">&times;</span></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                                    <div class="mb-2 col-6">
+                                                                        <label for="name"
+                                                                            class="col-form-label small ">Name:</label>
+                                                                        <h6 id="name" class="font-weight-bold"></h6>
+
+                                                                    </div>
+                                                                    <div class="mb-2 col-6">
+                                                                        <label for="address"
+                                                                            class="col-form-label small ">Address:</label>
+                                                                        <span
+                                                                            class="badge badge-pill text-white verify">
+                                                                        </span>
+                                                                        <h6 id="address" class="font-weight-bold">
+                                                                        </h6>
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="mb-2 col-6">
+                                                                        <label for="capacity"
+                                                                            class="col-form-label small ">Total
+                                                                            Capacity:</label>
+
+                                                                        <h6 id="capacity" class="font-weight-bold">
+                                                                        </h6>
+                                                                    </div>
+                                                                    <div class="mb-2 col-6">
+                                                                        <label for="camp_manager"
+                                                                            class="col-form-label small ">Camp
+                                                                            Manager:</label>
+                                                                        <h6 id="camp_manager" class="font-weight-bold">
+                                                                        </h6>
+                                                                    </div>
+
+                                                                </div>
+
+
+                                                                <div class="mb-2 ">
+                                                                    <label for="characteristics"
+                                                                        class="col-form-label small ">Characteristics:</label>
+                                                                    <h6 id="characteristics" class="font-weight-bold">
+                                                                    </h6>
+                                                                </div>
+
+
+                                                            </div>
+                                                            <div class="dropdown-divider"></div>
+
+                                                            <!-- Female and Male info  -->
+                                                            <div class="col-md-8 ml-auto mr-auto mt-5 mb-5 text-center">
+                                                                <div class="row">
+                                                                    <div class="col-6 border-right ">
+                                                                        <h1 class="pb-0 mb-0">
+                                                                            <strong id=female></strong>
+                                                                        </h1>
+                                                                        <small>FEMALE</small>
+                                                                    </div>
+                                                                    <div class="col-6 ">
+                                                                        <h1 class="pb-0 mb-0"><strong
+                                                                                id="male"></strong>
+                                                                        </h1>
+                                                                        <small>MALE</small>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                            <!-- Sectoral Classification Info -->
+                                                            <div class="col-md-8  ml-auto mr-auto text-center">
+                                                                <div class="row">
+                                                                    <div class="col-4 border p-2 ">
+                                                                        <h3 class="pb-0 mb-0">
+                                                                            <strong id="children"></strong>
+                                                                        </h3>
+                                                                        <small class="label-small">CHILDREN</small>
+                                                                    </div>
+                                                                    <div class="col-4 border p-2">
+                                                                        <h3 class="pb-0 mb-0">
+                                                                            <strong id="lactating"></strong>
+                                                                        </h3>
+                                                                        <small class="label-small">LACTATING</small>
+                                                                    </div>
+                                                                    <div class="col-4 border p-2">
+                                                                        <h3 class="pb-0 mb-0"><strong id="pwd"></strong>
+                                                                        </h3>
+                                                                        <small class="label-small">PWD</small>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-8  ml-auto mr-auto mb-4 text-center">
+                                                                <div class="row">
+                                                                    <div class="col-4 border p-2">
+                                                                        <h3 class="pb-0 mb-0">
+                                                                            <strong id="pregnant"></strong>
+                                                                        </h3>
+                                                                        <small class="label-small">PREGNANT</small>
+                                                                    </div>
+                                                                    <div class="col-4 border p-2">
+                                                                        <h3 class="pb-0 mb-0">
+                                                                            <strong id="senior_citizen"></strong>
+                                                                        </h3>
+                                                                        <small class="label-small">SENIOR
+                                                                            CITIZEN</small>
+                                                                    </div>
+                                                                    <div class="col-4 border p-2">
+                                                                        <h3 class="pb-0 mb-0">
+                                                                            <strong id="solo_parent"></strong>
+                                                                        </h3>
+                                                                        <small class="label-small">SOLO PARENT</small>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Close</button>
+                                                                <a href="" id="edit">
+                                                                    <button type="button"
+                                                                        class="btn bg-secondary text-white">Edit</button>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
 
                                                 <div class="col-6 ">
@@ -149,13 +264,9 @@
                                                         @csrf
                                                         @method("DELETE")
                                                         <button type="submit" value="Delete" name="submit"
-                                                            class=" btn-borderless"
+                                                            class=" btn btn-transparent text-danger"
                                                             onclick="return confirm('Are you sure to delete?')">
-                                                            <svg class="c-icon ">
-                                                                <use
-                                                                    xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-delete">
-                                                                </use>
-                                                            </svg>
+                                                            Delete
                                                         </button>
 
 
@@ -181,14 +292,48 @@
 
 
 @section('javascript')
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
 <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
 <script>
 $(document).ready(function() {
     $('#evacuationCenter').DataTable({
-        "scrollX": true,
+
     });
+    $('#view').on('shown.coreui.modal', function(e) {
+
+        var modal = $(this);
+        var button = $(e.relatedTarget);
+        var data = button.data('array');
+
+        modal.find('#name').text(data['name']);
+        modal.find('#address').text(data['address']);
+        if (data['camp_manager_name'] == null) {
+            modal.find('#camp_manager').text("None");
+        } else {
+            modal.find('#camp_manager').text(data['camp_manager_name']);
+        }
+        modal.find('#capacity').text(data['capacity']);
+        if (data['characteristics'] == null) {
+            modal.find('#characteristics').text("No description added.");
+        } else {
+            modal.find('#characteristics').text(data['characteristics']);
+        }
+        modal.find("#female").text(data['female']);
+        modal.find("#male").text(data['male']);
+        modal.find("#children").text(data['children']);
+        modal.find("#lactating").text(data['lactating']);
+        modal.find("#pwd").text(data['pwd']);
+        modal.find("#pregnant").text(data['pregnant']);
+        modal.find("#senior_citizen").text(data['senior_citizen']);
+        modal.find("#solo_parent").text(data['solo_parent']);
+        modal.find("#edit").attr('href',
+            "{{route('evacuation-center.edit',)}}?id=" + data['id']);
+        console.log(data['id'])
+
+
+    });
+
 });
 </script>
 

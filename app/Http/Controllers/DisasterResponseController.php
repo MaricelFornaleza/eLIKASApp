@@ -15,8 +15,11 @@ use App\Models\Family;
 use App\Models\ReliefGood;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 use PDF;
 
 
@@ -231,23 +234,29 @@ class DisasterResponseController extends Controller
         return view('admin.disaster-response-resource.show')
             ->with(compact('disaster_response', 'barangays', 'data', 'chartData', 'chartData2', 'dates'));
     }
-    public function stop($id)
+    public function stop(Request $request, $id)
     {
+        $hashedPassword = Auth::user()->password;
+        $match = Hash::check($request->password, $hashedPassword);
+        if ($match == true) {
+            $affected_resident = AffectedResident::where('disaster_response_id', $id)
+                ->where('affected_resident_type', 'Evacuee')->count();
 
-        $affected_resident = AffectedResident::where('disaster_response_id', $id)
-            ->where('affected_resident_type', 'Evacuee')->count();
-
-        if ($affected_resident == 0) {
-            $disaster_reponse = DisasterResponse::find($id);
-            $disaster_reponse->date_ended = Carbon::now();
-            $disaster_reponse->save();
-            Session::flash('message', 'Disaster Response ended');
+            if ($affected_resident == 0) {
+                $disaster_reponse = DisasterResponse::find($id);
+                $disaster_reponse->date_ended = Carbon::now();
+                $disaster_reponse->save();
+                Session::flash('message', 'Disaster Response ended');
+            } else {
+                Session::flash('error', 'Cannot stop Disaster Response');
+            }
+            $update_requests = new UpdateMarker;
+            $update_requests->refreshMap();
+            return redirect('home');
         } else {
-            Session::flash('error', 'Cannot stop Disaster Response');
+            Session::flash('error', 'Invalid Password.');
+            return redirect()->back();
         }
-        $update_requests = new UpdateMarker;
-        $update_requests->refreshMap();
-        return redirect('home');
     }
     public function exportPDF($id)
     {
