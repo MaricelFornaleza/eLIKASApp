@@ -263,4 +263,102 @@ class DisasterResponseController extends Controller
         $pdf = PDF::loadView('admin.pdf.disaster-response');
         return $pdf->download('Disaster Response report.pdf');
     }
+
+    public function updateDRData($id)
+    {
+        $disaster_response = DisasterResponse::where('id', $id)->first();
+
+        // About Relief Goods
+        $dispensed_relief_goods = ReliefGood::where('disaster_response_id', $id)->get();
+        $relief_goods = [
+            'count' => $dispensed_relief_goods->count(),
+            'clothes' => $dispensed_relief_goods->sum('clothes'),
+            'emergency_shelter_assistance' => $dispensed_relief_goods->sum('emergency_shelter_assistance'),
+            'medicine' => $dispensed_relief_goods->sum('medicine'),
+            'hygiene_kit' => $dispensed_relief_goods->sum('hygiene_kit'),
+            'water' => $dispensed_relief_goods->sum('water'),
+            'food_packs' => $dispensed_relief_goods->sum('food_packs'),
+        ];
+        $total_items = $relief_goods['clothes']
+            + $relief_goods['emergency_shelter_assistance']
+            + $relief_goods['medicine']
+            + $relief_goods['hygiene_kit']
+            + $relief_goods['water']
+            + $relief_goods['food_packs'];
+
+
+        // About Residents
+        $affected_residents = FamilyMember::join('affected_residents', function ($join) use ($id) {
+            $join->on('affected_residents.family_code', 'family_members.family_code')
+                ->where('disaster_response_id', $id);
+        })
+            ->select(
+                'family_members.*',
+                'affected_residents.affected_resident_type',
+            )->get();
+        $sectors = [
+            'children' => $affected_residents->where('sectoral_classification', 'Children')->count(),
+            'pregnant' => $affected_residents->where('sectoral_classification', 'Pregnant')->count(),
+            'lactating' => $affected_residents->where('sectoral_classification', 'Lactating')->count(),
+            'PWD' => $affected_residents->where('sectoral_classification', 'Person with Disability')->count(),
+            'pregnant' => $affected_residents->where('sectoral_classification', 'Pregnant')->count(),
+            'senior' => $affected_residents->where('sectoral_classification', 'Senior Citizen')->count(),
+            'solo' => $affected_residents->where('sectoral_classification', 'Solo Parent')->count(),
+        ];
+
+
+        // About Affected Barangays
+        $barangays = AffectedArea::where('disaster_response_id', $id)->select('barangay')->get();
+        $barangayData = [];
+        foreach ($barangays as $barangay) {
+            $barangayData[] = [
+                'barangay' => $barangay->barangay,
+                'total_residents' => $affected_residents->where('barangay', $barangay->barangay)->count(),
+                'evacuees' => $affected_residents->where('barangay', $barangay->barangay)->where('affected_resident_type', 'Evacuee')->count(),
+                'non_evacuees' => $affected_residents->where('barangay', $barangay->barangay)->where('affected_resident_type', 'Non-evacuee')->count(),
+
+            ];
+        }
+        // Compiled Data
+        $data = [
+            'sectors' => $sectors,
+            'affected_residents' => $affected_residents->count(),
+            'families' => AffectedResident::where('disaster_response_id', $id)->count(),
+            'evacuees' => $affected_residents->where('affected_resident_type', 'Evacuee')->count(),
+            'non-evacuees' => $affected_residents->where('affected_resident_type', 'Non-evacuee')->count(),
+            'female' => $affected_residents->where('gender', 'Female')->count(),
+            'male' => $affected_residents->where('gender', 'Male')->count(),
+            'relief_goods' => $relief_goods,
+            'barangayData' => $barangayData,
+            'total_items' => $total_items
+
+        ];
+
+        $count = AffectedResidentStat::where('disaster_response_id', $disaster_response->id)->count();
+        $evac = [];
+        $non_evac = [];
+        $dates = [];
+        if ($count == 1) {
+            $affected_resident_stats = AffectedResidentStat::where('disaster_response_id', $disaster_response->id)->orderBy('date', 'ASC')->first();
+            $dates[] = $affected_resident_stats->date;
+            $evac[] = $affected_resident_stats->no_of_evacuees;
+            $non_evac[] = $affected_resident_stats->no_of_non_evacuees;
+        } else {
+            $affected_resident_stats = AffectedResidentStat::where('disaster_response_id', $disaster_response->id)->get();
+            // dd($affected_resident_stats->get('date'));
+            foreach ($affected_resident_stats as $index) {
+                $dates[] = $index->date;
+                $evac[] = $index->no_of_evacuees;
+                $non_evac[] = $index->no_of_non_evacuees;
+            }
+        }
+
+        // These are the data for main chart
+        $chartData = json_encode($evac, JSON_NUMERIC_CHECK);
+        $chartData2 = json_encode($non_evac, JSON_NUMERIC_CHECK);
+        $dates = json_encode($dates);
+
+        return view('admin.disaster-response-resource.details.body')
+            ->with(compact('disaster_response', 'barangays', 'data', 'chartData', 'chartData2', 'dates'));
+    }
 }

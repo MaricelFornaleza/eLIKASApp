@@ -49,7 +49,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     // Requests
     Route::prefix('requests')->group(function () {
         Route::get('/',         'DeliveryRequestController@index')->name('request.index')->middleware('officertype:Administrator');
-        Route::get('/refresh',  'DeliveryRequestController@refresh')->name('request.refresh')->middleware('officertype:Administrator');
+        Route::get('/refresh',  '@refresh')->name('request.refresh')->middleware('officertype:Administrator');
         Route::get('/receive',  'DeliveryRequestController@receive_supplies')->name('request.receive_supplies')->middleware('officertype:Camp Manager');
         Route::post('/store',   'DeliveryRequestController@store')->name('request.store')->middleware('officertype:Camp Manager');
         Route::get('/cancel',   'DeliveryRequestController@cancel')->name('request.cancel');    //all users can access this
@@ -102,6 +102,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
             Route::post('/stop/{id}', 'DisasterResponseController@stop');
             Route::get('/archive', 'DisasterResponseController@archive');
             Route::get('/export/{id}', 'DisasterResponseController@exportPDF');
+            Route::get('/update/{id}', 'DisasterResponseController@updateDRData');
         });
         // Import
         Route::prefix('import')->group(function () {

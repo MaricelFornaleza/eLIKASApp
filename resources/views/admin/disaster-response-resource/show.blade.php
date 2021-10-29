@@ -1,12 +1,11 @@
 @extends('layouts.webBase')
 @section('css')
 <link href="{{ asset('css/disaster-response.css') }}" rel="stylesheet">
-
 @endsection
 
 @section('content')
 <div class="container" id="content">
-    <div class="row justify-content-center">
+    <div class="row justify-content-center" id="content-wrapper">
         <div class="col-md-11 ">
             <div class="card ">
                 <img class="card-img-top " src="{{url('/assets/dr-cover/'.$disaster_response -> photo)}}"
@@ -129,6 +128,7 @@
     </div>
 </div>
 @endsection
+
 @section('javascript')
 <script src="{{ asset('js/Chart.min.js') }}"></script>
 <script src="{{ asset('js/coreui-chartjs.bundle.js') }}"></script>
@@ -141,7 +141,6 @@
 var chartData = <?php echo $chartData; ?>;
 var chartData2 = <?php echo $chartData2; ?>;
 var dates = <?php echo $dates; ?>;
-
 
 function generatePDF() {
     var opt = {
@@ -172,5 +171,52 @@ function generatePDF() {
     });
 
 }
+
+//remove on production
+/*Pusher.logToConsole = true;
+var pusher = new Pusher('ab82b7896a919c5e39dd', {
+    cluster: 'ap1'
+});
+
+var channel = pusher.subscribe('disaster-response-channel');
+channel.bind('update-event', function(id) {
+    $.ajax({
+        method: "GET",
+        url: "/update/" + id,
+    }).done(function(data) {
+        $('#content').replaceWith(data);
+    });
+});
+
+function executeQuery() {
+  $.ajax({
+    url: "/update/" + id,
+    success: function(data) {
+        $('#content').replaceWith(data);
+    }
+  });
+  setTimeout(executeQuery, 5000); // you could choose not to continue on failure...
+}*/
+
+var id = "{{ $disaster_response->id }}";
+//var id = <?php echo $disaster_response; ?>;
+//console.log(id);
+$(document).ready(function() {
+    (function worker() {
+    $.ajax({
+        method: "GET",
+        url: "/disaster-response/update/" + id,
+    }).done(function(data) {
+        console.log("refresh");
+        $.getScript("{{ asset('js/reports-js/barChart.js') }}");
+        $('#content-wrapper').html(data);
+        //dates = "October 29, 2021";
+        //console.log(dates);
+        setTimeout(worker, 15000);
+    });
+})();
+});
+
+
 </script>
 @endsection
