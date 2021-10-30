@@ -469,7 +469,7 @@ var ajax_request;
 
 $(document).ready(function() {
     var table = $('#requestTable').DataTable({
-        "order": [],
+        "order": [], 
     });
 
     $.ajaxSetup({
