@@ -468,8 +468,7 @@ var markers = L.layerGroup();
 var ajax_request;
 
 $(document).ready(function() {
-    var table = $('#requesTable').DataTable({
-
+    var table = $('#requestTable').DataTable({
         "order": [],
     });
 
