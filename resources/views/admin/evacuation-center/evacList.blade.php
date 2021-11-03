@@ -54,6 +54,133 @@
                 @endif
             </div>
         </div>
+        <!-- modal  -->
+        <div class="modal fade" id="view" data-backdrop="static" data-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-secondary text-white">
+                        <h5 class="modal-title" id="staticBackdropLabel">Details
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="mb-2 col-6">
+                                <label for="name" class="col-form-label small ">Name:</label>
+                                <h6 id="name" class="font-weight-bold"></h6>
+
+                            </div>
+                            <div class="mb-2 col-6">
+                                <label for="address" class="col-form-label small ">Address:</label>
+                                <span class="badge badge-pill text-white verify">
+                                </span>
+                                <h6 id="address" class="font-weight-bold">
+                                </h6>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="mb-2 col-6">
+                                <label for="capacity" class="col-form-label small ">Total
+                                    Capacity:</label>
+
+                                <h6 id="capacity" class="font-weight-bold">
+                                </h6>
+                            </div>
+                            <div class="mb-2 col-6">
+                                <label for="camp_manager" class="col-form-label small ">Camp
+                                    Manager:</label>
+                                <h6 id="camp_manager" class="font-weight-bold">
+                                </h6>
+                            </div>
+
+                        </div>
+
+
+                        <div class="mb-2 ">
+                            <label for="characteristics" class="col-form-label small ">Characteristics:</label>
+                            <h6 id="characteristics" class="font-weight-bold">
+                            </h6>
+                        </div>
+
+
+                    </div>
+                    <div class="dropdown-divider"></div>
+
+                    <!-- Female and Male info  -->
+                    <div class="col-md-8 ml-auto mr-auto mt-5 mb-5 text-center">
+                        <div class="row">
+                            <div class="col-6 border-right ">
+                                <h1 class="pb-0 mb-0">
+                                    <strong id=female></strong>
+                                </h1>
+                                <small>FEMALE</small>
+                            </div>
+                            <div class="col-6 ">
+                                <h1 class="pb-0 mb-0"><strong id="male"></strong>
+                                </h1>
+                                <small>MALE</small>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- Sectoral Classification Info -->
+                    <div class="col-md-8  ml-auto mr-auto text-center">
+                        <div class="row">
+                            <div class="col-4 border p-2 ">
+                                <h3 class="pb-0 mb-0">
+                                    <strong id="children"></strong>
+                                </h3>
+                                <small class="label-small">CHILDREN</small>
+                            </div>
+                            <div class="col-4 border p-2">
+                                <h3 class="pb-0 mb-0">
+                                    <strong id="lactating"></strong>
+                                </h3>
+                                <small class="label-small">LACTATING</small>
+                            </div>
+                            <div class="col-4 border p-2">
+                                <h3 class="pb-0 mb-0"><strong id="pwd"></strong>
+                                </h3>
+                                <small class="label-small">PWD</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8  ml-auto mr-auto mb-4 text-center">
+                        <div class="row">
+                            <div class="col-4 border p-2">
+                                <h3 class="pb-0 mb-0">
+                                    <strong id="pregnant"></strong>
+                                </h3>
+                                <small class="label-small">PREGNANT</small>
+                            </div>
+                            <div class="col-4 border p-2">
+                                <h3 class="pb-0 mb-0">
+                                    <strong id="senior_citizen"></strong>
+                                </h3>
+                                <small class="label-small">SENIOR
+                                    CITIZEN</small>
+                            </div>
+                            <div class="col-4 border p-2">
+                                <h3 class="pb-0 mb-0">
+                                    <strong id="solo_parent"></strong>
+                                </h3>
+                                <small class="label-small">SOLO PARENT</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <a href="" id="edit">
+                            <button type="button" class="btn bg-secondary text-white">Edit</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- row  -->
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                 <div class="card">
@@ -120,142 +247,7 @@
                                                     </button>
 
                                                 </div>
-                                                <div class="modal fade" id="view" data-backdrop="static"
-                                                    data-keyboard="false" tabindex="-1"
-                                                    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header bg-secondary text-white">
-                                                                <h5 class="modal-title" id="staticBackdropLabel">Details
-                                                                </h5>
-                                                                <button type="button" class="close" data-dismiss="modal"
-                                                                    aria-label="Close"><span
-                                                                        aria-hidden="true">&times;</span></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div class="row">
-                                                                    <div class="mb-2 col-6">
-                                                                        <label for="name"
-                                                                            class="col-form-label small ">Name:</label>
-                                                                        <h6 id="name" class="font-weight-bold"></h6>
 
-                                                                    </div>
-                                                                    <div class="mb-2 col-6">
-                                                                        <label for="address"
-                                                                            class="col-form-label small ">Address:</label>
-                                                                        <span
-                                                                            class="badge badge-pill text-white verify">
-                                                                        </span>
-                                                                        <h6 id="address" class="font-weight-bold">
-                                                                        </h6>
-                                                                    </div>
-
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="mb-2 col-6">
-                                                                        <label for="capacity"
-                                                                            class="col-form-label small ">Total
-                                                                            Capacity:</label>
-
-                                                                        <h6 id="capacity" class="font-weight-bold">
-                                                                        </h6>
-                                                                    </div>
-                                                                    <div class="mb-2 col-6">
-                                                                        <label for="camp_manager"
-                                                                            class="col-form-label small ">Camp
-                                                                            Manager:</label>
-                                                                        <h6 id="camp_manager" class="font-weight-bold">
-                                                                        </h6>
-                                                                    </div>
-
-                                                                </div>
-
-
-                                                                <div class="mb-2 ">
-                                                                    <label for="characteristics"
-                                                                        class="col-form-label small ">Characteristics:</label>
-                                                                    <h6 id="characteristics" class="font-weight-bold">
-                                                                    </h6>
-                                                                </div>
-
-
-                                                            </div>
-                                                            <div class="dropdown-divider"></div>
-
-                                                            <!-- Female and Male info  -->
-                                                            <div class="col-md-8 ml-auto mr-auto mt-5 mb-5 text-center">
-                                                                <div class="row">
-                                                                    <div class="col-6 border-right ">
-                                                                        <h1 class="pb-0 mb-0">
-                                                                            <strong id=female></strong>
-                                                                        </h1>
-                                                                        <small>FEMALE</small>
-                                                                    </div>
-                                                                    <div class="col-6 ">
-                                                                        <h1 class="pb-0 mb-0"><strong
-                                                                                id="male"></strong>
-                                                                        </h1>
-                                                                        <small>MALE</small>
-                                                                    </div>
-                                                                </div>
-
-                                                            </div>
-                                                            <!-- Sectoral Classification Info -->
-                                                            <div class="col-md-8  ml-auto mr-auto text-center">
-                                                                <div class="row">
-                                                                    <div class="col-4 border p-2 ">
-                                                                        <h3 class="pb-0 mb-0">
-                                                                            <strong id="children"></strong>
-                                                                        </h3>
-                                                                        <small class="label-small">CHILDREN</small>
-                                                                    </div>
-                                                                    <div class="col-4 border p-2">
-                                                                        <h3 class="pb-0 mb-0">
-                                                                            <strong id="lactating"></strong>
-                                                                        </h3>
-                                                                        <small class="label-small">LACTATING</small>
-                                                                    </div>
-                                                                    <div class="col-4 border p-2">
-                                                                        <h3 class="pb-0 mb-0"><strong id="pwd"></strong>
-                                                                        </h3>
-                                                                        <small class="label-small">PWD</small>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-8  ml-auto mr-auto mb-4 text-center">
-                                                                <div class="row">
-                                                                    <div class="col-4 border p-2">
-                                                                        <h3 class="pb-0 mb-0">
-                                                                            <strong id="pregnant"></strong>
-                                                                        </h3>
-                                                                        <small class="label-small">PREGNANT</small>
-                                                                    </div>
-                                                                    <div class="col-4 border p-2">
-                                                                        <h3 class="pb-0 mb-0">
-                                                                            <strong id="senior_citizen"></strong>
-                                                                        </h3>
-                                                                        <small class="label-small">SENIOR
-                                                                            CITIZEN</small>
-                                                                    </div>
-                                                                    <div class="col-4 border p-2">
-                                                                        <h3 class="pb-0 mb-0">
-                                                                            <strong id="solo_parent"></strong>
-                                                                        </h3>
-                                                                        <small class="label-small">SOLO PARENT</small>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary"
-                                                                    data-dismiss="modal">Close</button>
-                                                                <a href="" id="edit">
-                                                                    <button type="button"
-                                                                        class="btn bg-secondary text-white">Edit</button>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
 
                                                 <div class="col-6 ">
                                                     <form

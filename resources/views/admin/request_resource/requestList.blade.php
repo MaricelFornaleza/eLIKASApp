@@ -80,7 +80,8 @@
                     </div> --}}
                     <div class="card-body">
                         <div id="requestList">
-                            <table id="requestTable" class="table table-borderless table-hover table-light table-striped"
+                            <table id="requestTable"
+                                class="table table-borderless table-hover table-light table-striped"
                                 style="width: 100%;">
                                 <thead>
                                     <tr>
@@ -230,8 +231,8 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <div class="row">
-                                                    <div class="mr-4 ">
+                                                <div class="row justify-content-between">
+                                                    <div class="">
                                                         <button type="button"
                                                             class="btn bg-secondary-accent text-white " id="button"
                                                             data-toggle="modal" data-target="#view"
@@ -240,7 +241,7 @@
                                                         </button>
 
                                                     </div>
-                                                    <div class="col-4 ">
+                                                    <div class="">
                                                         <a href="{{ route('request.approve', ['id' => $delivery_request->id] ) }}"
                                                             onclick="return confirm('Are you sure to approve the request?')">
                                                             {{-- <img class="c-icon" src="{{ url('icons/sprites/accept-request.svg') }}"
@@ -253,7 +254,7 @@
                                                             </svg>
                                                         </a>
                                                     </div>
-                                                    <div class="col-4">
+                                                    <div class="mr-2">
                                                         {{-- <form action="" method="post">
                                                             @csrf
                                                             @method("DELETE")
@@ -469,7 +470,7 @@ var ajax_request;
 
 $(document).ready(function() {
     var table = $('#requestTable').DataTable({
-        "order": [], 
+        "order": [],
     });
 
     $.ajaxSetup({
@@ -569,13 +570,14 @@ $(document).ready(function() {
                 var button = $(e.relatedTarget);
                 var data = button.data('array');
                 var modal = $(this);
-                
+
                 console.log(data['camp_manager_name']);
                 modal.find('#time_received').text(data['updated_at']);
                 modal.find('#request_id').text(data['id']);
                 modal.find('#camp_manager').text(data['camp_manager_name']);
-                modal.find('#evacuation_center').text(data['evacuation_center_name'] + ", " + data[
-                    'evacuation_center_address']);
+                modal.find('#evacuation_center').text(data['evacuation_center_name'] +
+                    ", " + data[
+                        'evacuation_center_address']);
                 if (data['note'] == null) {
                     modal.find('#note').text("None.");
                 } else {
@@ -595,7 +597,7 @@ $(document).ready(function() {
         var button = $(e.relatedTarget);
         var data = button.data('array');
         var modal = $(this);
-        
+
         console.log(data['camp_manager_name']);
         modal.find('#time_received').text(data['updated_at']);
         modal.find('#request_id').text(data['id']);

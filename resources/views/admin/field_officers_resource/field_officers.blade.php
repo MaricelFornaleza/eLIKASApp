@@ -58,7 +58,72 @@
                 @endif
             </div>
         </div>
+        <!-- modal  -->
+        <div class="modal fade" id="view" data-backdrop="static" data-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-secondary text-white">
+                        <h5 class="modal-title" id="staticBackdropLabel">Details
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-4">
+                                <img class="image modal-image" src="" alt="profile_image"
+                                    style="height: 100%; width: 100%; object-fit: cover;">
 
+                            </div>
+                            <div class="col-8 ">
+
+                                <div class="mb-2">
+                                    <label for="name" class="col-form-label small ">Name:</label>
+                                    <h6 id="name" class="font-weight-bold"></h6>
+
+                                </div>
+                                <div class="mb-2">
+                                    <label for="email" class="col-form-label small ">Email
+                                        Address:</label>
+                                    <span class="badge badge-pill text-white verify">
+                                    </span>
+                                    <h6 id="email" class="font-weight-bold">
+                                    </h6>
+                                </div>
+                                <div class="mb-2">
+                                    <label for="contact_no" class="col-form-label small ">Contact
+                                        Number:</label>
+
+                                    <h6 id="contact_no" class="font-weight-bold"></h6>
+                                </div>
+                                <div class="mb-2 barangay">
+                                    <label for="barangay" class="col-form-label small ">Barangay:</label>
+                                    <h6 id="barangay" class="font-weight-bold">
+                                    </h6>
+                                </div>
+                                <div class="mb-2 designation">
+                                    <label for="designation" class="col-form-label small ">Designation:</label>
+                                    <h6 id="designation" class="font-weight-bold"></h6>
+                                </div>
+                                <div class="col-10 mx-0 px-0 mt-3">
+                                    <a href="" id="resend-verification"><button type="button"
+                                            class="btn btn-primary text-white resend">Resend
+                                            Email verification</button></a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <a href="" id="edit-fo">
+                            <button type="button" class="btn bg-secondary text-white">Edit</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- /.row-->
         <div class="row">
             <div class="col-lg-12">
@@ -107,11 +172,13 @@
                                         <td>{{ $field_officer -> officer_type}}</td>
                                         <td>{{ $field_officer -> email }}
                                             @empty($field_officer->email_verified_at)
-                                            <span id="{{ $field_officer->user_id }}" class="badge badge-pill bg-accent text-white">
+                                            <span id="{{ $field_officer->user_id }}"
+                                                class="badge badge-pill bg-accent text-white">
                                                 Unverified
                                             </span>
                                             @else
-                                            <span id="{{ $field_officer->user_id }}" class="badge badge-pill bg-primary text-white">
+                                            <span id="{{ $field_officer->user_id }}"
+                                                class="badge badge-pill bg-primary text-white">
                                                 Verified
                                             </span>
                                             @endempty
@@ -136,85 +203,7 @@
                                                     </button>
 
                                                 </div>
-                                                <div class="modal fade" id="view" data-backdrop="static"
-                                                    data-keyboard="false" tabindex="-1"
-                                                    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header bg-secondary text-white">
-                                                                <h5 class="modal-title" id="staticBackdropLabel">Details
-                                                                </h5>
-                                                                <button type="button" class="close" data-dismiss="modal"
-                                                                    aria-label="Close"><span
-                                                                        aria-hidden="true">&times;</span></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div class="row">
-                                                                    <div class="col-4">
-                                                                        <img class="image modal-image" src=""
-                                                                            alt="profile_image"
-                                                                            style="height: 100%; width: 100%; object-fit: cover;">
 
-                                                                    </div>
-                                                                    <div class="col-8 ">
-
-                                                                        <div class="mb-2">
-                                                                            <label for="name"
-                                                                                class="col-form-label small ">Name:</label>
-                                                                            <h6 id="name" class="font-weight-bold"></h6>
-
-                                                                        </div>
-                                                                        <div class="mb-2">
-                                                                            <label for="email"
-                                                                                class="col-form-label small ">Email
-                                                                                Address:</label>
-                                                                            <span
-                                                                                class="badge badge-pill text-white verify">
-                                                                            </span>
-                                                                            <h6 id="email" class="font-weight-bold">
-                                                                            </h6>
-                                                                        </div>
-                                                                        <div class="mb-2">
-                                                                            <label for="contact_no"
-                                                                                class="col-form-label small ">Contact
-                                                                                Number:</label>
-
-                                                                            <h6 id="contact_no"
-                                                                                class="font-weight-bold"></h6>
-                                                                        </div>
-                                                                        <div class="mb-2 barangay">
-                                                                            <label for="barangay"
-                                                                                class="col-form-label small ">Barangay:</label>
-                                                                            <h6 id="barangay" class="font-weight-bold">
-                                                                            </h6>
-                                                                        </div>
-                                                                        <div class="mb-2 designation">
-                                                                            <label for="designation"
-                                                                                class="col-form-label small ">Designation:</label>
-                                                                            <h6 id="designation"
-                                                                                class="font-weight-bold"></h6>
-                                                                        </div>
-                                                                        <div class="col-10 mx-0 px-0 mt-3">
-                                                                            <a href="" id="resend-verification"><button
-                                                                                    type="button"
-                                                                                    class="btn btn-primary text-white resend">Resend
-                                                                                    Email verification</button></a>
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary"
-                                                                    data-dismiss="modal">Close</button>
-                                                                <a href="" id="edit-fo">
-                                                                    <button type="button"
-                                                                        class="btn bg-secondary text-white">Edit</button>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                                 <div class="">
                                                     <form action="/field_officers/{{$field_officer->user_id}}"
                                                         method="post">
@@ -319,11 +308,12 @@ $(document).ready(function() {
         $.each(data.field_officers, function(key, value) {
             var html = "";
             //console.log(value.id);
-            if(value.email_verified_at === null) {
-                html = `<span id="${value.id}" class="badge badge-pill bg-accent text-white">Unverified</span>`;
-            }
-            else {
-                html = `<span id="${value.id}" class="badge badge-pill bg-primary text-white">Verified</span>`;
+            if (value.email_verified_at === null) {
+                html =
+                    `<span id="${value.id}" class="badge badge-pill bg-accent text-white">Unverified</span>`;
+            } else {
+                html =
+                    `<span id="${value.id}" class="badge badge-pill bg-primary text-white">Verified</span>`;
             }
             $(`#${value.id}`).replaceWith(html);
         });
