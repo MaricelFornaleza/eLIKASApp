@@ -56,7 +56,7 @@ class DeliveryRequestController extends Controller
 
         return view('admin.request_resource.requestList', ['delivery_requests' => $delivery_requests]);
     }
-    
+
     public function evac_data($evac_id)
     {
         $evacuees = Evacuee::where('evacuation_center_id', $evac_id)->where('date_discharged', null)->get();
@@ -232,8 +232,10 @@ class DeliveryRequestController extends Controller
         //send sms to courier
         $user = User::where('id', $request->input('courier_id'))->first();
         $message = "Request " . $id . ": \n\nA delivery was assigned to you. Reply 'accept " . $id . "' if you want to accept the request otherwise, reply 'cancel " . $id . "'.";
+        if ($user->globe_labs_access_token != null) {
+            (new OutboundSmsController)->reply($user->contact_no, $message);
+        }
 
-        (new OutboundSmsController)->reply($user->contact_no, $message);
 
         //dd($delivery_requests->courier_name);
         return redirect()->back()->with('message', 'You have assigned '
@@ -351,5 +353,7 @@ class DeliveryRequestController extends Controller
         //TO-DO: put here dynamic updating
 
         return redirect()->route('request.camp-manager.history');
+    }
+}       return redirect()->route('request.camp-manager.history');
     }
 }
