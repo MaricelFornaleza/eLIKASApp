@@ -354,6 +354,4 @@ class DeliveryRequestController extends Controller
 
         return redirect()->route('request.camp-manager.history');
     }
-}       return redirect()->route('request.camp-manager.history');
-    }
 }
