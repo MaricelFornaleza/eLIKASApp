@@ -77,14 +77,16 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="col-12 center mt-4">
+                    <div class="col-md-6 mb-4 p-0">
+                        <a href="/camp-manager/evacuees" class="btn btn-accent-outline px-4">
+                            {{ __('Cancel') }}
+                        </a>
+                    </div>
+                </div>
         </div>
-        <div class="col-12 center mt-4">
-            <div class="col-md-6 mb-4 p-0">
-                <a href="/camp-manager/evacuees" class="btn btn-accent-outline  px-4">
-                    {{ __('Cancel') }}
-                </a>
-            </div>
-        </div>
+    
     </div>
     </form>
 </div>
