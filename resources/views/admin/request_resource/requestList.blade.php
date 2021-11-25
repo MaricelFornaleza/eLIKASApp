@@ -425,7 +425,16 @@
                                                     {{ strtoupper($delivery_request->status) }}
                                                 </span>
                                             </td>
+
                                             <td>
+                                                <div class="">
+                                                    <button type="button" class="btn bg-secondary-accent text-white "
+                                                        id="button" data-toggle="modal" data-target="#view"
+                                                        data-array="{{json_encode($delivery_request)}}">
+                                                        View
+                                                    </button>
+
+                                                </div>
                                             </td>
                                             @elseif( $delivery_request->status == 'declined' ||
                                             $delivery_request->status == 'cancelled')
@@ -435,6 +444,14 @@
                                                 </span>
                                             </td>
                                             <td>
+                                                <div class="">
+                                                    <button type="button" class="btn bg-secondary-accent text-white "
+                                                        id="button" data-toggle="modal" data-target="#view"
+                                                        data-array="{{json_encode($delivery_request)}}">
+                                                        View
+                                                    </button>
+
+                                                </div>
                                             </td>
                                             @endif
                                         </tr>
