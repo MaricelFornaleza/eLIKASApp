@@ -196,7 +196,7 @@
                         </div>
 
 
-                        <div class="col-4 ">
+                        <div class=" ">
                             <a href="" data-toggle="modal" data-target="#assignModal"
                                 data-evac-id="{{ $delivery_request->evacuation_center_id }}">
                                 {{-- <img class="c-icon" src="{{ url('icons/sprites/accept-request.svg') }}"
@@ -257,7 +257,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-4">
+                        <div class="">
                             <a href="{{ route('request.cancel', ['id' => $delivery_request->id] ) }}"
                                 onclick="return confirm('Are you sure to cancel the request?')">
                                 <svg width="25" height="25" xmlns="http://www.w3.org/2000/svg">
@@ -286,7 +286,7 @@
 
                         </div>
 
-                        <div class="col-4">
+                        <div class="">
                             <a href="{{ route('request.cancel', ['id' => $delivery_request->id] ) }}"
                                 onclick="return confirm('Are you sure to cancel the request?')">
                                 <svg width="25" height="25" xmlns="http://www.w3.org/2000/svg">
