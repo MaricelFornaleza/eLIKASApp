@@ -211,7 +211,7 @@
                                 <thead>
                                     <tr>
                                         <th>NAME</th>
-                                        <th>ADDRESS</th>
+
 
                                         <th>CAMP MANAGER</th>
                                         <th>TOTAL CAPACITY</th>
@@ -224,9 +224,7 @@
                                 <tbody>
                                     @foreach($evacuation_centers as $evacuation_center)
                                     <tr>
-                                        <td>{{ $evacuation_center['name'] }}</td>
-                                        <td>{{ $evacuation_center['address'] }}</td>
-
+                                        <td>{{ $evacuation_center['name'] }} - {{ $evacuation_center['address'] }} </td>
                                         @if($evacuation_center['camp_manager_name'] == null)
                                         <td class="text-danger"><strong>{{ __('None') }}</strong></td>
                                         @else
